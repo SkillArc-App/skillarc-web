@@ -23,7 +23,16 @@ export const ProfileAbout = () => {
   } = useProfileData(profileId as string);
 
   return (
-    <ProfileBox title="About" icon={FaUser} onAddClick={() => {}}>
+    <ProfileBox
+      title="About"
+      icon={FaUser}
+      onAddClick={() => {
+        router.push({
+          pathname: `${profileId}/editProfile`,
+          query: { section: "about" },
+        });
+      }}
+    >
       <Accordion defaultIndex={[0]} allowMultiple color={"greyscale.700"}>
         {data?.stories.map((story, index) => {
           return (
