@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  postgres:
+    image: "postgres:15.3"
+    container_name: "blocktrain_postgres_1"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
