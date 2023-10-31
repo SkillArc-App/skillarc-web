@@ -15,7 +15,16 @@ export const ProfileEducation = () => {
   } = useProfileData(profileId as string);
 
   return (
-    <ProfileBox title="Education" icon={FaGraduationCap} onAddClick={() => {}}>
+    <ProfileBox
+      title="Education"
+      icon={FaGraduationCap}
+      onAddClick={() => {
+        router.push({
+          pathname: `${profileId}/editProfile`,
+          query: { section: "education" },
+        });
+      }}
+    >
       <Flex flexDir={"column"} gap="1rem" pt="1rem">
         {data?.educationExperiences.map((educationExperiences, index) => {
           return (
