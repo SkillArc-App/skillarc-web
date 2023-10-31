@@ -24,7 +24,16 @@ export const ProfileSkills = () => {
   }, [data]);
 
   return (
-    <ProfileBox title="Skills" icon={FaScrewdriverWrench} onAddClick={() => {}}>
+    <ProfileBox
+      title="Skills"
+      icon={FaScrewdriverWrench}
+      onAddClick={() => {
+        router.push({
+          pathname: `${profileId}/editProfile`,
+          query: { section: "skill" },
+        });
+      }}
+    >
       <VStack align="left" pt="1rem" gap={2}>
         {profileData &&
           profileData.profileSkills.filter(
