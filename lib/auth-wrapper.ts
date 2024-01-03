@@ -2,7 +2,8 @@ import {
   useAuth0 as auth0useAuth0,
   withAuthenticationRequired as auth0WithAuthenticationRequired,
 } from '@auth0/auth0-react'
-import { GetServerSidePropsContext } from 'next'
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
+import { AuthOptions } from 'next-auth'
 
 import {
   getSession as nextAuthGetSession,
@@ -66,6 +67,14 @@ const mockedUsers = [
 const user = mockedUsers.find((u) => {
   return u.id === process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH_USER_ID
 })
+
+export const getServerSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  authOptions: AuthOptions,
+) => {
+  return { user: { id: 1 } }
+}
 
 export const getSession = async (context: GetServerSidePropsContext) => {
   if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
