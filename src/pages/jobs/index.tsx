@@ -273,7 +273,7 @@ export default function jobs() {
   return (
     <Box height={'100%'} width={'100%'} overflow={'scroll'}>
       <Box m={'1rem'}>
-        <Heading mb={'1.5rem'}>Find your perfect job 💼</Heading>
+        <Heading mb={'1.5rem'}>Find your perfect jobs 💼</Heading>
         <HStack gap={'0.5rem'} mb={'1rem'}>
           <Tag
             cursor={'pointer'}
