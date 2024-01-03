@@ -22,16 +22,7 @@ const Coaches = () => {
 }
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
-  const columnHelper = createColumnHelper<{
-    seekerId: string
-    assignedCoach: string
-    barriers: string[]
-    email: string
-    firstName: string
-    lastContacted: string
-    lastName: string
-    skillLevel: string
-  }>()
+  const columnHelper = createColumnHelper<CoachSeeker>()
 
   const columns = [
     columnHelper.accessor('email', {
