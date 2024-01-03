@@ -1,6 +1,3 @@
-import axios from 'axios'
-import { http } from '../http-common'
-import { mixpanelInitProfile } from '../utils/mixpanel'
 import {
   DesiredOutcomes,
   EducationExperience,
@@ -21,8 +18,13 @@ import {
   TrainingProviderProfile,
   User,
 } from '@prisma/client'
+import axios from 'axios'
+import { http } from '../http-common'
+import { mixpanelInitProfile } from '../utils/mixpanel'
 
 export type GetOneProfileResponse = {
+  industryInterests: string[]
+  met_career_coach: boolean
   user: User & {
     SeekerTrainingProvider: (SeekerTrainingProvider & { trainingProvider: TrainingProvider })[]
   }
@@ -34,6 +36,7 @@ export type GetOneProfileResponse = {
   profileSkills: (ProfileSkill & { masterSkill: MasterSkill })[]
   profileCertifications: (ProfileCertification & { masterCertification: MasterCertification })[]
   desiredOutcomes: DesiredOutcomes[]
+  missingProfileItems: ('education' | 'work')[]
   professionalInterests: ProfessionalInterests[]
   programs: {
     trainingProvider: {

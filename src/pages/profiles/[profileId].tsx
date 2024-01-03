@@ -5,11 +5,13 @@ import { ProfileCertifications } from '@/frontend/modules/profile/components/cer
 import { ProfileEducation } from '@/frontend/modules/profile/components/education.component'
 import { ProfileExperience } from '@/frontend/modules/profile/components/experience.component'
 import { PersonalExperience } from '@/frontend/modules/profile/components/personalExperience'
+import ProfileCompleteness from '@/frontend/modules/profile/components/profileCompleteness.component'
 import { ProfileReferences } from '@/frontend/modules/profile/components/reference.component'
 import { ProfileSkills } from '@/frontend/modules/profile/components/skills.component'
 import { ProfileSummary } from '@/frontend/modules/profile/components/summary.component'
-import { Box, Flex, Grid, Stack } from '@chakra-ui/react'
+import { Box, Stack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 function ProfileId() {
   const router = useRouter()
@@ -18,54 +20,66 @@ function ProfileId() {
     profileQuery: { data },
   } = useProfileData(profileId as string)
 
-  if (!profileId) return <LoadingPage />
-  if (!data) return <LoadingPage />
+  const [isMobile, setIsMobile] = useState(false) // Assuming 768px as the breakpoint
 
-  return (
-    <Box w={'100%'} bg="greyscale.300" padding={'2rem'}>
-      <ProfileSummary />
-      <Flex gap={'1rem'} paddingBottom={'1.5rem'} paddingTop={'1.5rem'}>
-        <Stack flex={3} flexWrap="wrap" gap="1rem">
-          <ProfileExperience />
-          <ProfileCertifications />
-          <ProfileEducation />
-          <PersonalExperience />
-        </Stack>
-        <Stack flex={2} flexWrap="wrap" gap="1rem">
-          <ProfileAbout />
-          <ProfileReferences />
-          <ProfileSkills />
-          {/* <ProfileReferences /> */}
-        </Stack>
-      </Flex>
-    </Box>
-  )
-}
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768)
+    }
 
-function Foo() {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   if (!profileId) return <LoadingPage />
   if (!data) return <LoadingPage />
 
   return (
-    <Box w={'100%'} bg="greyscale.300" padding={'2rem'}>
+    <Box width={'100%'} bg="greyscale.300">
       <ProfileSummary />
-      <Grid my={'1rem'} templateColumns={{ base: '1fr', md: '3fr 2fr' }} gap="4" w="full">
-        <ProfileExperience />
-        <ProfileEducation />
-        {/* Training */}
-        <ProfileCertifications />
-        <ProfileSkills />
-        <ProfileAbout />
-        <PersonalExperience />
-      </Grid>
+      <Box py={'1.5rem'} p={'1rem'}>
+        <ProfileCompleteness />
+
+        {isMobile ? (
+          <Box
+            display={{ base: 'grid', md: 'grid' }}
+            gridTemplateColumns={{ base: '1fr' }}
+            gap={'1rem'}
+            w={'100%'}
+          >
+            <ProfileExperience />
+            <ProfileEducation />
+            {/* Training */}
+            <ProfileCertifications />
+            <ProfileSkills />
+            <ProfileAbout />
+            <PersonalExperience />
+          </Box>
+        ) : (
+          <Box
+            display={{ base: 'grid', md: 'grid' }}
+            gridTemplateColumns={{ base: '3fr 2fr' }}
+            gap={'1rem'}
+            w={'100%'}
+          >
+            <Stack>
+              <ProfileExperience />
+              <ProfileEducation />
+              <PersonalExperience />
+            </Stack>
+            <Stack>
+              <ProfileAbout />
+              <ProfileReferences />
+              <ProfileSkills />
+            </Stack>
+          </Box>
+        )}
+      </Box>
     </Box>
   )
 }
 
-export default Foo
+export default ProfileId

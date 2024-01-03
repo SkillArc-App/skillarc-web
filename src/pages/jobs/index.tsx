@@ -8,7 +8,6 @@ import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.compon
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -30,6 +29,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { Employer, MasterCertification, MasterSkill } from '@prisma/client'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -85,6 +85,30 @@ export default function jobs() {
   const { getAccessTokenSilently, isLoading } = useAuth0()
   const [token, setToken] = useState<string>('')
 
+  const setConstructionFilterAndTrack = (value: boolean) => {
+    FrontendAnalyticsService.track('Job-filter', {
+      filter: 'construction',
+      value,
+    })
+    setConstructionFilter(value)
+  }
+
+  const setManufacturingFilterAndTrack = (value: boolean) => {
+    FrontendAnalyticsService.track('Job-filter', {
+      filter: 'manufacturing',
+      value,
+    })
+    setManufacturingFilter(value)
+  }
+
+  const setHealthcareFilterAndTrack = (value: boolean) => {
+    FrontendAnalyticsService.track('Job-filter', {
+      filter: 'healthcare',
+      value,
+    })
+    setHealthcareFilter(value)
+  }
+
   useEffect(() => {
     const getToken = async () => {
       const token = await getAccessTokenSilently()
@@ -100,7 +124,7 @@ export default function jobs() {
     if (userIsLoading) return
 
     if (!user?.profile) {
-      router.push('/')
+      // router.push('/')
     } else if (!userCanSeeJobs(user)) {
       router.push(`/profiles/${user.profile.id}`)
     }
@@ -193,7 +217,7 @@ export default function jobs() {
       return (
         <ModalContent m={'1rem'}>
           <ModalHeader>
-            <Heading size={'xl'}>Great work, {user?.first_name}! 🎉</Heading>
+            <Heading size={'xl'}>Great work, {user?.firstName}! 🎉</Heading>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -255,7 +279,7 @@ export default function jobs() {
             cursor={'pointer'}
             colorScheme={constructionFilter ? 'primary' : 'gray'}
             borderRadius={'full'}
-            onClick={() => setConstructionFilter(!constructionFilter)}
+            onClick={() => setConstructionFilterAndTrack(!constructionFilter)}
           >
             Construction
           </Tag>
@@ -263,7 +287,7 @@ export default function jobs() {
             cursor={'pointer'}
             colorScheme={manufacturingFilter ? 'primary' : 'gray'}
             borderRadius={'full'}
-            onClick={() => setManufacturingFilter(!manufacturingFilter)}
+            onClick={() => setManufacturingFilterAndTrack(!manufacturingFilter)}
           >
             Manufacturing
           </Tag>
@@ -271,7 +295,7 @@ export default function jobs() {
             cursor={'pointer'}
             colorScheme={healthcareFilter ? 'primary' : 'gray'}
             borderRadius={'full'}
-            onClick={() => setHealthcareFilter(!healthcareFilter)}
+            onClick={() => setHealthcareFilterAndTrack(!healthcareFilter)}
           >
             Healthcare
           </Tag>

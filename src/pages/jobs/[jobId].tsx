@@ -77,16 +77,7 @@ export default function jobPosting() {
     <>
       <Flex flexWrap="wrap" mb="156px">
         <SingleJobPosting jobId={jobId as string} />
-        <Flex
-          w="100%"
-          p="1rem"
-          gap="1rem"
-          flexWrap="wrap"
-          bg="greyscale.100"
-          zIndex={2}
-          position="fixed"
-          bottom="0px"
-        >
+        <Flex w="100%" p="1rem" gap="1rem" flexWrap="wrap" zIndex={2} position="fixed" bottom="0px">
           <Button w="100%" variant="primary" onClick={() => clickApply()}>
             Apply with Blocktrain Profile
           </Button>

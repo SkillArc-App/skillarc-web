@@ -4,7 +4,6 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { useAllProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllSeekerInviteData } from '@/frontend/hooks/useSeekerInviteData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -28,6 +27,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
 export default function admin() {

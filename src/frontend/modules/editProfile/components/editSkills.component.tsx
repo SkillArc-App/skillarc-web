@@ -41,8 +41,8 @@ export const EditSkills = () => {
     const mappedSkills: OneProfileSkillResponse[] = user.profile.profileSkills.map(
       (skill: {
         id: string
-        description: string
-        masterSkill: { id: string; skill: string; type: string }
+        description: string | null
+        masterSkill: { id: string; skill: string; type: 'PERSONAL' | 'TECHNICAL' }
       }) => {
         return {
           id: skill.id,

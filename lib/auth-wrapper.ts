@@ -127,7 +127,8 @@ export const useSession = () => {
 export const useAuth0 = () => {
   if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
     return {
-      getAccessTokenSilently: () => Promise.resolve('IAMATOKEN'),
+      getAccessTokenSilently: () =>
+        Promise.resolve(localStorage.getItem('mockNextAuth') ?? 'IAMATOKEN'),
       loginWithRedirect: () => Promise.resolve(),
       loginWithPopup: () => Promise.resolve(),
       logout: () => Promise.resolve(),

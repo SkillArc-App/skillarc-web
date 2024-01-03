@@ -36,10 +36,16 @@ export default function RootLayout({
           <ReactQueryDevtools />
 
           <Auth0Provider
+            cacheLocation="localstorage"
             domain={'blocktrain.us.auth0.com'}
             clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
+            // onRedirectCallback={(appState) => {
+            // if (appState?.returnTo) {
+            //   router.push(appState.returnTo)
+            // }
+            // }}
             authorizationParams={{
-              redirect_uri: process.env.NEXT_PUBLIC_ENVIRONMENT_URL,
+              redirect_uri: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`,
               audience: 'https://hello-world.example.com',
             }}
           >

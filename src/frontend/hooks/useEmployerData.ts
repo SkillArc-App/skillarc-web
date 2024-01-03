@@ -1,7 +1,7 @@
+import { useAuth0 } from 'lib/auth-wrapper'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { FrontendEmployerService } from '../services/employer.service'
-import { useEffect, useState } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
 
 export const useEmployerData = (id: string) => {
   const { getAccessTokenSilently } = useAuth0()

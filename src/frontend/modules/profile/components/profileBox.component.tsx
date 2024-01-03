@@ -1,10 +1,10 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
-import { AddIcon } from '@chakra-ui/icons'
 import { Box, Button, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import { IconType } from 'react-icons'
+import { BlAddIcon } from './blAddIcon.component'
 
 export const ProfileBox = ({
   children,
@@ -43,8 +43,8 @@ export const ProfileBox = ({
           {title}
         </Heading>
         {isMyProfile && (
-          <Button variant={'icon'} color="greyscale.600" onClick={onAddClick}>
-            <AddIcon />
+          <Button variant={'ghost'} onClick={onAddClick}>
+            <BlAddIcon />
           </Button>
         )}
       </Flex>

@@ -1,0 +1,23 @@
+import { Box, useTheme } from '@chakra-ui/react'
+import { IconType } from 'react-icons'
+
+const BadgeIcon = ({
+  count,
+  Icon,
+  onClick,
+}: {
+  count: number
+  Icon: IconType
+  onClick?: () => void
+}) => {
+  const theme = useTheme()
+
+  return (
+    <Box onClick={onClick}>
+      <Icon size={'1rem'} color={theme.colors.gray[600]} />
+      {count > 0 && <div className="notification-badge">{count}</div>}
+    </Box>
+  )
+}
+
+export default BadgeIcon

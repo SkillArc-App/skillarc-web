@@ -1,6 +1,6 @@
 'use client'
 
-import { useAllProgramData, useProgramData } from '@/frontend/hooks/useProgramData'
+import { useProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { http } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
@@ -20,7 +20,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function program({ params: { programId } }: { params: { programId: string } }) {
   const {

@@ -1,5 +1,4 @@
 import { Heading } from '@/frontend/components/Heading.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
@@ -13,7 +12,7 @@ export const EditExperience = () => {
   const { data: user } = useUser()
   const { otherExperienceId } = router.query
   const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
-  const [experience, setExperience] = useState<OtherExperience>()
+  const [experience, setExperience] = useState<Partial<OtherExperience>>()
   const {
     addOtherExperience: { mutate: addOtherExperience, status: addOtherExperienceStatus },
     updateOtherExperience: { mutate: updateOtherExperience, status: updateOtherExperienceStatus },
@@ -59,6 +58,7 @@ export const EditExperience = () => {
         profileId: profileId,
         otherExperience: {
           ...experience,
+          organization_id: experience?.organization_id ?? null,
           id: experience.id,
         },
       })
@@ -75,8 +75,6 @@ export const EditExperience = () => {
       otherExperienceId: otherExperienceId,
     })
   }
-
-  if (!experience) return <LoadingPage />
 
   return (
     <Flex p="1rem" w="100%" gap="1rem" flexDir="column">

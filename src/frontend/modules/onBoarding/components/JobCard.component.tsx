@@ -60,6 +60,7 @@ export const JobCard = ({
 
   return (
     <Stack
+      cursor={'pointer'}
       p={'1rem'}
       bg={'white'}
       width={'100%'}

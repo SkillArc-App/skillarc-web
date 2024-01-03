@@ -1,11 +1,15 @@
 'use client'
 
+import Milestones from '@/frontend/components/Timeline.component'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { useAllProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
-import { useAuth0 } from '@auth0/auth0-react'
-import { Button, Divider, Link, Select, Stack } from '@chakra-ui/react'
+import { useUserEvents } from '@/frontend/hooks/useUserEvents'
+import { put } from '@/frontend/http-common'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { Button, Divider, HStack, Link, Select, Stack, Switch } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -13,6 +17,10 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
   const {
     profileQuery: { data },
   } = useProfileData(seekerId)
+
+  const {
+    userEventsQuery: { data: userEvents },
+  } = useUserEvents(data?.user_id)
 
   const {
     getAllTrainingProviders: { data: trainingProviders },
@@ -29,6 +37,14 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
   const { getAccessTokenSilently } = useAuth0()
 
   const [token, setToken] = useState<string | null>(null)
+
+  const [workingProfile, setWorkingProfile] = useState<GetOneProfileResponse | undefined>()
+
+  useEffect(() => {
+    if (!data) return
+
+    setWorkingProfile(data)
+  }, [data])
 
   useEffect(() => {
     const getToken = async () => {
@@ -83,8 +99,6 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
   }
 
   if (!data) return <>Loading...</>
-  if (!trainingProviders) return <>Loading...</>
-  if (!programs) return <>Loading...</>
 
   return (
     <Stack spacing={2}>
@@ -105,7 +119,7 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
             size={'sm'}
             value={trainingProviderId}
           >
-            {trainingProviders.map((tp: { id: string; name: string }) => {
+            {(trainingProviders || []).map((tp: { id: string; name: string }) => {
               return (
                 <option value={tp.id} key={tp.id}>
                   {tp.name}
@@ -120,7 +134,7 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
             size={'sm'}
             value={programId}
           >
-            {programs.map((p) => {
+            {(programs || []).map((p) => {
               return (
                 <option value={p.id} key={p.id}>
                   {p.name}
@@ -140,6 +154,42 @@ export default function seeker({ params: { seekerId } }: { params: { seekerId: s
           {data.id}
         </Link>
       </span>
+      <Divider />
+      <span>
+        <b>Industry Interests: </b>
+        {data.industryInterests.join(', ')}
+      </span>
+      <Divider />
+      {workingProfile && (
+        <HStack>
+          <b>Met with a career coach: </b>
+          <Switch
+            isChecked={workingProfile.met_career_coach}
+            onChange={(e) => {
+              if (!workingProfile) return
+              if (!token) return
+
+              const met_career_coach = !workingProfile.met_career_coach
+
+              setWorkingProfile({
+                ...workingProfile,
+                met_career_coach,
+              })
+
+              put(
+                `/profiles/${workingProfile.id}`,
+                {
+                  met_career_coach,
+                },
+                token,
+              )
+            }}
+          />
+          {workingProfile.met_career_coach ? <p>Yes</p> : <p>No</p>}
+        </HStack>
+      )}
+      <Divider />
+      <Milestones userEvents={userEvents || []} />
     </Stack>
   )
 }

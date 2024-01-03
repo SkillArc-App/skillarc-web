@@ -20,7 +20,17 @@ import {
 import { http } from '../http-common'
 import { mixpanelInitUser } from '../utils/mixpanel'
 
-export type FullUser = User & {
+export type FullUser = {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  fastTrackTasks: {
+    profile: { name: string; is_complete: boolean; route: string }[]
+    career: { name: string; is_complete: boolean; route: string }[]
+  }
+  phoneNumber: string
+  zipCode: string
   profile: Profile & {
     desiredOutcomes: DesiredOutcomes[]
     professionalInterests: ProfessionalInterests[]
@@ -30,7 +40,15 @@ export type FullUser = User & {
     educationExperiences: EducationExperience[]
     otherExperiences: OtherExperience[]
     personalExperience: PersonalExperience[]
+    missingProfileItems: ('education' | 'work')[]
   }
+  notifications: {
+    id: string
+    notificationTitle: string
+    notificationBody: string
+    read: boolean
+    url: string
+  }[]
   trainingProviderProfile: TrainingProviderProfile
   recruiter: Recruiter[]
   onboardingSession: OnboardingSession

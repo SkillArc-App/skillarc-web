@@ -15,8 +15,8 @@ export const mixpanelInitUser = (user: FullUser) => {
   mixpanel.identify(user.id)
   let mixpanelPerson: any = {
     $email: user.email,
-    $first_name: user.first_name,
-    $last_name: user.last_name,
+    $first_name: user.firstName,
+    $last_name: user.lastName,
   }
   if (user.profile) {
     mixpanelPerson['$profile'] = user.profile
@@ -45,8 +45,6 @@ export const mixpanelInitUser = (user: FullUser) => {
 export const mixpanelInitProfile = (profile: GetOneProfileResponse) => {
   if (!isProduction) return
 
-  console.log('mixpanelInitProfile')
-  console.log(profile)
   let desiredOutcomes: any[] = []
   let interests: string[] = []
   mixpanel.identify(profile.id)
@@ -67,10 +65,6 @@ export const mixpanelInitProfile = (profile: GetOneProfileResponse) => {
       }
     })
   }
-  console.log('desiredOutcomes')
-  console.log(desiredOutcomes)
-  console.log('interests')
-  console.log(interests)
   let mixpanelProps: any = {}
   desiredOutcomes.forEach((outcome: string) => {
     mixpanelProps[outcome] = true
@@ -78,8 +72,6 @@ export const mixpanelInitProfile = (profile: GetOneProfileResponse) => {
   interests.forEach((interest: string) => {
     mixpanelProps[interest] = true
   })
-  console.log('mixpanelProps')
-  console.log(mixpanelProps)
   mixpanel.people.set(mixpanelProps)
 }
 

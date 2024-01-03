@@ -3,7 +3,7 @@ import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Briefcase } from '@/frontend/icons/Briefcase.icon'
 import { copyTextToClipboard } from '@/frontend/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
-import { Avatar, Button, Flex, useToast } from '@chakra-ui/react'
+import { Button, Flex, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { Text } from '../../../components/Text.component'
 
@@ -33,13 +33,11 @@ export const ProfileSummary = () => {
       p="1rem"
       flexWrap="wrap"
       bg="greyscale.100"
-      borderRadius={'0.5rem'}
       boxShadow="0px 4px 4px rgba(0, 0, 0, 0.1)"
       style={{ zIndex: 1 }}
       flexGrow={1}
     >
       <Flex gap="1rem" w="100%">
-        <Avatar w="7.5rem" h="7.5rem" src={data?.user?.image ?? ''} />
         <Flex w="100%" alignSelf={'center'} gap="0.5rem" flexDir={'column'}>
           <Flex w="100%" gap={2}>
             <Heading type="h2" color="greyscale.900" w="100%" alignSelf={'center'}>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -26,6 +25,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 

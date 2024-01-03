@@ -1,34 +1,52 @@
 'use client'
 
+import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useEmployerJobData } from '@/frontend/hooks/useEmployerJobData'
+import { usePassReasons } from '@/frontend/hooks/usePassReasons'
+import { put } from '@/frontend/http-common'
 import { Applicant, Job } from '@/frontend/services/employerJobs.service'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Button,
+  Checkbox,
+  CheckboxGroup,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Flex,
+  HStack,
   Heading,
+  IconButton,
   Link,
   Select,
+  Stack,
   Tab,
   TabList,
   TabPanels,
-  Table,
-  TableContainer,
   Tabs,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  useDisclosure,
 } from '@chakra-ui/react'
+import { createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
+import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { groupBy } from 'lodash'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { FaRegComment } from 'react-icons/fa6'
 
-export default function jobs() {
+type ApplicantStatusChanges = {
+  [key: string]: ApplicantStatusChange
+}
+
+type ApplicantStatusChange = {
+  status: string
+  reasons?: string[]
+}
+
+const jobs = () => {
   const router = useRouter()
   const jobId: string | undefined = router.query.id?.at(0)
 
@@ -36,16 +54,101 @@ export default function jobs() {
     getEmployerJobs: { data: employerJobs, refetch: refetchEmployerJobs, isLoading },
   } = useEmployerJobData()
 
+  const {
+    getPassReasons: { data: passReasons },
+  } = usePassReasons()
+
   const [jobs, setJobs] = useState<Job[]>([])
   const [applicants, setApplicants] = useState<Applicant[]>([])
   const [filteredApplicants, setFilteredApplicants] = useState(applicants)
-  const [updatedStatuses, setUpdatedStatuses] = useState<{ [key: string]: string }>({})
+  const [updatedStatuses, setUpdatedStatuses] = useState<ApplicantStatusChanges>({})
   const { getAccessTokenSilently } = useAuth0()
 
   const [employers, setEmployers] = useState<{ id: string; name: string }[]>([])
   const [activeEmployer, setActiveEmployer] = useState<string | null>(null)
 
   const [token, setToken] = useState<string | null>(null)
+
+  const [showPasses, setShowPasses] = useState<boolean>(false)
+
+  const { onClose } = useDisclosure()
+
+  const [currentApplicant, setCurrentApplicant] = useState<Applicant | null>(null)
+
+  type ApplicantTable = {
+    applicant: Applicant
+    id: string
+    name: string
+    contactInfo: string
+    job: string
+    status: string
+    appliedOn: string
+  }
+
+  const data: ApplicantTable[] = filteredApplicants.map((applicant) => {
+    return {
+      applicant,
+      id: applicant.id,
+      name: `${applicant.firstName} ${applicant.lastName}`,
+      contactInfo: `${applicant.email} ${applicant.phoneNumber && `| ${applicant.phoneNumber}`}`,
+      job: applicant.jobName,
+      status: applicant.status,
+      appliedOn: new Date(applicant.createdAt).toLocaleDateString(),
+    }
+  })
+
+  const columnHelper = createColumnHelper<ApplicantTable>()
+
+  const columns = [
+    columnHelper.accessor('name', {
+      cell: (info) => (
+        <Link href={info.row.original.applicant.profileLink} as={NextLink}>
+          {info.row.original.applicant.firstName} {info.row.original.applicant.lastName}
+        </Link>
+      ),
+      header: 'Name',
+    }),
+    columnHelper.accessor('contactInfo', {
+      cell: (info) => info.getValue(),
+      header: 'Contact Info',
+    }),
+    columnHelper.accessor('job', {
+      cell: (info) => info.getValue(),
+      header: 'Job',
+    }),
+    columnHelper.accessor('status', {
+      cell: (info) => (
+        <HStack>
+          <Select
+            onChange={(e) => handleUpdatedStatuses(info.row.original.applicant, e.target.value)}
+            value={info.getValue()}
+          >
+            {['new', 'pending intro', 'intro made', 'interviewing', 'hire', 'pass'].map(
+              (status) => {
+                return (
+                  <option value={status} key={status}>
+                    {status}
+                  </option>
+                )
+              },
+            )}
+          </Select>
+          {true && (
+            <IconButton
+              aria-label="Start conversation with applicant"
+              icon={<FaRegComment />}
+              onClick={() => router.push(`/employers/chats/${info.row.original.id}`)}
+            />
+          )}
+        </HStack>
+      ),
+      header: 'Status',
+    }),
+    columnHelper.accessor('appliedOn', {
+      cell: (info) => info.getValue(),
+      header: 'Applied On',
+    }),
+  ]
 
   useEffect(() => {
     const getToken = async () => {
@@ -68,10 +171,10 @@ export default function jobs() {
   useEffect(() => {
     if (!applicants) return
 
-    const us: { [key: string]: string } = {}
+    const us: ApplicantStatusChanges = {}
 
     applicants.forEach((a) => {
-      us[a.id] = a.status
+      us[a.id] = { status: a.status }
     })
 
     setUpdatedStatuses(us)
@@ -99,9 +202,19 @@ export default function jobs() {
       })
 
       if (newJobs) setJobs(newJobs)
-      if (newApplicants) setApplicants(newApplicants)
+      if (newApplicants) {
+        if (showPasses) {
+          setApplicants(newApplicants)
+        } else {
+          setApplicants(
+            newApplicants.filter(
+              (applicant) => applicant.status !== 'pass' && applicant.status !== 'hire',
+            ),
+          )
+        }
+      }
     }
-  }, [employerJobs])
+  }, [employerJobs, showPasses])
 
   useEffect(() => {
     const newJobs = employerJobs?.jobs.filter((job) => job.employerId === activeEmployer)
@@ -110,15 +223,25 @@ export default function jobs() {
     })
 
     if (newJobs) setJobs(newJobs)
-    if (newApplicants) setApplicants(newApplicants)
-  }, [activeEmployer])
+    if (newApplicants) {
+      if (showPasses) {
+        setApplicants(newApplicants)
+      } else {
+        setApplicants(
+          newApplicants.filter(
+            (applicant) => applicant.status !== 'pass' && applicant.status !== 'hire',
+          ),
+        )
+      }
+    }
+  }, [activeEmployer, showPasses])
 
   const handleApplicantUpdate = async (id: string) => {
-    const status = updatedStatuses[id]
+    const applicantStatusChange = updatedStatuses[id]
 
     await axios.create({ withCredentials: false }).put(
       `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${id}`,
-      { status },
+      { ...applicantStatusChange },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -127,6 +250,34 @@ export default function jobs() {
     )
 
     refetchEmployerJobs()
+  }
+
+  const passOnApplicant = () => {
+    if (!currentApplicant) return
+
+    handleApplicantUpdate(currentApplicant.id)
+    setCurrentApplicant(null)
+  }
+
+  const handleUpdatedStatuses = (applicant: Applicant, status: string) => {
+    setUpdatedStatuses({
+      ...updatedStatuses,
+      [applicant.id]: { status },
+    })
+
+    if (status === 'pass') {
+      setCurrentApplicant(applicant)
+    } else {
+      if (!token) return
+
+      put(
+        `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${applicant.id}`,
+        { status },
+        token,
+      ).then(() => {
+        refetchEmployerJobs()
+      })
+    }
   }
 
   const onTabChange = (index: number) => {
@@ -181,74 +332,56 @@ export default function jobs() {
         </TabList>
         <TabPanels></TabPanels>
       </Tabs>
-      <TableContainer bg="white">
-        <Table variant={'simple'}>
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Contact Info</Th>
-              <Th>Job</Th>
-              <Th>Status</Th>
-              <Th>Program(s)</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {filteredApplicants &&
-              filteredApplicants.map((applicant, index) => {
-                return (
-                  <Tr key={index}>
-                    <Td>
-                      <Link href={applicant.profileLink} as={NextLink}>
-                        {applicant.firstName} {applicant.lastName}
-                      </Link>
-                    </Td>
-                    <Td>
-                      {applicant.email} {applicant.phoneNumber && `| ${applicant.phoneNumber}`}
-                    </Td>
-                    <Td>{applicant.jobName}</Td>
-                    <Td>
-                      <Select
-                        onChange={(e) => {
-                          setUpdatedStatuses({
-                            ...updatedStatuses,
-                            [applicant.id]: e.target.value,
-                          })
-                        }}
-                        value={updatedStatuses[applicant.id]}
-                      >
-                        {['new', 'pending intro', 'intro made', 'interviewing', 'hire', 'pass'].map(
-                          (status) => {
-                            return (
-                              <option value={status} key={status}>
-                                {status}
-                              </option>
-                            )
-                          },
-                        )}
-                      </Select>
-                    </Td>
-                    <Td>{applicant.programs.join(', ')}</Td>
-                    <Td>
-                      <Button
-                        colorScheme={
-                          applicant.status === updatedStatuses[applicant.id] ? 'gray' : 'green'
-                        }
-                        onClick={
-                          applicant.status === updatedStatuses[applicant.id]
-                            ? () => {}
-                            : () => handleApplicantUpdate(applicant.id)
-                        }
-                      >
-                        Save
-                      </Button>
-                    </Td>
-                  </Tr>
-                )
-              })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <Checkbox isChecked={showPasses} onChange={() => setShowPasses(!showPasses)}>
+        Show Passes/Hires
+      </Checkbox>
+      <DataTable columns={columns} data={data} />
+      <Drawer placement={'right'} isOpen={!!currentApplicant} onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Give us Feedback</DrawerHeader>
+          <DrawerBody>
+            <Stack gap={'2rem'}>
+              <Stack gap={'1rem'}>
+                <p>
+                  BlockTrain will notify {currentApplicant?.firstName} they are no longer being
+                  considered for {currentApplicant?.jobName}
+                </p>
+                <p>Help us find better candidates for you in the future!</p>
+              </Stack>
+              <CheckboxGroup
+                colorScheme="green"
+                onChange={(e) => {
+                  if (!currentApplicant) return
+
+                  setUpdatedStatuses({
+                    ...updatedStatuses,
+                    [currentApplicant?.id]: {
+                      status: 'pass',
+                      reasons: e as string[],
+                    },
+                  })
+                }}
+              >
+                <Stack>
+                  {(passReasons || []).map((reason) => {
+                    return (
+                      <Checkbox key={reason.id} value={reason.id}>
+                        {reason.description}
+                      </Checkbox>
+                    )
+                  })}
+                </Stack>
+              </CheckboxGroup>
+              <Button variant={'primary'} onClick={passOnApplicant}>
+                Submit
+              </Button>
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   )
 }
+
+export default withAuthenticationRequired(jobs)

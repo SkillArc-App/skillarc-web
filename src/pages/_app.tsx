@@ -1,3 +1,4 @@
+import FastTrackModal from '@/frontend/modules/profile/components/fastTrackModal.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { initializeMixpanel } from '@/frontend/utils/mixpanel'
 import { Auth0Provider } from '@auth0/auth0-react'
@@ -43,8 +44,13 @@ export default function App({ Component, pageProps: { session, ...pageProps }, r
         cacheLocation="localstorage"
         domain={'blocktrain.us.auth0.com'}
         clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
+        onRedirectCallback={(appState) => {
+          if (appState?.returnTo) {
+            router.push(appState.returnTo)
+          }
+        }}
         authorizationParams={{
-          redirect_uri: process.env.NEXT_PUBLIC_ENVIRONMENT_URL,
+          redirect_uri: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`,
           audience: 'https://hello-world.example.com',
         }}
       >
@@ -52,6 +58,7 @@ export default function App({ Component, pageProps: { session, ...pageProps }, r
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
+          <FastTrackModal />
         </ChakraProvider>
       </Auth0Provider>
     </QueryClientProvider>

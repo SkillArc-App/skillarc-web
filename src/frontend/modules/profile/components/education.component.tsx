@@ -1,18 +1,18 @@
-import { useProfileData } from "@/frontend/hooks/useProfileData";
-import { EditIcon } from "@chakra-ui/icons";
-import { Button, Divider, Flex, Heading } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { FaGraduationCap } from "react-icons/fa6";
-import { Text } from "../../../components/Text.component";
-import { ProfileBox } from "./profileBox.component";
+import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { EditIcon } from '@chakra-ui/icons'
+import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { FaGraduationCap } from 'react-icons/fa6'
+import { Text } from '../../../components/Text.component'
+import { ProfileBox } from './profileBox.component'
 
 export const ProfileEducation = () => {
-  const router = useRouter();
-  const { profileId } = router.query;
+  const router = useRouter()
+  const { profileId } = router.query
   const {
     profileQuery: { data },
     isMyProfile,
-  } = useProfileData(profileId as string);
+  } = useProfileData(profileId as string)
 
   return (
     <ProfileBox
@@ -21,20 +21,20 @@ export const ProfileEducation = () => {
       onAddClick={() => {
         router.push({
           pathname: `${profileId}/editProfile`,
-          query: { section: "education" },
-        });
+          query: { section: 'education' },
+        })
       }}
     >
-      <Flex flexDir={"column"} gap="1rem" pt="1rem">
+      <Flex flexDir={'column'} gap="1rem" pt="1rem">
         {data?.educationExperiences.map((educationExperiences, index) => {
           return (
             <Flex key={index}>
-              <Flex flexDir={"column"} gap="0.5rem" flexGrow={1}>
-                <Flex flexDir={"column"} gap="0.5rem">
+              <Flex flexDir={'column'} gap="0.5rem" flexGrow={1}>
+                <Flex flexDir={'column'} gap="0.5rem">
                   <Text type="b2Bold" color="greyscale.600">
                     {educationExperiences.graduation_date}
                   </Text>
-                  <Heading variant="h4" color={"greyscale.900"}>
+                  <Heading variant="h4" color={'greyscale.900'}>
                     {educationExperiences.organization_name}
                   </Heading>
                   <Text type="b2" color="greyscale.600">
@@ -48,13 +48,13 @@ export const ProfileEducation = () => {
               </Flex>
               {isMyProfile && (
                 <Button
-                  variant={"icon"}
+                  variant={'icon'}
                   color="greyscale.600"
                   onClick={() =>
                     router.push({
                       pathname: `${profileId}/editProfile`,
                       query: {
-                        section: "education",
+                        section: 'education',
                         educationExperienceId: educationExperiences.id,
                       },
                     })
@@ -64,9 +64,9 @@ export const ProfileEducation = () => {
                 </Button>
               )}
             </Flex>
-          );
+          )
         })}
       </Flex>
     </ProfileBox>
-  );
-};
+  )
+}

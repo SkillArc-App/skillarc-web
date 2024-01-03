@@ -5,7 +5,7 @@ import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
 import { useUser } from '@/frontend/hooks/useUser'
 import { http } from '@/frontend/http-common'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'
-import { Button, Flex } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
@@ -44,15 +44,6 @@ const Home = () => {
       return
     }
 
-    // if user has finished onboarding and had tried to access a job before user creation, send them to that job
-    const preAuthDestination = localStorage.getItem('preAuthDestination')
-
-    if (user?.onboardingSession?.completed_at && preAuthDestination) {
-      router.push(preAuthDestination)
-      localStorage.removeItem('preAuthDestination')
-      return
-    }
-
     if (token) {
       const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
       const seekerInviteCode = localStorage.getItem('seekerInviteCode')
@@ -88,6 +79,11 @@ const Home = () => {
       if (!user.onboardingSession?.completed_at) {
         router.push('/onboarding')
       }
+      if (user.profile.missingProfileItems.length > 0) {
+        router.push(`/profiles/${user.profile.id}`)
+      } else {
+        router.push(`/jobs`)
+      }
     }
   }, [token, user])
 
@@ -114,48 +110,6 @@ const Home = () => {
           <Text textAlign={'center'} type={'b2'} color={'greyscale.600'} width={'50%'}>
             You and your new profile are going to do big things.
           </Text>
-          <Flex flexWrap="wrap" position="fixed" bottom="1rem" w="100%" gap=".5rem">
-            <Button
-              mx="1rem"
-              width={'100%'}
-              variant={'primary'}
-              onClick={() => router.push(`/jobs`)}
-              isDisabled={!isProfileComplete}
-            >
-              Explore Trade Jobs
-            </Button>
-            <Button
-              mx="1rem"
-              width={'100%'}
-              variant={'secondary'}
-              onClick={() => router.push(`my_jobs`)}
-            >
-              Manage My Jobs
-            </Button>
-            <Button
-              mx="1rem"
-              width={'100%'}
-              variant={'secondary'}
-              onClick={() => router.push(`profiles/${user?.profile?.id}`)}
-            >
-              View Profile
-            </Button>
-            <Button
-              variant="secondary"
-              mx="1rem"
-              w="100%"
-              onClick={() => {
-                window.location.assign('https://meetings.hubspot.com/hannah-wexner')
-              }}
-            >
-              Meet A Free Career Coach
-            </Button>
-            {!isProfileComplete && (
-              <Text textAlign={'center'} type={'b3'} color={'greyscale.500'} w="100%">
-                Please complete your profile to view job opportunities
-              </Text>
-            )}
-          </Flex>
         </Flex>
       </Flex>
     )

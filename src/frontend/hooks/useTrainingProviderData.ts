@@ -1,5 +1,5 @@
-import { useAuth0 } from '@auth0/auth0-react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { FrontendTrainingProviderService } from '../services/trainingProvider.service'

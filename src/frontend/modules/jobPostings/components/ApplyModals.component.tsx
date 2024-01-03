@@ -1,10 +1,10 @@
 import { Heading } from '@/frontend/components/Heading.component'
-import { Success } from '@/frontend/icons/Success.icon'
 import { Text } from '@/frontend/components/Text.component'
-import { Button, Flex, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { Success } from '@/frontend/icons/Success.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { FullUser } from '@/frontend/services/user.service'
+import { Button, Flex, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 
 type ApplyModalsProps = {
   isSuccessModalOpen: boolean
@@ -41,7 +41,7 @@ export const ApplyModals = ({
               <Success boxSize="50%" />
               <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
                 <Heading type="h3" color="#212529" w="100%">
-                  Great work, {user?.first_name} 🎉
+                  Great work, {user?.firstName} 🎉
                 </Heading>
                 <Flex w="100%"></Flex>
                 <Text type="b2" color="#6C757D">

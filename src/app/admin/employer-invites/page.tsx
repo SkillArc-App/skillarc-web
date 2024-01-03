@@ -2,7 +2,6 @@
 
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useAllEmployerInviteData } from '@/frontend/hooks/useAllEmployerInviteData'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -26,6 +25,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 export default function employerInvites() {
   const { isOpen, onOpen, onClose } = useDisclosure({})

@@ -1,5 +1,4 @@
 import { useStudentData } from '@/frontend/hooks/useStudentData'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   Button,
   Flex,
@@ -19,6 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import RadioCardGroup from '../../onBoarding/components/RadioCardGroup.component'

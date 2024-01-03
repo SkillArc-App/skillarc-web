@@ -2,6 +2,8 @@ import axios from 'axios'
 
 export type Applicant = {
   id: string
+  chatEnabled: boolean
+  createdAt: string
   jobId: string
   jobName: string
   firstName: string

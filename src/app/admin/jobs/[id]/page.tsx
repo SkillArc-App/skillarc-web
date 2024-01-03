@@ -5,7 +5,6 @@ import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
-import { useAuth0 } from '@auth0/auth0-react'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -44,6 +43,7 @@ import {
 } from '@chakra-ui/react'
 import { CareerPath } from '@prisma/client'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -173,7 +173,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
           employment_type: employmentType,
           benefits_description: benefitsDescription,
           responsibilities_description: responsibilitiesDescription,
-          requirements_description: responsibilitiesDescription,
+          requirements_description: requirementsDescription,
           work_days: workDays,
           schedule,
           hide_job: hideJob,

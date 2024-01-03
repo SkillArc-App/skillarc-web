@@ -1,11 +1,14 @@
 'use client'
 
+import DataTable from '@/frontend/components/DataTable.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useAllJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import {
+  Badge,
   Box,
   Button,
+  Checkbox,
   Input,
   Link,
   Modal,
@@ -17,16 +20,10 @@ import {
   ModalOverlay,
   Select,
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Textarea,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from '@chakra-ui/react'
+import { createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
@@ -47,6 +44,8 @@ export default function jobs() {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
+  const [filteredJobs, setFilteredJobs] = useState(jobs)
+
   const [employerId, setEmployerId] = useState('')
   const [employmentTitle, setEmploymentTitle] = useState('')
   const [location, setLocation] = useState('')
@@ -56,6 +55,8 @@ export default function jobs() {
   const [requirementsDescription, setRequirementsDescription] = useState('')
   const [workDays, setWorkDays] = useState('')
   const [schedule, setSchedule] = useState('')
+  const [showHiddenJobs, setShowHiddenJobs] = useState(false)
+
   const { getAccessTokenSilently } = useAuth0()
 
   const [token, setToken] = useState<string | null>(null)
@@ -68,6 +69,17 @@ export default function jobs() {
 
     getToken()
   }, [getAccessTokenSilently])
+
+  useEffect(() => {
+    if (!jobs) return
+
+    const filteredJobs = jobs.filter((job) => {
+      if (showHiddenJobs) return true
+      return !job.hide_job
+    })
+
+    setFilteredJobs(filteredJobs)
+  }, [jobs, showHiddenJobs])
 
   const handleEmployerIdChange = (e: any) => {
     setEmployerId(e.target.value)
@@ -136,42 +148,72 @@ export default function jobs() {
       })
   }
 
+  const data =
+    filteredJobs?.map((job) => {
+      return {
+        id: job.id,
+        hidden: job.hide_job,
+        title: job.employment_title,
+        employer: job.employer.name,
+        applicantCount: job.numberOfApplicants,
+        createdAt: new Date(job.created_at as unknown as string).toDateString(),
+      }
+    }) ?? []
+
+  const columnHelper = createColumnHelper<{
+    id: string
+    hidden: boolean
+    title: string
+    employer: string
+    applicantCount: number
+    createdAt: string
+  }>()
+
+  const columns = [
+    columnHelper.accessor('title', {
+      header: 'Title',
+      cell: (row) => (
+        <Link href={`/admin/jobs/${row.row.original.id}`} as={NextLink}>
+          {row.row.original.hidden ? (
+            <>
+              <Badge colorScheme="red">Hidden</Badge> {row.getValue()}
+            </>
+          ) : (
+            row.getValue()
+          )}
+        </Link>
+      ),
+    }),
+    columnHelper.accessor('employer', {
+      header: 'Employer',
+      cell: (row) => row.getValue(),
+    }),
+    columnHelper.accessor('applicantCount', {
+      header: '# of Applicants',
+      cell: (row) => row.getValue(),
+    }),
+    columnHelper.accessor('createdAt', {
+      header: 'Created At',
+      cell: (row) => row.getValue(),
+    }),
+  ]
+
   if (!jobs) return <div>Loading...</div>
 
   return (
     <Box mt={'1rem'}>
-      <Button size={'xs'} variant={'solid'} colorScheme="green" onClick={onOpen}>
-        + New Job
-      </Button>
-      <TableContainer>
-        <Table size={'sm'} variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Title</Th>
-              <Th>Employer</Th>
-              <Th># of Applicants</Th>
-              <Th>Created At</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {jobs.map((job, index: number) => {
-              return (
-                <Tr key={index}>
-                  <Td>
-                    <Link href={`/admin/jobs/${job.id}`} as={NextLink}>
-                      {job.employment_title}
-                    </Link>
-                  </Td>
-                  <Td>{job.employer.name}</Td>
-                  <Td>{job.numberOfApplicants}</Td>
-                  {/* TODO: Fix the fact that we're using the prisma job type, but this is actually a string */}
-                  <Td>{new Date(job.created_at as unknown as string).toDateString()}</Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <Stack>
+        <Box>
+          <Button size={'xs'} variant={'solid'} colorScheme="green" onClick={onOpen}>
+            + New Job
+          </Button>
+        </Box>
+        <Checkbox isChecked={showHiddenJobs} onChange={() => setShowHiddenJobs(!showHiddenJobs)}>
+          Show Hidden Jobs
+        </Checkbox>
+
+        <DataTable data={data} columns={columns} />
+      </Stack>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
+import { FullUser } from '../services/user.service'
 import { mixpanelInitUser } from '../utils/mixpanel'
 
 export const useUser = () => {
@@ -21,7 +22,7 @@ export const useUser = () => {
   }, [getAccessTokenSilently, isAuthenticated])
 
   const userQuery = useQuery(
-    'me',
+    ['me', token],
     () => {
       if (!token) {
         return Promise.reject('No user id')
@@ -29,7 +30,7 @@ export const useUser = () => {
       const getOne = async () => {
         const res = await axios
           .create({ withCredentials: false })
-          .get(`${process.env.NEXT_PUBLIC_API_URL}/one_user/`, {
+          .get<FullUser>(`${process.env.NEXT_PUBLIC_API_URL}/one_user/`, {
             headers: { Authorization: `Bearer ${token}` },
           })
         mixpanelInitUser(res.data)

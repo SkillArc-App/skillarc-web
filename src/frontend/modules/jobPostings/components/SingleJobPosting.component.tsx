@@ -1,6 +1,9 @@
 import { User } from '@/common/types/User'
 import { useJobData } from '@/frontend/hooks/useJobData'
+import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { Flex, Spinner } from '@chakra-ui/react'
+import { throttle } from 'lodash'
+import { useEffect, useState } from 'react'
 import { Benefits } from './postingSections/Benefits.component'
 import { CareerJourney } from './postingSections/CareerJourney.component'
 import { DesiredSkills } from './postingSections/DesiredSkills.component'
@@ -11,9 +14,6 @@ import { Requirements } from './postingSections/Requirements.component'
 import { Responsibilities } from './postingSections/Responsibilities.component'
 import { Testimonials } from './postingSections/Testimonials.component'
 import { WhatToExpect } from './postingSections/WhatToExpect.component'
-import { useEffect, useState } from 'react'
-import { throttle } from 'lodash'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 
 interface SingleJobPostingProps {
   jobId: string
@@ -93,7 +93,15 @@ export const SingleJobPosting = ({ jobId, percentMatch, user }: SingleJobPosting
     return (
       <Flex flexWrap="wrap" w="100%" bg="#F8F9FA">
         <JobPhotos data={data} />
-        <Flex flexWrap="wrap" w="100%" p="1rem" marginTop="-3.5rem" gap="1rem" zIndex="1">
+        <Flex
+          flexWrap="wrap"
+          w="100%"
+          p="1rem"
+          pb={'6rem'}
+          marginTop="-3.5rem"
+          gap="1rem"
+          zIndex="1"
+        >
           {data.employer && data.desiredSkills && data.desiredSkills.length > 0 && (
             <DesiredSkills
               data={data}

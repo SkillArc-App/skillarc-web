@@ -1,12 +1,14 @@
 'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
+import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
-import { Box, Grid, GridItem, Heading } from '@chakra-ui/react'
+import { Box, Divider, Grid, GridItem, Heading, Stack } from '@chakra-ui/react'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname()
 
   const { data: user, isLoading } = useUser()
@@ -48,6 +50,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     },
   ]
 
+  const analyticsAdminLinks = [
+    {
+      name: 'Applications',
+      path: '/admin/applications',
+    },
+  ]
+
+  const testingAdminLinks = [
+    {
+      name: 'Testing',
+      path: '/admin/testing',
+    },
+  ]
+
+  if (process.env.NODE_ENV === 'development') {
+    adminLinks.push(...testingAdminLinks)
+  }
+
   return (
     <Box width={'100%'}>
       <Grid
@@ -64,13 +84,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Heading>Admin</Heading>
         </GridItem>
         <GridItem pl="2" bg="white" area={'nav'}>
-          {adminLinks.map((link, index) => {
-            return (
-              <Box key={index} bg={pathName === link.path ? 'gray.300' : ''}>
-                <Link href={link.path}>{link.name}</Link>
-              </Box>
-            )
-          })}
+          <Stack>
+            <Box>
+              <Text variant={'b1Bold'}>Operations</Text>
+              {adminLinks.map((link, index) => {
+                return (
+                  <Box key={index} bg={pathName === link.path ? 'gray.300' : ''}>
+                    <Link href={link.path}>{link.name}</Link>
+                  </Box>
+                )
+              })}
+            </Box>
+            <Box>
+              <Divider />
+              <Text variant={'b1Bold'}>Analaytics</Text>
+              {analyticsAdminLinks.map((link, index) => {
+                return (
+                  <Box key={index} bg={pathName === link.path ? 'gray.300' : ''}>
+                    <Link href={link.path}>{link.name}</Link>
+                  </Box>
+                )
+              })}
+            </Box>
+          </Stack>
         </GridItem>
         <GridItem pl="2" bg="white" area={'main'}>
           {children}
@@ -80,3 +116,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </Box>
   )
 }
+
+export default withAuthenticationRequired(AdminLayout)

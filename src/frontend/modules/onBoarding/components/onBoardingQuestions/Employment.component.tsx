@@ -63,10 +63,6 @@ export const Employment = ({
     setExperienceList(temp)
   }
 
-  const handleClick = () => {
-    console.log(experienceList)
-  }
-
   return (
     <>
       <Heading color={'greyscale.900'} variant={'h2'}>

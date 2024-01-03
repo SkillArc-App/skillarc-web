@@ -1,7 +1,7 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
-import { Avatar, Button, Flex, Input } from '@chakra-ui/react'
+import { Button, Flex, Input } from '@chakra-ui/react'
 import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
@@ -71,15 +71,6 @@ export const EditSummary = () => {
         boxShadow="0px .25rem .25rem rgba(0, 0, 0, 0.1)"
       >
         <Text type="overline">BASIC INFO</Text>
-        <Flex flexDir="column" gap="0.5rem">
-          <Text type="b2">Profile photo</Text>
-          <Flex gap="2rem">
-            <Avatar w="7.5rem" h="7.5rem" src={user?.image ?? ''}></Avatar>
-            {/* <Flex flexDir="column" gap="0.5rem" w="100%" justifyContent={'center'}>
-              <Button variant="secondary">Upload</Button>
-            </Flex> */}
-          </Flex>
-        </Flex>
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">First name</Text>
           <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} />

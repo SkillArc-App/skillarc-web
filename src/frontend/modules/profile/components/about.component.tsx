@@ -1,4 +1,4 @@
-import { useProfileData } from "@/frontend/hooks/useProfileData";
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import {
   Accordion,
   AccordionButton,
@@ -8,19 +8,19 @@ import {
   Divider,
   Flex,
   Heading,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { FaUser } from "react-icons/fa6";
-import { Text } from "../../../components/Text.component";
-import { ProfileBox } from "./profileBox.component";
+} from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { FaUser } from 'react-icons/fa6'
+import { Text } from '../../../components/Text.component'
+import { ProfileBox } from './profileBox.component'
 
 export const ProfileAbout = () => {
-  const router = useRouter();
-  const { profileId } = router.query;
+  const router = useRouter()
+  const { profileId } = router.query
   const {
     profileQuery: { data },
     isMyProfile,
-  } = useProfileData(profileId as string);
+  } = useProfileData(profileId as string)
 
   return (
     <ProfileBox
@@ -29,22 +29,17 @@ export const ProfileAbout = () => {
       onAddClick={() => {
         router.push({
           pathname: `${profileId}/editProfile`,
-          query: { section: "about" },
-        });
+          query: { section: 'about' },
+        })
       }}
     >
-      <Accordion defaultIndex={[0]} allowMultiple color={"greyscale.700"}>
+      <Accordion defaultIndex={[0]} allowMultiple color={'greyscale.700'}>
         {data?.stories.map((story, index) => {
           return (
             <Flex flexDir="column" key={index}>
               <AccordionItem>
                 <AccordionButton alignItems="top">
-                  <Heading
-                    variant="h4"
-                    textAlign="left"
-                    flex={1}
-                    color={"greyscale.900"}
-                  >
+                  <Heading variant="h4" textAlign="left" flex={1} color={'greyscale.900'}>
                     {story.prompt}
                   </Heading>
                   <AccordionIcon />
@@ -55,9 +50,9 @@ export const ProfileAbout = () => {
               </AccordionItem>
               <Divider borderColor="greyscale.300" />
             </Flex>
-          );
+          )
         })}
       </Accordion>
     </ProfileBox>
-  );
-};
+  )
+}

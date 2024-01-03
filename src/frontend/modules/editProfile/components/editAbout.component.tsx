@@ -45,7 +45,6 @@ export const EditAbout = () => {
   }
 
   const handleAdd = (prompt: string) => {
-    console.log('handleAdd: ', prompt)
     setStoryList([...storyList, { prompt, response: '', id: '' }])
   }
 

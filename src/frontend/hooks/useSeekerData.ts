@@ -1,7 +1,7 @@
+import { useAuth0 } from 'lib/auth-wrapper'
+import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { FrontendProfileService } from '../services/profile.service'
-import { useEffect, useState } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
 
 export const useSeekerData = () => {
   const { getAccessTokenSilently } = useAuth0()

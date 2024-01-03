@@ -2,7 +2,6 @@
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useEmployerData } from '@/frontend/hooks/useEmployerData'
-import { useAuth0 } from '@auth0/auth0-react'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -20,6 +19,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
 export default function Employer({ params: { id } }: { params: { id: string } }) {

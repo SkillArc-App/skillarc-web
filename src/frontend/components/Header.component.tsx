@@ -12,6 +12,7 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Spacer,
   Stack,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
@@ -19,6 +20,9 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useUser } from '../hooks/useUser'
 import { Logo } from '../icons/Logo.icon'
+import MessageCenter from './MessageCenter.component'
+import NotificationCenter from './NotificationCenter'
+import TestingTools from './TestingTools.component'
 
 export const Header = () => {
   const router = useRouter()
@@ -44,6 +48,10 @@ export const Header = () => {
         <BlockTrain w="6.75rem" h="1rem" />
       </Flex>
 
+      <Spacer />
+      <TestingTools />
+      <NotificationCenter />
+      <MessageCenter />
       <Menu>
         <MenuButton
           as={IconButton}

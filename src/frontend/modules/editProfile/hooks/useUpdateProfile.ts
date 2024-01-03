@@ -6,7 +6,6 @@ import { FrontendProfileService } from '@/frontend/services/profile.service'
 import { FrontendProfileCertificationService } from '@/frontend/services/profileCertifications.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'
 import { FrontendUserService } from '@/frontend/services/user.service'
-import { useAuth0 } from '@auth0/auth0-react'
 import {
   EducationExperience,
   OtherExperience,
@@ -18,6 +17,7 @@ import {
   Story,
   User,
 } from '@prisma/client'
+import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 
@@ -198,8 +198,13 @@ export const useUpdateMyProfile = () => {
   }
 
   const addOtherExperience = useMutation(
-    ({ otherExperience, profileId }: AddOtherExperienceType) =>
-      FrontendOtherExperiencesService.create(otherExperience, profileId),
+    ({ otherExperience, profileId }: AddOtherExperienceType) => {
+      if (!token) {
+        return Promise.reject('No user id')
+      }
+
+      return FrontendOtherExperiencesService.create(otherExperience, profileId, token)
+    },
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(['profile', user?.profile?.id])
@@ -208,12 +213,15 @@ export const useUpdateMyProfile = () => {
   )
 
   type UpdateOtherExperienceType = {
-    otherExperience: OtherExperience
+    otherExperience: Partial<OtherExperience>
     profileId: string
   }
   const updateOtherExperience = useMutation(
-    ({ otherExperience, profileId }: UpdateOtherExperienceType) =>
-      FrontendOtherExperiencesService.update(otherExperience, profileId),
+    ({ otherExperience, profileId }: UpdateOtherExperienceType) => {
+      if (!token) return Promise.reject('No user id')
+
+      return FrontendOtherExperiencesService.update(otherExperience, profileId, token)
+    },
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(['profile', user?.profile?.id])
@@ -226,8 +234,11 @@ export const useUpdateMyProfile = () => {
     profileId: string
   }
   const deleteOtherExperience = useMutation(
-    ({ otherExperienceId, profileId }: DeleteOtherExperienceType) =>
-      FrontendOtherExperiencesService.deleteOne(otherExperienceId, profileId),
+    ({ otherExperienceId, profileId }: DeleteOtherExperienceType) => {
+      if (!token) return Promise.reject('No user id')
+
+      return FrontendOtherExperiencesService.deleteOne(otherExperienceId, profileId, token)
+    },
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(['profile', user?.profile?.id])
@@ -360,7 +371,6 @@ export const useUpdateMyProfile = () => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(['profile', user?.profile?.id])
-        console.log('profileCertification Added')
       },
     },
   )
@@ -375,7 +385,6 @@ export const useUpdateMyProfile = () => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(['profile', user?.profile?.id])
-        console.log('profileCertification Removed')
       },
     },
   )
