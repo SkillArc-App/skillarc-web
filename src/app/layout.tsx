@@ -29,8 +29,6 @@ export default function RootLayout({
       }),
   )
 
-  console.log('redirect_uri', `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`)
-
   return (
     <html lang="en">
       <body>

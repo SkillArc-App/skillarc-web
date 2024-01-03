@@ -6,6 +6,7 @@ type MainLayoutProps = {
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
+  console.log('redirect_uri', `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`)
   return (
     // h=100vh is what is causing a grey bar at the bottom of the desktop training provider pages
     // TODO: implement a useDevice hook and conditionally change the mainlayout per device breakpoints
