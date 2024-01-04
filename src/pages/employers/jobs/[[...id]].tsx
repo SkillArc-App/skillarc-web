@@ -90,7 +90,7 @@ const jobs = () => {
       applicant,
       id: applicant.id,
       name: `${applicant.firstName} ${applicant.lastName}`,
-      contactInfo: `${applicant.email} ${applicant.phoneNumber && `| ${applicant.phoneNumber}`}`,
+      contactInfo: `${applicant.email} ${applicant?.phoneNumber ?? ''}`,
       job: applicant.jobName,
       status: applicant.status,
       appliedOn: new Date(applicant.createdAt).toLocaleDateString(),
