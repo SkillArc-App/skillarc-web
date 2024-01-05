@@ -33,6 +33,14 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
         </Link>
       ),
     }),
+    columnHelper.accessor('seekerId', {
+      header: 'Profile',
+      cell: (row) => (
+        <Link as={NextLink} href={`/profiles/${row.row.original.seekerId}`}>
+          Jump to Profile
+        </Link>
+      ),
+    }),
     columnHelper.accessor('firstName', {
       header: 'First Name',
       cell: (row) => row.getValue(),
