@@ -6,6 +6,7 @@ import { post } from '@/frontend/http-common'
 import {
   Box,
   Divider,
+  Link,
   Grid,
   GridItem,
   HStack,
@@ -16,6 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
 const NoteBox = ({ note }: { note: string }) => {
@@ -153,6 +155,11 @@ const Seeker = () => {
               {workingSeeker.firstName} {workingSeeker.lastName}
             </Heading>
             <Divider />
+            <Box mt={'1rem'}>
+              <Link as={NextLink} href={`/profiles/${workingSeeker.seekerId}`}>
+                Jump to Profile
+              </Link>
+            </Box>
             <Box mt={'1rem'}>
               <Text variant={'b3'}>Email</Text>
               <Text variant={'b2'} color={'black'}>
