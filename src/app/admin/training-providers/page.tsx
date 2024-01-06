@@ -30,7 +30,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function admin() {
+export default function Admin() {
   // use all training provider data
   const {
     getAllTrainingProviders: { data: trainingProviders, refetch },

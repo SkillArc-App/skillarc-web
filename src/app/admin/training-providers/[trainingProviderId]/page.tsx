@@ -30,7 +30,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function trainingProvider({
+export default function TrainingProvider({
   params: { trainingProviderId },
 }: {
   params: { trainingProviderId: string }

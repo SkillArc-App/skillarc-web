@@ -1,5 +1,6 @@
 'use client'
 
+import { CareerPath } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useJobData } from '@/frontend/hooks/useJobData'
@@ -41,13 +42,12 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { CareerPath } from '@prisma/client'
 import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function job({ params: { id } }: { params: { id: string } }) {
+export default function Job({ params: { id } }: { params: { id: string } }) {
   const {
     getOneJob: { data: job, refetch: refetchJob },
   } = useJobData(id)
@@ -296,7 +296,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
   const removeLearnedSkill = (learnedSkillId: string) => () => {
     if (!job) return
 
-    const existingLearnedSkill = job.learnedSkills.find((ds) => {
+    const existingLearnedSkill = job.learnedSkills.find((ds: any) => {
       return ds.id === learnedSkillId
     })
 
@@ -318,7 +318,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
   const removeDesiredSkill = (desiredSkillId: string) => () => {
     if (!job) return
 
-    const existingDesiredSkill = job.desiredSkills.find((ds) => {
+    const existingDesiredSkill = job.desiredSkills.find((ds: any) => {
       return ds.id === desiredSkillId
     })
 
@@ -346,8 +346,8 @@ export default function job({ params: { id } }: { params: { id: string } }) {
     if (!job) return
 
     const existingLearnedSkill = job?.learnedSkills
-      .map((ds) => ds.masterSkill)
-      .some((ms) => ms.id === learnedSkill.id)
+      .map((ds: any) => ds.masterSkill)
+      .some((ms: any) => ms.id === learnedSkill.id)
 
     if (existingLearnedSkill) return
 
@@ -400,8 +400,8 @@ export default function job({ params: { id } }: { params: { id: string } }) {
     if (!desiredCertification) return
 
     const existingDesiredCertification = job?.desiredCertifications
-      .map((dc) => dc.masterCertification)
-      .some((mc) => mc.id === desiredCertification.id)
+      .map((dc: any) => dc.masterCertification)
+      .some((mc: any) => mc.id === desiredCertification.id)
 
     if (existingDesiredCertification) return
 
@@ -425,7 +425,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
   const removeDesiredCertification = (desiredCertificationId: string) => () => {
     if (!job) return
 
-    const existingDesiredCertification = job?.desiredCertifications.find((dc) => {
+    const existingDesiredCertification = job?.desiredCertifications.find((dc: any) => {
       return dc.id === desiredCertificationId
     })
 
@@ -524,7 +524,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
       .put(
         `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
         {
-          industry: job.industry.filter((i) => i !== industry),
+          industry: job.industry.filter((i: any) => i !== industry),
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -677,7 +677,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.industry.map((industry, index) => {
+                {job.industry.map((industry: any, index: number) => {
                   return (
                     <Tr key={index}>
                       <Td>{industry}</Td>
@@ -708,7 +708,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
                 </Box>
                 <Table variant="simple">
                   <Tbody>
-                    {job.desiredSkills.map((ds, index) => {
+                    {job.desiredSkills.map((ds: any, index: number) => {
                       return (
                         <Tr key={index}>
                           <Td>{ds.masterSkill.skill}</Td>
@@ -737,7 +737,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
                 </Box>
                 <Table variant="simple">
                   <Tbody>
-                    {job.learnedSkills.map((ls, index) => {
+                    {job.learnedSkills.map((ls: any, index: number) => {
                       return (
                         <Tr key={index}>
                           <Td>{ls.masterSkill.skill}</Td>
@@ -767,7 +767,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.desiredCertifications.map((dc, index) => {
+                {job.desiredCertifications.map((dc: any, index: number) => {
                   return (
                     <Tr key={index}>
                       <Td>{dc.masterCertification.certification}</Td>
@@ -797,7 +797,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {job.testimonials.map((testimonial, index) => {
+                  {job.testimonials.map((testimonial: any, index: number) => {
                     return (
                       <Tr key={index}>
                         <Td>{testimonial.name}</Td>
@@ -862,11 +862,11 @@ export default function job({ params: { id } }: { params: { id: string } }) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {job.jobPhotos.map((jp, index) => {
+                  {job.jobPhotos.map((jp: any, index: number) => {
                     return (
                       <Tr key={index}>
                         <Td>
-                          <Image src={jp.photo_url} />
+                          <Image src={jp.photo_url} alt='Job image' />
                         </Td>
                         <Td whiteSpace={'normal'}>{jp.photo_url}</Td>
                         <Td>
@@ -909,8 +909,8 @@ export default function job({ params: { id } }: { params: { id: string } }) {
                 </Thead>
                 <Tbody>
                   {job.careerPaths
-                    ?.sort((a, b) => a.order - b.order)
-                    .map((cp, index) => {
+                    ?.sort((a: any, b: any) => a.order - b.order)
+                    .map((cp: any, index: number) => {
                       return (
                         <Tr key={index}>
                           <Td>{cp.order}</Td>
@@ -985,7 +985,7 @@ export default function job({ params: { id } }: { params: { id: string } }) {
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.jobTag.map((tag, index) => {
+                {job.jobTag.map((tag: any, index: number) => {
                   return (
                     <Tr key={index}>
                       <Td>{tag.tag.name}</Td>

@@ -13,7 +13,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function seeker({ params: { seekerId } }: { params: { seekerId: string } }) {
+export default function Seeker({ params: { seekerId } }: { params: { seekerId: string } }) {
   const {
     profileQuery: { data },
   } = useProfileData(seekerId)

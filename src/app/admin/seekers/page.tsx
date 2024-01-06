@@ -26,7 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { useSeekerData } from '@/frontend/hooks/useSeekerData'
 
-export default function seekers() {
+export default function Seekers() {
   const {
     getSeekers: { data: seekers, isLoading: seekersIsLoading },
   } = useSeekerData()
@@ -59,7 +59,7 @@ export default function seekers() {
                   </Td>
                   <Td>{seeker.user?.email}</Td>
                   <Td>
-                    {seeker.user?.SeekerTrainingProvider.map((stp, index: number) => {
+                    {seeker.user?.SeekerTrainingProvider.map((stp: any, index: number) => {
                       return (
                         <Link
                           key={index}

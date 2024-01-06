@@ -43,7 +43,7 @@ const BarChart = ({ data }: { data: { label: string; value: number }[] }) => {
   return <Bar data={chartData} />
 }
 
-const applications = () => {
+const Applications = () => {
   const { data: applicationAnalytics } = useApplicationAnalytics()
 
   const barData = applicationAnalytics?.averageStatusTimes
@@ -101,4 +101,4 @@ const applications = () => {
   )
 }
 
-export default applications
+export default Applications

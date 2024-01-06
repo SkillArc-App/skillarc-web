@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-export default function program({ params: { programId } }: { params: { programId: string } }) {
+export default function Program({ params: { programId } }: { params: { programId: string } }) {
   const {
     getProgram: { data: program, isLoading: programIsLoading, refetch: refetchProgram },
   } = useProgramData(programId)

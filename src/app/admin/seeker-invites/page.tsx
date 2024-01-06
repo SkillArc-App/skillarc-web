@@ -30,7 +30,7 @@ import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
-export default function admin() {
+export default function Admin() {
   const {
     getAllInvites: { data: invites, isLoading: invitesIsLoading, refetch },
   } = useAllSeekerInviteData()
