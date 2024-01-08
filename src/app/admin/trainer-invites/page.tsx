@@ -28,7 +28,7 @@ import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
-export default function trainerInvites() {
+export default function TrainerInvites() {
   const {
     getAllTrainingProviderInvites: { data: invites, refetch },
   } = useAllTrainingProviderInviteData()

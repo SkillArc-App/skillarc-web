@@ -27,7 +27,7 @@ import {
 import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
-export default function employerInvites() {
+export default function EmployerInvites() {
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
   // use employer invite data

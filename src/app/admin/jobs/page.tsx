@@ -29,7 +29,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function jobs() {
+export default function Jobs() {
   const {
     getJobs: { data: jobs, refetch: refetchJobs },
   } = useAllJobData()
