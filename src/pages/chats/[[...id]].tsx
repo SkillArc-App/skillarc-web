@@ -5,7 +5,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const chats = () => {
+const Chats = () => {
   const { data: chats, refetch } = useSeekerChat()
 
   const router = useRouter()
@@ -68,4 +68,4 @@ const chats = () => {
   )
 }
 
-export default chats
+export default Chats

@@ -60,7 +60,7 @@ export type OneMatchedJobPosting = {
   applicationStatus?: string
 } & GetOneJobPosting
 
-export default function jobs() {
+export default function Jobs() {
   const router = useRouter()
   const [matchedJobArray, setMatchedJobArray] = useState<OneMatchedJobPosting[]>([])
 

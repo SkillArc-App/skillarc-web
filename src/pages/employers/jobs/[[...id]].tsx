@@ -46,7 +46,7 @@ type ApplicantStatusChange = {
   reasons?: string[]
 }
 
-const jobs = () => {
+const Jobs = () => {
   const router = useRouter()
   const jobId: string | undefined = router.query.id?.at(0)
 
@@ -384,4 +384,4 @@ const jobs = () => {
   )
 }
 
-export default withAuthenticationRequired(jobs)
+export default withAuthenticationRequired(Jobs)

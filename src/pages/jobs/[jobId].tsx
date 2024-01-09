@@ -9,7 +9,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-export default function jobPosting() {
+export default function JobPosting() {
   const router = useRouter()
   const { jobId } = router.query
   const {

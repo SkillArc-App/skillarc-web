@@ -6,7 +6,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-export default function editReference() {
+export default function EditReferences() {
   const router = useRouter()
   const { referenceId } = router.query
   const {
