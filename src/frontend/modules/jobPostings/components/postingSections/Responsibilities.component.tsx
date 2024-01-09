@@ -110,6 +110,7 @@ export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
         <AccordionPanel>
           {data && data.responsibilities_description && (
             <ReactMarkdown
+              // eslint-disable-next-line react/no-children-prop
               children={data.responsibilities_description}
               components={ChakraUIRenderer(newTheme)}
               skipHtml
