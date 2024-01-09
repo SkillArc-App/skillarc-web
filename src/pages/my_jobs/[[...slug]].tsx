@@ -155,7 +155,7 @@ const MyJobs = () => {
         <ModalBody>
           <Flex gap={'1rem'}>
             {activeJob?.employer?.logo_url && (
-              <Image src={activeJob.employer.logo_url} boxSize={'4rem'} />
+              <Image src={activeJob.employer.logo_url} alt='employer logo' boxSize={'4rem'} />
             )}
 
             <Box>
