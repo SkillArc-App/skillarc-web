@@ -5,6 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         {/* Page title */}
+        {/* eslint-disable-next-line @next/next/no-title-in-document-head */ }
         <title>Blocktrain</title>
 
         {/* Favicon */}
