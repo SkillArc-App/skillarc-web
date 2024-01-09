@@ -27,7 +27,7 @@ const ProfileExperience = () => {
       }}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.otherExperiences.map((otherExperiences, index) => {
+        {data?.otherExperiences.map((otherExperiences: any, index: number) => {
           return (
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">

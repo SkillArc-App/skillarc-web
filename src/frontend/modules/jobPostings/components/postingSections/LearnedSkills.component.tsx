@@ -26,7 +26,7 @@ export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
         {/* Map over technical skills here */}
         {data &&
           data.learnedSkills &&
-          data.learnedSkills.map((skill, index) => {
+          data.learnedSkills.map((skill: any, index: number) => {
             if (skill.masterSkill.type == 'TECHNICAL') {
               return <SkillTag key={index} skill={skill.masterSkill.skill} skillType="technical" />
             }
@@ -39,7 +39,7 @@ export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
         {/* Map over personal skills here */}
         {data &&
           data.learnedSkills &&
-          data.learnedSkills.map((skill, index) => {
+          data.learnedSkills.map((skill: any, index: number) => {
             if (skill.masterSkill.type == 'PERSONAL') {
               return <SkillTag key={index} skill={skill.masterSkill.skill} skillType="personal" />
             }

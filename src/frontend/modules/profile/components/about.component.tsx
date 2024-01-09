@@ -34,7 +34,7 @@ export const ProfileAbout = () => {
       }}
     >
       <Accordion defaultIndex={[0]} allowMultiple color={'greyscale.700'}>
-        {data?.stories.map((story, index) => {
+        {data?.stories.map((story: any, index: number) => {
           return (
             <Flex flexDir="column" key={index}>
               <AccordionItem>

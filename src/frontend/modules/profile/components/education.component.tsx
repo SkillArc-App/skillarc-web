@@ -26,7 +26,7 @@ export const ProfileEducation = () => {
       }}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.educationExperiences.map((educationExperiences, index) => {
+        {data?.educationExperiences.map((educationExperiences: any, index: number) => {
           return (
             <Flex key={index}>
               <Flex flexDir={'column'} gap="0.5rem" flexGrow={1}>

@@ -81,7 +81,7 @@ export const JobCard = ({
         <ToggleIcon isBookmarked={job.saved} onClick={(val) => onSaveClick(job.id)} />
       </Flex>
       <Flex flexWrap={'wrap'} gap={'0.5rem'}>
-        {job.jobTag?.map((tag, index) => {
+        {job.jobTag?.map((tag: any, index: number) => {
           return (
             <Tag key={index} variant="outline" colorScheme="gray" borderRadius="full">
               <TagLabel>{tag.tag.name}</TagLabel>

@@ -27,7 +27,7 @@ export const ProfileReferences = () => {
       <Text type="overline" color="greyscale.700" pb={2}>
         REFERENCES
       </Text>
-      {profile.reference.map((reference, index) => {
+      {profile.reference.map((reference: any, index: number) => {
         return (
           <HStack align="top" gap={2} pt={1}>
             <Avatar />

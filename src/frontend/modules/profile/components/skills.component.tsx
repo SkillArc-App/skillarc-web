@@ -36,14 +36,14 @@ export const ProfileSkills = () => {
     >
       <VStack align="left" pt="1rem" gap={2}>
         {profileData &&
-          profileData.profileSkills.filter((skill) => skill.masterSkill.type == 'TECHNICAL')
+          profileData.profileSkills.filter((skill: any) => skill.masterSkill.type == 'TECHNICAL')
             .length !== 0 && (
             <>
               <Heading variant="h4" color={'greyscale.700'}>
                 Technical Competencies
               </Heading>
               <Flex flexDir={'column'} gap="1.5rem">
-                {profileData.profileSkills.map((skill, index) => {
+                {profileData.profileSkills.map((skill: any, index: number) => {
                   if (skill.masterSkill.type == 'TECHNICAL') {
                     return (
                       <Flex flexDir={'column'} gap="0.5rem" key={index}>
@@ -61,14 +61,14 @@ export const ProfileSkills = () => {
             </>
           )}
         {profileData &&
-          profileData.profileSkills.filter((skill) => skill.masterSkill.type == 'PERSONAL')
+          profileData.profileSkills.filter((skill: any) => skill.masterSkill.type == 'PERSONAL')
             .length !== 0 && (
             <>
               <Heading variant="h4" color={'greyscale.700'}>
                 Soft Skills
               </Heading>
               <Flex flexDir={'column'} gap="1.5rem">
-                {profileData.profileSkills.map((skill, index) => {
+                {profileData.profileSkills.map((skill: any, index: number) => {
                   if (skill.masterSkill.type == 'PERSONAL') {
                     return (
                       <Flex flexDir={'column'} gap="0.5rem" key={index}>
