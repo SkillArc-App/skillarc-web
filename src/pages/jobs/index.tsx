@@ -1,7 +1,8 @@
+import { Employer } from '@/common/types/Employer'
+import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { Text } from '@/frontend/components/Text.component'
 import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
-import { useUpdateJobInteraction } from '@/frontend/hooks/useUpdateJobInteraction'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
 import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.component'
@@ -28,7 +29,6 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Employer, MasterCertification, MasterSkill } from '@prisma/client'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -67,15 +67,9 @@ export default function jobs() {
   const [activeJob, setActiveJob] = useState<OneMatchedJobPosting | null>(null)
 
   const { data: user, isLoading: userIsLoading } = useUser()
-  const { mutate: updateJobInteraction } = useUpdateJobInteraction()
   const {
     jobMatchesQuery: { data: jobMatches, refetch },
   } = useJobMatchData()
-  const {
-    isOpen: isSuccessModalOpen,
-    onOpen: onSuccessModalOpen,
-    onClose: onSuccessModalClose,
-  } = useDisclosure()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [constructionFilter, setConstructionFilter] = useState<boolean>(true)

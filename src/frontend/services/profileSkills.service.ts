@@ -1,5 +1,4 @@
 import { ProfileSkill, Skills } from '@prisma/client'
-import { http } from '../http-common'
 import axios from 'axios'
 
 const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {

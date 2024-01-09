@@ -1,7 +1,9 @@
+import { Heading } from '@/frontend/components/Heading.component'
+import { LoadingPage } from '@/frontend/components/Loading'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import {
   Avatar,
   Badge,
-  Box,
   Button,
   Card,
   CardBody,
@@ -10,15 +12,11 @@ import {
   Link,
   Stack,
   StackDivider,
-  Textarea,
+  Textarea
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
 import NextLink from 'next/link'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
-import { Heading } from '@/frontend/components/Heading.component'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Text } from '../../../components/Text.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 
 export const Reference = ({
   seekerProfileId,

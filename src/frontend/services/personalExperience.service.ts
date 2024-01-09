@@ -1,5 +1,4 @@
 import { PersonalExperience } from '@prisma/client'
-import { http } from '../http-common'
 import axios from 'axios'
 
 const create = async (
