@@ -44,7 +44,7 @@ export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
       gap="1rem"
     >
       <Heading type="h4" color="greyscale.700" w="100%">
-        😄 Who you'll work with
+        😄 Who you&apos;ll work with
       </Heading>
       {data?.testimonials.map((testimonial, index) => {
         return (

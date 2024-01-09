@@ -26,7 +26,7 @@ export const NewName = ({
   return (
     <>
       <Heading color={'greyscale.900'} variant={'h2'}>
-        You have a bright future ahead! Let's get started!
+        You have a bright future ahead! Let&apos;s get started!
       </Heading>
       <Text color={'greyscale.600'} type={'b2'} pt={'0.5rem'}></Text>
 

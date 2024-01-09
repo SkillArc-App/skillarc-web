@@ -134,7 +134,7 @@ const MyJobs = () => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            We're sharing your BlockTrain profile and contact info with{' '}
+            We&apos;re sharing your BlockTrain profile and contact info with{' '}
             <b>{activeJob?.employer.name}</b> to start the application process.
           </ModalBody>
 
@@ -149,7 +149,7 @@ const MyJobs = () => {
     return (
       <ModalContent m={'1rem'}>
         <ModalHeader>
-          <Heading size={'xl'}>Let's do this!</Heading>
+          <Heading size={'xl'}>Let&apos;s do this!</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

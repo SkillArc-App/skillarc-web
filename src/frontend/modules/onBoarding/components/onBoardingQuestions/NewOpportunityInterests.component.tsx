@@ -31,7 +31,7 @@ export const NewOpportunityInterests = ({
         What opportunities interest you?
       </Heading>
       <Text color={'greyscale.600'} type={'b2'}>
-        We'll send you new opportunities as we find them for you!
+        We&apos;ll send you new opportunities as we find them for you!
       </Text>
       <Flex mt={'0.5rem'} flexDir={'column'} gap={'0.5rem'}>
         {checkboxOptions.map((option, index) => {

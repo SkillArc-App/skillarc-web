@@ -17,7 +17,7 @@ export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
       gap="1rem"
     >
       <Heading type="h4" color="greyscale.700" w="100%">
-        🧠 What you'll learn
+        🧠 What you&apos;ll learn
       </Heading>
       <Flex w="100%" flexWrap="wrap" gap=".5rem">
         <Text type="overline" color="greyscale.700" w="100%">
@@ -50,7 +50,7 @@ export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
         <TriangleLeft />
         <Flex borderRadius="4px" bg="greyscale.900">
           <Text type="b3" color="white" p="8px">
-            You're going to learn a lot!
+            You&apos;re going to learn a lot!
           </Text>
         </Flex>
       </Flex>
