@@ -30,21 +30,21 @@ const seekerInvite = () => {
       return
     }
 
-    useInvite()
-  }, [user])
+    const invite = () => {
+      if (!token) return
+      if (!employerInviteId) return
 
-  const useInvite = () => {
-    if (!token) return
-    if (!employerInviteId) return
+      put(
+        `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
+        {},
+        token,
+      ).then((_) => {
+        refetchUser()
+      })
+    }
 
-    put(
-      `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
-      {},
-      token,
-    ).then((_) => {
-      refetchUser()
-    })
-  }
+    invite()
+  }, [employerInviteId, refetchUser, router, token, user])
 
   return <LoadingPage />
 }

@@ -103,18 +103,9 @@ export const signOut = (data: any) => {
   nextAuthSignOut(data)
 }
 
-export const useSession = () => {
-  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
-    return {
-      data: {
-        user,
-      },
-      status: 'authenticated',
-    }
-  } else {
-    return useNextAuthSession()
-  }
-}
+export const useSession = !!process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH
+  ? () => ({data: { user }, status: 'authenticated'})
+  : useNextAuthSession
 
 export const useAuth0 = () => {
   if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {

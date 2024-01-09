@@ -4,9 +4,7 @@ import { useQueryClient } from 'react-query'
 import { useAllUsers } from '../hooks/useAllUsers'
 import { Text } from './Text.component'
 
-const TestingTools = () => {
-  if (process.env.NODE_ENV !== 'development') return <></>
-
+const DevTools = () => {
   const mockAuth = process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH
 
   const { data: users } = useAllUsers()
@@ -22,14 +20,14 @@ const TestingTools = () => {
       localStorage.setItem('mockNextAuth', users[0].sub)
       queryClient.invalidateQueries({ refetchActive: true })
     }
-  }, [users])
+  }, [mockAuth, queryClient, users])
 
   useEffect(() => {
     if (selectValue === '') return
 
     localStorage.setItem('mockNextAuth', selectValue)
     queryClient.invalidateQueries({ refetchActive: true })
-  }, [selectValue])
+  }, [queryClient, selectValue])
 
   return (
     <>
@@ -57,5 +55,10 @@ const TestingTools = () => {
     </>
   )
 }
+
+const NoopTools = () => (<></>)
+const TestingTools = process.env.NODE_ENV === 'development'
+  ? DevTools
+  : NoopTools
 
 export default TestingTools
