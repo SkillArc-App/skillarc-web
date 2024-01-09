@@ -29,7 +29,7 @@ export const ProfileReferences = () => {
       </Text>
       {profile.reference.map((reference: any, index: number) => {
         return (
-          <HStack align="top" gap={2} pt={1}>
+          <HStack align="top" gap={2} pt={1} key={index}>
             <Avatar />
             <VStack align="left" gap={2}>
               <Flex direction="column" gap={2}>
