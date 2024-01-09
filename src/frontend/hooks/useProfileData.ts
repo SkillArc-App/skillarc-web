@@ -22,7 +22,7 @@ export const useProfileData = (id: string) => {
     } else {
       setIsMyProfile(false)
     }
-  }, [user, profileQuery.data])
+  }, [user, profileQuery.data, id])
 
   return { profileQuery, isMyProfile }
 }

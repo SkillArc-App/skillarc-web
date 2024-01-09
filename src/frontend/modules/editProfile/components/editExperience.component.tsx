@@ -25,13 +25,13 @@ export const EditExperience = () => {
     if (!otherExperience) return
 
     setExperience(otherExperience)
-  }, [user])
+  }, [otherExperienceId, user])
 
   useEffect(() => {
     if (currentlyWorking && experience) {
       setExperience({ ...experience, end_date: '' })
     }
-  }, [currentlyWorking])
+  }, [currentlyWorking, experience])
 
   useEffect(() => {
     if (
@@ -41,7 +41,7 @@ export const EditExperience = () => {
     ) {
       router.back()
     }
-  }, [addOtherExperienceStatus, updateOtherExperienceStatus, deleteOtherExperienceStatus])
+  }, [addOtherExperienceStatus, updateOtherExperienceStatus, deleteOtherExperienceStatus, router])
 
   const handleSave = () => {
     const profileId = user?.profile?.id

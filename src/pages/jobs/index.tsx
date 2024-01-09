@@ -128,14 +128,14 @@ export default function jobs() {
     } else if (!userCanSeeJobs(user)) {
       router.push(`/profiles/${user.profile.id}`)
     }
-  }, [user])
+  }, [router, user, userIsLoading])
 
   // query job matches
   useEffect(() => {
     if (user?.id) {
       refetch()
     }
-  }, [user])
+  }, [refetch, user])
 
   // set matchedJobArray
   useEffect(() => {

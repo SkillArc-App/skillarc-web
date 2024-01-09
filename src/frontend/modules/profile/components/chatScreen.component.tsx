@@ -133,7 +133,7 @@ const ChatScreen = ({
     if (!allRead) {
       markRead(currentChat.id)
     }
-  }, [currentChat])
+  }, [currentChat, markRead])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'auto' })

@@ -214,7 +214,7 @@ const jobs = () => {
         }
       }
     }
-  }, [employerJobs, showPasses])
+  }, [activeEmployer, employerJobs, showPasses])
 
   useEffect(() => {
     const newJobs = employerJobs?.jobs.filter((job) => job.employerId === activeEmployer)
@@ -234,7 +234,7 @@ const jobs = () => {
         )
       }
     }
-  }, [activeEmployer, showPasses])
+  }, [activeEmployer, employerJobs?.applicants, employerJobs?.jobs, showPasses])
 
   const handleApplicantUpdate = async (id: string) => {
     const applicantStatusChange = updatedStatuses[id]

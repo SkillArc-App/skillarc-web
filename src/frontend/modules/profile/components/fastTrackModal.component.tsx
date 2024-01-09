@@ -30,7 +30,7 @@ const FastTrackModal = () => {
     if (isOpen) {
       FrontendAnalyticsService.track('FastTrackModal-opened')
     }
-  }, [])
+  }, [isOpen])
 
   const onModalClose = () => {
     onClose()

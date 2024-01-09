@@ -37,7 +37,7 @@ export const EditSummary = () => {
     if (updateSummaryStatus === 'success') {
       router.back()
     }
-  }, [updateSummaryStatus])
+  }, [router, updateSummaryStatus])
 
   const handleSave = () => {
     if (!user?.id) return

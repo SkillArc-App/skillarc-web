@@ -17,7 +17,7 @@ const AuthCallback = () => {
       console.log('redirecting')
       router.push('/')
     }
-  }, [needsRedirect])
+  }, [needsRedirect, router])
 
   // check if user exists in temp user table (old auth system)
   useEffect(() => {

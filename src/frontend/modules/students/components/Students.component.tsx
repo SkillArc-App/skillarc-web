@@ -74,7 +74,7 @@ export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
     if (!isLoading && data) {
       setProgramStudents(data[activeProgram].students)
     }
-  }, [data])
+  }, [activeProgram, data, isLoading])
 
   const changeProgramStatus = (
     programIndex: number,
