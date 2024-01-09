@@ -108,6 +108,7 @@ export const Requirements = ({ data }: { data: GetOneJobPosting }) => {
       <div>
         {data && data.requirements_description && (
           <ReactMarkdown
+            // eslint-disable-next-line react/no-children-prop
             children={data.requirements_description}
             components={ChakraUIRenderer(newTheme)}
             skipHtml

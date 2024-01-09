@@ -35,7 +35,7 @@ export default function App({ Component, pageProps: { session, ...pageProps }, r
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange)
     }
-  }, [])
+  }, [router.events])
 
   return (
     <QueryClientProvider client={queryClient}>

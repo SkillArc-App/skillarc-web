@@ -1,7 +1,9 @@
+import { Heading } from '@/frontend/components/Heading.component'
+import { LoadingPage } from '@/frontend/components/Loading'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import {
   Avatar,
   Badge,
-  Box,
   Button,
   Card,
   CardBody,
@@ -10,15 +12,11 @@ import {
   Link,
   Stack,
   StackDivider,
-  Textarea,
+  Textarea
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
 import NextLink from 'next/link'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
-import { Heading } from '@/frontend/components/Heading.component'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Text } from '../../../components/Text.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 
 export const Reference = ({
   seekerProfileId,
@@ -212,7 +210,7 @@ export const Reference = ({
             </CardHeader>
             <CardBody>
               <Stack divider={<StackDivider />} spacing="4">
-                {data?.programs?.map((program, index) => {
+                {data?.programs?.map((program: any, index: number) => {
                   return (
                     <Flex key={index} gap="1rem" flexWrap="wrap" w="100%">
                       <Text color="greyscale.600" variant={'b1Bold'} w="100%">
@@ -223,7 +221,7 @@ export const Reference = ({
                       </Text>
                       {program.programSkill?.length > 0 && (
                         <Flex gap={'0.5rem'}>
-                          {program.programSkill?.map((programSkill, index) => (
+                          {program.programSkill?.map((programSkill: any, index: any) => (
                             <Badge
                               variant={'primary'}
                               borderRadius={'1rem'}

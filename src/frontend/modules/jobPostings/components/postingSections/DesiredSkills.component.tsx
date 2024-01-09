@@ -87,7 +87,7 @@ export const DesiredSkills = ({
       </Flex>
       <Flex flexWrap="wrap" marginTop=".5rem">
         <Heading type="h3" color="greyscale.600" marginRight=".25rem">
-          We're looking for
+          We&apos;re looking for
         </Heading>
         {data && data.employment_title && (
           <Heading type="h3" color="primary.500" w="100%">
@@ -111,7 +111,7 @@ export const DesiredSkills = ({
         {/* Map over technical skills here */}
         {data &&
           data.desiredSkills &&
-          data.desiredSkills.map((skill, index) => {
+          data.desiredSkills.map((skill: any, index: number) => {
             if (skill.masterSkill.type === 'TECHNICAL') {
               const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
               return (
@@ -132,7 +132,7 @@ export const DesiredSkills = ({
         {/* Map over personal skills here */}
         {data &&
           data.desiredSkills &&
-          data.desiredSkills.map((skill, index) => {
+          data.desiredSkills.map((skill: any, index: number) => {
             if (skill.masterSkill.type == 'PERSONAL') {
               const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
               return (
@@ -154,7 +154,7 @@ export const DesiredSkills = ({
         {/* Map over certifications here */}
         {data &&
           data.desiredCertifications &&
-          data.desiredCertifications.map((cert, index) => {
+          data.desiredCertifications.map((cert: any, index: number) => {
             const isMatch = isCertMatch(cert.masterCertificationId) // Check if the desired cert is a match
             return (
               <CertTag
@@ -171,7 +171,7 @@ export const DesiredSkills = ({
           <TriangleLeft />
           <Flex borderRadius="4px" bg="greyscale.900">
             <Text type="b3" color="white" p="8px">
-              You'd be a great fit!
+              You&apos;d be a great fit!
             </Text>
           </Flex>
         </Flex>

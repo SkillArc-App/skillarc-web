@@ -30,13 +30,13 @@ export const EditPersonalExperience = () => {
     if (!personalExperience) return
 
     setPersonalExperience(personalExperience)
-  }, [user])
+  }, [personalExperienceId, user])
 
   useEffect(() => {
     if (currentlyWorking && personalExperience) {
       setPersonalExperience({ ...personalExperience, end_date: '' })
     }
-  }, [currentlyWorking])
+  }, [currentlyWorking, personalExperience])
 
   useEffect(() => {
     if (
@@ -46,7 +46,7 @@ export const EditPersonalExperience = () => {
     ) {
       router.back()
     }
-  }, [addPersonalExperienceStatus, updatePersonalExperienceStatus, deleteOtherExperienceStatus])
+  }, [addPersonalExperienceStatus, updatePersonalExperienceStatus, deleteOtherExperienceStatus, router])
 
   const handleSave = () => {
     const profileId = user?.profile?.id

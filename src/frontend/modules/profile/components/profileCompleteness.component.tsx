@@ -55,7 +55,7 @@ const ProfileCompleteness = () => {
             size="sm"
           />
           <Heading type="h5" color="greyscale.700" w="100%">
-            Let's add your {nextSection}
+            Let&apos;s add your {nextSection}
           </Heading>
           <Text type="b2">Completing your resume makes you 3x more likely to get hired!</Text>
           <Button onClick={onAddClick} variant={'outline'}>

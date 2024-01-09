@@ -8,7 +8,7 @@ import { EditSkills } from '@/frontend/modules/editProfile/components/editSkills
 import { EditSummary } from '@/frontend/modules/editProfile/components/editSummary.component'
 import { useRouter } from 'next/router'
 
-export default function editProfile() {
+export default function EditProfile() {
   const router = useRouter()
   const { section } = router.query
   switch (section) {

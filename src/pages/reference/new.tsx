@@ -4,7 +4,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-export default function newReference() {
+export default function NewReference() {
   const router = useRouter()
 
   const { seekerProfileId } = router.query

@@ -32,7 +32,7 @@ export const EditEducation = () => {
         (exp: EducationExperience) => exp.id === educationExperienceId,
       ),
     )
-  }, [user])
+  }, [educationExperienceId, user])
 
   useEffect(() => {
     if (
@@ -42,11 +42,7 @@ export const EditEducation = () => {
     ) {
       router.back()
     }
-  }, [
-    addEducationExperienceStatus,
-    updateEducationExperienceStatus,
-    deleteEducationExperienceStatus,
-  ])
+  }, [addEducationExperienceStatus, updateEducationExperienceStatus, deleteEducationExperienceStatus, router])
 
   const handleSave = () => {
     const profileId = user?.profile?.id

@@ -20,7 +20,7 @@ export const Reliability = ({
   return (
     <>
       <Heading variant={'h2'} color={'greyscale.900'}>
-        First, we'll let employers know how dependable you are
+        First, we&apos;ll let employers know how dependable you are
       </Heading>
       <Box>
         <Checkbox
@@ -32,7 +32,7 @@ export const Reliability = ({
           variant={'box'}
           colorScheme="green"
         >
-          I've had or currently have a job
+          I&apos;ve had or currently have a job
         </Checkbox>
         <Checkbox
           onChange={handleRadioChange}
@@ -44,7 +44,7 @@ export const Reliability = ({
           mt={'1rem'}
           colorScheme="green"
         >
-          I've attended a Training Program
+          I&apos;ve attended a Training Program
         </Checkbox>
         <Checkbox
           isChecked={selectedGoals.includes('I have a High School Diploma / GED')}
@@ -68,7 +68,7 @@ export const Reliability = ({
           mt={'1rem'}
           colorScheme="green"
         >
-          I have other experience I'd like to share
+          I have other experience I&apos;d like to share
         </Checkbox>
         <Button onClick={onSubmit} mt={'0.5rem'} variant={'primary'}>
           Next

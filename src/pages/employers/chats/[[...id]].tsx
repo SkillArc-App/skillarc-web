@@ -27,29 +27,27 @@ const ChatUI = () => {
   }, [getAccessTokenSilently, isAuthenticated])
 
   useEffect(() => {
+    const createChat = (applicantId: string) => {
+      if (!token) return
+
+      post(
+        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats`,
+        {
+          applicant_id: applicantId,
+        },
+        token,
+      ).then((_) => {
+        refetchChats()
+      })
+    };
+
     if (id && serverChats) {
       const chat = serverChats.find((chat) => chat.id === id)
       if (!chat) {
         createChat(id)
       }
     }
-  }, [id, serverChats])
-
-  if (!serverChats) return <></>
-
-  const createChat = (applicantId: string) => {
-    if (!token) return
-
-    post(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/chats`,
-      {
-        applicant_id: applicantId,
-      },
-      token,
-    ).then((_) => {
-      refetchChats()
-    })
-  }
+  }, [id, refetchChats, serverChats, token])
 
   const createMessage = async (id: string, text: string) => {
     if (!token) return
@@ -79,6 +77,8 @@ const ChatUI = () => {
       refetchChats()
     })
   }
+
+  if (!serverChats) return <></>
 
   return (
     <ChatScreen

@@ -33,7 +33,7 @@ export const useJobData = (id: string) => {
 
   useEffect(() => {
     getOneJob.refetch()
-  }, [id])
+  }, [getOneJob, id])
 
   return { getOneJob }
 }

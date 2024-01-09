@@ -32,7 +32,7 @@ export const useJobSavedData = () => {
 
   useEffect(() => {
     jobSavedQuery.refetch()
-  }, [token])
+  }, [jobSavedQuery, token])
 
   return { jobSavedQuery }
 }

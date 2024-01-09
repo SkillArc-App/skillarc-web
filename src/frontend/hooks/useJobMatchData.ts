@@ -25,7 +25,7 @@ export const useJobMatchData = () => {
 
   useEffect(() => {
     jobMatchesQuery.refetch()
-  }, [token])
+  }, [jobMatchesQuery, token])
 
   return { jobMatchesQuery }
 }

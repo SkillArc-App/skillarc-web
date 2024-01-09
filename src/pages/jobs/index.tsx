@@ -1,7 +1,8 @@
+import { Employer } from '@/common/types/Employer'
+import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { Text } from '@/frontend/components/Text.component'
 import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
-import { useUpdateJobInteraction } from '@/frontend/hooks/useUpdateJobInteraction'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
 import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.component'
@@ -28,7 +29,6 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { Employer, MasterCertification, MasterSkill } from '@prisma/client'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -60,22 +60,16 @@ export type OneMatchedJobPosting = {
   applicationStatus?: string
 } & GetOneJobPosting
 
-export default function jobs() {
+export default function Jobs() {
   const router = useRouter()
   const [matchedJobArray, setMatchedJobArray] = useState<OneMatchedJobPosting[]>([])
 
   const [activeJob, setActiveJob] = useState<OneMatchedJobPosting | null>(null)
 
   const { data: user, isLoading: userIsLoading } = useUser()
-  const { mutate: updateJobInteraction } = useUpdateJobInteraction()
   const {
     jobMatchesQuery: { data: jobMatches, refetch },
   } = useJobMatchData()
-  const {
-    isOpen: isSuccessModalOpen,
-    onOpen: onSuccessModalOpen,
-    onClose: onSuccessModalClose,
-  } = useDisclosure()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [constructionFilter, setConstructionFilter] = useState<boolean>(true)
@@ -128,14 +122,14 @@ export default function jobs() {
     } else if (!userCanSeeJobs(user)) {
       router.push(`/profiles/${user.profile.id}`)
     }
-  }, [user])
+  }, [router, user, userIsLoading])
 
   // query job matches
   useEffect(() => {
     if (user?.id) {
       refetch()
     }
-  }, [user])
+  }, [refetch, user])
 
   // set matchedJobArray
   useEffect(() => {
@@ -221,7 +215,7 @@ export default function jobs() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            We're sharing your BlockTrain profile and contact info with{' '}
+            We&apos;re sharing your BlockTrain profile and contact info with{' '}
             <b>{activeJob?.employer.name}</b> to start the application process.
           </ModalBody>
 
@@ -236,13 +230,13 @@ export default function jobs() {
     return (
       <ModalContent m={'1rem'}>
         <ModalHeader>
-          <Heading size={'xl'}>Let's do this!</Heading>
+          <Heading size={'xl'}>Let&apos;s do this!</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex gap={'1rem'}>
             {activeJob?.employer?.logo_url && (
-              <Image src={activeJob.employer.logo_url} boxSize={'4rem'} />
+              <Image src={activeJob.employer.logo_url} boxSize={'4rem'} alt='Employer Logo' />
             )}
 
             <Box>

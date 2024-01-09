@@ -26,7 +26,7 @@ export const PersonalExperience = () => {
       }}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.personalExperience.map((personalExperience, index) => {
+        {data?.personalExperience.map((personalExperience: any, index: number) => {
           return (
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">

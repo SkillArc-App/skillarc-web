@@ -45,7 +45,7 @@ export const ApplyModals = ({
                 </Heading>
                 <Flex w="100%"></Flex>
                 <Text type="b2" color="#6C757D">
-                  We're sharing your BlockTrain profile with <strong>{job.employer.name}</strong> to
+                  We&apos;re sharing your BlockTrain profile with <strong>{job.employer.name}</strong> to
                   start the application process.
                 </Text>
                 <Text type="b2" color="#6C757D">

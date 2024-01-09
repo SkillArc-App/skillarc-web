@@ -80,7 +80,7 @@ export const Header = () => {
                 />
                 <Stack gap={'0rem'}>
                   <b>Need some tips?</b>
-                  <p>I'm Hannah! I can help you with resumes and job searching. 😊</p>
+                  <p>I&apos;m Hannah! I can help you with resumes and job searching. 😊</p>
                 </Stack>
               </HStack>
               <Box

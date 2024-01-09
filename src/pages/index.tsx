@@ -85,7 +85,7 @@ const Home = () => {
         router.push(`/jobs`)
       }
     }
-  }, [token, user])
+  }, [refetchUser, router, token, user])
 
   if (isLoading) return <LoadingPage />
   if ((user?.trainingProviderProfile || user?.recruiter?.length) ?? 0 > 0) return <></>

@@ -70,7 +70,7 @@ export const JobCard = ({
       onClick={onCardClick}
     >
       <Flex gap={'1rem'}>
-        {job.employer?.logo_url && <Image src={job.employer.logo_url} boxSize={'4rem'} />}
+        {job.employer?.logo_url && <Image src={job.employer.logo_url} alt='employer logo' boxSize={'4rem'} />}
 
         <Box textAlign={'left'}>
           <Text type={'b1Bold'}>{job.employment_title}</Text>
@@ -81,7 +81,7 @@ export const JobCard = ({
         <ToggleIcon isBookmarked={job.saved} onClick={(val) => onSaveClick(job.id)} />
       </Flex>
       <Flex flexWrap={'wrap'} gap={'0.5rem'}>
-        {job.jobTag?.map((tag, index) => {
+        {job.jobTag?.map((tag: any, index: number) => {
           return (
             <Tag key={index} variant="outline" colorScheme="gray" borderRadius="full">
               <TagLabel>{tag.tag.name}</TagLabel>

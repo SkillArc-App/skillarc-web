@@ -119,6 +119,7 @@ export const Benefits = ({ data }: { data: GetOneJobPosting }) => {
         <AccordionPanel>
           {data && data.benefits_description && (
             <ReactMarkdown
+              // eslint-disable-next-line react/no-children-prop
               children={data.benefits_description}
               components={ChakraUIRenderer(newTheme)}
               skipHtml

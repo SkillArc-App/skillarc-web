@@ -5,7 +5,7 @@ import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const seekerInvite = () => {
+const SeekerInvite = () => {
   const router = useRouter()
   const { id: employerInviteId } = router.query
 
@@ -30,23 +30,23 @@ const seekerInvite = () => {
       return
     }
 
-    useInvite()
-  }, [user])
+    const invite = () => {
+      if (!token) return
+      if (!employerInviteId) return
 
-  const useInvite = () => {
-    if (!token) return
-    if (!employerInviteId) return
+      put(
+        `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
+        {},
+        token,
+      ).then((_) => {
+        refetchUser()
+      })
+    }
 
-    put(
-      `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
-      {},
-      token,
-    ).then((_) => {
-      refetchUser()
-    })
-  }
+    invite()
+  }, [employerInviteId, refetchUser, router, token, user])
 
   return <LoadingPage />
 }
 
-export default withAuthenticationRequired(seekerInvite)
+export default withAuthenticationRequired(SeekerInvite)

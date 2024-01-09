@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-export default function trainingProviderInvite() {
+export default function TrainingProviderInvite() {
   const router = useRouter()
   const { trainingProviderInviteId } = router.query
 

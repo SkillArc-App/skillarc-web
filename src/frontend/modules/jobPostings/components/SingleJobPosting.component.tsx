@@ -38,7 +38,7 @@ export const SingleJobPosting = ({ jobId, percentMatch, user }: SingleJobPosting
       setHitBottomTracked((prev) => [...prev, jobId])
       FrontendAnalyticsService.track('Job-bottom-reached', { jobId: jobId, job: data })
     }
-  }, [hitBottom, jobId])
+  }, [data, hitBottom, hitBottomTracked, jobId])
 
   useEffect(() => {
     if (typeof window !== 'undefined' && document) {

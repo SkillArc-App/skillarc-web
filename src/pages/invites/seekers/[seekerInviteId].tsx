@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-export default function seekerInvite() {
+export default function SeekerInvite() {
   const router = useRouter()
   const { seekerInviteId } = router.query
 

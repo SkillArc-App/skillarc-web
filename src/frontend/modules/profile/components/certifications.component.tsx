@@ -56,7 +56,7 @@ export const ProfileCertifications = () => {
       <Flex w="100%" flexWrap="wrap" gap="1rem">
         {profileData &&
           profileData.profileCertifications.length > 0 &&
-          profileData.profileCertifications.map((cert, index) => {
+          profileData.profileCertifications.map((cert: any, index: number) => {
             return (
               <Flex w="100%" flexWrap="wrap" key={index}>
                 <Heading type="h4" color="greyscale.700" w="100%">

@@ -104,7 +104,7 @@ const Onboarding = () => {
       router.push('/onboarding/opportunities', undefined, { shallow: true })
       return
     }
-  }, [onboardingData, onboardingDataIsLoading, token])
+  }, [onboardingData, onboardingDataIsFetching, onboardingDataIsLoading, router, token])
 
   const { slug } = router.query
   const currentStep = slug?.at(0)
