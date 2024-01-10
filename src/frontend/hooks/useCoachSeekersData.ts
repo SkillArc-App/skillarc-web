@@ -17,6 +17,7 @@ export type CoachSeeker = {
   notes: {
     note: string
     date: string
+    noteId: string
   }[]
 }
 

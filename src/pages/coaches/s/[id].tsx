@@ -6,18 +6,18 @@ import { post } from '@/frontend/http-common'
 import {
   Box,
   Divider,
-  Link,
   Grid,
   GridItem,
   HStack,
+  Link,
   Select,
   Stack,
   Tag,
   Textarea,
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 const NoteBox = ({ note }: { note: string }) => {
@@ -84,16 +84,20 @@ const Seeker = () => {
     if (!noteDraft) return
     if (!workingSeeker) return
 
+    const currentNoteDraft = noteDraft;
+    const noteId = crypto.randomUUID();
+
     post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes`,
       {
-        note: noteDraft,
+        note: currentNoteDraft,
+        note_id: noteId,
       },
       token,
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
-        notes: [...workingSeeker.notes, { note: noteDraft, date: new Date().toString() }],
+        notes: [...workingSeeker.notes, { note: currentNoteDraft, noteId, date: new Date().toString() }],
       })
 
       setNoteDraft('')
