@@ -3,7 +3,13 @@ import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { get } from '../http-common'
 
-export type CoachSeeker = {
+export interface SeekerNote {
+  note: string
+  date: string
+  noteId: string
+}
+
+export interface CoachSeeker {
   seekerId: string
   firstName: string
   lastName: string
@@ -14,10 +20,7 @@ export type CoachSeeker = {
   lastContacted: string
   skillLevel: string
   stage: string
-  notes: {
-    note: string
-    date: string
-  }[]
+  notes: SeekerNote[]
 }
 
 export const useCoachSeekersData = () => {

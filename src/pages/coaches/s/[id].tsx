@@ -1,29 +1,44 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
+import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
-import { post } from '@/frontend/http-common'
+import { destroy, post } from '@/frontend/http-common'
+import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Box,
   Divider,
-  Link,
   Grid,
   GridItem,
   HStack,
+  IconButton,
+  Link,
   Select,
   Stack,
   Tag,
   Textarea,
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const NoteBox = ({ note }: { note: string }) => {
+interface NoteProps {
+  note: string
+  onDeleteClicked(): void
+}
+
+interface GroupedNotes {
+  [key: string]: SeekerNote[]
+}
+
+const NoteBox = ({ note, onDeleteClicked }: NoteProps) => {
   return (
     <Box boxShadow="0px .25rem .25rem rgba(0, 0, 0, 0.1)" bg={'white'} py={'1rem'} px={'0.5rem'}>
-      <Text variant={'b2'}>{note}</Text>
+      <Box display="flex" alignItems={'center'} justifyContent={'space-between'} flexDir="row">
+        <Text variant={'b2'}>{note}</Text>
+        <IconButton aria-label="Delete Note" onClick={onDeleteClicked} icon={<DeleteIcon />} />
+      </Box>
     </Box>
   )
 }
@@ -35,7 +50,7 @@ const Seeker = () => {
   const { data: seeker } = useCoachSeekerData(id as string)
   const { data: coaches } = useCoachesData()
 
-  const [groupedNotes, setGroupedNotes] = useState<{ [key: string]: string[] }>({})
+  const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
   const [noteDraft, setNoteDraft] = useState('')
   const [workingSeeker, setWorkingSeeker] = useState(seeker)
   const { isAuthenticated, getAccessTokenSilently } = useAuth0()
@@ -66,7 +81,7 @@ const Seeker = () => {
         .sort((a, b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime()
         })
-        .reduce((acc: { [key: string]: string[] }, curr) => {
+        .reduce((acc: GroupedNotes, curr) => {
           const month = new Date(curr.date).getMonth()
           const year = new Date(curr.date).getFullYear()
 
@@ -74,7 +89,7 @@ const Seeker = () => {
 
           const monthNotes = acc[yearMonthDate] || []
 
-          return { ...acc, [yearMonthDate]: [...monthNotes, curr.note] }
+          return { ...acc, [yearMonthDate]: [...monthNotes, curr] }
         }, {}),
     )
   }, [workingSeeker])
@@ -84,16 +99,40 @@ const Seeker = () => {
     if (!noteDraft) return
     if (!workingSeeker) return
 
+    const currentNoteDraft = noteDraft
+    const noteId = crypto.randomUUID()
+
     post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes`,
       {
-        note: noteDraft,
+        note: currentNoteDraft,
+        note_id: noteId,
       },
       token,
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
-        notes: [...workingSeeker.notes, { note: noteDraft, date: new Date().toString() }],
+        notes: [
+          ...workingSeeker.notes,
+          { note: currentNoteDraft, noteId, date: new Date().toString() },
+        ],
+      })
+
+      setNoteDraft('')
+    })
+  }
+
+  const deleteNote = (noteIdToDelete: string) => {
+    if (!token) return
+    if (!workingSeeker) return
+
+    destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteIdToDelete}`,
+      token,
+    ).then((res) => {
+      setWorkingSeeker({
+        ...workingSeeker,
+        notes: [...workingSeeker.notes.filter(({ noteId }) => noteId !== noteIdToDelete)],
       })
 
       setNoteDraft('')
@@ -236,28 +275,25 @@ const Seeker = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   addNote()
+                  e.preventDefault()
                 }
               }}
             />
             {Object.entries(groupedNotes)
-              .sort((a, b) => {
-                return new Date(b[0]).getTime() - new Date(a[0]).getTime()
-              })
-              .map(([date, notes]) => {
-                return (
-                  <Stack key={date}>
-                    <Heading type="h3" color={'black'}>
-                      {new Date(date).toLocaleString('default', {
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </Heading>
-                    {notes.map((note, key) => {
-                      return <NoteBox key={key} note={note} />
+              .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+              .map(([date, notes]) => (
+                <Stack key={date}>
+                  <Heading type="h3" color={'black'}>
+                    {new Date(date).toLocaleString('default', {
+                      month: 'long',
+                      year: 'numeric',
                     })}
-                  </Stack>
-                )
-              })}
+                  </Heading>
+                  {notes.map(({ note, noteId }) => (
+                    <NoteBox key={noteId} note={note} onDeleteClicked={() => deleteNote(noteId)} />
+                  ))}
+                </Stack>
+              ))}
           </Stack>
         </GridItem>
         <GridItem pl="2" bg="gray.50" area={'right'}></GridItem>
