@@ -4,7 +4,7 @@ import { NoteBox } from '@/frontend/components/note-box'
 import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
 import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
-import { destroy, post } from '@/frontend/http-common'
+import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,
   Divider,
@@ -117,6 +117,27 @@ const Seeker = () => {
         ...workingSeeker,
         notes: workingSeeker.notes
           .filter((n) => n.noteId !== noteId),
+      })
+    })
+  }
+
+  const modifyNote = (noteId: string, updatedNote: string) => {
+    if (!token) return
+    if (!workingSeeker) return
+
+    put(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
+      {
+        note: updatedNote
+      },
+      token,
+    ).then((res) => {
+      setWorkingSeeker({
+        ...workingSeeker,
+        notes: workingSeeker.notes
+          .map((n) => n.noteId === noteId
+            ? { ...n, note: updatedNote}
+            : n ),
       })
     })
   }
@@ -272,7 +293,7 @@ const Seeker = () => {
                     })}
                   </Heading>
                   {notes.map(({ note, noteId }) => (
-                    <NoteBox key={noteId} note={note} noteId={noteId} onDeleteClicked={deleteNote} />
+                    <NoteBox key={noteId} note={note} noteId={noteId} onDeleteClicked={deleteNote} onNoteModified={modifyNote} />
                   ))}
                 </Stack>
               ))}
