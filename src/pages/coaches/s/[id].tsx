@@ -1,46 +1,29 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { NoteBox } from '@/frontend/components/note-box'
 import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
 import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
-import { destroy, post } from '@/frontend/http-common'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,
   Divider,
   Grid,
   GridItem,
   HStack,
-  IconButton,
   Link,
   Select,
   Stack,
   Tag,
-  Textarea,
+  Textarea
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-interface NoteProps {
-  note: string
-  onDeleteClicked(): void
-}
-
 interface GroupedNotes {
   [key: string]: SeekerNote[]
-}
-
-const NoteBox = ({ note, onDeleteClicked }: NoteProps) => {
-  return (
-    <Box boxShadow="0px .25rem .25rem rgba(0, 0, 0, 0.1)" bg={'white'} py={'1rem'} px={'0.5rem'}>
-      <Box display="flex" alignItems={'center'} justifyContent={'space-between'} flexDir="row">
-        <Text variant={'b2'}>{note}</Text>
-        <IconButton aria-label="Delete Note" onClick={onDeleteClicked} icon={<DeleteIcon />} />
-      </Box>
-    </Box>
-  )
 }
 
 const Seeker = () => {
@@ -122,20 +105,40 @@ const Seeker = () => {
     })
   }
 
-  const deleteNote = (noteIdToDelete: string) => {
+  const deleteNote = (noteId: string) => {
     if (!token) return
     if (!workingSeeker) return
 
     destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteIdToDelete}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
       token,
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
-        notes: [...workingSeeker.notes.filter(({ noteId }) => noteId !== noteIdToDelete)],
+        notes: workingSeeker.notes
+          .filter((n) => n.noteId !== noteId),
       })
+    })
+  }
 
-      setNoteDraft('')
+  const modifyNote = (noteId: string, updatedNote: string) => {
+    if (!token) return
+    if (!workingSeeker) return
+
+    put(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
+      {
+        note: updatedNote
+      },
+      token,
+    ).then((res) => {
+      setWorkingSeeker({
+        ...workingSeeker,
+        notes: workingSeeker.notes
+          .map((n) => n.noteId === noteId
+            ? { ...n, note: updatedNote}
+            : n ),
+      })
     })
   }
 
@@ -290,7 +293,7 @@ const Seeker = () => {
                     })}
                   </Heading>
                   {notes.map(({ note, noteId }) => (
-                    <NoteBox key={noteId} note={note} onDeleteClicked={() => deleteNote(noteId)} />
+                    <NoteBox key={noteId} note={note} noteId={noteId} onDeleteClicked={deleteNote} onNoteModified={modifyNote} />
                   ))}
                 </Stack>
               ))}
