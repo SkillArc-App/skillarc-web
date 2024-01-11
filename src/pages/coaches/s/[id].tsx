@@ -1,47 +1,29 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { NoteBox } from '@/frontend/components/note-box'
 import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
 import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
 import { destroy, post } from '@/frontend/http-common'
-import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Box,
   Divider,
   Grid,
   GridItem,
   HStack,
-  IconButton,
   Link,
   Select,
   Stack,
   Tag,
-  Textarea,
+  Textarea
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-interface NoteProps {
-  note: string
-  noteId: string
-  onDeleteClicked(id: string): void
-}
-
 interface GroupedNotes {
   [key: string]: SeekerNote[]
-}
-
-const NoteBox = ({ note, noteId, onDeleteClicked }: NoteProps) => {
-  return (
-    <Box boxShadow="0px .25rem .25rem rgba(0, 0, 0, 0.1)" bg={'white'} py={'1rem'} px={'0.5rem'}>
-      <Box display="flex" alignItems={'center'} justifyContent={'space-between'} flexDir="row">
-        <Text variant={'b2'}>{note}</Text>
-        <IconButton aria-label="Delete Note" onClick={() => onDeleteClicked(noteId)} icon={<DeleteIcon />} />
-      </Box>
-    </Box>
-  )
 }
 
 const Seeker = () => {
