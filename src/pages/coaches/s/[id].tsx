@@ -25,19 +25,20 @@ import { useEffect, useState } from 'react'
 
 interface NoteProps {
   note: string
-  onDeleteClicked(): void
+  noteId: string
+  onDeleteClicked(id: string): void
 }
 
 interface GroupedNotes {
   [key: string]: SeekerNote[]
 }
 
-const NoteBox = ({ note, onDeleteClicked }: NoteProps) => {
+const NoteBox = ({ note, noteId, onDeleteClicked }: NoteProps) => {
   return (
     <Box boxShadow="0px .25rem .25rem rgba(0, 0, 0, 0.1)" bg={'white'} py={'1rem'} px={'0.5rem'}>
       <Box display="flex" alignItems={'center'} justifyContent={'space-between'} flexDir="row">
         <Text variant={'b2'}>{note}</Text>
-        <IconButton aria-label="Delete Note" onClick={onDeleteClicked} icon={<DeleteIcon />} />
+        <IconButton aria-label="Delete Note" onClick={() => onDeleteClicked(noteId)} icon={<DeleteIcon />} />
       </Box>
     </Box>
   )
@@ -122,20 +123,19 @@ const Seeker = () => {
     })
   }
 
-  const deleteNote = (noteIdToDelete: string) => {
+  const deleteNote = (noteId: string) => {
     if (!token) return
     if (!workingSeeker) return
 
     destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteIdToDelete}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
       token,
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
-        notes: [...workingSeeker.notes.filter(({ noteId }) => noteId !== noteIdToDelete)],
+        notes: workingSeeker.notes
+          .filter((n) => n.noteId !== noteId),
       })
-
-      setNoteDraft('')
     })
   }
 
@@ -290,7 +290,7 @@ const Seeker = () => {
                     })}
                   </Heading>
                   {notes.map(({ note, noteId }) => (
-                    <NoteBox key={noteId} note={note} onDeleteClicked={() => deleteNote(noteId)} />
+                    <NoteBox key={noteId} note={note} noteId={noteId} onDeleteClicked={deleteNote} />
                   ))}
                 </Stack>
               ))}
