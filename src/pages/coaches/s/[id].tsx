@@ -240,6 +240,7 @@ const Seeker = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   addNote()
+                  e.preventDefault()
                 }
               }}
             />
