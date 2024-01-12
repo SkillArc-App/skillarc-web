@@ -18,6 +18,7 @@ export interface CoachSeeker {
   barriers: string[]
   assignedCoach: string
   lastContacted: string
+  lastActiveOn: string
   skillLevel: string
   stage: string
   notes: SeekerNote[]
