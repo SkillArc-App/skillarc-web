@@ -2,7 +2,7 @@ import DataTable from '@/frontend/components/DataTable.component'
 import { Heading } from '@/frontend/components/Heading.component'
 import { CoachSeeker, useCoachSeekersData } from '@/frontend/hooks/useCoachSeekersData'
 import { Box, HStack, Link, Tag } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 
@@ -23,6 +23,7 @@ const Coaches = () => {
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
   const columnHelper = createColumnHelper<CoachSeeker>()
+  const lastActiveColumnId = 'last-active-on';
 
   const columns = [
     columnHelper.accessor('email', {
@@ -63,13 +64,35 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
         </HStack>
       ),
     }),
+    columnHelper.accessor('lastActiveOn', {
+      header: 'Last Active On',
+      id: lastActiveColumnId,
+      cell: (row) => row.getValue(),
+      sortUndefined: 1,
+      sortDescFirst: false,
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId));
+        const date2 = new Date(row2.getValue(columnId));
+
+        return date1.getTime() - date2.getTime();
+      }
+    }),
     columnHelper.accessor('lastContacted', {
       header: 'Last Contacted',
       cell: (row) => row.getValue(),
+      sortingFn: 'datetime'
     })
   ]
 
-  return <DataTable columns={columns} data={data} />
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: lastActiveColumnId,
+    }
+  ]
+
+
+  return <DataTable columns={columns} data={data} initialSortState={initialSortState}/>
 }
 
 export default withAuthenticationRequired(Coaches)
