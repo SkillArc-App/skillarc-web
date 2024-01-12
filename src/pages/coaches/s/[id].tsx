@@ -215,6 +215,12 @@ const Seeker = () => {
               </Text>
             </Box>
             <Box mt={'1rem'}>
+              <Text variant={'b3'}>Last Active On</Text>
+              <Text variant={'b2'} color={'black'}>
+                {workingSeeker.lastActiveOn}
+              </Text>
+            </Box>
+            <Box mt={'1rem'}>
               <Text variant={'b3'}>Last Contacted</Text>
               <Text variant={'b2'} color={'black'}>
                 {workingSeeker.lastContacted}
