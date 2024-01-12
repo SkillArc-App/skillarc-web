@@ -66,11 +66,7 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
     columnHelper.accessor('lastContacted', {
       header: 'Last Contacted',
       cell: (row) => row.getValue(),
-    }),
-    columnHelper.accessor('skillLevel', {
-      header: 'Skill Level',
-      cell: (row) => row.getValue(),
-    }),
+    })
   ]
 
   return <DataTable columns={columns} data={data} />
