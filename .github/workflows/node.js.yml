@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  type-check:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,7 +25,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run type-check
+    - run: npm run build
   lint:
     runs-on: ubuntu-latest
 
