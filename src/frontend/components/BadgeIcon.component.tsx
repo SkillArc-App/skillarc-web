@@ -3,18 +3,18 @@ import { IconType } from 'react-icons'
 
 const BadgeIcon = ({
   count,
-  Icon,
+  icon: Icon,
   onClick,
 }: {
   count: number
-  Icon: IconType
+  icon: IconType
   onClick?: () => void
 }) => {
   const theme = useTheme()
 
   return (
     <Box onClick={onClick}>
-      <Icon size={'1rem'} color={theme.colors.gray[600]} />
+      <Icon role='icon' size={'1rem'} color={theme.colors.gray[600]} />
       {count > 0 && <div className="notification-badge">{count}</div>}
     </Box>
   )
