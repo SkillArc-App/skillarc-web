@@ -1,14 +1,55 @@
 import { OneMatchedJobPosting } from '@/pages/jobs'
-import {
-  CareerPath,
-  Employer,
-  Job,
-  JobPhoto,
-  MasterCertification,
-  MasterSkill,
-  Testimonial,
-} from '@prisma/client'
 import axios from 'axios'
+import { MasterCertification } from './certification.service'
+import { Employer } from './employer.service'
+import { MasterSkill } from './skills.service'
+
+export type CareerPath = {
+  id: string
+  title: string
+  upper_limit: string
+  lower_limit: string
+  order: number
+  job_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type Job = {
+  id: string
+  employer_id: string
+  benefits_description: string
+  responsibilities_description: string | null
+  employment_title: string
+  location: string
+  employment_type: 'FULLTIME' | 'PARTTIME'
+  hide_job: boolean
+  schedule: string | null
+  work_days: string | null
+  requirements_description: string | null
+  industry: string[]
+  created_at: Date
+  updated_at: Date
+}
+
+export type JobPhoto = {
+  id: string
+  photo_url: string
+  job_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type Testimonial = {
+  id: string
+  job_id: string
+  name: string
+  title: string
+  testimonial: string
+  photo_url: string | null
+  created_at: Date
+  updated_at: Date
+}
 
 export type GetOneJobPosting = {
   employer: Employer

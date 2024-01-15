@@ -2,10 +2,17 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
-import { MasterCertification } from '@prisma/client'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
 import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+
+type MasterCertification = {
+  id: string
+  certification: string
+  created_at: Date
+  updated_at: Date
+}
+
 export const EditCertifications = () => {
   //    hooks invocations
   const { data: user } = useUser()

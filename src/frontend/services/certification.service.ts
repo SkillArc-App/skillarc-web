@@ -1,6 +1,12 @@
-import { MasterCertification } from '@prisma/client'
 import axios from 'axios'
 import { http } from '../http-common'
+
+export type MasterCertification = {
+  id: string
+  certification: string
+  created_at: Date
+  updated_at: Date
+}
 
 const getOne = async (masterCertificationId: string) => {
   const res = await http.get<MasterCertification>(

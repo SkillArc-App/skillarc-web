@@ -1,38 +1,8 @@
 import { Logo } from '@/frontend/icons/Logo.icon'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, Flex, Image } from '@chakra-ui/react'
-import {
-  CareerPath,
-  Employer,
-  Job,
-  JobPhoto,
-  MasterCertification,
-  MasterSkill,
-  Testimonial,
-} from '@prisma/client'
 import { useState } from 'react'
-
-type GetOneJobPosting = {
-  employer: Employer
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  careerPaths: CareerPath[]
-  jobPhotos: JobPhoto[]
-  testimonials: Testimonial[]
-} & Job
 
 export const JobPhotos = ({ data }: { data: GetOneJobPosting }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0)

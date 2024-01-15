@@ -1,4 +1,5 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import {
   Accordion,
   AccordionButton,
@@ -7,40 +8,9 @@ import {
   AccordionPanel,
   ListItem,
 } from '@chakra-ui/react'
-import {
-  CareerPath,
-  Employer,
-  Job,
-  JobPhoto,
-  MasterCertification,
-  MasterSkill,
-  Testimonial,
-} from '@prisma/client'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 import { Text } from '../../../../components/Text.component'
-
-type GetOneJobPosting = {
-  employer: Employer
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  careerPaths: CareerPath[]
-  jobPhotos: JobPhoto[]
-  testimonials: Testimonial[]
-} & Job
 
 export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
   const newTheme = {

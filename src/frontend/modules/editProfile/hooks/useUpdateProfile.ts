@@ -2,24 +2,88 @@ import { useUser } from '@/frontend/hooks/useUser'
 import { FrontendEducationExperiencesService } from '@/frontend/services/educationexperiences.service'
 import { FrontendOtherExperiencesService } from '@/frontend/services/otherExperiences.service'
 import { FrontendPersonalExperiencesService } from '@/frontend/services/personalExperience.service'
-import { FrontendProfileService } from '@/frontend/services/profile.service'
+import { FrontendProfileService, Profile } from '@/frontend/services/profile.service'
 import { FrontendProfileCertificationService } from '@/frontend/services/profileCertifications.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'
-import { FrontendUserService } from '@/frontend/services/user.service'
-import {
-  EducationExperience,
-  OtherExperience,
-  PersonalExperience,
-  Profile,
-  ProfileCertification,
-  ProfileSkill,
-  Skills,
-  Story,
-  User,
-} from '@prisma/client'
+import { FrontendUserService, User } from '@/frontend/services/user.service'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
+
+export type EducationExperience = {
+  id: string
+  organization_id: string | null
+  organization_name: string | null
+  profile_id: string
+  title: string | null
+  activities: string | null
+  graduation_date: string | null
+  gpa: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type OtherExperience = {
+  id: string
+  organization_id: string | null
+  organization_name: string | null
+  profile_id: string
+  start_date: string | null
+  is_current: boolean | null
+  end_date: string | null
+  description: string | null
+  position: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type PersonalExperience = {
+  id: string
+  profile_id: string
+  activity: string | null
+  start_date: string | null
+  end_date: string | null
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type ProfileCertification = {
+  id: string
+  master_certification_id: string
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type ProfileSkill = {
+  id: string
+  master_skill_id: string
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Skills = {
+  id: string
+  name: string | null
+  type: string | null
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Story = {
+  id: string
+  profile_id: string
+  prompt: string
+  response: string
+  created_at: Date
+  updated_at: Date
+}
 
 export const useUpdateMyProfile = () => {
   const queryClient = useQueryClient()

@@ -1,43 +1,13 @@
-import { Flex, Tag, TagLeftIcon, Image } from '@chakra-ui/react'
+import { ProfileCertification, ProfileSkill } from '@/common/types/Profile'
+import { SkillTag } from '@/common/types/SkillTag'
 import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '../../../../components/Text.component'
-import { CheckIcon } from '@chakra-ui/icons'
+import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
-import { SkillTag } from '@/common/types/SkillTag'
-import {
-  CareerPath,
-  Employer,
-  Job,
-  JobPhoto,
-  MasterCertification,
-  MasterSkill,
-  Testimonial,
-} from '@prisma/client'
-import { ProfileCertification, ProfileSkill } from '@/common/types/Profile'
-import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
-
-type GetOneJobPosting = {
-  employer: Employer
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  careerPaths: CareerPath[]
-  jobPhotos: JobPhoto[]
-  testimonials: Testimonial[]
-} & Job
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { CheckIcon } from '@chakra-ui/icons'
+import { Flex, Image, Tag, TagLeftIcon } from '@chakra-ui/react'
+import { Text } from '../../../../components/Text.component'
 
 interface DesiredSkillsProps {
   data: GetOneJobPosting

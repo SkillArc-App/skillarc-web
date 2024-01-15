@@ -3,12 +3,23 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useProgramDataForTrainingProvider } from '@/frontend/hooks/useProgramData'
 import { Box, Button, Flex, HStack, Input, Link, Select, Stack } from '@chakra-ui/react'
-import { SeekerInvite } from '@prisma/client'
 import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+
+type SeekerInvite = {
+  id: string
+  email: string
+  first_name: string
+  last_name: string
+  program_id: string
+  training_provider_id: string
+  used_at: Date | null
+  created_at: Date
+  updated_at: Date
+}
 
 export default function Invite() {
   const router = useRouter()

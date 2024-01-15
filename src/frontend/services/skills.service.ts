@@ -1,6 +1,13 @@
-import { MasterSkill } from '@prisma/client'
-import { http } from '../http-common'
 import axios from 'axios'
+import { http } from '../http-common'
+
+export type MasterSkill = {
+  id: string
+  skill: string
+  type: 'PERSONAL' | 'TECHNICAL'
+  created_at: Date
+  updated_at: Date
+}
 
 const getOne = async (masterSkillId: string) => {
   const res = await http.get<MasterSkill>(`/api/masterSkills/${masterSkillId}`)

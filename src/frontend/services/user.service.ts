@@ -1,24 +1,69 @@
+import { http } from '../http-common'
+import { mixpanelInitUser } from '../utils/mixpanel'
+import { MasterCertification } from './certification.service'
+import { OtherExperience } from './otherExperiences.service'
+import { PersonalExperience } from './personalExperience.service'
 import {
   DesiredOutcomes,
   EducationExperience,
-  MasterCertification,
-  MasterSkill,
-  OnboardingSession,
-  OtherExperience,
-  PersonalExperience,
   ProfessionalInterests,
   Profile,
-  ProfileCertification,
-  ProfileSkill,
-  Recruiter,
-  Role,
   Story,
   TrainingProviderProfile,
-  User,
-  UserRoles,
-} from '@prisma/client'
-import { http } from '../http-common'
-import { mixpanelInitUser } from '../utils/mixpanel'
+} from './profile.service'
+import { ProfileCertification } from './profileCertifications.service'
+import { ProfileSkill } from './profileSkills.service'
+import { MasterSkill } from './skills.service'
+
+export type OnboardingSession = {
+  id: string
+  user_id: string
+  started_at: Date
+  completed_at: Date | null
+  current_step: string | null
+  responses: any
+  created_at: Date
+  updated_at: Date
+}
+
+export type Recruiter = {
+  id: string
+  user_id: string
+  employer_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type Role = {
+  id: string
+  name: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type User = {
+  id: string
+  name: string | null
+  email: string | null
+  emailVerified: Date | null
+  image: string | null
+  first_name: string | null
+  last_name: string | null
+  zip_code: string | null
+  phone_number: string | null
+  onboarding_session_id: string | null
+  user_type: ['SEEKER' | 'TRAINING_PROVIDER']
+  created_at: Date
+  updated_at: Date
+}
+
+export type UserRoles = {
+  id: string
+  user_id: string
+  role_id: string
+  created_at: Date
+  updated_at: Date
+}
 
 export type FullUser = {
   id: string

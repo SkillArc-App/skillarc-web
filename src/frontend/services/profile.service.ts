@@ -1,26 +1,115 @@
-import {
-  DesiredOutcomes,
-  EducationExperience,
-  MasterCertification,
-  MasterSkill,
-  OtherExperience,
-  PersonalExperience,
-  Preference,
-  ProfessionalInterests,
-  Profile,
-  ProfileCertification,
-  ProfileSkill,
-  Reference,
-  SeekerTrainingProvider,
-  Skills,
-  Story,
-  TrainingProvider,
-  TrainingProviderProfile,
-  User,
-} from '@prisma/client'
 import axios from 'axios'
 import { http } from '../http-common'
 import { mixpanelInitProfile } from '../utils/mixpanel'
+import { MasterCertification } from './certification.service'
+import { OtherExperience } from './otherExperiences.service'
+import { PersonalExperience } from './personalExperience.service'
+import { ProfileCertification } from './profileCertifications.service'
+import { ProfileSkill } from './profileSkills.service'
+import { MasterSkill } from './skills.service'
+import { User } from './user.service'
+
+export type DesiredOutcomes = {
+  id: string
+  profile_id: string
+  response: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type EducationExperience = {
+  id: string
+  organization_id: string | null
+  organization_name: string | null
+  profile_id: string
+  title: string | null
+  activities: string | null
+  graduation_date: string | null
+  gpa: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Preference = {
+  id: string
+  email_consent: Date | null
+  information_consent: Date | null
+  profile_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type ProfessionalInterests = {
+  id: string
+  profile_id: string
+  response: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type Profile = {
+  id: string
+  user_id: string
+  bio: string | null
+  image: string | null
+  status: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Reference = {
+  id: string
+  author_profile_id: string
+  reference_text: string
+  seeker_profile_id: string
+  training_provider_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type SeekerTrainingProvider = {
+  id: string
+  program_id: string | null
+  training_provider_id: string
+  user_id: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type Skills = {
+  id: string
+  name: string | null
+  type: string | null
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Story = {
+  id: string
+  profile_id: string
+  prompt: string
+  response: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type TrainingProvider = {
+  id: string
+  name: string
+  description: string
+  created_at: Date
+  updated_at: Date
+}
+
+export type TrainingProviderProfile = {
+  id: string
+  training_provider_id: string
+  user_id: string
+  created_at: Date
+  updated_at: Date
+}
 
 export type GetOneProfileResponse = {
   industryInterests: string[]

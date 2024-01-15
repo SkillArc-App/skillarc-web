@@ -2,10 +2,9 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { OtherExperience } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { OtherExperience, useUpdateMyProfile } from '../hooks/useUpdateProfile'
 
 export const EditExperience = () => {
   const router = useRouter()
