@@ -20,7 +20,7 @@ const MessageCenter = () => {
 
   return (
     <Box cursor="pointer" className="notification-wrapper" px={'0rem'}>
-      <BadgeIcon Icon={FaInbox} count={unreadCount} onClick={() => router.push('/chats')} />
+      <BadgeIcon icon={FaInbox} count={unreadCount} onClick={() => router.push('/chats')} />
     </Box>
   )
 }

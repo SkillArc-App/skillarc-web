@@ -5,7 +5,7 @@ import BadgeIcon from './BadgeIcon.component'
 const NotificationIcon = ({ count }: { count: number }) => {
   return (
     <Box cursor="pointer" className="notification-wrapper" px={'0rem'}>
-      <BadgeIcon Icon={FaBell} count={count} />
+      <BadgeIcon icon={FaBell} count={count} />
     </Box>
   )
 }
