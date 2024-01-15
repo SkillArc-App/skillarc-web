@@ -215,6 +215,13 @@ const Seeker = () => {
               </Text>
             </Box>
             <Box mt={'1rem'}>
+              <Text variant={'b3'}>Last
+               On</Text>
+              <Text variant={'b2'} color={'black'}>
+                {workingSeeker.lastActiveOn}
+              </Text>
+            </Box>
+            <Box mt={'1rem'}>
               <Text variant={'b3'}>Last Contacted</Text>
               <Text variant={'b2'} color={'black'}>
                 {workingSeeker.lastContacted}
@@ -292,8 +299,13 @@ const Seeker = () => {
                       year: 'numeric',
                     })}
                   </Heading>
-                  {notes.map(({ note, noteId }) => (
-                    <NoteBox key={noteId} note={note} noteId={noteId} onDeleteClicked={deleteNote} onNoteModified={modifyNote} />
+                  {notes.map((note) => (
+                    <NoteBox
+                      key={note.noteId}
+                      note={note}
+                      onDeleteClicked={deleteNote}
+                      onNoteModified={modifyNote}
+                    />
                   ))}
                 </Stack>
               ))}

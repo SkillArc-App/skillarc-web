@@ -1,17 +1,18 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, HStack, IconButton, Text, Textarea } from "@chakra-ui/react"
-import { FocusEventHandler, useEffect, useRef, useState } from "react"
+import { Box, HStack, IconButton, Text, Textarea, VStack } from "@chakra-ui/react"
+import { useState } from "react"
+import { SeekerNote } from "../hooks/useCoachSeekersData"
 
 interface NoteProps {
-  note: string
-  noteId: string
+  note: SeekerNote
   onDeleteClicked(id: string): void
   onNoteModified(id: string, note: string): void
 }
 
-export const NoteBox = ({ note, noteId, onDeleteClicked, onNoteModified }: NoteProps) => {
+export const NoteBox = ({ note: { note, noteId, date }, onDeleteClicked, onNoteModified }: NoteProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [noteDraft, setNoteDraft] = useState(note)
+  const dateObj = new Date(date);
 
   const toggleEditing = () => {
     if (isEditing) {
@@ -40,7 +41,10 @@ export const NoteBox = ({ note, noteId, onDeleteClicked, onNoteModified }: NoteP
       }}
     />
   ) : (
-    <Text variant={'b2'}>{note}</Text>
+    <VStack align={'flex-start'}>
+      <Text variant={'b2'}>{note}</Text>
+      <Text variant={'b3'}>{`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}</Text>
+    </VStack>
   )
 
   return (
