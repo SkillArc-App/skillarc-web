@@ -23,6 +23,7 @@ describe('Onboarding', () => {
           return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
         })
         .select(r['email'])
+      cy.visit('/')
     })
 
     cy.get('input').filter('[placeholder="First name"]').type('Dwight')

@@ -8,8 +8,9 @@
     "build": "prisma generate --schema=./src/backend/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress:open": "cypress open",
-    "test": "jest"
+    "test": "jest",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "prisma": {},
   "dependencies": {
