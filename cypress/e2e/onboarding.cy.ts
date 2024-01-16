@@ -2,7 +2,7 @@ export {}
 
 describe('Onboarding', () => {
   beforeEach(() => {
-    cy.task('resetDBRails').then((r: any) => {
+    cy.task('createUser').then((r: any) => {
       cy.log(r['email'])
       cy.wrap(r).as('response')
     })
