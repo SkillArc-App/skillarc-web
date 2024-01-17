@@ -1,5 +1,14 @@
-import { Reference } from '@prisma/client'
 import axios from 'axios'
+
+export type Reference = {
+  id: string
+  author_profile_id: string
+  reference_text: string
+  seeker_profile_id: string
+  training_provider_id: string
+  created_at: Date
+  updated_at: Date
+}
 
 const addReference = async (seekerProfileId: string, reference: string, token: string) => {
   const res = await axios.create({ withCredentials: false }).post<Reference>(

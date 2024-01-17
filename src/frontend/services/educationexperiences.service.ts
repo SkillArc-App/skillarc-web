@@ -1,5 +1,17 @@
-import { EducationExperience } from '@prisma/client'
 import axios from 'axios'
+
+export type EducationExperience = {
+  id: string
+  organization_id: string | null
+  organization_name: string | null
+  profile_id: string
+  title: string | null
+  activities: string | null
+  graduation_date: string | null
+  gpa: string | null
+  created_at: Date
+  updated_at: Date
+}
 
 const create = async (
   educationExperience: Partial<EducationExperience>,

@@ -1,5 +1,18 @@
-import { OtherExperience } from '@prisma/client'
 import { destroy, post, put } from '../http-common'
+
+export type OtherExperience = {
+  id: string
+  organization_id: string | null
+  organization_name: string | null
+  profile_id: string
+  start_date: string | null
+  is_current: boolean | null
+  end_date: string | null
+  description: string | null
+  position: string | null
+  created_at: Date
+  updated_at: Date
+}
 
 const create = async (
   otherExperience: Partial<OtherExperience>,

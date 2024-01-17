@@ -2,10 +2,9 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { PersonalExperience } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { PersonalExperience, useUpdateMyProfile } from '../hooks/useUpdateProfile'
 
 export const EditPersonalExperience = () => {
   const router = useRouter()
@@ -46,7 +45,12 @@ export const EditPersonalExperience = () => {
     ) {
       router.back()
     }
-  }, [addPersonalExperienceStatus, updatePersonalExperienceStatus, deleteOtherExperienceStatus, router])
+  }, [
+    addPersonalExperienceStatus,
+    updatePersonalExperienceStatus,
+    deleteOtherExperienceStatus,
+    router,
+  ])
 
   const handleSave = () => {
     const profileId = user?.profile?.id

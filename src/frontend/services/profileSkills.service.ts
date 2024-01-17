@@ -1,5 +1,23 @@
-import { ProfileSkill, Skills } from '@prisma/client'
 import axios from 'axios'
+
+export type ProfileSkill = {
+  id: string
+  master_skill_id: string
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
+
+export type Skills = {
+  id: string
+  name: string | null
+  type: string | null
+  profile_id: string
+  description: string | null
+  created_at: Date
+  updated_at: Date
+}
 
 const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
   const res = await axios

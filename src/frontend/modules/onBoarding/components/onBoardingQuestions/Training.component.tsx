@@ -1,6 +1,6 @@
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
+import { TrainingProvider } from '@/frontend/services/profile.service'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
-import { TrainingProvider } from '@prisma/client'
 import { Text } from '../../../../components/Text.component'
 
 export const Training = ({

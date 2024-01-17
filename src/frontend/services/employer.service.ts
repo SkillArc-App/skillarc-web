@@ -1,5 +1,14 @@
-import { Employer } from '@prisma/client'
 import axios from 'axios'
+
+export type Employer = {
+  id: string
+  name: string
+  location: string | null
+  bio: string
+  logo_url: string | null
+  created_at: Date
+  updated_at: Date
+}
 
 const getAll = async (token: string) => {
   const res = await axios

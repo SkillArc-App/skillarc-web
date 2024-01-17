@@ -1,37 +1,8 @@
 import { Heading } from '@/frontend/components/Heading.component'
-import { Flex, Avatar, Divider } from '@chakra-ui/react'
-import {
-  CareerPath,
-  Employer,
-  Job,
-  JobPhoto,
-  MasterCertification,
-  MasterSkill,
-  Testimonial,
-} from '@prisma/client'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Avatar, Divider, Flex } from '@chakra-ui/react'
 import { Text } from '../../../../components/Text.component'
 
-type GetOneJobPosting = {
-  employer: Employer
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  careerPaths: CareerPath[]
-  jobPhotos: JobPhoto[]
-  testimonials: Testimonial[]
-} & Job
 export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
   return (
     <Flex

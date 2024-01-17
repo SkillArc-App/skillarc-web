@@ -1,13 +1,11 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { formatCurrency } from '@/frontend/helpers/formatCurrency.helper'
 import { NeonCircleIcon } from '@/frontend/icons/NeonCircle.icon'
+import { CareerPath, GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 import { Text } from '../../../../components/Text.component'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
-import { CareerPath } from '@prisma/client'
 
 export const CareerJourney = ({ data }: { data: GetOneJobPosting }) => {
-  // TODO: Add bulleted list UI
   return (
     <Flex
       bg="white"
