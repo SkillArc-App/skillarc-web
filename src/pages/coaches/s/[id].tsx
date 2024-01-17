@@ -7,6 +7,9 @@ import { useCoachesData } from '@/frontend/hooks/useCoachesData'
 import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Divider,
   Grid,
   GridItem,
@@ -15,7 +18,7 @@ import {
   Select,
   Stack,
   Tag,
-  Textarea
+  Textarea,
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
@@ -109,16 +112,14 @@ const Seeker = () => {
     if (!token) return
     if (!workingSeeker) return
 
-    destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
-      token,
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        notes: workingSeeker.notes
-          .filter((n) => n.noteId !== noteId),
-      })
-    })
+    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token).then(
+      (res) => {
+        setWorkingSeeker({
+          ...workingSeeker,
+          notes: workingSeeker.notes.filter((n) => n.noteId !== noteId),
+        })
+      },
+    )
   }
 
   const modifyNote = (noteId: string, updatedNote: string) => {
@@ -128,16 +129,15 @@ const Seeker = () => {
     put(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
       {
-        note: updatedNote
+        note: updatedNote,
       },
       token,
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
-        notes: workingSeeker.notes
-          .map((n) => n.noteId === noteId
-            ? { ...n, note: updatedNote}
-            : n ),
+        notes: workingSeeker.notes.map((n) =>
+          n.noteId === noteId ? { ...n, note: updatedNote } : n,
+        ),
       })
     })
   }
@@ -193,6 +193,13 @@ const Seeker = () => {
       >
         <GridItem pl="2" bg="white" area={'nav'}>
           <Stack p={'1rem'}>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <BreadcrumbLink as={NextLink} href="/coaches">
+                  {'< Back to Seekers'}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
             <Heading type="h3" color={'black'}>
               {workingSeeker.firstName} {workingSeeker.lastName}
             </Heading>
@@ -215,8 +222,7 @@ const Seeker = () => {
               </Text>
             </Box>
             <Box mt={'1rem'}>
-              <Text variant={'b3'}>Last
-               On</Text>
+              <Text variant={'b3'}>Last On</Text>
               <Text variant={'b2'} color={'black'}>
                 {workingSeeker.lastActiveOn}
               </Text>
