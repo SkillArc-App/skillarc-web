@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { defineConfig } from 'cypress'
 import resetDBRails from 'cypress/tasks/resetDBRails'
 
