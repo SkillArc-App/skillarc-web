@@ -12,12 +12,13 @@ describe('Coaches', () => {
     })
   })
 
-  it('should navigate through onboarding', () => {
+  it('should navigate through coaches dashboard', () => {
     cy.visit('/coaches')
 
     let coachEmail = ''
 
     cy.get('@coach').then((r: any) => {
+      cy.get('div').contains('mock auth')
       coachEmail = r['email']
       cy.get('select')
         .filter((_, element) => {
