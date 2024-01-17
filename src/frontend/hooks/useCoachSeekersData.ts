@@ -9,6 +9,13 @@ export interface SeekerNote {
   noteId: string
 }
 
+export interface SeekerApplication {
+  status: string
+  employerName: string
+  jobId: string
+  employmentTitle: string
+}
+
 export interface CoachSeeker {
   seekerId: string
   firstName: string
@@ -22,6 +29,7 @@ export interface CoachSeeker {
   skillLevel: string
   stage: string
   notes: SeekerNote[]
+  applications: SeekerApplication[]
 }
 
 export const useCoachSeekersData = () => {
