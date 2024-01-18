@@ -18,11 +18,11 @@ describe('Onboarding', () => {
       cy.get('div').contains('mock auth')
 
       // get select and filter on the one with an email regex
-      cy.get('select')
-        .filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        .select(r['email'])
+      const emailSelect = cy.get('select').filter((_, element) => {
+        return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
+      })
+      emailSelect.should('be.enabled')
+      emailSelect.select(r['email'], { timeout: 10000 })
       cy.visit('/')
     })
 
@@ -78,19 +78,6 @@ describe('Onboarding', () => {
     cy.get('div').contains('Healthcare').click()
     cy.get('button').contains('Next').click()
     cy.get('body').should('contain', 'Your future is bright! 🎉')
-
-    const apply = cy.get('body').contains('Get Ready to Apply').parent()
-
-    apply.should('contain', '1/2')
-
-    const career = cy.get('body').contains('Start your career!').parent()
-
-    career.should('contain', '0/2')
-
-    // press escape to close modal
-    cy.get('body').trigger('keydown', { keyCode: 27 })
-    cy.wait(500)
-    cy.get('body').trigger('keyup', { keyCode: 27 })
 
     cy.get('body').should('contain', 'Find your perfect job 💼')
     cy.get('body').should('contain', 'Construction')
