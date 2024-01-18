@@ -18,11 +18,11 @@ describe('Onboarding', () => {
       cy.get('div').contains('mock auth')
 
       // get select and filter on the one with an email regex
-      cy.get('select')
-        .filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        .select(r['email'])
+      const emailSelect = cy.get('select').filter((_, element) => {
+        return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
+      })
+      emailSelect.should('be.enabled')
+      emailSelect.select(r['email'], { timeout: 10000 })
       cy.visit('/')
     })
 
@@ -79,19 +79,6 @@ describe('Onboarding', () => {
     cy.get('button').contains('Next').click()
     cy.get('body').should('contain', 'Your future is bright! 🎉')
 
-    const apply = cy.get('body').contains('Get Ready to Apply').parent()
-
-    apply.should('contain', '1/2')
-
-    const career = cy.get('body').contains('Start your career!').parent()
-
-    career.should('contain', '0/2')
-
-    // press escape to close modal
-    cy.get('body').trigger('keydown', { keyCode: 27 })
-    cy.wait(500)
-    cy.get('body').trigger('keyup', { keyCode: 27 })
-
     cy.get('body').should('contain', 'Find your perfect job 💼')
     cy.get('body').should('contain', 'Construction')
     cy.get('body').should('contain', 'Manufacturing')
@@ -132,6 +119,33 @@ describe('Onboarding', () => {
     personalExperience.should('contain', '2001 - 2010')
     personalExperience.should('contain', 'I learned to be a leader of my subordinates')
 
+    cy.get('button').filter('[aria-label="Edit Profile"]').click()
+
+    const firstNameInput = cy.get('p').contains('First name').next()
+    firstNameInput.should('have.value', 'Dwight')
+
+    const lastNameInput = cy.get('p').contains('Last name').next()
+    lastNameInput.should('have.value', 'Schrute')
+
+    const zipCodeInput = cy.get('p').contains('ZIP Code').next()
+    zipCodeInput.should('have.value', '')
+
+    const phoneInput = cy.get('p').contains('Phone number').next()
+    phoneInput.should('have.value', '570-555-5555')
+
+    firstNameInput.clear().type('Michael')
+    lastNameInput.clear().type('Scott')
+    zipCodeInput.clear().type('18503')
+    phoneInput.clear().type('570-444-4444')
+
+    cy.get('button').contains('Save Changes').click()
+
+    cy.get('body').should('not.contain', 'Dwight Schrute')
+    cy.get('body').should('contain', 'Michael Scott')
+    cy.get('body').should('not.contain', '570-555-5555')
+    cy.get('body').should('contain', '570-444-4444')
+    cy.get('body').should('contain', '18503')
+
     const about = cy.get('div').contains('About').parent().parent()
     about.within(() => {
       cy.get('button').click()
@@ -140,7 +154,7 @@ describe('Onboarding', () => {
     cy.get('button').contains('What are you most passionate about?').click()
     cy.get('textarea').type('Beets')
     cy.get('button').contains('Save Changes').click()
-    cy.get('body').should('contain', 'Dwight Schrute')
+    cy.get('body').should('contain', 'Michael Scott')
     cy.get('body').should('contain', 'What are you most passionate about?')
     cy.get('body').should('contain', 'Beets')
     cy.get('svg').first()

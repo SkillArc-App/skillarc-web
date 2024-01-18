@@ -47,6 +47,7 @@ export const ProfileSummary = () => {
               <Button
                 variant={'icon'}
                 color="greyscale.600"
+                aria-label="Edit Profile"
                 onClick={() =>
                   router.push({
                     pathname: `${profileId}/editProfile`,
