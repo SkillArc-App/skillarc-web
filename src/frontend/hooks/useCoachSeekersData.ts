@@ -5,6 +5,7 @@ import { get } from '../http-common'
 
 export interface SeekerNote {
   note: string
+  noteTakenBy: string
   date: string
   noteId: string
 }

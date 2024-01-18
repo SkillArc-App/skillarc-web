@@ -101,7 +101,7 @@ const Seeker = () => {
         ...workingSeeker,
         notes: [
           ...workingSeeker.notes,
-          { note: currentNoteDraft, noteId, date: new Date().toString() },
+          { note: currentNoteDraft, noteId, date: new Date().toString(), noteTakenBy: 'You' },
         ],
       })
 

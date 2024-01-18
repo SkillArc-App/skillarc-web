@@ -1,7 +1,7 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons"
-import { Box, HStack, IconButton, Text, Textarea, VStack } from "@chakra-ui/react"
-import { useState } from "react"
-import { SeekerNote } from "../hooks/useCoachSeekersData"
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
+import { Box, HStack, IconButton, Text, Textarea, VStack } from '@chakra-ui/react'
+import { useState } from 'react'
+import { SeekerNote } from '../hooks/useCoachSeekersData'
 
 interface NoteProps {
   note: SeekerNote
@@ -9,15 +9,19 @@ interface NoteProps {
   onNoteModified(id: string, note: string): void
 }
 
-export const NoteBox = ({ note: { note, noteId, date }, onDeleteClicked, onNoteModified }: NoteProps) => {
+export const NoteBox = ({
+  note: { note, noteId, noteTakenBy, date },
+  onDeleteClicked,
+  onNoteModified,
+}: NoteProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [noteDraft, setNoteDraft] = useState(note)
-  const dateObj = new Date(date);
+  const dateObj = new Date(date)
 
   const toggleEditing = () => {
     if (isEditing) {
-      setNoteDraft(note);
-      setIsEditing(false);
+      setNoteDraft(note)
+      setIsEditing(false)
     } else {
       setIsEditing(true)
     }
@@ -43,7 +47,9 @@ export const NoteBox = ({ note: { note, noteId, date }, onDeleteClicked, onNoteM
   ) : (
     <VStack align={'flex-start'}>
       <Text variant={'b2'}>{note}</Text>
-      <Text variant={'b3'}>{`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}</Text>
+      <Text variant={'b3'}>
+        {noteTakenBy} - {`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}
+      </Text>
     </VStack>
   )
 
@@ -57,11 +63,7 @@ export const NoteBox = ({ note: { note, noteId, date }, onDeleteClicked, onNoteM
             onClick={() => onDeleteClicked(noteId)}
             icon={<DeleteIcon />}
           />
-          <IconButton
-            aria-label="Modify Note"
-            onClick={toggleEditing}
-            icon={<EditIcon />}
-          />
+          <IconButton aria-label="Modify Note" onClick={toggleEditing} icon={<EditIcon />} />
         </HStack>
       </Box>
     </Box>
