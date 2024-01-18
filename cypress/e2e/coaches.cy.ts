@@ -1,4 +1,4 @@
-export { }
+export {}
 
 describe('Coaches', () => {
   beforeEach(() => {
@@ -74,11 +74,14 @@ describe('Coaches', () => {
               reloadUntilTextAppears(retries - 1)
             })
           }
-        });
-      };
+        })
+      }
       reloadUntilTextAppears()
 
       cy.get('body').should('contain', 'This is a new note')
+
+      cy.get('button[aria-label="Delete Note"]').click()
+      cy.get('body').should('not.contain', 'This is a new note')
       cy.contains('p', 'Job Title')
         .parent()
         .within(() => {
