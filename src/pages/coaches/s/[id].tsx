@@ -188,7 +188,7 @@ const Seeker = () => {
       return <CloseIcon boxSize={3} color={'red'} />
     }
 
-    return <TimeIcon boxSize={3} color={'gray'}/>
+    return <TimeIcon boxSize={3} color={'gray'} />
   }
 
   if (!workingSeeker) return <></>
@@ -331,7 +331,7 @@ const Seeker = () => {
           </Stack>
         </GridItem>
         <GridItem pl="2" bg="gray.50" area={'right'}>
-          <Stack p={'2rem'}>
+          <Stack p={'2rem'} overflowY={'scroll'}>
             <Heading type="h3" color={'black'}>
               Applications
             </Heading>
