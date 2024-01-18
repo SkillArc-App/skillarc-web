@@ -5,6 +5,7 @@ import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
 import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
 import { destroy, post, put } from '@/frontend/http-common'
+import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import {
   Box,
   Breadcrumb,
@@ -178,6 +179,18 @@ const Seeker = () => {
     })
   }
 
+  const applicationIcon = (applicationStatus: string) => {
+    if (applicationStatus == 'hire') {
+      return <CheckIcon boxSize={3} color={'green'} />
+    }
+
+    if (applicationStatus == 'pass') {
+      return <CloseIcon boxSize={3} color={'red'} />
+    }
+
+    return <TimeIcon boxSize={3} color={'gray'}/>
+  }
+
   if (!workingSeeker) return <></>
 
   return (
@@ -317,7 +330,39 @@ const Seeker = () => {
               ))}
           </Stack>
         </GridItem>
-        <GridItem pl="2" bg="gray.50" area={'right'}></GridItem>
+        <GridItem pl="2" bg="gray.50" area={'right'}>
+          <Stack p={'2rem'}>
+            <Heading type="h3" color={'black'}>
+              Applications
+            </Heading>
+            <Divider />
+            {workingSeeker.applications.map(({ employerName, employmentTitle, status, jobId }) => (
+              <Stack p={'1rem'} key={jobId} bg="white" height={'100%'}>
+                <Box>
+                  <Text variant={'b3'}>Employer</Text>
+                  <Text variant={'b2'} color={'black'}>
+                    {employerName}
+                  </Text>
+                </Box>
+                <Box mt={'1rem'}>
+                  <Text variant={'b3'}>Job Title</Text>
+                  <Link variant={'b2'} as={NextLink} href={`/jobs/${jobId}`}>
+                    {employmentTitle}
+                  </Link>
+                </Box>
+                <Box mt={'1rem'}>
+                  <Text variant={'b3'}>Application Status</Text>
+                  <HStack>
+                    {applicationIcon(status)}
+                    <Text variant={'b2'} color={'black'}>
+                      {status}
+                    </Text>
+                  </HStack>
+                </Box>
+              </Stack>
+            ))}
+          </Stack>
+        </GridItem>
       </Grid>
     </Box>
   )
