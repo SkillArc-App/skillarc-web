@@ -1,25 +1,8 @@
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { FrontendMasterCertificationService } from '../services/certification.service'
+import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useMasterCertificationData = () => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  const masterCertificationQuery = useQuery(['masterCertification', token], () => {
-    if (!token) return Promise.reject('No token')
-
+  const masterCertificationQuery = useAuthenticatedQuery(['masterCertification'], ({ token }) => {
     return FrontendMasterCertificationService.getAll(token)
   })
 
