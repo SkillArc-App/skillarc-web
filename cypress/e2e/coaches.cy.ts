@@ -62,14 +62,16 @@ describe('Coaches', () => {
       cy.get('h1').contains('Seekers')
       cy.get('a').contains(r['email']).click()
 
-      const reloadUntilTextAppears = () => {
+      const reloadUntilTextAppears = (retries = 5) => {
         cy.get('body').contains(r['first_name'])
         cy.get('body').then(($body) => {
           cy.log($body.text())
           if ($body.text().includes('This is a new note')) {
           } else {
+            if (retries === 0) return
+
             cy.reload().then(() => {
-              reloadUntilTextAppears()
+              reloadUntilTextAppears(retries - 1)
             })
           }
         });
