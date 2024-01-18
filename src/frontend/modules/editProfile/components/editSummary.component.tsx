@@ -25,6 +25,15 @@ export const EditSummary = () => {
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!user) return
+
+    setFirstName(user.firstName ?? '')
+    setLastName(user.lastName ?? '')
+    setZipCode(user.zipCode ?? '')
+    setPhoneNumber(user.phoneNumber ?? '')
+  }, [user])
+
+  useEffect(() => {
     const getToken = async () => {
       const token = await getAccessTokenSilently()
       setToken(token)
@@ -59,6 +68,7 @@ export const EditSummary = () => {
         router.back()
       })
   }
+
   return (
     <Flex p="1rem" w="100%" gap="1rem" flexDir="column">
       <Heading variant="h2">Edit Intro</Heading>
