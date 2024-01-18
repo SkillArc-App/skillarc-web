@@ -10,7 +10,7 @@ interface NoteProps {
 }
 
 export const NoteBox = ({
-  note: { note, noteId, date },
+  note: { note, noteId, noteTakenBy, date },
   onDeleteClicked,
   onNoteModified,
 }: NoteProps) => {
@@ -47,9 +47,9 @@ export const NoteBox = ({
   ) : (
     <VStack align={'flex-start'}>
       <Text variant={'b2'}>{note}</Text>
-      <Text
-        variant={'b3'}
-      >{`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}</Text>
+      <Text variant={'b3'}>
+        {noteTakenBy} - {`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}
+      </Text>
     </VStack>
   )
 
