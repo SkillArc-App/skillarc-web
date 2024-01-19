@@ -1,4 +1,4 @@
-export {}
+export { }
 
 describe('Coaches', () => {
   beforeEach(() => {
@@ -60,9 +60,21 @@ describe('Coaches', () => {
       cy.get('body').should('contain', `${r['last_name']}`)
 
       cy.get('h1').contains('Seekers')
-
-      cy.wait(5000)
       cy.get('a').contains(r['email']).click()
+
+      const reloadUntilTextAppears = () => {
+        cy.get('body').contains(r['first_name'])
+        cy.get('body').then(($body) => {
+          cy.log($body.text())
+          if ($body.text().includes('This is a new note')) {
+          } else {
+            cy.reload().then(() => {
+              reloadUntilTextAppears()
+            })
+          }
+        });
+      };
+      reloadUntilTextAppears()
 
       cy.get('body').should('contain', 'This is a new note')
       cy.contains('p', 'Job Title')
