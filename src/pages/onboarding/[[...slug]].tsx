@@ -1,7 +1,6 @@
 import { onBoardingResponse } from '@/common/types/onBoardingResponse'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useOnboardingData } from '@/frontend/hooks/useOnboardingData'
-import { useUser } from '@/frontend/hooks/useUser'
 import { Employment } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/Employment.component'
 import { NewEducation } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/NewEductation.component'
 import { NewName } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/NewName.component'
@@ -14,16 +13,15 @@ import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useQueryClient } from 'react-query'
 
 const Onboarding = () => {
-  const { data: user, isLoading } = useUser()
   const router = useRouter()
-
-  const queryClient = useQueryClient()
 
   const { getAccessTokenSilently } = useAuth0()
   const [token, setToken] = useState<string | null>(null)
+
+  const { slug } = router.query
+  const currentStep = slug?.at(0)
 
   useEffect(() => {
     const getToken = async () => {
@@ -47,6 +45,12 @@ const Onboarding = () => {
     if (onboardingDataIsFetching) return
     if (!token) return
 
+    const routeToSlug = (newSlug: string) => {
+      if (newSlug !== currentStep) {
+        router.push(`/onboarding/${newSlug}`, undefined, { shallow: true })
+      }
+    }
+
     if (!onboardingData?.id) {
       return
     }
@@ -57,12 +61,12 @@ const Onboarding = () => {
     }
 
     if (!onboardingData.responses.name) {
-      router.push('/onboarding/name', undefined, { shallow: true })
+      routeToSlug('name')
       return
     }
 
     if (!onboardingData.responses.reliability) {
-      router.push('/onboarding/reliability', undefined, { shallow: true })
+      routeToSlug('reliability')
       return
     }
 
@@ -72,7 +76,7 @@ const Onboarding = () => {
       reliability.includes("I've had or currently have a job") &&
       !onboardingData.responses.experience
     ) {
-      router.push('/onboarding/employment', undefined, { shallow: true })
+      routeToSlug('employment')
       return
     }
 
@@ -80,7 +84,7 @@ const Onboarding = () => {
       reliability.includes("I've attended a Training Program") &&
       !onboardingData.responses.trainingProvider
     ) {
-      router.push('/onboarding/training', undefined, { shallow: true })
+      routeToSlug('training')
       return
     }
 
@@ -88,7 +92,7 @@ const Onboarding = () => {
       reliability.includes('I have a High School Diploma / GED') &&
       !onboardingData.responses.education
     ) {
-      router.push('/onboarding/education', undefined, { shallow: true })
+      routeToSlug('education')
       return
     }
 
@@ -96,18 +100,15 @@ const Onboarding = () => {
       reliability.includes("I have other experience I'd like to share") &&
       !onboardingData.responses.other
     ) {
-      router.push('/onboarding/other', undefined, { shallow: true })
+      routeToSlug('other')
       return
     }
 
     if (!onboardingData.responses.opportunityInterests) {
-      router.push('/onboarding/opportunities', undefined, { shallow: true })
+      routeToSlug('opportunities')
       return
     }
   }, [onboardingData, onboardingDataIsFetching, onboardingDataIsLoading, router, token])
-
-  const { slug } = router.query
-  const currentStep = slug?.at(0)
 
   const [workingOnboardingResponse, setWorkingOnboardingResponse] = useState<onBoardingResponse>({
     responses: { ...onboardingData?.responses },
