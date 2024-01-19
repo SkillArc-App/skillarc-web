@@ -1,11 +1,11 @@
-import { useQuery } from 'react-query'
-import { http } from '../http-common'
 import { OnboardingData } from '@/common/types/OnboardingData'
 import axios from 'axios'
+import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useOnboardingData = (token: string | null) => {
-  const getOnboardingData = useQuery<OnboardingData>(['onboarding_data', token], () =>
-    getData(token),
+  const getOnboardingData = useAuthenticatedQuery<OnboardingData>(
+    ['onboarding_data'],
+    ({ token }) => getData(token),
   )
 
   return { getOnboardingData }

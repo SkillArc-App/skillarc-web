@@ -1,27 +1,9 @@
 import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { FrontendTrainingProviderService } from '../services/trainingProvider.service'
+import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useAllTrainingProviderData = () => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  const getAllTrainingProviders = useQuery(['trainingProviders', token], () => {
-    if (!token) {
-      return Promise.reject('No user id')
-    }
+  const getAllTrainingProviders = useAuthenticatedQuery(['trainingProviders'], ({ token }) => {
     return getAll(token)
   })
 
@@ -29,24 +11,7 @@ export const useAllTrainingProviderData = () => {
 }
 
 export const useTrainingProviderData = (id: string) => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  const getTrainingProvider = useQuery(['trainingProvider', token], () => {
-    if (!token) {
-      return Promise.reject('No user id')
-    }
-
+  const getTrainingProvider = useAuthenticatedQuery(['trainingProvider'], ({ token }) => {
     return FrontendTrainingProviderService.getOne(id, token)
   })
 

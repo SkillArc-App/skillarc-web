@@ -1,7 +1,5 @@
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { get } from '../http-common'
+import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export interface SeekerNote {
   note: string
@@ -33,22 +31,8 @@ export interface CoachSeeker {
   applications: SeekerApplication[]
 }
 
-export const useCoachSeekersData = () => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
-
-  const getCoachSeekers = useQuery(['coachSeekers', token], () => {
-    if (!token) return Promise.reject('No user id')
-
+export const useCoachSeekersData = () =>
+  useAuthenticatedQuery(['coachSeekers'], ({ token }) => {
     const getCoachSeekersRequest = async () => {
       const res = await get<CoachSeeker[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/`,
@@ -60,6 +44,3 @@ export const useCoachSeekersData = () => {
 
     return getCoachSeekersRequest()
   })
-
-  return getCoachSeekers
-}

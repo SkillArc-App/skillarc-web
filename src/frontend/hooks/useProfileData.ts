@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useQuery } from 'react-query'
 import { GetOneProfileResponse } from '../services/profile.service'
 import { mixpanelInitProfile } from '../utils/mixpanel'
@@ -14,15 +14,7 @@ export const useProfileData = (id: string) => {
     return getOne(id)
   })
 
-  const [isMyProfile, setIsMyProfile] = useState(false)
-
-  useEffect(() => {
-    if (user?.profile?.id === id) {
-      setIsMyProfile(true)
-    } else {
-      setIsMyProfile(false)
-    }
-  }, [user, profileQuery.data, id])
+  const isMyProfile = useMemo(() => user?.profile?.id === id, [user, id])
 
   return { profileQuery, isMyProfile }
 }

@@ -1,25 +1,8 @@
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
 import { FrontendJobService } from '../services/jobs.service'
+import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useJobMatchData = () => {
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  const jobMatchesQuery = useQuery(['jobMatches', token], () => {
-    if (!token) return Promise.reject('No token')
-
+  const jobMatchesQuery = useAuthenticatedQuery(['jobMatches'], ({ token }) => {
     return FrontendJobService.getJobMatches(token)
   })
 
