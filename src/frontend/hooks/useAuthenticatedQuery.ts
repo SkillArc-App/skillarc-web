@@ -1,7 +1,6 @@
 import { Maybe } from '@/common/types/maybe'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
 import { QueryFunctionContext, QueryKey, UseQueryOptions, useQuery } from 'react-query'
+import { useAuthToken } from './useAuthToken'
 
 export type QueryAuthenticatedFunction<T = unknown, TQueryKey extends QueryKey = QueryKey> = (
   context: QueryAuthenticatedFunctionContext<TQueryKey>,
@@ -26,17 +25,7 @@ export const useAuthenticatedQuery = <
     'queryKey' | 'queryFn'
   > = {},
 ) => {
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<Maybe<string>>(undefined)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const combinedOptions: Omit<
     UseQueryOptions<TQueryFnData, TError, TData, readonly Maybe<string>[]>,
