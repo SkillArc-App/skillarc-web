@@ -1,4 +1,4 @@
-export {}
+export { }
 
 describe('Coaches', () => {
   beforeEach(() => {
@@ -6,7 +6,7 @@ describe('Coaches', () => {
       cy.log(r['email'])
       cy.wrap(r).as('coach')
     })
-    cy.task('createSeeker').then((r: any) => {
+    cy.task('createActiveSeeker').then((r: any) => {
       cy.log(r['email'])
       cy.wrap(r).as('seeker')
     })
@@ -60,7 +60,6 @@ describe('Coaches', () => {
       cy.get('body').should('contain', `${r['last_name']}`)
 
       cy.get('h1').contains('Seekers')
-
       cy.get('a').contains(r['email']).click()
 
       const reloadUntilTextAppears = () => {
@@ -73,11 +72,18 @@ describe('Coaches', () => {
               reloadUntilTextAppears()
             })
           }
-        })
-      }
+        });
+      };
       reloadUntilTextAppears()
 
       cy.get('body').should('contain', 'This is a new note')
+      cy.contains('p', 'Job Title')
+        .parent()
+        .within(() => {
+          cy.get('a').click()
+        })
+
+      cy.url().should('contain', '/jobs/')
     })
   })
 })
