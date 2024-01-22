@@ -62,6 +62,13 @@ describe('Recruiters', () => {
           cy.get('body').should('contain', message)
 
           cy.go('back')
+
+          cy.findByLabelText('Show Passes/Hires').parent().click()
+          cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).click()
+
+          cy.url().should('contain', '/profiles/')
+          cy.get('body').should('contain', applicant['first_name'])
+          cy.get('body').should('contain', applicant['last_name'])
         })
       })
     })
