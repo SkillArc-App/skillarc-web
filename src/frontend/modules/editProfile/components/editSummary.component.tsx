@@ -1,37 +1,42 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { put } from '@/frontend/http-common'
 import { Button, Flex, Input } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 export const EditSummary = () => {
   const router = useRouter()
-  const { data: user } = useUser()
+  const { profileId } = router.query
+  const {
+    profileQuery: { data: profile },
+  } = useProfileData(profileId as string)
   const {
     updateSummary: { mutate: updateSummary, status: updateSummaryStatus },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
 
-  const [firstName, setFirstName] = useState<string>(user?.firstName ?? '')
-  const [lastName, setLastName] = useState<string>(user?.lastName ?? '')
-  const [zipCode, setZipCode] = useState<string>(user?.zipCode ?? '')
-  const [phoneNumber, setPhoneNumber] = useState<string>(user?.phoneNumber ?? '')
+  const [firstName, setFirstName] = useState<string>(profile?.user?.firstName ?? '')
+  const [lastName, setLastName] = useState<string>(profile?.user?.lastName ?? '')
+  const [zipCode, setZipCode] = useState<string>(profile?.user?.zipCode ?? '')
+  const [phoneNumber, setPhoneNumber] = useState<string>(profile?.user?.phoneNumber ?? '')
 
   const { getAccessTokenSilently } = useAuth0()
 
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
+    const user = profile?.user
+
     if (!user) return
 
     setFirstName(user.firstName ?? '')
     setLastName(user.lastName ?? '')
     setZipCode(user.zipCode ?? '')
     setPhoneNumber(user.phoneNumber ?? '')
-  }, [user])
+  }, [profile])
 
   useEffect(() => {
     const getToken = async () => {
@@ -49,24 +54,22 @@ export const EditSummary = () => {
   }, [router, updateSummaryStatus])
 
   const handleSave = () => {
-    if (!user?.id) return
     if (!token) return
+    if (!profile?.user?.id) return
 
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/one_user`,
-        {
-          first_name: firstName,
-          last_name: lastName,
-          zip_code: zipCode,
-          phone_number: phoneNumber,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
-      .then((res) => {
-        router.back()
-      })
+    put(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${profile.user.id}`,
+      {
+        firstName,
+        lastName,
+        zipCode,
+        phoneNumber,
+      },
+      token,
+      { camel: true },
+    ).then((res) => {
+      router.back()
+    })
   }
 
   return (

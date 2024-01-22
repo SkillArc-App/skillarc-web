@@ -12,7 +12,6 @@ const ProfileExperience = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   return (
@@ -27,24 +26,24 @@ const ProfileExperience = () => {
       }}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.otherExperiences.map((otherExperiences: any, index: number) => {
+        {data?.otherExperiences.map((otherExperiences, index: number) => {
           return (
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">
                 <Flex direction="column" gap="0.5rem" w="100%">
-                  {otherExperiences.is_current == true && (
+                  {otherExperiences.isCurrent == true && (
                     <Text type="b3" color="greyscale.600">
                       Current
                     </Text>
                   )}
-                  {otherExperiences.is_current == false && (
+                  {otherExperiences.isCurrent == false && (
                     <Text type="b3" color="greyscale.600">
-                      {otherExperiences.start_date} - {otherExperiences.end_date}
+                      {otherExperiences.startDate} - {otherExperiences.endDate}
                     </Text>
                   )}
 
                   <Heading variant="h4" color={'greyscale.900'}>
-                    {otherExperiences.organization_name}
+                    {otherExperiences.organizationName}
                   </Heading>
                   <Text type="b2Bold" color="greyscale.600">
                     {otherExperiences.position}
@@ -56,7 +55,7 @@ const ProfileExperience = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {isMyProfile && (
+              {data.isProfileEditor && (
                 <Button
                   variant={'icon'}
                   color="greyscale.600"

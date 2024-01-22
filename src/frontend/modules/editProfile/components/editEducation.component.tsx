@@ -1,15 +1,19 @@
+import { EducationExperience } from '@/common/types/EducationExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Flex, Input } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { EducationExperience, useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 export const EditEducation = () => {
   const router = useRouter()
-  const { data: user } = useUser()
   const { educationExperienceId } = router.query
+  const { profileId } = router.query
+  const {
+    profileQuery: { data: profile },
+  } = useProfileData(profileId as string)
   const [experience, setExperience] = useState<Partial<EducationExperience>>()
   const {
     addEducationExperience: {
@@ -24,14 +28,14 @@ export const EditEducation = () => {
       mutate: deleteEducationExperience,
       status: deleteEducationExperienceStatus,
     },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
   useEffect(() => {
     setExperience(
-      user?.profile?.educationExperiences?.find(
+      profile?.educationExperiences?.find(
         (exp: EducationExperience) => exp.id === educationExperienceId,
       ),
     )
-  }, [educationExperienceId, user])
+  }, [educationExperienceId, profile])
 
   useEffect(() => {
     if (
@@ -49,7 +53,7 @@ export const EditEducation = () => {
   ])
 
   const handleSave = () => {
-    const profileId = user?.profile?.id
+    const profileId = profile?.id
     if (!profileId) return
     if (!experience?.id) {
       addEducationExperience({
@@ -72,7 +76,7 @@ export const EditEducation = () => {
   const handleDelete = () => {
     if (!experience?.id) router.back() // if experience is not saved, just go back
     const educationExperienceId = experience?.id
-    const profileId = user?.profile?.id
+    const profileId = profile?.id
     if (!profileId || !educationExperienceId) return
     deleteEducationExperience({
       profileId: profileId,
@@ -94,9 +98,9 @@ export const EditEducation = () => {
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">School/Organization</Text>
           <Input
-            value={experience?.organization_name ?? ''}
+            value={experience?.organizationName ?? ''}
             onChange={(e) => {
-              setExperience({ ...experience, organization_name: e.target.value })
+              setExperience({ ...experience, organizationName: e.target.value })
             }}
           />
         </Flex>
@@ -105,9 +109,9 @@ export const EditEducation = () => {
           <Input
             placeholder="2021"
             _placeholder={{ color: 'greyscale.400' }}
-            value={experience?.graduation_date ?? ''}
+            value={experience?.graduationDate ?? ''}
             onChange={(e) => {
-              setExperience({ ...experience, graduation_date: e.target.value })
+              setExperience({ ...experience, graduationDate: e.target.value })
             }}
           />
           {/* Callout - we do not gather isAttending info for education in the onboarding flow */}

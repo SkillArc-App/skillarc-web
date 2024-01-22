@@ -11,7 +11,6 @@ export const PersonalExperience = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   return (
@@ -52,7 +51,7 @@ export const PersonalExperience = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {isMyProfile && (
+              {data.isProfileEditor && (
                 <Button
                   variant={'icon'}
                   color="greyscale.600"

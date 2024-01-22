@@ -19,7 +19,6 @@ export const ProfileAbout = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   return (
