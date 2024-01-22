@@ -21,7 +21,6 @@ export const ProfileBox = ({
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   const Icon = icon
@@ -42,7 +41,7 @@ export const ProfileBox = ({
         <Heading type="h5" color="greyscale.700" w="100%">
           {title}
         </Heading>
-        {isMyProfile && (
+        {data?.isProfileEditor && (
           <Button variant={'ghost'} onClick={onAddClick}>
             <BlAddIcon />
           </Button>

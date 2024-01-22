@@ -9,10 +9,9 @@ const ProfileCompleteness = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data: profile },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
-  if (!isMyProfile) return <></>
+  if (!profile?.isProfileEditor) return <></>
 
   const profileCompleteness = ((2 - (profile?.missingProfileItems?.length ?? 0)) / 2.0) * 100
 

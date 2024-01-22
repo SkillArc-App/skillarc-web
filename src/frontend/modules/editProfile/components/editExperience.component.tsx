@@ -1,14 +1,17 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { OtherExperience, useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 export const EditExperience = () => {
   const router = useRouter()
-  const { data: user } = useUser()
+  const {
+    profileQuery: { data: profile },
+  } = useProfileData(router.query.profileId as string)
   const { otherExperienceId } = router.query
   const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
   const [experience, setExperience] = useState<Partial<OtherExperience>>()
@@ -16,19 +19,19 @@ export const EditExperience = () => {
     addOtherExperience: { mutate: addOtherExperience, status: addOtherExperienceStatus },
     updateOtherExperience: { mutate: updateOtherExperience, status: updateOtherExperienceStatus },
     deleteOtherExperience: { mutate: deleteOtherExperience, status: deleteOtherExperienceStatus },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
   useEffect(() => {
-    const otherExperience: OtherExperience | undefined = user?.profile?.otherExperiences?.find(
+    const otherExperience: OtherExperience | undefined = profile?.otherExperiences?.find(
       (exp: OtherExperience) => exp.id === otherExperienceId,
     )
     if (!otherExperience) return
 
     setExperience(otherExperience)
-  }, [otherExperienceId, user])
+  }, [otherExperienceId, profile])
 
   useEffect(() => {
     if (currentlyWorking && experience) {
-      setExperience({ ...experience, end_date: '' })
+      setExperience({ ...experience, endDate: '' })
     }
   }, [currentlyWorking, experience])
 
@@ -43,7 +46,7 @@ export const EditExperience = () => {
   }, [addOtherExperienceStatus, updateOtherExperienceStatus, deleteOtherExperienceStatus, router])
 
   const handleSave = () => {
-    const profileId = user?.profile?.id
+    const profileId = profile?.id
     if (!profileId) return
     if (!experience?.id) {
       addOtherExperience({
@@ -57,7 +60,7 @@ export const EditExperience = () => {
         profileId: profileId,
         otherExperience: {
           ...experience,
-          organization_id: experience?.organization_id ?? null,
+          organizationId: experience?.organizationId ?? null,
           id: experience.id,
         },
       })
@@ -67,7 +70,7 @@ export const EditExperience = () => {
   const handleDelete = () => {
     if (!experience?.id) router.back() // if experience is not saved, just go back
     const otherExperienceId = experience?.id
-    const profileId = user?.profile?.id
+    const profileId = profile?.id
     if (!profileId || !otherExperienceId) return
     deleteOtherExperience({
       profileId: profileId,
@@ -89,8 +92,8 @@ export const EditExperience = () => {
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">Company/Organization</Text>
           <Input
-            value={experience?.organization_name ?? ''}
-            onChange={(e) => setExperience({ ...experience, organization_name: e.target.value })}
+            value={experience?.organizationName ?? ''}
+            onChange={(e) => setExperience({ ...experience, organizationName: e.target.value })}
             placeholder="i.e. Dunder Mifflin"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -107,8 +110,8 @@ export const EditExperience = () => {
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">Start Date</Text>
           <Input
-            value={experience?.start_date ?? ''}
-            onChange={(e) => setExperience({ ...experience, start_date: e.target.value })}
+            value={experience?.startDate ?? ''}
+            onChange={(e) => setExperience({ ...experience, startDate: e.target.value })}
             placeholder="2021"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -117,8 +120,8 @@ export const EditExperience = () => {
           <Flex flexDir="column" gap="0.5rem">
             <Text type="b2">End Date</Text>
             <Input
-              value={experience?.end_date ?? ''}
-              onChange={(e) => setExperience({ ...experience, end_date: e.target.value })}
+              value={experience?.endDate ?? ''}
+              onChange={(e) => setExperience({ ...experience, endDate: e.target.value })}
               placeholder="2022"
               _placeholder={{ color: 'greyscale.400' }}
             ></Input>

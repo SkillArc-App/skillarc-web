@@ -1,52 +1,20 @@
+import { EducationExperience } from '@/common/types/EducationExperience'
+import { PersonalExperience } from '@/common/types/PersonalExperience'
+import { Skill } from '@/common/types/Profile'
 import { useUser } from '@/frontend/hooks/useUser'
 import { FrontendEducationExperiencesService } from '@/frontend/services/educationexperiences.service'
-import { FrontendOtherExperiencesService } from '@/frontend/services/otherExperiences.service'
+import {
+  FrontendOtherExperiencesService,
+  OtherExperience,
+} from '@/frontend/services/otherExperiences.service'
 import { FrontendPersonalExperiencesService } from '@/frontend/services/personalExperience.service'
-import { FrontendProfileService, Profile } from '@/frontend/services/profile.service'
+import { FrontendProfileService } from '@/frontend/services/profile.service'
 import { FrontendProfileCertificationService } from '@/frontend/services/profileCertifications.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'
 import { FrontendUserService, User } from '@/frontend/services/user.service'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
-
-export type EducationExperience = {
-  id: string
-  organization_id: string | null
-  organization_name: string | null
-  profile_id: string
-  title: string | null
-  activities: string | null
-  graduation_date: string | null
-  gpa: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type OtherExperience = {
-  id: string
-  organization_id: string | null
-  organization_name: string | null
-  profile_id: string
-  start_date: string | null
-  is_current: boolean | null
-  end_date: string | null
-  description: string | null
-  position: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type PersonalExperience = {
-  id: string
-  profile_id: string
-  activity: string | null
-  start_date: string | null
-  end_date: string | null
-  description: string | null
-  created_at: Date
-  updated_at: Date
-}
 
 export type ProfileCertification = {
   id: string
@@ -85,10 +53,9 @@ export type Story = {
   updated_at: Date
 }
 
-export const useUpdateMyProfile = () => {
+export const useUpdateProfile = () => {
   const queryClient = useQueryClient()
   const { data: user } = useUser()
-  const updateProfile = useMutation((profile: Profile) => FrontendProfileService.update(profile))
 
   const { getAccessTokenSilently } = useAuth0()
 
@@ -158,29 +125,15 @@ export const useUpdateMyProfile = () => {
     },
   )
 
-  const deleteSkill = useMutation((skill: Skills) => FrontendProfileService.deleteSkill(skill), {
+  const deleteSkill = useMutation((skill: Skill) => FrontendProfileService.deleteSkill(skill), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['profile', data.profile_id])
+      queryClient.invalidateQueries(['profile', data.profileId])
       queryClient.invalidateQueries('me')
     },
   })
 
-  type UpdateSkillType = {
-    skill: Skills
-    profileId: string
-  }
-  const updateSkill = useMutation(
-    ({ profileId, skill }: UpdateSkillType) => FrontendProfileService.updateSkill(profileId, skill),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profile_id])
-        queryClient.invalidateQueries('me')
-      },
-    },
-  )
-
   type AddSkillType = {
-    skill: Partial<Skills>
+    skill: Partial<Skill>
     profileId: string
   }
   const addSkill = useMutation(
@@ -193,7 +146,7 @@ export const useUpdateMyProfile = () => {
     },
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profile_id])
+        queryClient.invalidateQueries(['profile', data.profileId])
         queryClient.invalidateQueries('me')
       },
     },
@@ -454,13 +407,11 @@ export const useUpdateMyProfile = () => {
   )
 
   return {
-    updateProfile,
     updateSummary,
     updateStory,
     addStory,
     deleteStory,
     deleteSkill,
-    updateSkill,
     addSkill,
     addOtherExperience,
     updateOtherExperience,

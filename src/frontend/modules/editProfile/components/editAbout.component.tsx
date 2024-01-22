@@ -5,7 +5,7 @@ import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 export const EditAbout = () => {
   const router = useRouter()
@@ -14,7 +14,7 @@ export const EditAbout = () => {
     updateStory: { mutate: updateStory },
     addStory: { mutate: addStory },
     deleteStory: { mutate: deleteStory },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
 
   const [storyList, setStoryList] = useState<Story[]>([])
   const [isPromptScreenOpen, setIsPromptScreenOpen] = useState(false)

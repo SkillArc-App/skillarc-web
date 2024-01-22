@@ -1,10 +1,11 @@
+import { PersonalExperience } from '@/common/types/PersonalExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { PersonalExperience, useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 export const EditPersonalExperience = () => {
   const router = useRouter()
@@ -20,7 +21,7 @@ export const EditPersonalExperience = () => {
       status: updatePersonalExperienceStatus,
     },
     deleteOtherExperience: { mutate: deleteOtherExperience, status: deleteOtherExperienceStatus },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
   useEffect(() => {
     const personalExperience = user?.profile?.personalExperience?.find(
       (exp: PersonalExperience) => exp.id === personalExperienceId,
@@ -33,7 +34,7 @@ export const EditPersonalExperience = () => {
 
   useEffect(() => {
     if (currentlyWorking && personalExperience) {
-      setPersonalExperience({ ...personalExperience, end_date: '' })
+      setPersonalExperience({ ...personalExperience, endDate: '' })
     }
   }, [currentlyWorking, personalExperience])
 
@@ -102,9 +103,9 @@ export const EditPersonalExperience = () => {
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">Start Date</Text>
           <Input
-            value={personalExperience?.start_date ?? ''}
+            value={personalExperience?.startDate ?? ''}
             onChange={(e) =>
-              setPersonalExperience({ ...personalExperience, start_date: e.target.value })
+              setPersonalExperience({ ...personalExperience, startDate: e.target.value })
             }
             placeholder="2021"
             _placeholder={{ color: 'greyscale.400' }}
@@ -114,9 +115,9 @@ export const EditPersonalExperience = () => {
           <Flex flexDir="column" gap="0.5rem">
             <Text type="b2">End Date</Text>
             <Input
-              value={personalExperience?.end_date ?? ''}
+              value={personalExperience?.endDate ?? ''}
               onChange={(e) =>
-                setPersonalExperience({ ...personalExperience, end_date: e.target.value })
+                setPersonalExperience({ ...personalExperience, endDate: e.target.value })
               }
               placeholder="2022"
               _placeholder={{ color: 'greyscale.400' }}

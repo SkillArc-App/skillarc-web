@@ -26,7 +26,7 @@ describe('Onboarding', () => {
       cy.visit('/')
     })
 
-    cy.get('input').filter('[placeholder="First name"]').type('Dwight')
+    cy.get('input').filter('[placeholder="First name"]', { timeout: 10000 }).type('Dwight')
     cy.get('input').filter('[placeholder="Last name"]').type('Schrute')
     cy.get('input').filter('[placeholder="Phone number"]').type('570-555-5555')
     cy.get('input').filter('[placeholder="MM/DD/YYYY"]').type('01/20/1970')

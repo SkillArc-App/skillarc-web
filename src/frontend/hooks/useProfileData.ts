@@ -1,28 +1,27 @@
-import axios from 'axios'
-import { useMemo } from 'react'
 import { useQuery } from 'react-query'
+import { get } from '../http-common'
 import { GetOneProfileResponse } from '../services/profile.service'
 import { mixpanelInitProfile } from '../utils/mixpanel'
-import { useUser } from './useUser'
+import { useAuthToken } from './useAuthToken'
 
 export const useProfileData = (id: string) => {
-  const { data: user } = useUser()
+  const token = useAuthToken()
 
-  const profileQuery = useQuery(['profile', id], () => {
+  const profileQuery = useQuery(['profile', id, token], () => {
     if (!id) return
 
-    return getOne(id)
+    return getOne(id, token)
   })
 
-  const isMyProfile = useMemo(() => user?.profile?.id === id, [user, id])
-
-  return { profileQuery, isMyProfile }
+  return { profileQuery }
 }
 
-const getOne = async (id: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<GetOneProfileResponse>(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`, {})
+const getOne = async (id: string, token?: string) => {
+  const res = await get<GetOneProfileResponse>(
+    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
+    token,
+    { camel: true },
+  )
 
   mixpanelInitProfile(res.data)
 

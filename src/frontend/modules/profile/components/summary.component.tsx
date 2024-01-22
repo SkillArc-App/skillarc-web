@@ -13,7 +13,6 @@ export const ProfileSummary = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   const handleCopy = () => {
@@ -41,9 +40,9 @@ export const ProfileSummary = () => {
         <Flex w="100%" alignSelf={'center'} gap="0.5rem" flexDir={'column'}>
           <Flex w="100%" gap={2}>
             <Heading type="h2" color="greyscale.900" w="100%" alignSelf={'center'}>
-              {data?.user.first_name} {data?.user.last_name}
+              {data?.user.firstName} {data?.user.lastName}
             </Heading>
-            {isMyProfile && (
+            {data?.isProfileEditor && (
               <Button
                 variant={'icon'}
                 color="greyscale.600"
@@ -61,26 +60,15 @@ export const ProfileSummary = () => {
           </Flex>
 
           <Text type="b3" color="greyscale.600" w="100%">
-            ZIP Code: {data?.user.zip_code}
+            ZIP Code: {data?.user.zipCode}
           </Text>
           <Text type="b3" color="greyscale.600" w="100%">
-            Phone Number: {data?.user.phone_number}
+            Phone Number: {data?.user.phoneNumber}
           </Text>
-
-          {/* <Text
-            color="primary.600"
-            type="b2Bold"
-            bg="greyscale.300"
-            p="4px 8px"
-            borderRadius="4px"
-            maxH="1.625rem"
-          >
-            Open to Work
-          </Text> */}
         </Flex>
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1rem">
-        {isMyProfile && (
+        {data?.isProfileEditor && (
           <Flex w="100%" gap=".75rem">
             <Button
               variant="primary"
@@ -106,17 +94,6 @@ export const ProfileSummary = () => {
             </Button>
           </Flex>
         )}
-        {/* <Button
-          variant="secondary"
-          bg="greyscale.100"
-          w="100%"
-          h="3.25rem"
-          leftIcon={<Bookmark fill="greyscale.100" />}
-        >
-          <Text type="b2Bold" color="greyscale.700">
-            Bookmark Profile
-          </Text>
-        </Button> */}
       </Flex>
     </Flex>
   )

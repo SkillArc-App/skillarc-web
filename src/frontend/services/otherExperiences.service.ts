@@ -2,12 +2,12 @@ import { destroy, post, put } from '../http-common'
 
 export type OtherExperience = {
   id: string
-  organization_id: string | null
-  organization_name: string | null
-  profile_id: string
-  start_date: string | null
-  is_current: boolean | null
-  end_date: string | null
+  organizationId: string | null
+  organizationName: string | null
+  profileId: string
+  startDate: string | null
+  isCurrent: boolean | null
+  endDate: string | null
   description: string | null
   position: string | null
   created_at: Date
@@ -23,6 +23,7 @@ const create = async (
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/other_experiences`,
     otherExperience,
     token,
+    { camel: true },
   )
   return res.data
 }
@@ -36,6 +37,7 @@ const update = async (
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/other_experiences/${otherExperience.id}`,
     otherExperience,
     token,
+    { camel: true },
   )
 
   return res.data

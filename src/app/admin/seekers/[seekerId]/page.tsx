@@ -20,7 +20,7 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
 
   const {
     userEventsQuery: { data: userEvents },
-  } = useUserEvents(data?.user_id)
+  } = useUserEvents(data?.userId)
 
   const {
     getAllTrainingProviders: { data: trainingProviders },
@@ -58,12 +58,12 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
   useEffect(() => {
     if (data) {
       const stp = data.user.SeekerTrainingProvider?.at(0)
-      if (stp?.training_provider_id) {
+      if (stp?.trainingProviderId) {
         setTrainingProviderExisted(true)
-        setTrainingProviderId(stp.training_provider_id)
+        setTrainingProviderId(stp.trainingProviderId)
       }
-      if (stp?.program_id) {
-        setProgramId(stp.program_id)
+      if (stp?.programId) {
+        setProgramId(stp.programId)
       }
     }
   }, [data])
@@ -103,7 +103,7 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
   return (
     <Stack spacing={2}>
       <span>
-        <b>Name: </b> {`${data.user.first_name} ${data.user.last_name}`}
+        <b>Name: </b> {`${data.user.firstName} ${data.user.lastName}`}
       </span>
       <span>
         <b>Email: </b> {data.user.email}
@@ -164,28 +164,28 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
         <HStack>
           <b>Met with a career coach: </b>
           <Switch
-            isChecked={workingProfile.met_career_coach}
+            isChecked={workingProfile.metCareerCoach}
             onChange={(e) => {
               if (!workingProfile) return
               if (!token) return
 
-              const met_career_coach = !workingProfile.met_career_coach
+              const metCareerCoach = !workingProfile.metCareerCoach
 
               setWorkingProfile({
                 ...workingProfile,
-                met_career_coach,
+                metCareerCoach,
               })
 
               put(
                 `/profiles/${workingProfile.id}`,
                 {
-                  met_career_coach,
+                  metCareerCoach,
                 },
                 token,
               )
             }}
           />
-          {workingProfile.met_career_coach ? <p>Yes</p> : <p>No</p>}
+          {workingProfile.metCareerCoach ? <p>Yes</p> : <p>No</p>}
         </HStack>
       )}
       <Divider />

@@ -1,3 +1,4 @@
+import { Skill } from '@/common/types/Profile'
 import axios from 'axios'
 
 export type ProfileSkill = {
@@ -9,20 +10,10 @@ export type ProfileSkill = {
   updated_at: Date
 }
 
-export type Skills = {
-  id: string
-  name: string | null
-  type: string | null
-  profile_id: string
-  description: string | null
-  created_at: Date
-  updated_at: Date
-}
-
 const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
   const res = await axios
     .create({ withCredentials: false })
-    .post<Skills>(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills`, profileSkill, {
+    .post<Skill>(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills`, profileSkill, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
@@ -32,7 +23,7 @@ const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, to
 const update = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
   const res = await axios
     .create({ withCredentials: false })
-    .put<Skills>(
+    .put<Skill>(
       `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills/${profileSkill.id}`,
       profileSkill,
       {
@@ -46,7 +37,7 @@ const update = async (profileSkill: Partial<ProfileSkill>, profileId: string, to
 const deleteOne = async (profileSkillId: string, profileId: string, token: string) => {
   const res = await axios
     .create({ withCredentials: false })
-    .delete<Skills>(
+    .delete<Skill>(
       `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills/${profileSkillId}`,
       {
         headers: { Authorization: `Bearer ${token}` },

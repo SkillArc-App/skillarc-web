@@ -1,18 +1,17 @@
-import { Button, Divider, Flex } from '@chakra-ui/react'
 import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '../../../components/Text.component'
-import { useRouter } from 'next/router'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
-import { useEffect, useState } from 'react'
-import { EditIcon } from '@chakra-ui/icons'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { EditIcon } from '@chakra-ui/icons'
+import { Button, Divider, Flex } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { Text } from '../../../components/Text.component'
 
 export const ProfileCertifications = () => {
   const router = useRouter()
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   const [profileData, setProfileData] = useState<GetOneProfileResponse>()
@@ -38,7 +37,7 @@ export const ProfileCertifications = () => {
         <Text type="overline" color="greyscale.700" w="100%">
           CERTIFICATIONS
         </Text>
-        {isMyProfile && (
+        {data.isProfileEditor && (
           <Button
             variant={'icon'}
             color="greyscale.600"

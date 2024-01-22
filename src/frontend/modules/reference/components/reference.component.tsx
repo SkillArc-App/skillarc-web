@@ -12,7 +12,7 @@ import {
   Link,
   Stack,
   StackDivider,
-  Textarea
+  Textarea,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -32,7 +32,7 @@ export const Reference = ({
     profileQuery: { data },
   } = useProfileData(seekerProfileId as string)
 
-  const fullName = `${data?.user?.first_name} ${data?.user?.last_name}`
+  const fullName = `${data?.user?.firstName} ${data?.user?.firstName}`
 
   // const reference using state
   const [reference, setReference] = useState(startingReferenceText)
@@ -77,9 +77,9 @@ export const Reference = ({
             <Heading color={'greyscale.900'} type="h3">
               {fullName}
             </Heading>
-            {data?.user.zip_code && (
+            {data?.user.zipCode && (
               <Text color={'greyscale.600'} type="b3">
-                {data?.user.zip_code}
+                {data?.user.zipCode}
               </Text>
             )}
             <Flex>

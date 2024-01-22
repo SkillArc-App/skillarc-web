@@ -11,7 +11,6 @@ export const ProfileEducation = () => {
   const { profileId } = router.query
   const {
     profileQuery: { data },
-    isMyProfile,
   } = useProfileData(profileId as string)
 
   return (
@@ -32,10 +31,10 @@ export const ProfileEducation = () => {
               <Flex flexDir={'column'} gap="0.5rem" flexGrow={1}>
                 <Flex flexDir={'column'} gap="0.5rem">
                   <Text type="b2Bold" color="greyscale.600">
-                    {educationExperiences.graduation_date}
+                    {educationExperiences.graduationDate}
                   </Text>
                   <Heading variant="h4" color={'greyscale.900'}>
-                    {educationExperiences.organization_name}
+                    {educationExperiences.organizationName}
                   </Heading>
                   <Text type="b2" color="greyscale.600">
                     GPA: {educationExperiences.gpa}
@@ -46,7 +45,7 @@ export const ProfileEducation = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {isMyProfile && (
+              {data.isProfileEditor && (
                 <Button
                   variant={'icon'}
                   color="greyscale.600"
