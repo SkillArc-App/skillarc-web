@@ -1,3 +1,5 @@
+'use client'
+
 import DataTable from '@/frontend/components/DataTable.component'
 import { Heading } from '@/frontend/components/Heading.component'
 import { CoachSeeker, useCoachSeekersData } from '@/frontend/hooks/useCoachSeekersData'

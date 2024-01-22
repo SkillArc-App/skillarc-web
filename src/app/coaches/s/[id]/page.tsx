@@ -1,3 +1,5 @@
+'use client'
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { NoteBox } from '@/frontend/components/note-box'
