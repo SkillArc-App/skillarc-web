@@ -15,11 +15,12 @@ describe('Recruiters', () => {
 
     cy.get('@recruiter').then((recruiter: any) => {
       cy.get('div').contains('mock auth')
-      cy.get('select')
-        .filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        .select(recruiter['email'])
+      const emailSelect = cy.get('select').filter((_, element) => {
+        return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
+      })
+
+      emailSelect.should('be.enabled')
+      emailSelect.select(recruiter['email'], { timeout: 10000 })
     })
 
     cy.visit('/')
