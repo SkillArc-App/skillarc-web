@@ -36,7 +36,7 @@ export type Recruiter = {
 
 export type Role = {
   id: string
-  name: string
+  name: 'admin' | 'coach' | 'recruiter' | 'seeker' | 'training_provider'
   created_at: Date
   updated_at: Date
 }
@@ -47,12 +47,12 @@ export type User = {
   email: string | null
   emailVerified: Date | null
   image: string | null
-  first_name: string | null
-  last_name: string | null
-  zip_code: string | null
-  phone_number: string | null
-  onboarding_session_id: string | null
-  user_type: ['SEEKER' | 'TRAINING_PROVIDER']
+  firstName: string | null
+  lastName: string | null
+  zipCode: string | null
+  phoneNumber: string | null
+  onboardingSessionId: string | null
+  userType: ['SEEKER' | 'TRAINING_PROVIDER']
   created_at: Date
   updated_at: Date
 }
