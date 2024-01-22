@@ -60,6 +60,7 @@ describe('Coaches', () => {
       cy.get('body').should('contain', `${r['last_name']}`)
 
       cy.get('h1').contains('Seekers')
+
       cy.get('a').contains(r['email']).click()
 
       const reloadUntilTextAppears = (retries = 5) => {
@@ -79,16 +80,22 @@ describe('Coaches', () => {
       reloadUntilTextAppears()
 
       cy.get('body').should('contain', 'This is a new note')
-
       cy.get('button[aria-label="Delete Note"]').click()
       cy.get('body').should('not.contain', 'This is a new note')
-      cy.contains('p', 'Job Title')
-        .parent()
-        .within(() => {
-          cy.get('a').click()
-        })
 
-      cy.url().should('contain', '/jobs/')
+      cy.get('a').contains('Jump to Profile').click()
+      cy.get('button').filter('[aria-label="Edit Profile"]').click()
+
+      cy.get('p').contains('First name').next().clear().type('Dwight')
+      cy.get('p').contains('Last name').next().clear().type('Schrute')
+      cy.get('p').contains('ZIP Code').next().clear().type('18503')
+      cy.get('p').contains('Phone number').next().clear().type('570-555-5555')
+
+      cy.get('button').contains('Save').click()
+
+      cy.get('body').contains('Dwight Schrute')
+      cy.get('body').contains('18503')
+      cy.get('body').contains('570-555-5555')
     })
   })
 })
