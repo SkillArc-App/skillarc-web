@@ -1,0 +1,68 @@
+export {}
+
+describe('Recruiters', () => {
+  beforeEach(() => {
+    cy.task('createRecruiterWithApplicant').then((response: any) => {
+      cy.wrap(response['recruiter']).as('recruiter')
+      cy.wrap(response['applicant']).as('applicant')
+      cy.wrap(response['job']).as('job')
+      cy.wrap(response['applicant_status']).as('applicant_status')
+    })
+  })
+
+  it('should navigate through employers dashboard', () => {
+    cy.visit('/')
+
+    cy.get('@recruiter').then((recruiter: any) => {
+      cy.get('div').contains('mock auth')
+      cy.get('select')
+        .filter((_, element) => {
+          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
+        })
+        .select(recruiter['email'])
+    })
+
+    cy.visit('/')
+
+    cy.get('@applicant').then((applicant: any) => {
+      cy.get('@job').then((job: any) => {
+        cy.get('@applicant_status').then((applicant_status: any) => {
+          cy.findByRole('tab', { name: job['employment_title'] }).click()
+
+          cy.get('table')
+            .should('contain', `${applicant['first_name']} ${applicant['last_name']}`)
+            .should('contain', `${job['employment_title']}`)
+            .should('contain', `${applicant_status['status']}`)
+            .within(() => {
+              cy.get('select').select('hire')
+            })
+
+          cy.get('table')
+            .should('not.contain', `${applicant['first_name']} ${applicant['last_name']}`)
+            .should('not.contain', `${job['employment_title']}`)
+            .should('not.contain', `${applicant_status['status']}`)
+
+          cy.findByLabelText('Show Passes/Hires').parent().click()
+          cy.get('table').within(() => {
+            cy.findByLabelText('Start conversation with applicant').click()
+          })
+
+          cy.get('body').should(
+            'contain',
+            `${applicant['first_name']} ${applicant['last_name']} - ${job['employment_title']}`,
+          )
+
+          const message =
+            'We are looking forward to speaking with you is there a time this week that works for you?'
+
+          cy.url().should('contain', '/employers/chats/')
+          cy.findByPlaceholderText('Type a message...').type(message).type('{enter}')
+
+          cy.get('body').should('contain', message)
+
+          cy.go('back')
+        })
+      })
+    })
+  })
+})
