@@ -297,7 +297,6 @@ export const useUpdateProfile = () => {
         return Promise.reject('No user id')
       }
 
-      console.log('educationExperience', educationExperience)
       return FrontendEducationExperiencesService.create(educationExperience, profileId, token)
     },
     {

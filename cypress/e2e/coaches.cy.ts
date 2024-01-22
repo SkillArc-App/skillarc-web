@@ -71,6 +71,7 @@ describe('Coaches', () => {
           } else {
             if (retries === 0) return
 
+            cy.wait(1000)
             cy.reload().then(() => {
               reloadUntilTextAppears(retries - 1)
             })
@@ -82,6 +83,15 @@ describe('Coaches', () => {
       cy.get('body').should('contain', 'This is a new note')
       cy.get('button[aria-label="Delete Note"]').click()
       cy.get('body').should('not.contain', 'This is a new note')
+
+      cy.contains('p', 'Job Title')
+        .parent()
+        .within(() => {
+          cy.get('a').click()
+        })
+
+      cy.url().should('contain', '/jobs/')
+      cy.go('back')
 
       cy.get('a').contains('Jump to Profile').click()
       cy.get('button').filter('[aria-label="Edit Profile"]').click()

@@ -16,7 +16,7 @@ export const useProfileData = (id: string) => {
   return { profileQuery }
 }
 
-const getOne = async (id: string, token: string | undefined) => {
+const getOne = async (id: string, token?: string) => {
   const res = await get<GetOneProfileResponse>(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
     token,

@@ -6,7 +6,7 @@ type Headers = {
 }
 
 type Options = {
-  camel?: Boolean
+  camel?: boolean
 }
 
 export const http = axios.create({
