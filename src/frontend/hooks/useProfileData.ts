@@ -1,22 +1,16 @@
 import axios from 'axios'
-import { useMemo } from 'react'
 import { useQuery } from 'react-query'
 import { GetOneProfileResponse } from '../services/profile.service'
 import { mixpanelInitProfile } from '../utils/mixpanel'
-import { useUser } from './useUser'
 
 export const useProfileData = (id: string) => {
-  const { data: user } = useUser()
-
   const profileQuery = useQuery(['profile', id], () => {
     if (!id) return
 
     return getOne(id)
   })
 
-  const isMyProfile = useMemo(() => user?.profile?.id === id, [user, id])
-
-  return { profileQuery, isMyProfile }
+  return { profileQuery }
 }
 
 const getOne = async (id: string) => {
