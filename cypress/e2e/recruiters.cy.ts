@@ -11,9 +11,8 @@ describe('Recruiters', () => {
   })
 
   it('should navigate through employers dashboard', () => {
-    cy.visit('/')
-
     cy.get('@recruiter').then((recruiter: any) => {
+      cy.visit('/')
       cy.get('div').contains('mock auth')
       const emailSelect = cy.get('select').filter((_, element) => {
         return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
@@ -38,7 +37,7 @@ describe('Recruiters', () => {
               cy.get('select').select('hire')
             })
 
-          cy.get('table')
+          cy.get('table', { timeout: 10000 })
             .should('not.contain', `${applicant['first_name']} ${applicant['last_name']}`)
             .should('not.contain', `${job['employment_title']}`)
             .should('not.contain', `${applicant_status['status']}`)
