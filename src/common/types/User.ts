@@ -1,5 +1,5 @@
+import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { EducationExperience } from './EducationExperience'
-import { OtherExperience } from './OtherExperience'
 import { Profile } from './Profile'
 import { TrainingProviderProfile } from './TrainingProviderProfile'
 

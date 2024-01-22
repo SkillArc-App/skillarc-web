@@ -1,5 +1,5 @@
+import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
-import { TrainingProvider } from '@/frontend/services/profile.service'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { Text } from '../../../../components/Text.component'
 

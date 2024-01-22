@@ -20,6 +20,7 @@ const getOne = async (id: string, token?: string) => {
   const res = await get<GetOneProfileResponse>(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
     token,
+    { camel: true },
   )
 
   mixpanelInitProfile(res.data)

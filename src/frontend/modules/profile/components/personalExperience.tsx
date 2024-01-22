@@ -30,14 +30,14 @@ export const PersonalExperience = () => {
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">
                 <Flex direction="column" gap="0.5rem" w="100%">
-                  {!personalExperience.end_date && (
+                  {!personalExperience.endDate && (
                     <Text type="b3" color="greyscale.600">
                       Current
                     </Text>
                   )}
-                  {personalExperience.end_date && (
+                  {personalExperience.endDate && (
                     <Text type="b3" color="greyscale.600">
-                      {personalExperience.start_date} - {personalExperience.end_date}
+                      {personalExperience.startDate} - {personalExperience.endDate}
                     </Text>
                   )}
 

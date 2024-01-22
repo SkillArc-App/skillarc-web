@@ -6,7 +6,7 @@ import { MasterSkill } from '@/frontend/services/skills.service'
 import { Badge, Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 type OneProfileSkillResponse = {
   id: string
@@ -28,7 +28,7 @@ export const EditSkills = () => {
     addProfileSkill: { mutate: addProfileSkill },
     updateProfileSkill: { mutate: updateProfileSkill },
     deleteProfileSkill: { mutate: deleteProfileSkill },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
 
   const [skillsList, setSkillsList] = useState<OneProfileSkillResponse[]>([])
   const [showSkills, setShowSkills] = useState(false)

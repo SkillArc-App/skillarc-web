@@ -1,6 +1,6 @@
 'use client'
 
-import NextLink from 'next/link'
+import { useSeekerData } from '@/frontend/hooks/useSeekerData'
 import {
   Box,
   Button,
@@ -24,7 +24,7 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useSeekerData } from '@/frontend/hooks/useSeekerData'
+import NextLink from 'next/link'
 
 export default function Seekers() {
   const {
@@ -54,7 +54,7 @@ export default function Seekers() {
                 <Tr key={index}>
                   <Td>
                     <Link as={NextLink} href={`/admin/seekers/${seeker.id}`}>
-                      {seeker.user?.first_name} {seeker.user?.last_name}
+                      {seeker.user?.firstName} {seeker.user?.lastName}
                     </Link>
                   </Td>
                   <Td>{seeker.user?.email}</Td>

@@ -4,7 +4,7 @@ import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
 import router from 'next/router'
 import { useEffect, useState } from 'react'
-import { useUpdateMyProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 type MasterCertification = {
   id: string
@@ -20,7 +20,7 @@ export const EditCertifications = () => {
   const {
     addProfileCertification: { mutate: addProfileCertification },
     deleteProfileCertification: { mutate: deleteProfileCertification },
-  } = useUpdateMyProfile()
+  } = useUpdateProfile()
   //   state declarations
   const [selectedMasterSkills, setSelectedMasterSkills] = useState<MasterCertification[]>([])
 

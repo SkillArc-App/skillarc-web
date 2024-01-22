@@ -2,13 +2,13 @@ import axios from 'axios'
 
 export type PersonalExperience = {
   id: string
-  profile_id: string
+  profileId: string
   activity: string | null
-  start_date: string | null
-  end_date: string | null
+  startDate: string | null
+  endDate: string | null
   description: string | null
-  created_at: Date
-  updated_at: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 const create = async (
