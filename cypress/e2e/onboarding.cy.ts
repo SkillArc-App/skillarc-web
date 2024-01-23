@@ -94,7 +94,7 @@ describe('Onboarding', () => {
     turner.contains('Apply').click()
 
     cy.get('body').should('contain', "Let's do this")
-    cy.get('button').contains('Apply with Blocktrain Profile').click()
+    cy.get('button').contains('Apply with SkillArc Profile').click()
     cy.get('button').contains('Back to Jobs').click()
     cy.get('div').contains('Turner Construction Company').click()
 

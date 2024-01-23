@@ -26,10 +26,6 @@ export type onBoardingResponse = {
       question?: string
       response?: string
     }
-    blocktrainHelp?: {
-      question?: string
-      response?: string[]
-    }
     zipcode?: {
       question?: string
       response?: string

@@ -1,5 +1,5 @@
 import { Text } from '@/frontend/components/Text.component'
-import { BlockTrain } from '@/frontend/icons/BlockTrain.icon'
+import { SkillArc } from '@/frontend/icons/SkillArc.icon'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
@@ -45,7 +45,7 @@ export const Header = () => {
     >
       <Flex alignItems="center" gap="0.75rem" onClick={() => router.push('/')} cursor="pointer">
         <Logo w="1.75rem" h="2rem" />
-        <BlockTrain w="6.75rem" h="1rem" />
+        <SkillArc w="6.75rem" h="1rem" />
       </Flex>
 
       <Spacer />

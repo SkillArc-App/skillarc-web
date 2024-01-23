@@ -45,14 +45,14 @@ export const ApplyModals = ({
                 </Heading>
                 <Flex w="100%"></Flex>
                 <Text type="b2" color="#6C757D">
-                  We&apos;re sharing your BlockTrain profile with <strong>{job.employer.name}</strong> to
-                  start the application process.
+                  We&apos;re sharing your SkillArc profile with <strong>{job.employer.name}</strong>{' '}
+                  to start the application process.
                 </Text>
                 <Text type="b2" color="#6C757D">
                   Keep an eye on your email for next steps!
                 </Text>
                 <Text type="b2" color="#6C757D">
-                  - The BlockTrain team 😄
+                  - The SkillArc team 😄
                 </Text>
               </Flex>
               <Flex w="100%" gap="1rem" flexWrap="wrap" my="1.5rem">
@@ -96,7 +96,7 @@ export const ApplyModals = ({
           <ModalBody py="1rem">
             <Flex w="100%" h="100%" flexWrap="wrap" gap="24px">
               <Heading type="h3" color="greyscale.900">
-                Apply with BlockTrain
+                Apply with SkillArc
               </Heading>
               <Flex flexWrap="wrap" w="100%">
                 <Text type="b1" color="greyscale.600" marginRight="4px">
@@ -117,7 +117,7 @@ export const ApplyModals = ({
               </Flex>
               <Flex w="100%" gap="1rem" flexWrap="wrap">
                 <Button variant="primary" w="100%" onClick={handleApplyClick}>
-                  Apply with BlockTrain Profile
+                  Apply with SkillArc Profile
                 </Button>
                 <Button variant="secondary" w="100%" onClick={() => onApplyModalClose()}>
                   Go Back

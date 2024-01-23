@@ -1,12 +1,12 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Head, Html, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
         {/* Page title */}
-        {/* eslint-disable-next-line @next/next/no-title-in-document-head */ }
-        <title>Blocktrain</title>
+        {/* eslint-disable-next-line @next/next/no-title-in-document-head */}
+        <title>SkillArc</title>
 
         {/* Favicon */}
         <link rel="shortcut icon" href="/favicon.ico" />

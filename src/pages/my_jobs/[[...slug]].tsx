@@ -134,7 +134,7 @@ const MyJobs = () => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            We&apos;re sharing your BlockTrain profile and contact info with{' '}
+            We&apos;re sharing your SkillArc profile and contact info with{' '}
             <b>{activeJob?.employer.name}</b> to start the application process.
           </ModalBody>
 
@@ -169,7 +169,7 @@ const MyJobs = () => {
         <ModalFooter>
           <Stack width={'100%'}>
             <Button variant={'primary'} onClick={() => handleApply()}>
-              Apply with Blocktrain Profile
+              Apply with SkillArc Profile
             </Button>
 
             <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
