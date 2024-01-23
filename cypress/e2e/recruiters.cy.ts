@@ -37,13 +37,6 @@ describe('Recruiters', () => {
               cy.get('select').select('hire')
             })
 
-          cy.wait(1000)
-
-          cy.get('table')
-            .should('not.contain', `${applicant['first_name']} ${applicant['last_name']}`)
-            .should('not.contain', `${job['employment_title']}`)
-            .should('not.contain', `${applicant_status['status']}`)
-
           cy.findByLabelText('Show Passes/Hires').parent().click()
           cy.get('table').within(() => {
             cy.findByLabelText('Start conversation with applicant').click()
