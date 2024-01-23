@@ -34,6 +34,7 @@ describe('Recruiters', () => {
             .should('contain', `${job['employment_title']}`)
             .should('contain', `${applicant_status['status']}`)
             .within(() => {
+              cy.get('select').should('be.enabled')
               cy.get('select').select('hire')
             })
 
