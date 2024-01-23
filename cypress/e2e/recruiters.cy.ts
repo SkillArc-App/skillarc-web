@@ -33,10 +33,6 @@ describe('Recruiters', () => {
             .should('contain', `${applicant['first_name']} ${applicant['last_name']}`)
             .should('contain', `${job['employment_title']}`)
             .should('contain', `${applicant_status['status']}`)
-            .within(() => {
-              cy.get('select').should('be.enabled')
-              cy.get('select').select('hire')
-            })
 
           cy.findByLabelText('Show Passes/Hires').parent().click()
           cy.get('table').within(() => {
@@ -57,6 +53,15 @@ describe('Recruiters', () => {
           cy.get('body').should('contain', message)
 
           cy.go('back')
+
+          cy.get('table')
+            .should('contain', `${applicant['first_name']} ${applicant['last_name']}`)
+            .should('contain', `${job['employment_title']}`)
+            .should('contain', `${applicant_status['status']}`)
+            .within(() => {
+              cy.get('select').should('be.enabled')
+              cy.get('select').select('hire')
+            })
 
           cy.findByLabelText('Show Passes/Hires').parent().click()
           cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).click()
