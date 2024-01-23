@@ -2,7 +2,7 @@ import { get } from '../http-common'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 import { CoachSeeker } from './useCoachSeekersData'
 
-export const useCoachSeekerData = (id: string) =>
+export const useCoachSeekerData = (id?: string) =>
   useAuthenticatedQuery(
     ['coachSeeker', id],
     ({ token }) => {
