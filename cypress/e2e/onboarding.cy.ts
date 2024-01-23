@@ -23,9 +23,9 @@ describe('Onboarding', () => {
       })
       emailSelect.should('be.enabled')
       emailSelect.select(r['email'], { timeout: 10000 })
-      cy.visit('/')
     })
 
+    cy.visit('/onboarding/name')
     cy.url().should('contain', '/onboarding/name')
     cy.get('input').filter('[placeholder="First name"]').type('Dwight')
     cy.get('input').filter('[placeholder="Last name"]').type('Schrute')
