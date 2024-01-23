@@ -120,7 +120,7 @@ export const Reference = ({
           <Text type="b1Bold">Submit</Text>
         </Button>
         <Text type="b3" color="greyscale.600" w="100%">
-          This reference will be displayed on {fullName}’s BlockTrain profile for employers to view.
+          This reference will be displayed on {fullName}’s SkillArc profile for employers to view.
         </Text>
       </Flex>
       <Flex

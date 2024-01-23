@@ -78,8 +78,7 @@ const Home = () => {
       if (!user) return
       if (!user.onboardingSession?.completed_at) {
         router.push('/onboarding')
-      }
-      if (user.profile.missingProfileItems.length > 0) {
+      } else if (user.profile.missingProfileItems.length > 0) {
         router.push(`/profiles/${user.profile.id}`)
       } else {
         router.push(`/jobs`)

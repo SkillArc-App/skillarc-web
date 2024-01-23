@@ -79,7 +79,7 @@ export default function JobPosting() {
         <SingleJobPosting jobId={jobId as string} />
         <Flex w="100%" p="1rem" gap="1rem" flexWrap="wrap" zIndex={2} position="fixed" bottom="0px">
           <Button w="100%" variant="primary" onClick={() => clickApply()}>
-            Apply with Blocktrain Profile
+            Apply with SkillArc Profile
           </Button>
         </Flex>
       </Flex>
