@@ -22,7 +22,7 @@ describe('Recruiters', () => {
       emailSelect.select(recruiter['email'], { timeout: 10000 })
     })
 
-    cy.visit('/')
+    cy.visit('/employers/jobs')
 
     cy.get('@applicant').then((applicant: any) => {
       cy.get('@job').then((job: any) => {
@@ -37,7 +37,9 @@ describe('Recruiters', () => {
               cy.get('select').select('hire')
             })
 
-          cy.get('table', { timeout: 10000 })
+          cy.wait(1000)
+
+          cy.get('table')
             .should('not.contain', `${applicant['first_name']} ${applicant['last_name']}`)
             .should('not.contain', `${job['employment_title']}`)
             .should('not.contain', `${applicant_status['status']}`)
