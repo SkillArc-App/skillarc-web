@@ -28,7 +28,7 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { groupBy } from 'lodash'
@@ -99,6 +99,8 @@ const Jobs = () => {
 
   const columnHelper = createColumnHelper<ApplicantTable>()
 
+  const appliedOnId = 'applied-on'
+
   const columns = [
     columnHelper.accessor('name', {
       cell: (info) => (
@@ -146,8 +148,16 @@ const Jobs = () => {
     }),
     columnHelper.accessor('appliedOn', {
       cell: (info) => info.getValue(),
+      id: appliedOnId,
       header: 'Applied On',
     }),
+  ]
+
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: appliedOnId,
+    },
   ]
 
   useEffect(() => {
@@ -335,7 +345,7 @@ const Jobs = () => {
       <Checkbox isChecked={showPasses} onChange={() => setShowPasses(!showPasses)}>
         Show Passes/Hires
       </Checkbox>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} initialSortState={initialSortState} />
       <Drawer placement={'right'} isOpen={!!currentApplicant} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
