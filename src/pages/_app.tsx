@@ -36,6 +36,14 @@ export default function App({ Component, pageProps: { session, ...pageProps }, r
     }
   }, [router.events])
 
+  useEffect(() => {
+    if (window.location.hostname === 'staging.blocktrainapp.com') {
+      window.location.href = `https://staging.skillarc.com`
+    } else if (window.location.hostname === 'app.blocktrainapp.com') {
+      // window.location.href = `https://app.skillarc.com`
+    }
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
