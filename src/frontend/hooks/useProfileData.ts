@@ -7,11 +7,15 @@ import { useAuthToken } from './useAuthToken'
 export const useProfileData = (id: string) => {
   const token = useAuthToken()
 
-  const profileQuery = useQuery(['profile', id, token], () => {
-    if (!id) return
+  const profileQuery = useQuery(
+    ['profile', id, token],
+    () => {
+      if (!id) return
 
-    return getOne(id, token)
-  })
+      return getOne(id, token)
+    },
+    { enabled: !!id },
+  )
 
   return { profileQuery }
 }
