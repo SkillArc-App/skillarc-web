@@ -1,9 +1,12 @@
+'use client'
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { NoteBox } from '@/frontend/components/note-box'
 import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
 import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
 import { useCoachesData } from '@/frontend/hooks/useCoachesData'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import {
@@ -23,7 +26,6 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 interface GroupedNotes {
@@ -31,10 +33,11 @@ interface GroupedNotes {
 }
 
 const Seeker = () => {
-  const router = useRouter()
-  const { id } = router.query
+  const searchParams = useFixedParams('id')
 
-  const { data: seeker } = useCoachSeekerData(id as string)
+  const id = searchParams?.['id']
+
+  const { data: seeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
 
   const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
