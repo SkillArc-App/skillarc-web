@@ -343,10 +343,6 @@ const Jobs = () => {
           <DrawerBody>
             <Stack gap={'2rem'}>
               <Stack gap={'1rem'}>
-                <p>
-                  BlockTrain will notify {currentApplicant?.firstName} they are no longer being
-                  considered for {currentApplicant?.jobName}
-                </p>
                 <p>Help us find better candidates for you in the future!</p>
               </Stack>
               <CheckboxGroup
