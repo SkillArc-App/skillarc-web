@@ -371,4 +371,4 @@ const Seeker = () => {
   )
 }
 
-export default withAuthenticationRequired(Seeker)
+export default Seeker

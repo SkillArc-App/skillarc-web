@@ -4,18 +4,18 @@ import DataTable from '@/frontend/components/DataTable.component'
 import { CoachSeeker, useCoachSeekersData } from '@/frontend/hooks/useCoachSeekersData'
 import { Box, HStack, Link, Tag } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 
 const Coaches = () => {
   const { data } = useCoachSeekersData()
 
   return (
-    <Box width={'100%'} pt={'2rem'}>
+    <Box width={'100%'}>
       {data && <Table data={data} />}
     </Box>
   )
 }
+
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
   const columnHelper = createColumnHelper<CoachSeeker>()
@@ -90,4 +90,4 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
   return <DataTable columns={columns} data={data} initialSortState={initialSortState} />
 }
 
-export default withAuthenticationRequired(Coaches)
+export default Coaches
