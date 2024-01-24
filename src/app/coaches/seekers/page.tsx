@@ -1,7 +1,8 @@
 'use client'
 
+import { useCoachSeekersData } from '@/app/coaches/hooks/useCoachSeekersData'
+import { CoachSeeker } from '@/app/coaches/types'
 import DataTable from '@/frontend/components/DataTable.component'
-import { CoachSeeker, useCoachSeekersData } from '@/frontend/hooks/useCoachSeekersData'
 import { Box, HStack, Link, Tag } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
@@ -15,7 +16,6 @@ const Coaches = () => {
     </Box>
   )
 }
-
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
   const columnHelper = createColumnHelper<CoachSeeker>()

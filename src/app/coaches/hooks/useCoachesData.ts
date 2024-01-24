@@ -1,10 +1,6 @@
-import { get } from '../http-common'
-import { useAuthenticatedQuery } from './useAuthenticatedQuery'
-
-export type Coach = {
-  id: string
-  email: string
-}
+import { Coach } from '@/app/coaches/types'
+import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
+import { get } from '@/frontend/http-common'
 
 export const useCoachesData = () =>
   useAuthenticatedQuery(['coaches'], ({ token }) => {

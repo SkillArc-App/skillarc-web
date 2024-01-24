@@ -1,6 +1,3 @@
-import { get } from '../http-common'
-import { useAuthenticatedQuery } from './useAuthenticatedQuery'
-
 export interface SeekerNote {
   note: string
   noteTakenBy: string
@@ -31,16 +28,7 @@ export interface CoachSeeker {
   applications: SeekerApplication[]
 }
 
-export const useCoachSeekersData = () =>
-  useAuthenticatedQuery(['coachSeekers'], ({ token }) => {
-    const getCoachSeekersRequest = async () => {
-      const res = await get<CoachSeeker[]>(
-        `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/`,
-        token,
-      )
-
-      return res.data
-    }
-
-    return getCoachSeekersRequest()
-  })
+export type Coach = {
+  id: string
+  email: string
+}

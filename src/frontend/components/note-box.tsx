@@ -1,7 +1,7 @@
+import { SeekerNote } from '@/app/coaches/types'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, HStack, IconButton, Text, Textarea, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
-import { SeekerNote } from '../hooks/useCoachSeekersData'
 
 interface NoteProps {
   note: SeekerNote

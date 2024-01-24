@@ -1,11 +1,11 @@
 'use client'
 
+import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
+import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
+import { SeekerNote } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { NoteBox } from '@/frontend/components/note-box'
-import { useCoachSeekerData } from '@/frontend/hooks/useCoachSeekerData'
-import { SeekerNote } from '@/frontend/hooks/useCoachSeekersData'
-import { useCoachesData } from '@/frontend/hooks/useCoachesData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
@@ -24,7 +24,7 @@ import {
   Tag,
   Textarea,
 } from '@chakra-ui/react'
-import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
