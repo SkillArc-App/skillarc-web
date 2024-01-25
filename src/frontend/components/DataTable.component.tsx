@@ -31,7 +31,7 @@ export default function DataTable<Data extends RowData>({ data, columns, initial
   })
 
   return (
-    <TableContainer bg="white">
+    <TableContainer bg="white" width="100%">
       <Table variant={'simple'} size={'sm'}>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (

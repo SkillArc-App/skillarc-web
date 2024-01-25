@@ -1,6 +1,7 @@
 'use client'
 
 import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
+import DataTable from '@/frontend/components/DataTable.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { Box, Button, VStack } from '@chakra-ui/react'
@@ -8,10 +9,9 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
-import DataTable from '@/frontend/components/DataTable.component'
 
 const Leads = () => {
-  const { data: leads, refetch } = useCoachLeadsQuery()
+  const { data: leads } = useCoachLeadsQuery()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [newLeads, setNewLeads] = useState<SeekerLead[]>([])
   const token = useAuthToken()
@@ -22,7 +22,6 @@ const Leads = () => {
     post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`, { lead }, token, {
       camel: true,
     }).then(() => {
-      refetch()
       setNewLeads((currentNewLeads) => {
         return [
           ...(currentNewLeads ?? []),
@@ -77,6 +76,10 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
     }),
     columnHelper.accessor('leadCapturedBy', {
       header: 'Lead Captured By',
+      cell: (row) => row.getValue(),
+    }),
+    columnHelper.accessor('status', {
+      header: 'Status',
       cell: (row) => row.getValue(),
     }),
   ]
