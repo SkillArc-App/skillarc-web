@@ -6,6 +6,7 @@ import { SeekerNote } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { NoteBox } from '@/frontend/components/note-box'
+import { Barrier, useBarrierData } from '@/frontend/hooks/useBarrierData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
@@ -21,12 +22,12 @@ import {
   Link,
   Select,
   Stack,
-  Tag,
   Textarea,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
+import ReactSelect from 'react-select'
 
 interface GroupedNotes {
   [key: string]: SeekerNote[]
@@ -39,6 +40,7 @@ const Seeker = () => {
 
   const { data: seeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
+  const { data: barriers } = useBarrierData()
 
   const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
   const [noteDraft, setNoteDraft] = useState('')
@@ -46,6 +48,7 @@ const Seeker = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0()
 
   const [token, setToken] = useState<string | null>(null)
+  const [barrierOptions, setBarrierOptions] = useState<{ value: string; label: string }[]>([])
 
   useEffect(() => {
     const getToken = async () => {
@@ -83,6 +86,17 @@ const Seeker = () => {
         }, {}),
     )
   }, [workingSeeker])
+
+  useEffect(() => {
+    if (!barriers) return
+
+    const options = barriers.map((b) => ({
+      value: b.id,
+      label: b.name,
+    }))
+
+    setBarrierOptions(options)
+  }, [barriers])
 
   const addNote = () => {
     if (!token) return
@@ -182,6 +196,24 @@ const Seeker = () => {
     })
   }
 
+  const updateBarriers = (barriers: Barrier[]) => {
+    if (!token) return
+    if (!workingSeeker) return
+
+    put(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/update_barriers`,
+      {
+        barriers: barriers.map((b) => b.id),
+      },
+      token,
+    ).then((res) => {
+      setWorkingSeeker({
+        ...workingSeeker,
+        barriers,
+      })
+    })
+  }
+
   const applicationIcon = (applicationStatus: string) => {
     if (applicationStatus == 'hire') {
       return <CheckIcon boxSize={3} color={'green'} />
@@ -256,14 +288,15 @@ const Seeker = () => {
               </Text>
             </Box>
             <Box mt={'1rem'}>
-              <Text variant={'b3'}>Barriers</Text>
-              {
-                <HStack>
-                  {workingSeeker.barriers.map((barrier, key) => (
-                    <Tag key={key}>{barrier}</Tag>
-                  ))}
-                </HStack>
-              }
+              <Text variant={'b3'} mb={'0.25rem'}>
+                Barriers
+              </Text>
+              <ReactSelect
+                isMulti
+                options={barrierOptions}
+                onChange={(v) => updateBarriers(v.map((b) => ({ id: b.value, name: b.label })))}
+                value={workingSeeker.barriers.map((b) => ({ value: b.id, label: b.name }))}
+              />
             </Box>
             <Box mt={'1rem'}>
               <Text variant={'b3'}>Skill Level</Text>

@@ -10,11 +10,7 @@ import NextLink from 'next/link'
 const Coaches = () => {
   const { data } = useCoachSeekersData()
 
-  return (
-    <Box width={'100%'}>
-      {data && <Table data={data} />}
-    </Box>
-  )
+  return <Box width={'100%'}>{data && <Table data={data} />}</Box>
 }
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
@@ -55,7 +51,7 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
       cell: (row) => (
         <HStack>
           {row.getValue().map((barrier, key) => (
-            <Tag key={key}>{barrier}</Tag>
+            <Tag key={key}>{barrier.name}</Tag>
           ))}
         </HStack>
       ),
