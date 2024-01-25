@@ -17,11 +17,11 @@ export const http = axios.create({
   },
 })
 
-export const get = <T>(
+export const get = <T = any, D = any>(
   url: string,
   token?: string,
   options?: Options,
-): Promise<AxiosResponse<T>> => {
+): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {}
 
   if (token) {
@@ -37,7 +37,12 @@ export const get = <T>(
   })
 }
 
-export const post = (url: string, data: any, token: string, options?: Options) => {
+export const post = <T = any, D = any>(
+  url: string,
+  data: any,
+  token: string,
+  options?: Options,
+): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {
     Authorization: `Bearer ${token}`,
   }
@@ -51,7 +56,7 @@ export const post = (url: string, data: any, token: string, options?: Options) =
   })
 }
 
-export const put = (url: string, data: any, token: string, options?: Options) => {
+export const put = <T = any, D = any>(url: string, data: any, token: string, options?: Options): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {
     Authorization: `Bearer ${token}`,
   }
@@ -65,7 +70,7 @@ export const put = (url: string, data: any, token: string, options?: Options) =>
   })
 }
 
-export const destroy = (url: string, token: string, options?: Options) => {
+export const destroy = <T = any, D = any>(url: string, token: string, options?: Options): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {
     Authorization: `Bearer ${token}`,
   }

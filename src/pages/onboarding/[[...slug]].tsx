@@ -108,7 +108,7 @@ const Onboarding = () => {
       routeToSlug('opportunities')
       return
     }
-  }, [onboardingData, onboardingDataIsFetching, onboardingDataIsLoading, router, token])
+  }, [currentStep, onboardingData, onboardingDataIsFetching, onboardingDataIsLoading, router, token])
 
   const [workingOnboardingResponse, setWorkingOnboardingResponse] = useState<onBoardingResponse>({
     responses: { ...onboardingData?.responses },

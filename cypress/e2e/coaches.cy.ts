@@ -1,25 +1,30 @@
+import { randomUUID } from "crypto"
+
 export {}
 
 describe('Coaches', () => {
   beforeEach(() => {
     cy.task('createCoach').then((r: any) => {
-      cy.log(r['email'])
       cy.wrap(r).as('coach')
     })
     cy.task('createActiveSeeker').then((r: any) => {
-      cy.log(r['email'])
       cy.wrap(r).as('seeker')
+    })
+    cy.task('createSeekerLead').then((r: any) => {
+      cy.wrap(r).as('lead')
     })
   })
 
   it('should navigate through coaches dashboard', () => {
     cy.visit('/coaches')
+    cy.url().should('contain', '/coaches/seekers')
+    cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
 
     let coachEmail = ''
 
-    cy.get('@coach').then((r: any) => {
+    cy.get('@coach').then((coach: any) => {
       cy.get('div').contains('mock auth')
-      coachEmail = r['email']
+      coachEmail = coach['email']
       cy.get('select')
         .filter((_, element) => {
           return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
@@ -27,11 +32,11 @@ describe('Coaches', () => {
         .select(coachEmail)
     })
 
-    cy.get('@seeker').then((r: any) => {
-      cy.get('a').contains(r['email']).click()
+    cy.get('@seeker').then((seeker: any) => {
+      cy.get('a').contains(seeker['email']).click()
 
-      cy.get('body').should('contain', `${r['first_name']} ${r['last_name']}`)
-      cy.get('body').should('contain', r['email'])
+      cy.get('body').should('contain', `${seeker['first_name']} ${seeker['last_name']}`)
+      cy.get('body').should('contain', seeker['email'])
       cy.get('body').should('contain', 'Beginner')
 
       const noteInput = cy.get('textarea').filter('[placeholder="Add a note"]')
@@ -56,15 +61,15 @@ describe('Coaches', () => {
 
       cy.get('a').contains('< Back to Seekers').click()
 
-      cy.get('body').should('contain', `${r['first_name']}`)
-      cy.get('body').should('contain', `${r['last_name']}`)
+      cy.get('body').should('contain', `${seeker['first_name']}`)
+      cy.get('body').should('contain', `${seeker['last_name']}`)
 
-      cy.get('h1').contains('Seekers')
+      cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
 
-      cy.get('a').contains(r['email']).click()
+      cy.get('a').contains(seeker['email']).click()
 
       const reloadUntilTextAppears = (retries = 5) => {
-        cy.get('body').contains(r['first_name'])
+        cy.get('body').contains(seeker['first_name'])
         cy.get('body').then(($body) => {
           cy.log($body.text())
           if ($body.text().includes('This is a new note')) {
@@ -106,6 +111,58 @@ describe('Coaches', () => {
       cy.get('body').contains('Dwight Schrute')
       cy.get('body').contains('18503')
       cy.get('body').contains('570-555-5555')
+    })
+
+    cy.get('@lead').then((lead: any) => {
+      cy.visit('/coaches')
+      cy.findByRole('tab', { name: 'Leads' }).click()
+      cy.url().should('contain', '/coaches/leads')
+
+      cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
+
+      cy.get('table').should('contain', lead['first_name'])
+      cy.get('table').should('contain', lead['last_name'])
+      cy.get('table').should('contain', lead['phone_number'])
+
+      cy.findByRole('button', { name: 'New Lead' }).click()
+
+      const newLead = {
+        firstName: crypto.randomUUID(),
+        lastName: crypto.randomUUID(),
+        phoneNumber: '123-456-7890'
+      }
+
+      cy.findByLabelText('First Name*').type(newLead.firstName)
+      cy.findByLabelText('Last Name*').type(newLead.lastName)
+      cy.findByLabelText('Phone Number*').type(newLead.phoneNumber)
+      cy.findByRole('button', { name: 'Save' }).click()
+
+
+      cy.get('table').should('contain', newLead.firstName)
+      cy.get('table').should('contain', newLead.lastName)
+      cy.get('table').should('contain', newLead.phoneNumber)
+
+      cy.reload()
+      const reloadUntilTextAppears = (retries = 5) => {
+        cy.get('table').contains(lead['first_name'])
+        cy.get('table').then((table) => {
+          cy.log(table.text())
+          if (table.text().includes(newLead.firstName)) {
+          } else {
+            if (retries === 0) return
+
+            cy.wait(1000)
+            cy.reload().then(() => {
+              reloadUntilTextAppears(retries - 1)
+            })
+          }
+        })
+      }
+
+      reloadUntilTextAppears()
+      cy.get('table').should('contain', newLead.firstName)
+      cy.get('table').should('contain', newLead.lastName)
+      cy.get('table').should('contain', newLead.phoneNumber)
     })
   })
 })
