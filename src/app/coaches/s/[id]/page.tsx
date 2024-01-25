@@ -257,6 +257,7 @@ const Seeker = () => {
             </Box>
             <Box mt={'1rem'}>
               <Text variant={'b3'}>Barriers</Text>
+              <Select></Select>
               {
                 <HStack>
                   {workingSeeker.barriers.map((barrier, key) => (
