@@ -1,18 +1,31 @@
-export interface SeekerNote {
+export type SeekerNote = {
   note: string
   noteTakenBy: string
   date: string
   noteId: string
 }
 
-export interface SeekerApplication {
+export type SeekerLead = {
+  leadId: string
+  email?: string
+  phoneNumber: string
+  firstName: string
+  lastName: string
+  leadCapturedAt: string
+  leadCapturedBy: string
+  status: string
+}
+
+export type SubmittableSeekerLead = Pick<SeekerLead, 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'leadId'>
+
+export type SeekerApplication = {
   status: string
   employerName: string
   jobId: string
   employmentTitle: string
 }
 
-export interface CoachSeeker {
+export type CoachSeeker = {
   seekerId: string
   firstName: string
   lastName: string
