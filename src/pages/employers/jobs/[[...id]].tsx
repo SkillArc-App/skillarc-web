@@ -31,7 +31,6 @@ import {
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { groupBy } from 'lodash'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -193,7 +192,15 @@ const Jobs = () => {
   useEffect(() => {
     if (!employerJobs) return
 
-    const groupedJobs = groupBy(employerJobs.jobs, ({ employerId }) => employerId)
+    const groupedJobs = employerJobs.jobs.reduce((groups, job) => {
+      if (!groups[job.employerId]) {
+        groups[job.employerId] = []
+      }
+
+      groups[job.employerId].push(job)
+
+      return groups
+    }, {} as Record<string, Job[]>)
 
     const employerArray = Object.keys(groupedJobs).map((key) => {
       return {
