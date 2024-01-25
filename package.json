@@ -45,6 +45,7 @@
     "@testing-library/cypress": "^10.0.1",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
+    "@types/lodash.throttle": "^4.1.9",
     "@types/mixpanel-browser": "^2.38.1",
     "cypress": "^13.6.3",
     "dotenv": "16.3.1",
