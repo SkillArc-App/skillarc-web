@@ -1,6 +1,7 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
 import { Text } from '../../../../components/Text.component'
+import { industries } from '@/common/static/industries'
 
 export const NewOpportunityInterests = ({
   opportunityInterests,
@@ -23,7 +24,7 @@ export const NewOpportunityInterests = ({
     }
   }
 
-  const checkboxOptions: string[] = ['Construction', 'Manufacturing', 'Healthcare']
+  const checkboxOptions: string[] = industries.map((i) => i[0].toLocaleUpperCase() + i.slice(1))
 
   return (
     <>

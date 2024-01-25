@@ -1,5 +1,6 @@
 'use client'
 
+import { industries } from '@/common/static/industries'
 import { CareerPath } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
@@ -670,7 +671,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
             <Box px={'1rem'}>
               <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
                 <option></option>
-                {['construction', 'manufacturing', 'healthcare']?.map((i) => {
+                {industries.map((i) => {
                   return <option key={i}>{i}</option>
                 })}
               </Select>
@@ -866,7 +867,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                     return (
                       <Tr key={index}>
                         <Td>
-                          <Image src={jp.photo_url} alt='Job image' />
+                          <Image src={jp.photo_url} alt="Job image" />
                         </Td>
                         <Td whiteSpace={'normal'}>{jp.photo_url}</Td>
                         <Td>
