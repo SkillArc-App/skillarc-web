@@ -184,6 +184,17 @@ export default function Jobs() {
         </Link>
       ),
     }),
+    columnHelper.accessor('id', {
+      header: 'Seeker View',
+      cell: (row) =>
+        row.row.original.hidden ? (
+          'Hidden'
+        ) : (
+          <Link href={`/jobs/${row.getValue()}`} as={NextLink}>
+            Seeker View
+          </Link>
+        ),
+    }),
     columnHelper.accessor('employer', {
       header: 'Employer',
       cell: (row) => row.getValue(),
