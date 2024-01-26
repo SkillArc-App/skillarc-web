@@ -1,5 +1,3 @@
-import { randomUUID } from "crypto"
-
 export {}
 
 describe('Coaches', () => {
@@ -39,6 +37,10 @@ describe('Coaches', () => {
       cy.get('body').should('contain', seeker['email'])
       cy.get('body').should('contain', 'Beginner')
 
+      cy.get('p').contains('Barriers').next().type('Background{enter}')
+      cy.get('body').should('contain', 'Background')
+      cy.get('body').should('not.contain', 'Unable to Drive')
+
       const noteInput = cy.get('textarea').filter('[placeholder="Add a note"]')
       noteInput.type('This is a note').type('{enter}')
       noteInput.should('have.value', '')
@@ -72,7 +74,7 @@ describe('Coaches', () => {
         cy.get('body').contains(seeker['first_name'])
         cy.get('body').then(($body) => {
           cy.log($body.text())
-          if ($body.text().includes('This is a new note')) {
+          if ($body.text().includes('This is a new note') && $body.text().includes('Background')) {
           } else {
             if (retries === 0) return
 
@@ -129,14 +131,13 @@ describe('Coaches', () => {
       const newLead = {
         firstName: crypto.randomUUID(),
         lastName: crypto.randomUUID(),
-        phoneNumber: '123-456-7890'
+        phoneNumber: '123-456-7890',
       }
 
       cy.findByLabelText('First Name*').type(newLead.firstName)
       cy.findByLabelText('Last Name*').type(newLead.lastName)
       cy.findByLabelText('Phone Number*').type(newLead.phoneNumber)
       cy.findByRole('button', { name: 'Save' }).click()
-
 
       cy.get('table').should('contain', newLead.firstName)
       cy.get('table').should('contain', newLead.lastName)

@@ -1,3 +1,5 @@
+import { Barrier } from '@/frontend/hooks/useBarrierData'
+
 export type SeekerNote = {
   note: string
   noteTakenBy: string
@@ -16,7 +18,10 @@ export type SeekerLead = {
   status: string
 }
 
-export type SubmittableSeekerLead = Pick<SeekerLead, 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'leadId'>
+export type SubmittableSeekerLead = Pick<
+  SeekerLead,
+  'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'leadId'
+>
 
 export type SeekerApplication = {
   status: string
@@ -31,7 +36,7 @@ export type CoachSeeker = {
   lastName: string
   email: string
   phoneNumber: string
-  barriers: string[]
+  barriers: Barrier[]
   assignedCoach: string
   lastContacted: string
   lastActiveOn: string
