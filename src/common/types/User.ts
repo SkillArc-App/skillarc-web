@@ -38,5 +38,4 @@ export type OnboardingSession = {
   userId?: string
   startedAt?: string
   completedAt?: string
-  currentStep?: string
 }
