@@ -104,6 +104,7 @@ jobs:
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
           KLAVIYO_API_KEY: 'fake'
+          CI: true
         credentials:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
