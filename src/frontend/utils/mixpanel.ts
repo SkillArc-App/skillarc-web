@@ -5,6 +5,8 @@ import { FullUser } from '../services/user.service'
 const isProduction = process.env.NEXT_PUBLIC_ENV === 'prod'
 
 export const initializeMixpanel = () => {
+  if (!isProduction) return
+
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN ?? '')
 }
 
