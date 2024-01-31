@@ -3,7 +3,7 @@ import { formatCurrency } from '@/frontend/helpers/formatCurrency.helper'
 import { NeonCircleIcon } from '@/frontend/icons/NeonCircle.icon'
 import { CareerPath, GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '@/frontend/components/Text.component'
 
 export const CareerJourney = ({ data }: { data: GetOneJobPosting }) => {
   return (

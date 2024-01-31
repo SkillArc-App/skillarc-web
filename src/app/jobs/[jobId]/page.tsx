@@ -1,10 +1,10 @@
 'use client'
 
+import { ApplyModals } from '@/app/jobs/[jobId]/components/ApplyModal'
+import { SingleJobPosting } from '@/app/jobs/[jobId]/components/SingleJobPosting'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useJobData } from '@/frontend/hooks/useJobData'
 import { useUser } from '@/frontend/hooks/useUser'
-import { ApplyModals } from '@/frontend/modules/jobPostings/components/ApplyModals.component'
-import { SingleJobPosting } from '@/frontend/modules/jobPostings/components/SingleJobPosting.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import { Button, Flex, useDisclosure } from '@chakra-ui/react'
@@ -12,7 +12,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
 export default function JobPosting() {
-  const params = useFixedParams('jobId');
+  const params = useFixedParams('jobId')
   const jobId = params?.['jobId']
   const {
     getOneJob: { data: job },

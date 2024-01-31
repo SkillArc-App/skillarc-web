@@ -1,18 +1,20 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  ListItem,
-} from '@chakra-ui/react'
+import { Flex, ListItem } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '@/frontend/components/Text.component'
 
-export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
+export const Requirements = ({ data }: { data: GetOneJobPosting }) => {
+  function trackToggleAnalytics(): void {
+    FrontendAnalyticsService.track('Job-dropdown-toggled', {
+      job: data,
+      jobId: data.id,
+      dropdown: 'Requirements',
+    })
+  }
+
   const newTheme = {
     p: (props: any) => {
       const { children } = props
@@ -61,33 +63,28 @@ export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
   }
 
   return (
-    <Accordion
-      allowMultiple
-      w="100%"
+    <Flex
       bg="white"
+      w="100%"
       p="1rem"
-      borderRadius="4px"
+      borderRadius=".25rem"
       boxShadow="0px 4px 4px rgba(0, 0, 0, 0.1)"
+      flexWrap="wrap"
     >
-      <AccordionItem>
-        <AccordionButton alignItems="top" p="0">
-          <Heading variant="h4" color="greyscale.700" w="100%" textAlign="left">
-            💪 Responsibilities
-          </Heading>
+      <Heading type="h4" color="greyscale.700" w="100%">
+        📋 Requirements
+      </Heading>
 
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel>
-          {data && data.responsibilities_description && (
-            <ReactMarkdown
-              // eslint-disable-next-line react/no-children-prop
-              children={data.responsibilities_description}
-              components={ChakraUIRenderer(newTheme)}
-              skipHtml
-            />
-          )}
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+      <div>
+        {data && data.requirements_description && (
+          <ReactMarkdown
+            // eslint-disable-next-line react/no-children-prop
+            children={data.requirements_description}
+            components={ChakraUIRenderer(newTheme)}
+            skipHtml
+          />
+        )}
+      </div>
+    </Flex>
   )
 }

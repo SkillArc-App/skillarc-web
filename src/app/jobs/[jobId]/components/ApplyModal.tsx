@@ -4,7 +4,7 @@ import { Success } from '@/frontend/icons/Success.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { FullUser } from '@/frontend/services/user.service'
 import { Button, Flex, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 type ApplyModalsProps = {
   isSuccessModalOpen: boolean
