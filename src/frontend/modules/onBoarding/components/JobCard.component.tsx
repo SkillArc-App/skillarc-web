@@ -1,6 +1,6 @@
 import { Text } from '@/frontend/components/Text.component'
 
-import { OneMatchedJobPosting } from '@/pages/jobs'
+import { OneMatchedJobPosting } from '@/app/jobs/page'
 import {
   Box,
   Button,
@@ -70,7 +70,9 @@ export const JobCard = ({
       onClick={onCardClick}
     >
       <Flex gap={'1rem'}>
-        {job.employer?.logo_url && <Image src={job.employer.logo_url} alt='employer logo' boxSize={'4rem'} />}
+        {job.employer?.logo_url && (
+          <Image src={job.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
+        )}
 
         <Box textAlign={'left'}>
           <Text type={'b1Bold'}>{job.employment_title}</Text>

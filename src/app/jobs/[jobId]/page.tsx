@@ -1,3 +1,6 @@
+'use client'
+
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useJobData } from '@/frontend/hooks/useJobData'
 import { useUser } from '@/frontend/hooks/useUser'
 import { ApplyModals } from '@/frontend/modules/jobPostings/components/ApplyModals.component'
@@ -6,12 +9,11 @@ import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 export default function JobPosting() {
-  const router = useRouter()
-  const { jobId } = router.query
+  const params = useFixedParams('jobId');
+  const jobId = params?.['jobId']
   const {
     getOneJob: { data: job },
   } = useJobData(jobId as string)
