@@ -3,6 +3,7 @@
 import { initializeMixpanel } from '@/frontend/utils/mixpanel'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { ChakraProvider } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -29,6 +30,8 @@ export default function RootLayout({
       }),
   )
 
+  const router = useRouter()
+
   return (
     <html lang="en">
       <body>
@@ -39,6 +42,11 @@ export default function RootLayout({
             cacheLocation="localstorage"
             domain={'blocktrain.us.auth0.com'}
             clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
+            onRedirectCallback={(appState) => {
+              if (appState?.returnTo) {
+                router.push(appState.returnTo)
+              }
+            }}
             authorizationParams={{
               redirect_uri: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`,
               audience: 'https://hello-world.example.com',
