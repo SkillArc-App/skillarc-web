@@ -1,3 +1,4 @@
+import { PartialRequired } from '@/common/types/partial-required'
 import FormInputField from '@/frontend/components/FormInputField'
 import {
   Button,
@@ -21,7 +22,7 @@ interface NewLeadModalProps {
 
 const isValid = (
   lead: Partial<SeekerLead>,
-): lead is Pick<SeekerLead, 'firstName' | 'lastName' | 'phoneNumber'> => {
+): lead is PartialRequired<SeekerLead, 'firstName' | 'lastName' | 'phoneNumber'> => {
   return !!lead.phoneNumber && !!lead.firstName && !!lead.lastName
 }
 
@@ -38,7 +39,10 @@ const NewLeadModal = ({ isOpen, onClose, onSubmit }: NewLeadModalProps) => {
     if (isValid(values)) {
       onSubmit({
         leadId: crypto.randomUUID(),
-        ...values,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: !!values.email ? values.email : undefined,
+        phoneNumber: values.phoneNumber,
       })
     }
   }
