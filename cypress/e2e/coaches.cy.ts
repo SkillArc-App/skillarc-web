@@ -70,22 +70,7 @@ describe('Coaches', () => {
 
       cy.get('a').contains(seeker['email']).click()
 
-      const reloadUntilTextAppears = (retries = 5) => {
-        cy.get('body').contains(seeker['first_name'])
-        cy.get('body').then(($body) => {
-          cy.log($body.text())
-          if ($body.text().includes('This is a new note') && $body.text().includes('Background')) {
-          } else {
-            if (retries === 0) return
-
-            cy.wait(1000)
-            cy.reload().then(() => {
-              reloadUntilTextAppears(retries - 1)
-            })
-          }
-        })
-      }
-      reloadUntilTextAppears()
+      cy.reload()
 
       cy.get('body').should('contain', 'This is a new note')
       cy.get('button[aria-label="Delete Note"]').click()
@@ -131,7 +116,7 @@ describe('Coaches', () => {
       const newLead = {
         firstName: crypto.randomUUID(),
         lastName: crypto.randomUUID(),
-        phoneNumber: '123-456-7890',
+        phoneNumber: Math.floor(Math.random() * 999_999_9999).toString(),
       }
 
       cy.findByLabelText('First Name*').type(newLead.firstName)
@@ -144,23 +129,7 @@ describe('Coaches', () => {
       cy.get('table').should('contain', newLead.phoneNumber)
 
       cy.reload()
-      const reloadUntilTextAppears = (retries = 5) => {
-        cy.get('table').contains(lead['first_name'])
-        cy.get('table').then((table) => {
-          cy.log(table.text())
-          if (table.text().includes(newLead.firstName)) {
-          } else {
-            if (retries === 0) return
 
-            cy.wait(1000)
-            cy.reload().then(() => {
-              reloadUntilTextAppears(retries - 1)
-            })
-          }
-        })
-      }
-
-      reloadUntilTextAppears()
       cy.get('table').should('contain', newLead.firstName)
       cy.get('table').should('contain', newLead.lastName)
       cy.get('table').should('contain', newLead.phoneNumber)
