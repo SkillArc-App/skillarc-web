@@ -1,6 +1,7 @@
 import { Text } from '@/frontend/components/Text.component'
 
 import { OneMatchedJobPosting } from '@/app/jobs/page'
+import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
 import {
   Box,
   Button,
@@ -18,7 +19,6 @@ import {
   Tag,
   TagLabel,
 } from '@chakra-ui/react'
-import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
 
 export const JobCard = ({
   job,
@@ -64,6 +64,8 @@ export const JobCard = ({
       p={'1rem'}
       bg={'white'}
       width={'100%'}
+      role="listitem"
+      aria-label={job.employment_title}
       borderRadius={'0.25rem'}
       boxShadow={'0px 4px 4px 0px rgba(0, 0, 0, 0.10)'}
       spacing={'1rem'}

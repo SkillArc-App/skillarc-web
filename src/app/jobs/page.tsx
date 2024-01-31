@@ -288,7 +288,7 @@ export default function Jobs() {
             Healthcare
           </Tag>
         </HStack>
-        <VStack spacing={'1rem'}>
+        <VStack spacing={'1rem'} role='list'>
           {matchedJobArray?.map((matchedJob, index) => {
             return (
               <JobCard

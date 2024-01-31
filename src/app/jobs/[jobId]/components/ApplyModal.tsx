@@ -4,7 +4,7 @@ import { Success } from '@/frontend/icons/Success.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { FullUser } from '@/frontend/services/user.service'
 import { Button, Flex, Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 type ApplyModalsProps = {
   isSuccessModalOpen: boolean
@@ -29,8 +29,6 @@ export const ApplyModals = ({
   handleBackToJobs,
   handleApplyClick,
 }: ApplyModalsProps) => {
-  const router = useRouter()
-
   return (
     <>
       <Modal isOpen={isSuccessModalOpen} onClose={onSuccessModalClose}>
@@ -59,16 +57,16 @@ export const ApplyModals = ({
                 <Button
                   variant="primary"
                   w="100%"
-                  onClick={() => router.push(`profiles/${user?.profile?.id}`)}
+                  as={Link}
+                  href={`/profiles/${user?.profile?.id}`}
                 >
                   Update your profile
                 </Button>
                 <Button
                   variant="secondary"
                   w="100%"
-                  onClick={() => {
-                    window.location.assign('https://meetings.hubspot.com/hannah-wexner')
-                  }}
+                  as={Link}
+                  href={'https://meetings.hubspot.com/hannah-wexner'}
                 >
                   Meet a free career coach
                 </Button>
