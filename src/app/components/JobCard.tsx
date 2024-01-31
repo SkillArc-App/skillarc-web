@@ -18,7 +18,7 @@ import {
   Tag,
   TagLabel,
 } from '@chakra-ui/react'
-import ToggleIcon from './ToggleIcon.component'
+import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
 
 export const JobCard = ({
   job,

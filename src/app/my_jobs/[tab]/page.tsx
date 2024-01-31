@@ -1,10 +1,11 @@
 'use client'
 
+import { JobCard } from '@/app/components/JobCard'
+import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { post } from '@/frontend/http-common'
-import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
@@ -31,10 +32,9 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { OneMatchedJobPosting } from '../../jobs/page'
-import { Maybe } from '@/common/types/maybe'
-import { useRouter } from 'next/navigation'
 
 const MyJobs = () => {
   const router = useRouter()
@@ -195,16 +195,17 @@ const MyJobs = () => {
               My Jobs
             </Heading>
           </Flex>
-          <Tabs
-            align={'center'}
-            index={index(tab)}
-            variant="soft-rounded"
-            colorScheme="green"
-          >
+          <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
             <TabList>
-              <Tab as={Link} href='/my_jobs/recently-viewed'>Viewed</Tab>
-              <Tab as={Link} href='/my_jobs/saved'>Saved</Tab>
-              <Tab as={Link} href='/my_jobs/applied'>Applied</Tab>
+              <Tab as={Link} href="/my_jobs/recently-viewed">
+                Viewed
+              </Tab>
+              <Tab as={Link} href="/my_jobs/saved">
+                Saved
+              </Tab>
+              <Tab as={Link} href="/my_jobs/applied">
+                Applied
+              </Tab>
             </TabList>
             <TabPanels>
               <TabPanel px={0}>
