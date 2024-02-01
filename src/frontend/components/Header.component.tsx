@@ -67,7 +67,7 @@ export const Header = () => {
           <MenuItem as={NextLink} href={`/jobs`}>
             View Jobs
           </MenuItem>
-          <MenuItem as={NextLink} href={`/my_jobs`}>
+          <MenuItem as={NextLink} href={`/my_jobs/recently-viewed`}>
             Manage My Jobs
           </MenuItem>
           <MenuDivider />

@@ -20,11 +20,18 @@ const nextConfig = {
     ]
   },
   async redirects() {
-    return [{
-      source: '/coaches',
-      destination: '/coaches/seekers',
-      permanent: false
-    }]
+    return [
+      {
+        source: '/coaches',
+        destination: '/coaches/seekers',
+        permanent: false
+      },
+      {
+        source: '/my_jobs',
+        destination: '/my_jobs/recently-viewed',
+        permanent: false
+      }
+    ]
   }
 }
 
