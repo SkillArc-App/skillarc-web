@@ -1,9 +1,9 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
-import { Flex, Tag } from '@chakra-ui/react'
-import { Text } from '../../../../components/Text.component'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Flex, Tag } from '@chakra-ui/react'
+import { Text } from '@/frontend/components/Text.component'
 
 export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
   return (

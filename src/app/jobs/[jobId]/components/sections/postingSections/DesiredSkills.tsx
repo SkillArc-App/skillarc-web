@@ -7,7 +7,7 @@ import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Flex, Image, Tag, TagLeftIcon } from '@chakra-ui/react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '@/frontend/components/Text.component'
 
 interface DesiredSkillsProps {
   data: GetOneJobPosting

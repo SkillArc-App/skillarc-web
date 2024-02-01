@@ -1,4 +1,4 @@
-import { OneMatchedJobPosting } from '@/pages/jobs'
+import { OneMatchedJobPosting } from '@/app/jobs/page'
 import axios from 'axios'
 import { MasterCertification } from './certification.service'
 import { Employer } from './employer.service'

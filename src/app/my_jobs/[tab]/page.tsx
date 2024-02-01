@@ -1,7 +1,11 @@
+'use client'
+
+import { JobCard } from '@/app/components/JobCard'
+import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { post } from '@/frontend/http-common'
-import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
@@ -28,15 +32,14 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { OneMatchedJobPosting } from '../jobs'
+import { OneMatchedJobPosting } from '../../jobs/page'
 
 const MyJobs = () => {
   const router = useRouter()
-  const { slug } = router.query
-
-  const tab = slug?.at(0) ?? null
+  const params = useFixedParams('tab')
+  const tab = params?.['tab']
 
   const {
     jobMatchesQuery: { data, refetch },
@@ -110,15 +113,7 @@ const MyJobs = () => {
     })
   }
 
-  const onTabChange = (index: number) => {
-    if (index === 0) router.push('/my_jobs/recently-viewed')
-    if (index === 1) router.push('/my_jobs/saved')
-    if (index === 2) router.push('/my_jobs/applied')
-
-    return
-  }
-
-  const index = (tab: string | null) => {
+  const index = (tab: Maybe<string>) => {
     if (tab === 'recently-viewed') return 0
     if (tab === 'saved') return 1
     if (tab === 'applied') return 2
@@ -192,17 +187,17 @@ const MyJobs = () => {
               My Jobs
             </Heading>
           </Flex>
-          <Tabs
-            align={'center'}
-            index={index(tab)}
-            onChange={onTabChange}
-            variant="soft-rounded"
-            colorScheme="green"
-          >
+          <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
             <TabList>
-              <Tab>Viewed</Tab>
-              <Tab>Saved</Tab>
-              <Tab>Applied</Tab>
+              <Tab as={Link} href="/my_jobs/recently-viewed">
+                Viewed
+              </Tab>
+              <Tab as={Link} href="/my_jobs/saved">
+                Saved
+              </Tab>
+              <Tab as={Link} href="/my_jobs/applied">
+                Applied
+              </Tab>
             </TabList>
             <TabPanels>
               <TabPanel px={0}>

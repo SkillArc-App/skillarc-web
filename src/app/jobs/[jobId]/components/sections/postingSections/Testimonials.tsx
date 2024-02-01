@@ -1,7 +1,7 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Avatar, Divider, Flex } from '@chakra-ui/react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '@/frontend/components/Text.component'
 
 export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
   return (

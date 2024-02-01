@@ -1,11 +1,14 @@
+'use client'
+
+import { JobCard } from '@/app/components/JobCard'
 import { Employer } from '@/common/types/Employer'
 import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { Text } from '@/frontend/components/Text.component'
 import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
-import { JobCard } from '@/frontend/modules/onBoarding/components/JobCard.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
@@ -29,9 +32,8 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export type OneMatchedJobPosting = {
@@ -76,8 +78,7 @@ export default function Jobs() {
   const [manufacturingFilter, setManufacturingFilter] = useState<boolean>(true)
   const [healthcareFilter, setHealthcareFilter] = useState<boolean>(true)
 
-  const { getAccessTokenSilently, isLoading } = useAuth0()
-  const [token, setToken] = useState<string>('')
+  const token = useAuthToken()
 
   const setConstructionFilterAndTrack = (value: boolean) => {
     FrontendAnalyticsService.track('Job-filter', {
@@ -102,15 +103,6 @@ export default function Jobs() {
     })
     setHealthcareFilter(value)
   }
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
-  // const router = useRouter()
 
   // check that user has necessary profile components
   // IF NOT send to profile page
@@ -175,6 +167,8 @@ export default function Jobs() {
   const [applying, setApplying] = useState<boolean>(false)
 
   const onSaveClick = (jobId: string) => {
+    if (!token) return
+
     const newJobMatches = matchedJobArray.map((jobMatch) => {
       if (jobMatch.id === jobId) {
         const saved = !jobMatch.saved
@@ -294,18 +288,18 @@ export default function Jobs() {
             Healthcare
           </Tag>
         </HStack>
-        <VStack spacing={'1rem'}>
-          {matchedJobArray?.map((mj, index) => {
+        <VStack spacing={'1rem'} role='list'>
+          {matchedJobArray?.map((matchedJob, index) => {
             return (
               <JobCard
-                job={mj}
-                onCardClick={() => router.push(`/jobs/${mj.id}`)}
+                job={matchedJob}
+                onCardClick={() => router.push(`/jobs/${matchedJob.id}`)}
                 onApplyClick={(e) => {
-                  setActiveJob(mj)
+                  setActiveJob(matchedJob)
                   e.stopPropagation()
                   onOpen()
                 }}
-                onSaveClick={() => onSaveClick(mj.id)}
+                onSaveClick={() => onSaveClick(matchedJob.id)}
                 key={index}
               />
             )

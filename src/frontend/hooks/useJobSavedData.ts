@@ -1,4 +1,4 @@
-import { OneMatchedJobPosting } from '@/pages/jobs'
+import { OneMatchedJobPosting } from '@/app/jobs/page'
 import { get } from '../http-common'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
