@@ -11,8 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on:
-      group: Default
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -28,8 +27,7 @@ jobs:
       - run: npm ci
       - run: npm run build
   lint:
-    runs-on:
-      group: Default
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -45,8 +43,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
   test:
-    runs-on:
-      group: Default
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -62,8 +59,8 @@ jobs:
       - run: npm ci
       - run: npm run test
   e2e:
-    runs-on:
-      group: Default
+    runs-on: ubuntu-latest
+
     services:
       redis:
         image: 'redis:7.2.1-alpine'
