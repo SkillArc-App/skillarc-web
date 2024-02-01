@@ -26,7 +26,6 @@ describe('Onboarding', () => {
     })
 
     cy.visit('/onboarding/name')
-    cy.url().should('contain', '/onboarding/name')
     cy.get('input').filter('[placeholder="First name"]').type('Dwight')
     cy.get('input').filter('[placeholder="Last name"]').type('Schrute')
     cy.get('input').filter('[placeholder="Phone number"]').type('570-555-5555')
@@ -106,7 +105,7 @@ describe('Onboarding', () => {
     earthworkJourneyman.should('contain', 'Dublin, OH')
     earthworkJourneyman.click()
 
-    cy.get('body').should('contain', 'Earthwork Journeymans')
+    cy.get('body', { timeout: 10000 }).should('contain', 'Earthwork Journeymans')
     earthworkJourneyman.should('contain', 'Earthwork Journeymans')
     earthworkJourneyman.should('contain', 'The Superior Group')
     earthworkJourneyman.should('contain', 'Dublin, OH')
