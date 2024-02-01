@@ -113,14 +113,6 @@ const MyJobs = () => {
     })
   }
 
-  // const onTabChange = (index: number) => {
-  //   if (index === 0) router.push('/my_jobs/recently-viewed')
-  //   if (index === 1) router.push('/my_jobs/saved')
-  //   if (index === 2) router.push('/my_jobs/applied')
-
-  //   return
-  // }
-
   const index = (tab: Maybe<string>) => {
     if (tab === 'recently-viewed') return 0
     if (tab === 'saved') return 1
