@@ -10,23 +10,21 @@ import {
   Spacer,
   Stack,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { FaCircle } from 'react-icons/fa6'
+import { useAuthToken } from '../hooks/useAuthToken'
 import { useUser } from '../hooks/useUser'
 import { post } from '../http-common'
 import NotificationIcon from './NotificationIcon.component'
 import './NotificationIcon.css'
 import { Text } from './Text.component'
-import { useAuthToken } from '../hooks/useAuthToken'
 
 const NotificationCenter = () => {
   const { data: user, refetch } = useUser()
   const notifications = user?.notifications ?? []
   const unread = notifications.filter(({ read }) => !read)
 
-  const token = useAuthToken();
+  const token = useAuthToken()
 
   const markNotificationsAsRead = () => {
     if (!token) return
