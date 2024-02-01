@@ -61,6 +61,10 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20.x]
+
     services:
       redis:
         image: 'redis:7.2.1-alpine'
