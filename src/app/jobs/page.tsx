@@ -4,7 +4,6 @@ import { JobCard } from '@/app/components/JobCard'
 import { Employer } from '@/common/types/Employer'
 import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { Text } from '@/frontend/components/Text.component'
-import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { useUser } from '@/frontend/hooks/useUser'
@@ -16,7 +15,6 @@ import {
   Box,
   Button,
   Flex,
-  HStack,
   Heading,
   Image,
   Link,
@@ -28,13 +26,12 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Tag,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export type OneMatchedJobPosting = {
   employer: Employer
@@ -64,145 +61,85 @@ export type OneMatchedJobPosting = {
 
 export default function Jobs() {
   const router = useRouter()
-  const [matchedJobArray, setMatchedJobArray] = useState<OneMatchedJobPosting[]>([])
 
   const [activeJob, setActiveJob] = useState<OneMatchedJobPosting | null>(null)
 
-  const { data: user, isLoading: userIsLoading } = useUser()
-  const {
-    jobMatchesQuery: { data: jobMatches, refetch },
-  } = useJobMatchData()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { data: user } = useUser()
+  const { data: jobMatches, refetch } = useJobMatchData()
+  const matchedJobArray = jobMatches?.matchedJobs ?? []
 
-  const [constructionFilter, setConstructionFilter] = useState<boolean>(true)
-  const [manufacturingFilter, setManufacturingFilter] = useState<boolean>(true)
-  const [healthcareFilter, setHealthcareFilter] = useState<boolean>(true)
+  const {
+    isOpen: isApplyModalOpen,
+    onOpen: onApplyModalOpen,
+    onClose: onApplyModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isSharingModalOpen,
+    onOpen: onSharingModalOpen,
+    onClose: onSharingModalClose,
+  } = useDisclosure()
 
   const token = useAuthToken()
 
-  const setConstructionFilterAndTrack = (value: boolean) => {
-    FrontendAnalyticsService.track('Job-filter', {
-      filter: 'construction',
-      value,
-    })
-    setConstructionFilter(value)
+  const onSaveClick = async (jobId: string) => {
+    const job = matchedJobArray.find(({ id }) => id === jobId)
+
+    if (!token) return
+    if (!job) return
+
+    if (!job.saved) {
+      FrontendAnalyticsService.track('Job-saved', { job })
+      await post(`seekers/jobs/${jobId}/save`, {}, token)
+    } else {
+      FrontendAnalyticsService.track('Job-unsave', { job })
+      await post(`seekers/jobs/${jobId}/unsave`, {}, token)
+    }
+
+    refetch()
   }
 
-  const setManufacturingFilterAndTrack = (value: boolean) => {
-    FrontendAnalyticsService.track('Job-filter', {
-      filter: 'manufacturing',
-      value,
-    })
-    setManufacturingFilter(value)
-  }
-
-  const setHealthcareFilterAndTrack = (value: boolean) => {
-    FrontendAnalyticsService.track('Job-filter', {
-      filter: 'healthcare',
-      value,
-    })
-    setHealthcareFilter(value)
-  }
-
-  // check that user has necessary profile components
-  // IF NOT send to profile page
-  useEffect(() => {
-    if (userIsLoading) return
-
-    if (!user?.profile) {
-      // router.push('/')
-    } else if (!userCanSeeJobs(user)) {
-      router.push(`/profiles/${user.profile.id}`)
-    }
-  }, [router, user, userIsLoading])
-
-  // query job matches
-  useEffect(() => {
-    if (user?.id) {
-      refetch()
-    }
-  }, [refetch, user])
-
-  // set matchedJobArray
-  useEffect(() => {
-    if (jobMatches) {
-      const { matchedJobs } = jobMatches
-      setMatchedJobArray(matchedJobs)
-    }
-  }, [jobMatches, user])
-
-  useEffect(() => {
-    if (isOpen) return
-
-    setApplying(false)
-  }, [isOpen])
-
-  useEffect(() => {
-    if (!jobMatches) return
-    const { matchedJobs } = jobMatches
-    if (!matchedJobs) return
-
-    const filtered = matchedJobs.filter((job: any) => {
-      if (!job?.industry) return false
-
-      if (job.industry.includes('construction') && constructionFilter) {
-        return true
-      }
-
-      if (job.industry.includes('manufacturing') && manufacturingFilter) {
-        return true
-      }
-
-      if (job.industry.includes('healthcare') && healthcareFilter) {
-        return true
-      }
-
-      return false
-    })
-    setMatchedJobArray(filtered.sort((j: any) => j.percentMatch).reverse())
-  }, [manufacturingFilter, constructionFilter, healthcareFilter, jobMatches])
-
-  // TODO: replace setTimeouts with isLoading state conditions from the jobs query/algorithum
-
-  const [applying, setApplying] = useState<boolean>(false)
-
-  const onSaveClick = (jobId: string) => {
+  const handleApply = async () => {
+    if (!activeJob) return
     if (!token) return
 
-    const newJobMatches = matchedJobArray.map((jobMatch) => {
-      if (jobMatch.id === jobId) {
-        const saved = !jobMatch.saved
+    await FrontendJobInteractionsService.apply(activeJob.id, token)
 
-        if (saved) {
-          post(`seekers/jobs/${jobId}/save`, {}, token)
-        } else {
-          post(`seekers/jobs/${jobId}/unsave`, {}, token)
-        }
-        return { ...jobMatch, saved }
-      }
-      return jobMatch
+    FrontendAnalyticsService.track('Job-applied', {
+      job: activeJob,
+      jobId: activeJob.id,
     })
-    setMatchedJobArray(newJobMatches)
+    onApplyModalClose()
+    onSharingModalOpen()
+
+    refetch()
   }
 
   if (!matchedJobArray) return
 
-  const handleApply = () => {
-    if (!activeJob) return
-    if (!token) return
-
-    FrontendJobInteractionsService.apply(activeJob.id, token).then(() => {
-      FrontendAnalyticsService.track('Job-applied', {
-        job: activeJob,
-        jobId: activeJob.id,
-      })
-      setApplying(true)
-    })
-  }
-
-  const getModalContent = () => {
-    if (applying) {
-      return (
+  return (
+    <Box height={'100%'} width={'100%'} overflow={'scroll'}>
+      <Box m={'1rem'}>
+        <Heading mb={'1.5rem'}>Find your perfect job 💼</Heading>
+        <VStack spacing={'1rem'} role="list">
+          {matchedJobArray?.map((matchedJob, index) => {
+            return (
+              <JobCard
+                job={matchedJob}
+                onCardClick={() => router.push(`/jobs/${matchedJob.id}`)}
+                onApplyClick={(e) => {
+                  setActiveJob(matchedJob)
+                  e.stopPropagation()
+                  onApplyModalOpen()
+                }}
+                onSaveClick={() => onSaveClick(matchedJob.id)}
+                key={index}
+              />
+            )
+          })}
+        </VStack>
+      </Box>
+      <Modal isOpen={isSharingModalOpen} onClose={onSharingModalClose}>
+        <ModalOverlay />
         <ModalContent m={'1rem'}>
           <ModalHeader>
             <Heading size={'xl'}>Great work, {user?.firstName}! 🎉</Heading>
@@ -214,101 +151,45 @@ export default function Jobs() {
           </ModalBody>
 
           <ModalFooter>
-            <Button width={'100%'} variant={'primary'} onClick={() => onClose()}>
+            <Button width={'100%'} variant={'primary'} onClick={onSharingModalClose}>
               Back to Jobs
             </Button>
           </ModalFooter>
         </ModalContent>
-      )
-    }
-    return (
-      <ModalContent m={'1rem'}>
-        <ModalHeader>
-          <Heading size={'xl'}>Let&apos;s do this!</Heading>
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex gap={'1rem'}>
-            {activeJob?.employer?.logo_url && (
-              <Image src={activeJob.employer.logo_url} boxSize={'4rem'} alt="Employer Logo" />
-            )}
-
-            <Box>
-              <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
-              <Text type={'b2'}>{activeJob?.employer.name}</Text>
-              <Text type={'b3'}>{activeJob?.location}</Text>
-            </Box>
-          </Flex>
-        </ModalBody>
-
-        <ModalFooter>
-          <Stack width={'100%'}>
-            <Button variant={'primary'} onClick={() => handleApply()}>
-              Apply with SkillArc Profile
-            </Button>
-
-            <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
-              <Button width={'100%'}>See Full Job Posting</Button>
-            </Link>
-          </Stack>
-        </ModalFooter>
-      </ModalContent>
-    )
-  }
-
-  const modalContent = getModalContent()
-
-  return (
-    <Box height={'100%'} width={'100%'} overflow={'scroll'}>
-      <Box m={'1rem'}>
-        <Heading mb={'1.5rem'}>Find your perfect job 💼</Heading>
-        <HStack gap={'0.5rem'} mb={'1rem'}>
-          <Tag
-            cursor={'pointer'}
-            colorScheme={constructionFilter ? 'primary' : 'gray'}
-            borderRadius={'full'}
-            onClick={() => setConstructionFilterAndTrack(!constructionFilter)}
-          >
-            Construction
-          </Tag>
-          <Tag
-            cursor={'pointer'}
-            colorScheme={manufacturingFilter ? 'primary' : 'gray'}
-            borderRadius={'full'}
-            onClick={() => setManufacturingFilterAndTrack(!manufacturingFilter)}
-          >
-            Manufacturing
-          </Tag>
-          <Tag
-            cursor={'pointer'}
-            colorScheme={healthcareFilter ? 'primary' : 'gray'}
-            borderRadius={'full'}
-            onClick={() => setHealthcareFilterAndTrack(!healthcareFilter)}
-          >
-            Healthcare
-          </Tag>
-        </HStack>
-        <VStack spacing={'1rem'} role='list'>
-          {matchedJobArray?.map((matchedJob, index) => {
-            return (
-              <JobCard
-                job={matchedJob}
-                onCardClick={() => router.push(`/jobs/${matchedJob.id}`)}
-                onApplyClick={(e) => {
-                  setActiveJob(matchedJob)
-                  e.stopPropagation()
-                  onOpen()
-                }}
-                onSaveClick={() => onSaveClick(matchedJob.id)}
-                key={index}
-              />
-            )
-          })}
-        </VStack>
-      </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      </Modal>
+      <Modal isOpen={isApplyModalOpen} onClose={onApplyModalClose}>
         <ModalOverlay />
-        {modalContent}
+        <ModalContent m={'1rem'}>
+          <ModalHeader>
+            <Heading size={'xl'}>Let&apos;s do this!</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex gap={'1rem'}>
+              {activeJob?.employer?.logo_url && (
+                <Image src={activeJob.employer.logo_url} boxSize={'4rem'} alt="Employer Logo" />
+              )}
+
+              <Box>
+                <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
+                <Text type={'b2'}>{activeJob?.employer.name}</Text>
+                <Text type={'b3'}>{activeJob?.location}</Text>
+              </Box>
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter>
+            <Stack width={'100%'}>
+              <Button variant={'primary'} onClick={handleApply}>
+                Apply with SkillArc Profile
+              </Button>
+
+              <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
+                <Button width={'100%'}>See Full Job Posting</Button>
+              </Link>
+            </Stack>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
     </Box>
   )
