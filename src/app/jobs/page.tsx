@@ -34,7 +34,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { SearchJobCard } from '../components/SearchJobCard'
 import SearchBar from './components/SearchBar'
@@ -90,10 +90,13 @@ const filters: SearchFilter[] = [
 
 export default function Jobs() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const searchTerms = searchParams?.get('searchTerms') ?? ''
 
   const [activeJob, setActiveJob] = useState<Maybe<SearchJob>>()
 
-  const [searchValue, setSearchValue] = useState<SearchValue>({ searchTerms: '', filters: {} })
+  const [searchValue, setSearchValue] = useState<SearchValue>({ searchTerms, filters: {} })
   const debouncedSearchTerm = useDebounce(searchValue, 500)
 
   const { data: user } = useUser()
