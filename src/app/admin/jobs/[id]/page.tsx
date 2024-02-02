@@ -1,6 +1,7 @@
 'use client'
 
 import { industries } from '@/common/static/industries'
+import { tags } from '@/common/static/tags'
 import { CareerPath } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
@@ -973,13 +974,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
             <Box px={'1rem'}>
               <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
                 <option></option>
-                {[
-                  'No experience needed',
-                  'Part time only',
-                  'Transportation assistance',
-                  'ESL-Friendly',
-                  'Fair chance employer',
-                ].map((tag) => {
+                {tags.map((tag) => {
                   return <option key={tag}>{tag}</option>
                 })}
               </Select>
