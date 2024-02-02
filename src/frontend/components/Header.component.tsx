@@ -60,9 +60,11 @@ export const Header = () => {
           variant={'ghost'}
         />
         <MenuList maxWidth={'16rem'}>
-          <MenuItem as={NextLink} href={`/profiles/${user?.profile?.id}`}>
-            My Profile
-          </MenuItem>
+          {!!user?.profile?.id &&
+            <MenuItem as={NextLink} href={`/profiles/${user.profile.id}`}>
+              My Profile
+            </MenuItem>
+          }
           <MenuDivider />
           <MenuItem as={NextLink} href={`/jobs`}>
             View Jobs
