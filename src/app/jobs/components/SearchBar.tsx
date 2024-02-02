@@ -45,7 +45,7 @@ type SearchBarProps = {
 
 const SearchBar = ({ value, filters = [], onChange }: SearchBarProps) => {
   return (
-    <VStack width={'100%'} backgroundColor={'white'} align={'start'}>
+    <VStack width={'100%'} align={'start'}>
       <InputGroup>
         {/* eslint-disable-next-line react/no-children-prop */}
         <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
