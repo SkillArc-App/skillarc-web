@@ -10,10 +10,9 @@ import {
   Spacer,
   Stack,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { FaCircle } from 'react-icons/fa6'
+import { useAuthToken } from '../hooks/useAuthToken'
 import { useUser } from '../hooks/useUser'
 import { post } from '../http-common'
 import NotificationIcon from './NotificationIcon.component'
@@ -22,42 +21,14 @@ import { Text } from './Text.component'
 
 const NotificationCenter = () => {
   const { data: user, refetch } = useUser()
-  const [notifications, setNotifications] = useState<
-    {
-      id: string
-      notificationTitle: string
-      notificationBody: string
-      read: boolean
-      url: string
-    }[]
-  >([])
-  const [unreadCount, setUnreadCount] = useState<number>(0)
+  const notifications = user?.notifications ?? []
+  const unread = notifications.filter(({ read }) => !read)
 
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  useEffect(() => {
-    if (user) {
-      setNotifications(user.notifications)
-
-      const unreadCount = user.notifications.filter((notification) => !notification.read).length
-
-      setUnreadCount(unreadCount)
-    }
-  }, [user])
+  const token = useAuthToken()
 
   const markNotificationsAsRead = () => {
     if (!token) return
-    if (unreadCount === 0) return
+    if (!unread) return
 
     post('/notifications/mark_read', {}, token).then((_) => {
       refetch()
@@ -71,7 +42,7 @@ const NotificationCenter = () => {
           <>
             <MenuButton
               as={IconButton}
-              icon={<NotificationIcon count={unreadCount} />}
+              icon={<NotificationIcon count={unread.length} />}
               variant={'ghost'}
               onClick={() => (isClosed ? () => {} : markNotificationsAsRead())}
             />

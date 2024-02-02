@@ -1,8 +1,8 @@
+import { useQuery } from 'react-query'
 import { get } from '../http-common'
-import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useAllUsers = () => {
-  const allUsersQuery = useAuthenticatedQuery(['allUsers'], ({ token }) => {
+  const allUsersQuery = useQuery(['allUsers'], () => {
     if (process.env.NODE_ENV !== 'development') {
       return Promise.reject('No user id')
     }

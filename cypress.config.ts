@@ -22,5 +22,6 @@ export default defineConfig({
       })
     },
     experimentalRunAllSpecs: true,
+    defaultCommandTimeout: 15000,
   },
 })

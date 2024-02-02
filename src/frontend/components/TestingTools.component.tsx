@@ -3,7 +3,6 @@
 import { Maybe } from '@/common/types/maybe'
 import { Box, Code, HStack, Select } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { useQueryClient } from 'react-query'
 import { useAllUsers } from '../hooks/useAllUsers'
 import { Text } from './Text.component'
 
@@ -11,17 +10,12 @@ const DevTools = () => {
   const mockAuth = process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true'
 
   const { data: users } = useAllUsers()
-  const queryClient = useQueryClient()
   const [sub, setSub] = useState<Maybe<string>>(undefined)
 
-  const setUserSub = useCallback(
-    (sub: string) => {
-      setSub(sub)
-      localStorage.setItem('mockNextAuth', sub)
-      queryClient.invalidateQueries({ refetchActive: true })
-    },
-    [queryClient],
-  )
+  const setUserSub = useCallback((sub: string) => {
+    setSub(sub)
+    localStorage.setItem('mockNextAuth', sub)
+  }, [])
 
   useEffect(() => {
     if (!mockAuth) {
