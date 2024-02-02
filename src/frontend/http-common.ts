@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import qs from 'qs'
 
 type Headers = {
   'Key-Inflection'?: 'camel'
@@ -15,12 +16,14 @@ export const http = axios.create({
   headers: {
     'Content-type': 'application/json',
   },
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
 })
 
 export const get = <T = any, D = any>(
   url: string,
   token?: string,
   options?: Options,
+  params?: any,
 ): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {}
 
@@ -32,8 +35,11 @@ export const get = <T = any, D = any>(
     headers['Key-Inflection'] = 'camel'
   }
 
+  console.log(params)
+
   return http.get<T>(url, {
     headers,
+    params,
   })
 }
 
@@ -56,7 +62,12 @@ export const post = <T = any, D = any>(
   })
 }
 
-export const put = <T = any, D = any>(url: string, data: any, token: string, options?: Options): Promise<AxiosResponse<T, D>> => {
+export const put = <T = any, D = any>(
+  url: string,
+  data: any,
+  token: string,
+  options?: Options,
+): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {
     Authorization: `Bearer ${token}`,
   }
@@ -70,7 +81,11 @@ export const put = <T = any, D = any>(url: string, data: any, token: string, opt
   })
 }
 
-export const destroy = <T = any, D = any>(url: string, token: string, options?: Options): Promise<AxiosResponse<T, D>> => {
+export const destroy = <T = any, D = any>(
+  url: string,
+  token: string,
+  options?: Options,
+): Promise<AxiosResponse<T, D>> => {
   const headers: Headers = {
     Authorization: `Bearer ${token}`,
   }
