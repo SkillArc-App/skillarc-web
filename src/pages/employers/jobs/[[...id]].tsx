@@ -92,7 +92,7 @@ const Jobs = () => {
       contactInfo: `${applicant.email} ${applicant?.phoneNumber ?? ''}`,
       job: applicant.jobName,
       status: applicant.status,
-      appliedOn: new Date(applicant.createdAt).toLocaleDateString(),
+      appliedOn: applicant.createdAt,
     }
   })
 
@@ -146,7 +146,7 @@ const Jobs = () => {
       header: 'Status',
     }),
     columnHelper.accessor('appliedOn', {
-      cell: (info) => info.getValue(),
+      cell: (info) => new Date(info.getValue()).toLocaleDateString(),
       id: appliedOnId,
       header: 'Applied On',
     }),
