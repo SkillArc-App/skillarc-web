@@ -41,9 +41,7 @@ const MyJobs = () => {
   const params = useFixedParams('tab')
   const tab = params?.['tab']
 
-  const {
-    jobMatchesQuery: { data, refetch },
-  } = useJobMatchData()
+  const { data } = useJobMatchData()
 
   const [jobMatches, setJobMatches] = useState(data?.matchedJobs ?? [])
   const [savedJobMatches, setSavedJobMatches] = useState<OneMatchedJobPosting[]>([])

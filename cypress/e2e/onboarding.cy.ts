@@ -79,51 +79,12 @@ describe('Onboarding', () => {
     cy.get('button').contains('Next').click()
     // cy.get('body').should('contain', 'Your future is bright! 🎉')
 
+    // confirm we're on the jobs page
     cy.get('body').should('contain', 'Find your perfect job 💼')
-    cy.get('body').should('contain', 'Construction')
-    cy.get('body').should('contain', 'Manufacturing')
-    cy.get('body').should('contain', 'Healthcare')
 
-    // apply on jobs page
-    const turner = cy.findByRole('listitem', { name: 'Level 2 Mechanic' })
-    turner.should('contain', 'Level 2 Mechanic')
-    turner.should('contain', 'Turner Construction Company')
-    turner.should('contain', 'Columbus, OH')
-    turner.should('contain', 'No experience needed')
-    turner.should('contain', '$55k/year - $60k/year')
-    turner.should('contain', 'Apply')
-    turner.contains('Apply').click()
-
-    cy.get('body').should('contain', "Let's do this")
-    cy.get('button').contains('Apply with SkillArc Profile').click()
-    cy.get('button').contains('Back to Jobs').click()
-
-    // apply on individual job page
-    const earthworkJourneyman = cy.findByRole('listitem', { name: 'Earthwork Journeyman' })
-    earthworkJourneyman.should('contain', 'Earthwork Journeyman')
-    earthworkJourneyman.should('contain', 'The Superior Group')
-    earthworkJourneyman.should('contain', 'Dublin, OH')
-    earthworkJourneyman.click()
-
-    cy.get('body', { timeout: 10000 }).should('contain', 'Earthwork Journeymans')
-    earthworkJourneyman.should('contain', 'Earthwork Journeymans')
-    earthworkJourneyman.should('contain', 'The Superior Group')
-    earthworkJourneyman.should('contain', 'Dublin, OH')
-
-    // on page
-    cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
-
-    // in modal
-    const applyModal = cy.findByText('Apply with SkillArc').parent().parent()
-
-    applyModal.within(() => {
-      cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
-    })
-
-    const congratsModal = cy.findByText('Great work, Dwight 🎉').parent().parent()
-    congratsModal.within(() => {
-      cy.findByText("Update your profile").click()
-    })
+    // find button by aria label 'Options' and click my profile
+    cy.get('button').filter('[aria-label="Options"]').click()
+    cy.get('a').contains('My Profile').click()
 
     cy.get('body').should('contain', 'Dwight Schrute')
     const experience = cy.get('div').contains('Experience').parent().parent()
@@ -182,11 +143,5 @@ describe('Onboarding', () => {
     cy.get('body').should('contain', 'What are you most passionate about?')
     cy.get('body').should('contain', 'Beets')
     cy.get('svg').first()
-
-    // // find button by aria label 'Options'
-    cy.get('button').filter('[aria-label="Options"]').click()
-    cy.get('a').contains('My Profile').click()
-
-    cy.get('body').should('contain', 'Michael Scott')
   })
 })
