@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Maybe } from '@/common/types/maybe'
 import { useQuery } from 'react-query'
 import { FrontendJobService } from '../services/jobs.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
@@ -11,10 +11,14 @@ export const useAllJobData = () => {
   return { getJobs }
 }
 
-export const useJobData = (id: string) => {
-  const getOneJob = useQuery(['job', id], () => {
-    return FrontendJobService.getOne(id)
-  })
+export const useJobData = (id: Maybe<string>) => {
+  const getOneJob = useQuery(
+    ['job', id],
+    () => {
+      return FrontendJobService.getOne(id as string)
+    },
+    { enabled: !!id },
+  )
 
   return { getOneJob }
 }
