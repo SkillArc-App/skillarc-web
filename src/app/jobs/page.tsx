@@ -1,11 +1,11 @@
 'use client'
 
+import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
 import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { Employer } from '@/common/types/Employer'
 import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { SearchFilter, SearchJob, SearchValue } from '@/common/types/Search'
-import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
@@ -33,11 +33,13 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SearchJobCard } from '../components/SearchJobCard'
 import SearchBar from './components/SearchBar'
+import useApply from './hooks/useApply'
 import { useJobSearch } from './hooks/useJobSearch'
 
 export type OneMatchedJobPosting = {
@@ -91,17 +93,52 @@ const filters: SearchFilter[] = [
 export default function Jobs() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { loginWithRedirect } = useAuth0()
 
   const searchTerms = searchParams?.get('searchTerms') ?? ''
 
-  const [activeJob, setActiveJob] = useState<Maybe<SearchJob>>()
-
+  const [activeJobId, setActiveJobId] = useState<string>(searchParams?.get('activeJobId') ?? '')
   const [searchValue, setSearchValue] = useState<SearchValue>({ searchTerms, filters: {} })
+
+  const setActiveJobIdAndRoute = (id: string) => {
+    router.replace(`/jobs?searchTerm=${searchValue.searchTerms}&activeJobId=${id}`)
+    setActiveJobId(id)
+  }
+  const setSearchValueAndRoute = (searchValue: SearchValue) => {
+    router.replace(`/jobs?searchTerm=${searchValue.searchTerms}&activeJobId=${activeJobId}`)
+    setSearchValue(searchValue)
+  }
+
   const debouncedSearchTerm = useDebounce(searchValue, 500)
 
   const { data: user } = useUser()
+  const userState = useUserState()
   const { data: jobSearch, refetch } = useJobSearch(debouncedSearchTerm)
   const jobs = jobSearch ?? []
+  const activeJob = jobs.find(({ id }) => id === activeJobId)
+
+  const { applyCopy, onApply } = useApply({
+    job: activeJob,
+    onReadyToApply: async (job, token) => {
+      await FrontendJobInteractionsService.apply(job.id, token)
+
+      FrontendAnalyticsService.track('Job-applied', {
+        job: job,
+        jobId: job.id,
+      })
+      setActiveJobIdAndRoute('')
+      onApplyModalClose()
+      onSharingModalOpen()
+
+      refetch()
+    },
+  })
+
+  useEffect(() => {
+    if (activeJob && (!isApplyModalOpen || !isSharingModalOpen)) {
+      onApplyModalOpen()
+    }
+  })
 
   const {
     isOpen: isApplyModalOpen,
@@ -117,8 +154,16 @@ export default function Jobs() {
   const token = useAuthToken()
 
   const onSaveClick = async (job: SearchJob) => {
+    if (userState == UserState.UnAuthenticated) {
+      loginWithRedirect({
+        appState: {
+          returnTo: window.location.href,
+        },
+      })
+      return
+    }
+
     if (!token) return
-    if (!job) return
 
     if (!job.saved) {
       FrontendAnalyticsService.track('Job-saved', { job })
@@ -131,29 +176,13 @@ export default function Jobs() {
     refetch()
   }
 
-  const handleApply = async () => {
-    if (!activeJob) return
-    if (!token) return
-
-    await FrontendJobInteractionsService.apply(activeJob.id, token)
-
-    FrontendAnalyticsService.track('Job-applied', {
-      job: activeJob,
-      jobId: activeJob.id,
-    })
-    onApplyModalClose()
-    onSharingModalOpen()
-
-    refetch()
-  }
-
   if (!jobs) return
 
   return (
     <Box height={'100%'} width={'100%'}>
       <VStack align={'start'} m={'1rem'}>
         <Heading mb={'1.5rem'}>Find your perfect job 💼</Heading>
-        <SearchBar value={searchValue} filters={filters} onChange={setSearchValue} />
+        <SearchBar value={searchValue} filters={filters} onChange={setSearchValueAndRoute} />
         <Divider />
         <VStack spacing={'1rem'} role="list" width={'100%'}>
           {jobs?.map((job, index) => {
@@ -162,7 +191,7 @@ export default function Jobs() {
                 job={job}
                 onCardClick={() => router.push(`/jobs/${job.id}`)}
                 onApplyClick={(e) => {
-                  setActiveJob(job)
+                  setActiveJobIdAndRoute(job.id)
                   e.stopPropagation()
                   onApplyModalOpen()
                 }}
@@ -192,7 +221,13 @@ export default function Jobs() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal isOpen={isApplyModalOpen} onClose={onApplyModalClose}>
+      <Modal
+        isOpen={isApplyModalOpen}
+        onClose={() => {
+          setActiveJobIdAndRoute('')
+          onApplyModalClose()
+        }}
+      >
         <ModalOverlay />
         <ModalContent m={'1rem'}>
           <ModalHeader>
@@ -215,8 +250,8 @@ export default function Jobs() {
 
           <ModalFooter>
             <Stack width={'100%'}>
-              <Button variant={'primary'} onClick={handleApply}>
-                Apply with SkillArc Profile
+              <Button variant={'primary'} onClick={onApply}>
+                {applyCopy}
               </Button>
 
               <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
