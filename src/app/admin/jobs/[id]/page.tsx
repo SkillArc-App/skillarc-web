@@ -48,6 +48,7 @@ import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 export default function Job({ params: { id } }: { params: { id: string } }) {
   const {
@@ -575,13 +576,22 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               <b>Employment Type</b>: {job.employment_type}
             </Box>
             <Box>
-              <b>Benefits Description</b>: {job.benefits_description}
+              <b>Benefits Description</b>:
+              <ReactMarkdown>
+                {job.benefits_description ?? ''}
+              </ReactMarkdown>
             </Box>
             <Box>
-              <b>Responsibilities Description</b>: {job.responsibilities_description}
+              <b>Responsibilities Description</b>:
+              <ReactMarkdown>
+                {job.responsibilities_description ?? ''}
+              </ReactMarkdown>
             </Box>
             <Box>
-              <b>Requirements Description</b>: {job.requirements_description}
+              <b>Requirements Description</b>:
+              <ReactMarkdown>
+                {job.requirements_description ?? ''}
+              </ReactMarkdown>
             </Box>
             <Box>
               <b>Work Days</b>: {job.work_days}
