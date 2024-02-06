@@ -1,4 +1,5 @@
-import { industries } from "@/common/static/industries"
+import { applyCopyOptions } from "@/app/jobs/hooks/useApply"
+import { UserState } from "@/app/jobs/hooks/useUserState"
 
 export {}
 
@@ -48,7 +49,7 @@ describe('Seeker', () => {
         turner.contains('Apply').click()
 
         cy.get('body').should('contain', "Let's do this")
-        cy.get('button').contains('Apply with SkillArc Profile').click()
+        cy.get('button').contains(applyCopyOptions[UserState.Ready]).click()
         cy.get('button').contains('Back to Jobs').click()
 
         // apply on individual job page
@@ -64,13 +65,13 @@ describe('Seeker', () => {
         earthworkJourneyman.should('contain', 'Dublin, OH')
 
         // on page
-        cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
+        cy.findByRole('button', { name: applyCopyOptions[UserState.Ready] }).click()
 
         // in modal
-        const applyModal = cy.findByText('Apply with SkillArc').parent().parent()
+        const applyModal = cy.findByText('Would you like to apply to').parent().parent()
 
         applyModal.within(() => {
-          cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
+          cy.findByRole('button', { name: applyCopyOptions[UserState.Ready] }).click()
         })
 
         const congratsModal = cy
