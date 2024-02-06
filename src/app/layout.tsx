@@ -43,9 +43,12 @@ export default function RootLayout({
             domain={'blocktrain.us.auth0.com'}
             clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
             onRedirectCallback={(appState) => {
-              if (appState?.returnTo) {
-                router.push(appState.returnTo)
-              }
+              router.replace(
+                appState && appState.returnTo
+                  ? appState.returnTo
+                  : window.location.href
+              );
+
             }}
             authorizationParams={{
               redirect_uri: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`,

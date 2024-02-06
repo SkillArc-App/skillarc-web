@@ -1,11 +1,11 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { formatCurrency } from '@/frontend/helpers/formatCurrency.helper'
 import { NeonCircleIcon } from '@/frontend/icons/NeonCircle.icon'
-import { CareerPath, GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
-import { Text } from '@/frontend/components/Text.component'
 
-export const CareerJourney = ({ data }: { data: GetOneJobPosting }) => {
+export const CareerJourney = ({ job }: { job: GetOneJobPosting }) => {
   return (
     <Flex
       bg="white"
@@ -18,16 +18,16 @@ export const CareerJourney = ({ data }: { data: GetOneJobPosting }) => {
       <Heading type="h4" color="greyscale.700" w="100%" marginBottom="1rem">
         🧗 Your career journey
       </Heading>
-      {data &&
-        data.careerPaths &&
-        sortByOrder(data?.careerPaths).map((careerPath, index) => {
+      {job.careerPaths
+        .sort((a, b) => a.order - b.order)
+        .map((careerPath, index) => {
           return (
             <Flex w="100%" flexWrap="wrap" key={index}>
               <NeonCircleIcon boxSize="16px" zIndex={2} />
               <Flex
                 flexWrap="wrap"
                 gap=".25rem"
-                borderLeft={index == data.careerPaths.length - 1 ? 'none' : '1px dashed #CED4DA'}
+                borderLeft={index == job.careerPaths.length - 1 ? 'none' : '1px dashed #CED4DA'}
                 marginLeft="-8px"
                 paddingLeft="1rem"
               >
@@ -44,11 +44,4 @@ export const CareerJourney = ({ data }: { data: GetOneJobPosting }) => {
         })}
     </Flex>
   )
-}
-
-function sortByOrder(arr: CareerPath[]) {
-  arr.sort(function (a, b) {
-    return a.order - b.order
-  })
-  return arr
 }

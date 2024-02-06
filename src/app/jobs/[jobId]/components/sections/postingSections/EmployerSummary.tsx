@@ -1,13 +1,13 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
-import { Text } from '@/frontend/components/Text.component'
 
 interface EmployerSummaryProps {
-  data: GetOneJobPosting
+  job: GetOneJobPosting
 }
 
-export const EmployerSummary = ({ data }: EmployerSummaryProps) => {
+export const EmployerSummary = ({ job }: EmployerSummaryProps) => {
   return (
     <Flex
       bg="white"
@@ -22,7 +22,7 @@ export const EmployerSummary = ({ data }: EmployerSummaryProps) => {
       </Heading>
 
       <Text type="b2" color="greyscale.600" marginTop="1rem" w="100%">
-        {data?.employer.bio}
+        {job.employer.bio}
       </Text>
     </Flex>
   )

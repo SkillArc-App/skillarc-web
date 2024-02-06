@@ -48,6 +48,7 @@ const Home = () => {
       const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
       const seekerInviteCode = localStorage.getItem('seekerInviteCode')
       const employerInviteCode = localStorage.getItem('employerInviteCode')
+      const preOnboardingJobInterest = localStorage.getItem('preOnboardingJobInterest')
 
       if (trainingProviderInviteCode) {
         localStorage.removeItem('trainingProviderInviteCode')
@@ -73,6 +74,10 @@ const Home = () => {
           .then((res) => {
             refetchUser()
           })
+      } else if (preOnboardingJobInterest) {
+        localStorage.removeItem('preOnboardingJobInterest')
+        router.push(`/jobs/${preOnboardingJobInterest}`)
+        return
       }
 
       if (!user) return

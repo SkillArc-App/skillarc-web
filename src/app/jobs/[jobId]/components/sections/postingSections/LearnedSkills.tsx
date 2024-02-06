@@ -1,11 +1,11 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex, Tag } from '@chakra-ui/react'
-import { Text } from '@/frontend/components/Text.component'
 
-export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
+export const LearnedSkills = ({ job }: { job: GetOneJobPosting }) => {
   return (
     <Flex
       bg="white"
@@ -24,26 +24,22 @@ export const LearnedSkills = ({ data }: { data: GetOneJobPosting }) => {
           TECHNICAL COMPETENCIES
         </Text>
         {/* Map over technical skills here */}
-        {data &&
-          data.learnedSkills &&
-          data.learnedSkills.map((skill: any, index: number) => {
-            if (skill.masterSkill.type == 'TECHNICAL') {
-              return <SkillTag key={index} skill={skill.masterSkill.skill} skillType="technical" />
-            }
-          })}
+        {job.learnedSkills
+          .filter(({ masterSkill }) => masterSkill.type == 'TECHNICAL')
+          .map((skill: any, index: number) => (
+            <SkillTag key={index} skill={skill.masterSkill.skill} skillType="technical" />
+          ))}
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem">
         <Text type="overline" color="greyscale.700" w="100%">
           SOFT SKILLS
         </Text>
         {/* Map over personal skills here */}
-        {data &&
-          data.learnedSkills &&
-          data.learnedSkills.map((skill: any, index: number) => {
-            if (skill.masterSkill.type == 'PERSONAL') {
-              return <SkillTag key={index} skill={skill.masterSkill.skill} skillType="personal" />
-            }
-          })}
+        {job.learnedSkills
+          .filter(({ masterSkill }) => masterSkill.type == 'PERSONAL')
+          .map((skill: any, index: number) => (
+            <SkillTag key={index} skill={skill.masterSkill.skill} skillType="personal" />
+          ))}
       </Flex>
       <Flex w="100%" flexDir="row" alignItems="center">
         <Logo boxSize="28px" />

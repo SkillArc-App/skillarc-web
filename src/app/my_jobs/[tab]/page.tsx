@@ -1,8 +1,10 @@
 'use client'
 
 import { JobCard } from '@/app/components/JobCard'
+import useApply from '@/app/jobs/hooks/useApply'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { post } from '@/frontend/http-common'
@@ -30,10 +32,10 @@ import {
   Tabs,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { OneMatchedJobPosting } from '../../jobs/page'
 
 const MyJobs = () => {
@@ -41,74 +43,53 @@ const MyJobs = () => {
   const params = useFixedParams('tab')
   const tab = params?.['tab']
 
-  const { data } = useJobMatchData()
+  const { data, refetch } = useJobMatchData()
 
-  const [jobMatches, setJobMatches] = useState(data?.matchedJobs ?? [])
-  const [savedJobMatches, setSavedJobMatches] = useState<OneMatchedJobPosting[]>([])
-  const [appliedJobMatches, setAppliedJobMatches] = useState<OneMatchedJobPosting[]>([])
+  const token = useAuthToken()
+  const {
+    isOpen: isApplyModalOpen,
+    onOpen: onApplyModalOpen,
+    onClose: onApplyModalClose,
+  } = useDisclosure()
+  const {
+    isOpen: isSharingModalOpen,
+    onOpen: onSharingModalOpen,
+    onClose: onSharingModalClose,
+  } = useDisclosure()
 
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string>('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [applying, setApplying] = useState<boolean>(false)
+  const [activeJob, setActiveJob] = useState<Maybe<OneMatchedJobPosting>>(undefined)
+  const { applyCopy, onApply } = useApply({
+    job: activeJob,
+    async onReadyToApply(job, token) {
+      await FrontendJobInteractionsService.apply(job.id, token)
 
-  const [activeJob, setActiveJob] = useState<OneMatchedJobPosting | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
-
-  useEffect(() => {
-    if (data) setJobMatches(data.matchedJobs)
-  }, [data])
-
-  useEffect(() => {
-    if (jobMatches) setSavedJobMatches(jobMatches.filter((jobMatch) => jobMatch.saved))
-  }, [jobMatches])
-
-  useEffect(() => {
-    if (jobMatches) setAppliedJobMatches(jobMatches.filter((jobMatch) => jobMatch.applied))
-  }, [jobMatches])
-
-  const onSaveClick = (jobId: string) => {
-    const newJobMatches = jobMatches.map((jobMatch) => {
-      if (jobMatch.id === jobId) {
-        const saved = !jobMatch.saved
-
-        if (saved) {
-          post(`seekers/${''}/jobs/${jobId}/save`, {}, token)
-        } else {
-          post(`seekers/${''}/jobs/${jobId}/unsave`, {}, token)
-        }
-        return { ...jobMatch, saved }
-      }
-      return jobMatch
-    })
-    setJobMatches(newJobMatches)
-  }
-
-  const handleApply = () => {
-    if (!activeJob) return
-    if (!token) return
-
-    FrontendJobInteractionsService.apply(activeJob.id, token).then(() => {
       FrontendAnalyticsService.track('Job-applied', {
-        job: activeJob,
-        jobId: activeJob.id,
+        job: job,
+        jobId: job.id,
       })
-      setApplying(true)
-      const newJobMatches = jobMatches.map((jobMatch) => {
-        if (jobMatch.id === activeJob.id) {
-          return { ...jobMatch, applied: true }
-        }
-        return jobMatch
-      })
-      setJobMatches(newJobMatches)
-    })
+      refetch()
+      onSharingModalOpen()
+    },
+  })
+
+  const jobMatches = data?.matchedJobs ?? []
+  const savedJobMatches = jobMatches.filter((jobMatch) => jobMatch.saved)
+  const appliedJobMatches = jobMatches.filter((jobMatch) => jobMatch.applied)
+
+  const onSaveClick = async (job: OneMatchedJobPosting) => {
+    if (!token) {
+      return
+    }
+
+    const saved = !job.saved
+
+    if (saved) {
+      await post(`seekers/${''}/jobs/${job.id}/save`, {}, token)
+    } else {
+      await post(`seekers/${''}/jobs/${job.id}/unsave`, {}, token)
+    }
+
+    refetch()
   }
 
   const index = (tab: Maybe<string>) => {
@@ -118,63 +99,11 @@ const MyJobs = () => {
     return 0
   }
 
-  const getModalContent = () => {
-    if (applying) {
-      return (
-        <ModalContent m={'1rem'}>
-          <ModalHeader>
-            <Heading size={'xl'}>Great work! 🎉</Heading>
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            We&apos;re sharing your SkillArc profile and contact info with{' '}
-            <b>{activeJob?.employer.name}</b> to start the application process.
-          </ModalBody>
-
-          <ModalFooter>
-            <Button width={'100%'} variant={'primary'} onClick={() => onClose()}>
-              Back to Jobs
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      )
-    }
-    return (
-      <ModalContent m={'1rem'}>
-        <ModalHeader>
-          <Heading size={'xl'}>Let&apos;s do this!</Heading>
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex gap={'1rem'}>
-            {activeJob?.employer?.logo_url && (
-              <Image src={activeJob.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
-            )}
-
-            <Box>
-              <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
-              <Text type={'b2'}>{activeJob?.employer.name}</Text>
-              <Text type={'b3'}>{activeJob?.location}</Text>
-            </Box>
-          </Flex>
-        </ModalBody>
-
-        <ModalFooter>
-          <Stack width={'100%'}>
-            <Button variant={'primary'} onClick={() => handleApply()}>
-              Apply with SkillArc Profile
-            </Button>
-
-            <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
-              <Button width={'100%'}>See Full Job Posting</Button>
-            </Link>
-          </Stack>
-        </ModalFooter>
-      </ModalContent>
-    )
+  const onApplyOpen = (e: React.MouseEvent<HTMLButtonElement>, job: OneMatchedJobPosting) => {
+    setActiveJob(job)
+    e.stopPropagation()
+    onApplyModalOpen()
   }
-
-  const modalContent = getModalContent()
 
   return (
     <Box height={'100%'} width={'100%'} overflow={'scroll'}>
@@ -204,13 +133,9 @@ const MyJobs = () => {
                     <JobCard
                       key={jobMatch.id}
                       job={jobMatch}
-                      onApplyClick={(e) => {
-                        setActiveJob(jobMatch)
-                        e.stopPropagation()
-                        onOpen()
-                      }}
+                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
                       onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch.id)}
+                      onSaveClick={() => onSaveClick(jobMatch)}
                     />
                   ))}
                 </Stack>
@@ -221,9 +146,9 @@ const MyJobs = () => {
                     <JobCard
                       key={jobMatch.id}
                       job={jobMatch}
-                      onApplyClick={() => {}}
+                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
                       onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch.id)}
+                      onSaveClick={() => onSaveClick(jobMatch)}
                     />
                   ))}
                 </Stack>
@@ -234,11 +159,9 @@ const MyJobs = () => {
                     <JobCard
                       key={jobMatch.id}
                       job={jobMatch}
-                      onApplyClick={(e) => {
-                        console.log('CLICK')
-                      }}
+                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
                       onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch.id)}
+                      onSaveClick={() => onSaveClick(jobMatch)}
                     />
                   ))}
                 </Stack>
@@ -247,9 +170,58 @@ const MyJobs = () => {
           </Tabs>
         </Stack>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isSharingModalOpen} onClose={onSharingModalClose}>
         <ModalOverlay />
-        {modalContent}
+        <ModalContent m={'1rem'}>
+          <ModalHeader>
+            <Heading size={'xl'}>Great work! 🎉</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            We&apos;re sharing your SkillArc profile and contact info with{' '}
+            <b>{activeJob?.employer.name}</b> to start the application process.
+          </ModalBody>
+
+          <ModalFooter>
+            <Button width={'100%'} variant={'primary'} onClick={onSharingModalClose}>
+              Back to Jobs
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isApplyModalOpen} onClose={onApplyModalClose}>
+        <ModalOverlay />
+        <ModalContent m={'1rem'}>
+          <ModalHeader>
+            <Heading size={'xl'}>Let&apos;s do this!</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex gap={'1rem'}>
+              {activeJob?.employer?.logo_url && (
+                <Image src={activeJob.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
+              )}
+
+              <Box>
+                <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
+                <Text type={'b2'}>{activeJob?.employer.name}</Text>
+                <Text type={'b3'}>{activeJob?.location}</Text>
+              </Box>
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter>
+            <Stack width={'100%'}>
+              <Button variant={'primary'} onClick={onApply}>
+                {applyCopy}
+              </Button>
+
+              <Link as={NextLink} href={`/jobs/${activeJob?.id}`}>
+                <Button width={'100%'}>See Full Job Posting</Button>
+              </Link>
+            </Stack>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
     </Box>
   )

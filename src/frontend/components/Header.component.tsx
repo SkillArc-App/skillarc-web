@@ -4,6 +4,7 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   HStack,
   IconButton,
@@ -17,7 +18,6 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useUser } from '../hooks/useUser'
 import { Logo } from '../icons/Logo.icon'
 import MessageCenter from './MessageCenter.component'
@@ -25,10 +25,10 @@ import NotificationCenter from './NotificationCenter'
 import TestingTools from './TestingTools.component'
 
 export const Header = () => {
-  const router = useRouter()
-  const { isAuthenticated, logout } = useAuth0()
+  const { isLoading, isAuthenticated, logout, loginWithRedirect } = useAuth0()
+  const { data: user } = useUser()
 
-  const { data: user, isLoading: userIsLoading } = useUser()
+  const isAuthenticatedWithProfile = isAuthenticated && !!user?.profile?.id
 
   return (
     <Flex
@@ -43,15 +43,28 @@ export const Header = () => {
       position={'fixed'}
       justifyContent={'space-between'}
     >
-      <Flex alignItems="center" gap="0.75rem" onClick={() => router.push('/')} cursor="pointer">
+      <Flex as={NextLink} alignItems="center" gap="0.75rem" href={'/'} cursor="pointer">
         <Logo w="1.75rem" h="2rem" />
         <SkillArc w="6.75rem" h="1rem" />
       </Flex>
 
       <Spacer />
       <TestingTools />
-      <NotificationCenter />
-      <MessageCenter />
+      {!isLoading && !isAuthenticated && (
+        <Button
+          onClick={() =>
+            loginWithRedirect({
+              appState: {
+                returnTo: window.location.href,
+              },
+            })
+          }
+        >
+          Log In
+        </Button>
+      )}
+      {isAuthenticated && <NotificationCenter />}
+      {isAuthenticated && <MessageCenter />}
       <Menu>
         <MenuButton
           as={IconButton}
@@ -60,16 +73,16 @@ export const Header = () => {
           variant={'ghost'}
         />
         <MenuList maxWidth={'16rem'}>
-          {!!user?.profile?.id &&
+          {isAuthenticatedWithProfile && (
             <MenuItem as={NextLink} href={`/profiles/${user.profile.id}`}>
               My Profile
             </MenuItem>
-          }
+          )}
           <MenuDivider />
           <MenuItem as={NextLink} href={`/jobs`}>
             View Jobs
           </MenuItem>
-          <MenuItem as={NextLink} href={`/my_jobs/recently-viewed`}>
+          <MenuItem as={NextLink} href={'/my_jobs/recently-viewed'}>
             Manage My Jobs
           </MenuItem>
           <MenuDivider />
@@ -100,7 +113,17 @@ export const Header = () => {
             </Stack>
           </MenuItem>
           <MenuDivider />
-          <MenuItem onClick={(e) => logout()}>Sign Out</MenuItem>
+          {isAuthenticated && (
+            <MenuItem
+              onClick={() =>
+                logout({
+                  logoutParams: { returnTo: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/jobs` },
+                })
+              }
+            >
+              Sign Out
+            </MenuItem>
+          )}
         </MenuList>
       </Menu>
     </Flex>

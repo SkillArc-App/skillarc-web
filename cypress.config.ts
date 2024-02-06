@@ -5,6 +5,7 @@ import createActiveSeeker from 'cypress/tasks/createActiveSeeker'
 import createCoach from 'cypress/tasks/createCoach'
 import createRecruiterWithApplicant from 'cypress/tasks/createRecruiterWithApplicant'
 import createSeeker from 'cypress/tasks/createSeeker'
+import createJob from 'cypress/tasks/createJob'
 import createSeekerLead from 'cypress/tasks/createSeekerLead'
 import createUser from 'cypress/tasks/createUser'
 
@@ -18,6 +19,7 @@ export default defineConfig({
         createRecruiterWithApplicant,
         createActiveSeeker,
         createSeeker,
+        createJob,
         createSeekerLead,
       })
     },

@@ -60,8 +60,6 @@ export const mixpanelInitProfile = (profile: GetOneProfileResponse) => {
   }
   if (profile.professionalInterests) {
     profile.professionalInterests.forEach((interest) => {
-      console.log(interest.response)
-      console.log(interestsVars[interest.response!])
       if (interest.response && interestsVars[interest.response]) {
         interests.push(interestsVars[interest.response])
       }

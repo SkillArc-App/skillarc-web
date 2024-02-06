@@ -14,7 +14,6 @@ const AuthCallback = () => {
   // handle redirect
   useEffect(() => {
     if (needsRedirect) {
-      console.log('redirecting')
       router.push('/')
     }
   }, [needsRedirect, router])
@@ -24,10 +23,8 @@ const AuthCallback = () => {
     checkForTempUser()
     async function checkForTempUser() {
       if (user && user.email && user.id) {
-        console.log('within the if')
         const existingUser = await FrontendTempUserService.getOne(user.email)
         if (existingUser) {
-          console.log('existing user', existingUser)
           let updatingUserBody: Partial<User> = {}
           if (existingUser.name) {
             updatingUserBody.name = existingUser.name
@@ -47,19 +44,14 @@ const AuthCallback = () => {
           if (existingUser.phoneNumber) {
             updatingUserBody.phoneNumber = existingUser.phoneNumber
           }
-          console.log('updating user body', updatingUserBody)
           const updatedUser = await FrontendUserService.updateUserWithTempData(
             updatingUserBody,
             user.id,
           )
-          console.log('updated user', updatedUser)
           setNeedsRedirect(true)
         } else {
-          console.log('no user in temp user table')
           setNeedsRedirect(true)
         }
-      } else {
-        console.log('no user or email or id')
       }
     }
   }, [user])

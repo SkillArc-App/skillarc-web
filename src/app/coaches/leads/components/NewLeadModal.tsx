@@ -35,7 +35,6 @@ const NewLeadModal = ({ isOpen, onClose, onSubmit }: NewLeadModalProps) => {
   }
 
   const handleSubmit = (values: Partial<SeekerLead>) => {
-    console.log(values)
     if (isValid(values)) {
       onSubmit({
         leadId: crypto.randomUUID(),

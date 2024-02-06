@@ -1,23 +1,23 @@
 import { ProfileCertification, ProfileSkill } from '@/common/types/Profile'
 import { SkillTag } from '@/common/types/SkillTag'
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Flex, Image, Tag, TagLeftIcon } from '@chakra-ui/react'
-import { Text } from '@/frontend/components/Text.component'
 
 interface DesiredSkillsProps {
-  data: GetOneJobPosting
+  job: GetOneJobPosting
   profileSkills?: ProfileSkill[]
   profileCertifications?: ProfileCertification[]
   percentMatch?: number
 }
 
 export const DesiredSkills = ({
-  data,
+  job,
   profileSkills,
   percentMatch,
   profileCertifications,
@@ -47,28 +47,26 @@ export const DesiredSkills = ({
       flexWrap="wrap"
     >
       <Flex flexDir="row" alignItems="center" gap=".5rem" w="100%">
-        {data && data.employer && data.employer.logo_url && (
-          <Image boxSize="32px" objectFit="cover" src={data.employer.logo_url} alt="logo" />
+        {job.employer.logo_url && (
+          <Image boxSize="32px" objectFit="cover" src={job.employer.logo_url} alt="logo" />
         )}
 
         <Text type="b2" color="greyscale.900">
-          {data?.employer?.name}
+          {job.employer.name}
         </Text>
       </Flex>
       <Flex flexWrap="wrap" marginTop=".5rem">
         <Heading type="h3" color="greyscale.600" marginRight=".25rem">
           We&apos;re looking for
         </Heading>
-        {data && data.employment_title && (
-          <Heading type="h3" color="primary.500" w="100%">
-            {pluralizeJobTitle(data.employment_title)}
-          </Heading>
-        )}
+        <Heading type="h3" color="primary.500" w="100%">
+          {pluralizeJobTitle(job.employment_title)}
+        </Heading>
         <Heading type="h3" color="greyscale.600" marginRight=".25rem">
           in
         </Heading>
         <Heading type="h3" color="greyscale.900">
-          {data?.location}
+          {job.location}
         </Heading>
         <Heading type="h3" color="greyscale.600">
           !
@@ -79,20 +77,18 @@ export const DesiredSkills = ({
           TECHNICAL COMPETENCIES
         </Text>
         {/* Map over technical skills here */}
-        {data &&
-          data.desiredSkills &&
-          data.desiredSkills.map((skill: any, index: number) => {
-            if (skill.masterSkill.type === 'TECHNICAL') {
-              const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
-              return (
-                <SkillTag
-                  key={index}
-                  isMatch={isMatch}
-                  skill={skill.masterSkill.skill}
-                  skillType="technical"
-                />
-              )
-            }
+        {job.desiredSkills
+          .filter(({ masterSkill }) => masterSkill.type === 'TECHNICAL')
+          .map((skill: any, index: number) => {
+            const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
+            return (
+              <SkillTag
+                key={index}
+                isMatch={isMatch}
+                skill={skill.masterSkill.skill}
+                skillType="technical"
+              />
+            )
           })}
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
@@ -100,21 +96,19 @@ export const DesiredSkills = ({
           SOFT SKILLS
         </Text>
         {/* Map over personal skills here */}
-        {data &&
-          data.desiredSkills &&
-          data.desiredSkills.map((skill: any, index: number) => {
-            if (skill.masterSkill.type == 'PERSONAL') {
-              const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
-              return (
-                <SkillTag
-                  key={index}
-                  // This isMatch prop will dynamically change based on matches with seekers profile
-                  isMatch={isMatch}
-                  skill={skill.masterSkill.skill}
-                  skillType="personal"
-                />
-              )
-            }
+        {job.desiredSkills
+          .filter(({ masterSkill }) => masterSkill.type == 'PERSONAL')
+          .map((skill: any, index: number) => {
+            const isMatch = isSkillMatch(skill.masterSkillId) // Check if the desired skill is a match
+            return (
+              <SkillTag
+                key={index}
+                // This isMatch prop will dynamically change based on matches with seekers profile
+                isMatch={isMatch}
+                skill={skill.masterSkill.skill}
+                skillType="personal"
+              />
+            )
           })}
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
@@ -122,18 +116,16 @@ export const DesiredSkills = ({
           CERTIFICATIONS
         </Text>
         {/* Map over certifications here */}
-        {data &&
-          data.desiredCertifications &&
-          data.desiredCertifications.map((cert: any, index: number) => {
-            const isMatch = isCertMatch(cert.masterCertificationId) // Check if the desired cert is a match
-            return (
-              <CertTag
-                cert={cert.masterCertification.certification}
-                key={index}
-                isCertMatch={isMatch}
-              />
-            )
-          })}
+        {job.desiredCertifications.map((cert: any, index: number) => {
+          const isMatch = isCertMatch(cert.masterCertificationId) // Check if the desired cert is a match
+          return (
+            <CertTag
+              cert={cert.masterCertification.certification}
+              key={index}
+              isCertMatch={isMatch}
+            />
+          )
+        })}
       </Flex>
       {percentMatch && percentMatch >= 49 ? (
         <Flex w="100%" flexDir="row" alignItems="center" marginTop="1.5rem">

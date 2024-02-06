@@ -6,7 +6,7 @@ import {
 import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from 'next-auth/react'
 
 export const signIn = async () => {
-  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
+  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH == 'true') {
     return Promise.resolve()
   }
 
@@ -14,7 +14,7 @@ export const signIn = async () => {
 }
 
 export const signOut = (data: any) => {
-  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
+  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH == 'true') {
     return Promise.resolve()
   }
 
@@ -22,7 +22,7 @@ export const signOut = (data: any) => {
 }
 
 export const useAuth0 = () => {
-  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
+  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH == 'true') {
     return {
       getAccessTokenSilently: () =>
         Promise.resolve(localStorage.getItem('mockNextAuth') ?? 'IAMATOKEN'),
@@ -38,7 +38,7 @@ export const useAuth0 = () => {
 }
 
 export const withAuthenticationRequired = (component: any) => {
-  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH) {
+  if (process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH == 'true') {
     return component
   } else {
     return auth0WithAuthenticationRequired(component)

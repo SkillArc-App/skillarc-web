@@ -3,7 +3,7 @@ import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 import { Text } from '@/frontend/components/Text.component'
 
-export const WhatToExpect = ({ data }: { data: GetOneJobPosting }) => {
+export const WhatToExpect = ({ job }: { job: GetOneJobPosting }) => {
   return (
     <Flex
       bg="white"
@@ -22,25 +22,25 @@ export const WhatToExpect = ({ data }: { data: GetOneJobPosting }) => {
           EMPLOYMENT TYPE
         </Text>
         <Text type="b2" color="greyscale.600" marginBottom="0.5rem">
-          {data?.employment_type == 'FULLTIME' ? 'Full-time' : 'Part-time'}
+          {job?.employment_type == 'FULLTIME' ? 'Full-time' : 'Part-time'}
         </Text>
-        {data && data.work_days && (
+        {job && job.work_days && (
           <>
             <Text type="overline" color="greyscale.700" w="100%">
               WORK DAYS
             </Text>
             <Text type="b2" color="greyscale.600" marginBottom="0.5rem">
-              {data.work_days}
+              {job.work_days}
             </Text>
           </>
         )}
-        {data && data.schedule && (
+        {job && job.schedule && (
           <>
             <Text type="overline" color="greyscale.700" w="100%">
               SCHEDULE
             </Text>
             <Text type="b2" color="greyscale.600">
-              {data.schedule}
+              {job.schedule}
             </Text>
           </>
         )}

@@ -1,5 +1,3 @@
-import { industries } from "@/common/static/industries"
-
 export {}
 
 describe('Seeker', () => {
@@ -48,7 +46,7 @@ describe('Seeker', () => {
         turner.contains('Apply').click()
 
         cy.get('body').should('contain', "Let's do this")
-        cy.get('button').contains('Apply with SkillArc Profile').click()
+        cy.get('button').contains('Apply With Your SkillArc Profile').click()
         cy.get('button').contains('Back to Jobs').click()
 
         // apply on individual job page
@@ -64,19 +62,16 @@ describe('Seeker', () => {
         earthworkJourneyman.should('contain', 'Dublin, OH')
 
         // on page
-        cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
+        cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
 
         // in modal
-        const applyModal = cy.findByText('Apply with SkillArc').parent().parent()
+        const applyModal = cy.findByText('Would you like to apply to').parent().parent()
 
         applyModal.within(() => {
-          cy.findByRole('button', { name: 'Apply with SkillArc Profile' }).click()
+          cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
         })
 
-        const congratsModal = cy
-          .findByText(`Great work, ${user['firstName']} 🎉`)
-          .parent()
-          .parent()
+        const congratsModal = cy.findByText(`Great work, ${user['firstName']} 🎉`).parent().parent()
         congratsModal.within(() => {
           cy.findByText('Update your profile').click()
         })

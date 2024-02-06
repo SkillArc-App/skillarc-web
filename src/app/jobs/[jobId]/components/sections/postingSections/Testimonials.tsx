@@ -3,7 +3,7 @@ import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Avatar, Divider, Flex } from '@chakra-ui/react'
 import { Text } from '@/frontend/components/Text.component'
 
-export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
+export const Testimonials = ({ job }: { job: GetOneJobPosting }) => {
   return (
     <Flex
       bg="white"
@@ -17,7 +17,7 @@ export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
       <Heading type="h4" color="greyscale.700" w="100%">
         😄 Who you&apos;ll work with
       </Heading>
-      {data?.testimonials.map((testimonial: any, index: number) => {
+      {job.testimonials.map((testimonial: any, index: number) => {
         return (
           <Flex w="100%" flexWrap="wrap" gap=".5rem" key={index}>
             <Text type="b1" color="greyscale.600">
@@ -27,10 +27,10 @@ export const Testimonials = ({ data }: { data: GetOneJobPosting }) => {
               <Avatar size="sm" src={testimonial.photo_url ?? ''} />
 
               <Text type="b3" color="greyscale.900">
-                {testimonial.name}, {testimonial.title} at {data.employer.name}
+                {testimonial.name}, {testimonial.title} at {job.employer.name}
               </Text>
             </Flex>
-            {index != data.testimonials.length - 1 && (
+            {index != job.testimonials.length - 1 && (
               <Divider color="greyscale.300" marginTop=".5rem" />
             )}
           </Flex>
