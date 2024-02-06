@@ -35,8 +35,6 @@ export const get = <T = any, D = any>(
     headers['Key-Inflection'] = 'camel'
   }
 
-  console.log(params)
-
   return http.get<T>(url, {
     headers,
     params,

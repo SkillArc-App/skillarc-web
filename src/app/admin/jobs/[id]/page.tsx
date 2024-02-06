@@ -164,7 +164,6 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
   }
 
   const onSubmit = () => {
-    console.log('token', token)
     axios
       .create({ withCredentials: false })
       .put(
@@ -521,7 +520,6 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
   const removeIndustry = (industry: string) => {
     if (!job) return
 
-    console.log('industry', industry)
     axios
       .create({ withCredentials: false })
       .put(
