@@ -5,7 +5,7 @@ import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { Employer } from '@/common/types/Employer'
 import { MasterCertification, MasterSkill } from '@/common/types/Profile'
-import { SearchFilter, SearchJob, SearchValue } from '@/common/types/Search'
+import { SearchFilter, SearchJob, SearchValue, UtmParams } from '@/common/types/Search'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
@@ -95,17 +95,27 @@ export default function Jobs() {
   const searchParams = useSearchParams()
   const { loginWithRedirect } = useAuth0()
 
-  const searchTerms = searchParams?.get('searchTerms') ?? ''
+  const searchTerms = searchParams?.get('utm_term') ?? searchParams?.get('searchTerm') ?? ''
+  let otherUtmParams: Partial<UtmParams> = {}
+
+  let utm_source = searchParams?.get('utm_source')
+  if (!!utm_source) {
+    otherUtmParams['utm_source'] = utm_source
+  }
 
   const [activeJobId, setActiveJobId] = useState<string>(searchParams?.get('activeJobId') ?? '')
-  const [searchValue, setSearchValue] = useState<SearchValue>({ searchTerms, filters: {} })
+  const [searchValue, setSearchValue] = useState<SearchValue>({
+    searchTerms,
+    filters: {},
+    otherUtmParams: otherUtmParams,
+  })
 
   const setActiveJobIdAndRoute = (id: string) => {
-    router.replace(`/jobs?searchTerm=${searchValue.searchTerms}&activeJobId=${id}`)
+    router.replace(`/jobs?utm_term=${searchValue.searchTerms}&activeJobId=${id}`)
     setActiveJobId(id)
   }
   const setSearchValueAndRoute = (searchValue: SearchValue) => {
-    router.replace(`/jobs?searchTerm=${searchValue.searchTerms}&activeJobId=${activeJobId}`)
+    router.replace(`/jobs?utm_term=${searchValue.searchTerms}&activeJobId=${activeJobId}`)
     setSearchValue(searchValue)
   }
 
