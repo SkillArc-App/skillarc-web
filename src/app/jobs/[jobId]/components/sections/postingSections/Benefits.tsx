@@ -13,11 +13,11 @@ import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 import { Text } from '@/frontend/components/Text.component'
 
-export const Benefits = ({ data }: { data: GetOneJobPosting }) => {
+export const Benefits = ({ job }: { job: GetOneJobPosting }) => {
   function trackToggleAnalytics(): void {
     FrontendAnalyticsService.track('Job-dropdown-toggled', {
-      job: data,
-      jobId: data.id,
+      job,
+      jobId: job.id,
       dropdown: 'Benefits',
     })
   }
@@ -87,10 +87,10 @@ export const Benefits = ({ data }: { data: GetOneJobPosting }) => {
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          {data && data.benefits_description && (
+          {job && job.benefits_description && (
             <ReactMarkdown
               // eslint-disable-next-line react/no-children-prop
-              children={data.benefits_description}
+              children={job.benefits_description}
               components={ChakraUIRenderer(newTheme)}
               skipHtml
             />

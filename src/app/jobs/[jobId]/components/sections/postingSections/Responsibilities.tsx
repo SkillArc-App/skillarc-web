@@ -1,4 +1,5 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import {
   Accordion,
@@ -10,9 +11,8 @@ import {
 } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
-import { Text } from '@/frontend/components/Text.component'
 
-export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
+export const Responsibilities = ({ job }: { job: GetOneJobPosting }) => {
   const newTheme = {
     p: (props: any) => {
       const { children } = props
@@ -78,14 +78,12 @@ export const Responsibilities = ({ data }: { data: GetOneJobPosting }) => {
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          {data && data.responsibilities_description && (
-            <ReactMarkdown
-              // eslint-disable-next-line react/no-children-prop
-              children={data.responsibilities_description}
-              components={ChakraUIRenderer(newTheme)}
-              skipHtml
-            />
-          )}
+          <ReactMarkdown
+            // eslint-disable-next-line react/no-children-prop
+            children={job.responsibilities_description ?? ''}
+            components={ChakraUIRenderer(newTheme)}
+            skipHtml
+          />
         </AccordionPanel>
       </AccordionItem>
     </Accordion>
