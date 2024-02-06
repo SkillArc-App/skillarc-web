@@ -1,6 +1,3 @@
-import { applyCopyOptions } from '@/app/jobs/hooks/useApply'
-import { UserState } from '@/app/jobs/hooks/useUserState'
-
 export {}
 
 describe('Incomplete Onboarding applying to jobs', () => {
@@ -37,14 +34,14 @@ describe('Incomplete Onboarding applying to jobs', () => {
 
     cy.url().should('contain', job.id)
 
-    cy.findByRole('button', { name: applyCopyOptions[UserState.Ready] }).click()
+    cy.findByRole('button', { name:'Apply With Your SkillArc Profile' }).click()
     cy.findByText(job.employmentTitle)
 
     // in modal
     const applyModal = cy.findByText('Would you like to apply to').parent().parent()
 
     applyModal.within(() => {
-      cy.findByRole('button', { name: applyCopyOptions[UserState.Ready] }).click()
+      cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
     })
 
     const congratsModal = cy.findByText(`Great work, John 🎉`).parent().parent()
@@ -83,7 +80,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
           cy.findByRole('button', { name: 'Apply' }).click()
         })
 
-        cy.findByRole('button', { name: applyCopyOptions[UserState.IncompleteOnboarding] }).click()
+        cy.findByRole('button', { name: 'Apply by Completing Your SkillArc Profile' }).click()
 
         minimalOnboardingAndJobApply(job)
       })
@@ -113,7 +110,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
           cy.findByRole('button', { name: 'Apply' }).click()
         })
 
-        cy.findByRole('button', { name: applyCopyOptions[UserState.IncompleteOnboarding] }).click()
+        cy.findByRole('button', { name: 'Apply by Completing Your SkillArc Profile' }).click()
 
         minimalOnboardingAndJobApply(job)
       })
@@ -133,7 +130,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
         emailSelect.select(user['email'], { timeout: 10000 })
 
         cy.visit(`/jobs/${job.id}`)
-        cy.findByRole('button', { name: applyCopyOptions[UserState.IncompleteOnboarding] }).click()
+        cy.findByRole('button', { name: 'Apply by Completing Your SkillArc Profile' }).click()
 
         minimalOnboardingAndJobApply(job)
       })

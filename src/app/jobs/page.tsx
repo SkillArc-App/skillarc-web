@@ -134,12 +134,6 @@ export default function Jobs() {
     },
   })
 
-  useEffect(() => {
-    if (activeJob && (!isApplyModalOpen || !isSharingModalOpen)) {
-      onApplyModalOpen()
-    }
-  })
-
   const {
     isOpen: isApplyModalOpen,
     onOpen: onApplyModalOpen,
@@ -150,6 +144,12 @@ export default function Jobs() {
     onOpen: onSharingModalOpen,
     onClose: onSharingModalClose,
   } = useDisclosure()
+
+  useEffect(() => {
+    if (activeJob && (!isApplyModalOpen || !isSharingModalOpen)) {
+      onApplyModalOpen()
+    }
+  })
 
   const token = useAuthToken()
 
@@ -193,7 +193,6 @@ export default function Jobs() {
                 onApplyClick={(e) => {
                   setActiveJobIdAndRoute(job.id)
                   e.stopPropagation()
-                  onApplyModalOpen()
                 }}
                 onSaveClick={() => onSaveClick(job)}
                 key={index}
