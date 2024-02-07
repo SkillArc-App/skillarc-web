@@ -45,9 +45,20 @@ describe('Seeker', () => {
         turner.should('contain', 'Apply')
         turner.contains('Apply').click()
 
-        cy.get('body').should('contain', "Let's do this")
-        cy.get('button').contains('Apply With Your SkillArc Profile').click()
-        cy.get('button').contains('Back to Jobs').click()
+        const applyModal = cy.findByRole('dialog', { name: "Let's do this!" })
+
+        applyModal.within(() => {
+          cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
+        })
+
+        const sharingModal = cy.findByRole('dialog', { name: `Great work, ${user.firstName}! 🎉` })
+        sharingModal.within(() => {
+          cy.findByRole('button', { name: 'Back to Jobs' }).click()
+        })
+
+        // cy.findByRole('dialog', { hidden: true, name: "Let's do this!" })
+        // cy.findByRole('dialog', { hidden: true, name: "Let's do this!" })
+
 
         // apply on individual job page
         const earthworkJourneyman = cy.findByRole('listitem', { name: 'Earthwork Journeyman' })
@@ -65,9 +76,9 @@ describe('Seeker', () => {
         cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
 
         // in modal
-        const applyModal = cy.findByText('Would you like to apply to').parent().parent()
+        const onPageApplyModal = cy.findByText('Would you like to apply to').parent().parent()
 
-        applyModal.within(() => {
+        onPageApplyModal.within(() => {
           cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
         })
 

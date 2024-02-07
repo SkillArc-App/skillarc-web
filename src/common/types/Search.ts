@@ -21,6 +21,15 @@ export type SearchValue = {
   filters: {
     [key: string]: SearchOption<any>[]
   }
+  otherUtmParams: Partial<UtmParams>
+}
+
+export type UtmParams = {
+  utm_source: string
+  utm_term: string
+  utm_medium: string
+  utm_campaign: string
+  utm_content: string
 }
 
 export type SearchFilter<T = any> = {

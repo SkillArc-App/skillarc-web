@@ -57,7 +57,8 @@ const SearchBar = ({ value, filters = [], onChange }: SearchBarProps) => {
           value={value.searchTerms}
           onChange={(e) => {
             onChange({
-              ...value,
+              filters: value.filters,
+              otherUtmParams: {},
               searchTerms: e.target.value,
             })
           }}
@@ -73,7 +74,8 @@ const SearchBar = ({ value, filters = [], onChange }: SearchBarProps) => {
             options={options}
             onChange={(filterValue) => {
               onChange({
-                ...value,
+                otherUtmParams: {},
+                searchTerms: value.searchTerms,
                 filters: {
                   ...value.filters,
                   [key]: filterValue.map((x) => x),
