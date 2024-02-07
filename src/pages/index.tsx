@@ -7,7 +7,6 @@ import { useUser } from '@/frontend/hooks/useUser'
 import { http } from '@/frontend/http-common'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'
 import { Flex } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -20,7 +19,6 @@ const Home = () => {
   const { data: user, refetch: refetchUser } = useUser()
 
   useEffect(() => {
-    if (user && userCanSeeJobs(user))
     if (user?.trainingProviderProfile) {
       router.push('/students')
       return
@@ -33,7 +31,6 @@ const Home = () => {
     if (token) {
       const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
       const seekerInviteCode = localStorage.getItem('seekerInviteCode')
-      const employerInviteCode = localStorage.getItem('employerInviteCode')
       const preOnboardingJobInterest = localStorage.getItem('preOnboardingJobInterest')
 
       if (trainingProviderInviteCode) {
@@ -44,22 +41,6 @@ const Home = () => {
       } else if (seekerInviteCode) {
         localStorage.removeItem('seekerInviteCode')
         http.post('/api/invites', { seekerInviteCode })
-      } else if (employerInviteCode) {
-        localStorage.removeItem('employerInviteCode')
-        axios
-          .create({ withCredentials: false })
-          .put(
-            `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteCode}/used`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
-          )
-          .then((res) => {
-            refetchUser()
-          })
       } else if (preOnboardingJobInterest) {
         localStorage.removeItem('preOnboardingJobInterest')
         router.push(`/jobs/${preOnboardingJobInterest}`)
