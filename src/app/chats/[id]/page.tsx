@@ -1,30 +1,14 @@
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useSeekerChat } from '@/frontend/hooks/useSeekerChat'
 import { post } from '@/frontend/http-common'
 import ChatScreen from '@/frontend/modules/profile/components/chatScreen.component'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 
 const Chats = () => {
   const { data: chats, refetch } = useSeekerChat()
 
-  const router = useRouter()
-  const { id: idWrapper } = router.query
-  const id = idWrapper?.at(0)
-
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      if (!isAuthenticated) return
-
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently, isAuthenticated])
+  const id = useFixedParams('id')?.['id']
+  const token = useAuthToken()
 
   const createMessage = async (id: string, text: string) => {
     if (!token) return
