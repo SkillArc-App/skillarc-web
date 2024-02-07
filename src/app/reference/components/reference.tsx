@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Text } from '../../../components/Text.component'
+import { Text } from '../../../frontend/components/Text.component'
 
 export const Reference = ({
   seekerProfileId,

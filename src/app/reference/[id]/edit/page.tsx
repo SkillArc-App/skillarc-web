@@ -1,9 +1,9 @@
+import { Reference } from '@/app/reference/components/reference'
+import { useUpdateReference } from '@/app/reference/[id]/edit/hooks/useUpdateReference'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useReferenceData } from '@/frontend/hooks/useReferenceData'
-import { Reference } from '@/frontend/modules/reference/components/reference.component'
-import { useUpdateReference } from '@/frontend/modules/reference/hooks/useUpdateReference'
 import { useRouter } from 'next/router'
 
 export default function EditReferences() {

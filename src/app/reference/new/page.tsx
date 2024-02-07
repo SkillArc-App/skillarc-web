@@ -1,7 +1,7 @@
+import { Reference } from '@/app/reference/components/reference'
+import { useAddReference } from '@/app/reference/new/hooks/useAddReference'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { Reference } from '@/frontend/modules/reference/components/reference.component'
-import { useAddReference } from '@/frontend/modules/reference/hooks/useAddReference'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function NewReference() {
@@ -24,6 +24,6 @@ export default function NewReference() {
   if (seekerProfileId) {
     return <Reference onSubmit={handleSubmit} seekerProfileId={seekerProfileId} />
   } else {
-    return <LoadingPage/>
+    return <LoadingPage />
   }
 }
