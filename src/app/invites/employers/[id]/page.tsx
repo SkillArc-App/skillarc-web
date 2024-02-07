@@ -1,26 +1,18 @@
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { put } from '@/frontend/http-common'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const SeekerInvite = () => {
   const router = useRouter()
-  const { id: employerInviteId } = router.query
+  const employerInviteId = useFixedParams('id')?.['id']
 
-  const { getAccessTokenSilently } = useAuth0()
-
+  const token = useAuthToken()
   const { data: user, refetch: refetchUser } = useUser()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
 
   useEffect(() => {
     if (!user) return
@@ -30,17 +22,17 @@ const SeekerInvite = () => {
       return
     }
 
-    const invite = () => {
+    const invite = async () => {
       if (!token) return
       if (!employerInviteId) return
 
-      put(
+      await put(
         `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
         {},
         token,
-      ).then((_) => {
-        refetchUser()
-      })
+      )
+
+      refetchUser()
     }
 
     invite()
