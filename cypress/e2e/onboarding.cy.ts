@@ -26,10 +26,11 @@ describe('Onboarding', () => {
     })
 
     cy.visit('/onboarding/name')
-    cy.get('input').filter('[placeholder="First name"]').type('Dwight')
-    cy.get('input').filter('[placeholder="Last name"]').type('Schrute')
-    cy.get('input').filter('[placeholder="Phone number"]').type('570-555-5555')
-    cy.get('input').filter('[placeholder="MM/DD/YYYY"]').type('01/20/1970')
+    cy.get('label').contains('First Name').next().type('Dwight')
+    cy.get('label').contains('Last Name').next().type('Schrute')
+    cy.get('label').contains('Phone Number').next().type('570-555-5555')
+    cy.get('label').contains('Date of Birth').next().type('1970-01-20')
+
     cy.get('button').contains('Next').click()
 
     // experience

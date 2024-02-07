@@ -1,20 +1,35 @@
+import { OtherExperienceResponse } from '@/common/types/OnboardingResponse'
 import { Button, Flex, Heading, Input } from '@chakra-ui/react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Text } from '../../../../components/Text.component'
 
-export const Other = ({
-  onSubmit,
-  otherList,
-  setOtherList,
-}: {
-  otherList: { activity: string; startDate: string; endDate: string; learning: string }[]
-  setOtherList: (
-    otherList: { activity: string; startDate: string; endDate: string; learning: string }[],
-  ) => void
-  onSubmit: () => void
-}) => {
+type OtherResponse = {
+  activity: string
+  startDate: string
+  endDate: string
+  learning: string
+}
+
+export const Other = ({ onSubmit }: { onSubmit: (responses: OtherExperienceResponse) => void }) => {
+  const [otherList, setOtherList] = useState<OtherResponse[]>([
+    {
+      activity: '',
+      startDate: '',
+      endDate: '',
+      learning: '',
+    },
+  ])
+
   const handleAdd = () => {
     setOtherList([...otherList, { activity: '', startDate: '', endDate: '', learning: '' }])
+  }
+
+  const handleSubmit = () => {
+    onSubmit({
+      other: {
+        response: otherList,
+      },
+    })
   }
 
   const handleRemove = (index: number) => {
@@ -174,7 +189,13 @@ export const Other = ({
       >
         Add another
       </Button>
-      <Button onClick={onSubmit} mt={'0.5rem'} variant={'primary'} minH="54px" borderRadius="4px">
+      <Button
+        onClick={handleSubmit}
+        mt={'0.5rem'}
+        variant={'primary'}
+        minH="54px"
+        borderRadius="4px"
+      >
         Next
       </Button>
     </>

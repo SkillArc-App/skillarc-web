@@ -1,30 +1,26 @@
+import { industries } from '@/common/static/industries'
+import { OpportunityInterestsResponse } from '@/common/types/OnboardingResponse'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
+import { useState } from 'react'
 import { Text } from '../../../../components/Text.component'
-import { industries } from '@/common/static/industries'
 
 export const NewOpportunityInterests = ({
-  opportunityInterests,
-  setOpportunityInterests,
   onSubmit,
 }: {
-  opportunityInterests: string[]
-  setOpportunityInterests: (opportunityInterests: string[]) => void
-  onSubmit: () => void
+  onSubmit: (responses: OpportunityInterestsResponse) => void
 }) => {
-  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setOpportunityInterests([...opportunityInterests, e.target.value])
-    } else {
-      setOpportunityInterests(
-        opportunityInterests.filter((value) => {
-          return value !== e.target.value
-        }),
-      )
-    }
-  }
+  const [opportunityInterests, setOpportunityInterests] = useState<string[]>([])
 
   const checkboxOptions: string[] = industries.map((i) => i[0].toLocaleUpperCase() + i.slice(1))
+
+  const handleSubmit = () => {
+    onSubmit({
+      opportunityInterests: {
+        response: opportunityInterests,
+      },
+    })
+  }
 
   return (
     <>
@@ -39,7 +35,15 @@ export const NewOpportunityInterests = ({
           return (
             <Checkbox
               variant={'box'}
-              onChange={handleSelect}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setOpportunityInterests([...opportunityInterests, e.target.value])
+                } else {
+                  setOpportunityInterests(
+                    opportunityInterests.filter((interest) => interest !== e.target.value),
+                  )
+                }
+              }}
               value={option}
               isChecked={opportunityInterests.includes(option)}
               key={index}
@@ -50,7 +54,7 @@ export const NewOpportunityInterests = ({
           )
         })}
       </Flex>
-      <Button onClick={onSubmit} mt={'0.5rem'} variant={'primary'}>
+      <Button onClick={handleSubmit} mt={'0.5rem'} variant={'primary'}>
         Next
       </Button>
     </>

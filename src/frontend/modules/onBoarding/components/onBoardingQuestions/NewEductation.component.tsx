@@ -1,5 +1,6 @@
+import { EducationResponse } from '@/common/types/OnboardingResponse'
 import { Button, Flex, Heading, Input } from '@chakra-ui/react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Text } from '../../../../components/Text.component'
 
 export type EducationResponseProps = {
@@ -12,18 +13,32 @@ export type EducationResponseProps = {
 
 export const NewEducation = ({
   onSubmit,
-  educationList,
-  setEducationList,
 }: {
-  onSubmit: () => void
-  educationList: EducationResponseProps[]
-  setEducationList: (educationList: EducationResponseProps[]) => void
+  onSubmit: (responses: EducationResponse) => void
 }) => {
+  const [educationList, setEducationList] = useState<EducationResponseProps[]>([
+    {
+      org: '',
+      title: '',
+      gradYear: '',
+      gpa: '',
+      activities: '',
+    },
+  ])
+
   const handleAdd = () => {
     setEducationList([
       ...educationList,
       { org: '', title: '', gradYear: '', gpa: '', activities: '' },
     ])
+  }
+
+  const handleSubmit = () => {
+    onSubmit({
+      education: {
+        response: educationList,
+      },
+    })
   }
 
   const handleRemove = (index: number) => {
@@ -210,7 +225,13 @@ export const NewEducation = ({
       >
         Add another
       </Button>
-      <Button onClick={onSubmit} mt={'0.5rem'} variant={'primary'} minH="54px" borderRadius="4px">
+      <Button
+        onClick={handleSubmit}
+        mt={'0.5rem'}
+        variant={'primary'}
+        minH="54px"
+        borderRadius="4px"
+      >
         Next
       </Button>
     </>

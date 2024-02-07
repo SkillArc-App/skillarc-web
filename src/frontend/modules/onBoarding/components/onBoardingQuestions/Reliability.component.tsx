@@ -1,20 +1,45 @@
-import { Box, Button, Checkbox, Heading } from '@chakra-ui/react'
+import { ReliabilityResponse } from '@/common/types/OnboardingResponse'
+import FormikCheckBox from '@/frontend/components/FormikCheckbox'
+import { Button, Heading, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
+
+const JOB = "I've had or currently have a job"
+const TRAINING_PROGRAM = "I've attended a Training Program"
+const EDUCATION = 'I have a High School Diploma / GED'
+const OTHER = "I have other experience I'd like to share"
+
+type ReliabilityProps = {
+  job: boolean
+  trainingProgram: boolean
+  education: boolean
+  other: boolean
+}
 
 export const Reliability = ({
-  selectedGoals,
-  setSelectedGoals,
   onSubmit,
 }: {
-  selectedGoals: string[]
-  setSelectedGoals: (goals: string[]) => void
-  onSubmit: () => void
+  onSubmit: (responses: ReliabilityResponse) => void
 }) => {
-  const handleRadioChange = (e: any) => {
-    if (e.target.checked) {
-      setSelectedGoals([...selectedGoals, e.target.value])
-    } else {
-      setSelectedGoals(selectedGoals.filter((goal) => goal !== e.target.value))
-    }
+  const initialValue: ReliabilityProps = {
+    job: false,
+    trainingProgram: false,
+    education: false,
+    other: false,
+  }
+
+  const handleSubmit = (values: ReliabilityProps) => {
+    const responses = []
+
+    if (values.job) responses.push(JOB)
+    if (values.trainingProgram) responses.push(TRAINING_PROGRAM)
+    if (values.education) responses.push(EDUCATION)
+    if (values.other) responses.push(OTHER)
+
+    onSubmit({
+      reliability: {
+        response: responses,
+      },
+    })
   }
 
   return (
@@ -22,58 +47,21 @@ export const Reliability = ({
       <Heading variant={'h2'} color={'greyscale.900'}>
         First, we&apos;ll let employers know how dependable you are
       </Heading>
-      <Box>
-        <Checkbox
-          onChange={handleRadioChange}
-          isChecked={selectedGoals.includes("I've had or currently have a job")}
-          value={"I've had or currently have a job"}
-          size={'lg'}
-          width={'100%'}
-          variant={'box'}
-          colorScheme="green"
-        >
-          I&apos;ve had or currently have a job
-        </Checkbox>
-        <Checkbox
-          onChange={handleRadioChange}
-          isChecked={selectedGoals.includes("I've attended a Training Program")}
-          value={"I've attended a Training Program"}
-          size={'lg'}
-          width={'100%'}
-          variant={'box'}
-          mt={'1rem'}
-          colorScheme="green"
-        >
-          I&apos;ve attended a Training Program
-        </Checkbox>
-        <Checkbox
-          isChecked={selectedGoals.includes('I have a High School Diploma / GED')}
-          value={'I have a High School Diploma / GED'}
-          onChange={handleRadioChange}
-          size={'lg'}
-          variant={'box'}
-          width={'100%'}
-          mt={'1rem'}
-          colorScheme="green"
-        >
-          I have a High School Diploma / GED
-        </Checkbox>
-        <Checkbox
-          isChecked={selectedGoals.includes("I have other experience I'd like to share")}
-          value={"I have other experience I'd like to share"}
-          onChange={handleRadioChange}
-          size={'lg'}
-          variant={'box'}
-          width={'100%'}
-          mt={'1rem'}
-          colorScheme="green"
-        >
-          I have other experience I&apos;d like to share
-        </Checkbox>
-        <Button onClick={onSubmit} mt={'0.5rem'} variant={'primary'}>
-          Next
-        </Button>
-      </Box>
+      <Formik onSubmit={handleSubmit} initialValues={initialValue}>
+        {(props) => (
+          <Form>
+            <Stack gap={'1rem'}>
+              <FormikCheckBox name="job" label={JOB} />
+              <FormikCheckBox name="trainingProgram" label={TRAINING_PROGRAM} />
+              <FormikCheckBox name="education" label={EDUCATION} />
+              <FormikCheckBox name="other" label={OTHER} />
+              <Button variant={'primary'} isLoading={props.isSubmitting} type="submit">
+                Next
+              </Button>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </>
   )
 }
