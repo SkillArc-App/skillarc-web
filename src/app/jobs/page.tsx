@@ -203,6 +203,7 @@ export default function Jobs() {
                 onApplyClick={(e) => {
                   setActiveJobIdAndRoute(job.id)
                   e.stopPropagation()
+                  onApplyModalOpen()
                 }}
                 onSaveClick={() => onSaveClick(job)}
                 key={index}
