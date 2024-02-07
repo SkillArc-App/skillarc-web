@@ -1,30 +1,15 @@
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useEmployerChats } from '@/frontend/hooks/useEmployerChats'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import ChatScreen from '@/frontend/modules/profile/components/chatScreen.component'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const ChatUI = () => {
   const { data: serverChats, refetch: refetchChats } = useEmployerChats()
 
-  const router = useRouter()
-  const { id: idWrapper } = router.query
-  const id = idWrapper?.at(0)
-
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      if (!isAuthenticated) return
-
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently, isAuthenticated])
+  const id = useFixedParams('id')?.['id']
+  const token = useAuthToken()
 
   useEffect(() => {
     const createChat = (applicantId: string) => {
@@ -39,7 +24,7 @@ const ChatUI = () => {
       ).then((_) => {
         refetchChats()
       })
-    };
+    }
 
     if (id && serverChats) {
       const chat = serverChats.find((chat) => chat.id === id)

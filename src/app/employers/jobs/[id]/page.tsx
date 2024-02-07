@@ -2,7 +2,9 @@
 
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useEmployerJobData } from '@/frontend/hooks/useEmployerJobData'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { usePassReasons } from '@/frontend/hooks/usePassReasons'
 import { put } from '@/frontend/http-common'
 import { Applicant, Job } from '@/frontend/services/employerJobs.service'
@@ -30,7 +32,7 @@ import {
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
-import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -45,9 +47,19 @@ type ApplicantStatusChange = {
   reasons?: string[]
 }
 
+type ApplicantTable = {
+  applicant: Applicant
+  id: string
+  name: string
+  contactInfo: string
+  job: string
+  status: string
+  appliedOn: string
+}
+
 const Jobs = () => {
   const router = useRouter()
-  const jobId: string | undefined = router.query.id?.at(0)
+  const jobId = useFixedParams('id')?.['id']
 
   const {
     getEmployerJobs: { data: employerJobs, refetch: refetchEmployerJobs, isLoading },
@@ -61,28 +73,16 @@ const Jobs = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([])
   const [filteredApplicants, setFilteredApplicants] = useState(applicants)
   const [updatedStatuses, setUpdatedStatuses] = useState<ApplicantStatusChanges>({})
-  const { getAccessTokenSilently } = useAuth0()
+  const token = useAuthToken()
 
   const [employers, setEmployers] = useState<{ id: string; name: string }[]>([])
   const [activeEmployer, setActiveEmployer] = useState<string | null>(null)
-
-  const [token, setToken] = useState<string | null>(null)
 
   const [showPasses, setShowPasses] = useState<boolean>(false)
 
   const { onClose } = useDisclosure()
 
   const [currentApplicant, setCurrentApplicant] = useState<Applicant | null>(null)
-
-  type ApplicantTable = {
-    applicant: Applicant
-    id: string
-    name: string
-    contactInfo: string
-    job: string
-    status: string
-    appliedOn: string
-  }
 
   const data: ApplicantTable[] = filteredApplicants.map((applicant) => {
     return {
@@ -158,14 +158,6 @@ const Jobs = () => {
       id: appliedOnId,
     },
   ]
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
 
   useEffect(() => {
     if (!applicants) return
