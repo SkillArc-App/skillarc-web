@@ -1,6 +1,8 @@
+"use client"
+
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 export default function SeekerInvite() {
