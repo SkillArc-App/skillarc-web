@@ -1,31 +1,12 @@
 import { ReliabilityResponse } from '@/common/types/OnboardingResponse'
-import { Button, Checkbox, Heading, Stack } from '@chakra-ui/react'
-import { Field, Form, Formik } from 'formik'
+import FormikCheckBox from '@/frontend/components/FormikCheckbox'
+import { Button, Heading, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 
 const JOB = "I've had or currently have a job"
 const TRAINING_PROGRAM = "I've attended a Training Program"
 const EDUCATION = 'I have a High School Diploma / GED'
 const OTHER = "I have other experience I'd like to share"
-
-const FormikCheckBox = ({ name, label }: { name: string; label: string }) => {
-  return (
-    <Field type="checkbox" name={name}>
-      {({ field }: any) => {
-        return (
-          <Checkbox
-            variant={'box'}
-            isChecked={field.checked}
-            size={'lg'}
-            colorScheme="green"
-            {...field}
-          >
-            {label}
-          </Checkbox>
-        )
-      }}
-    </Field>
-  )
-}
 
 type ReliabilityProps = {
   job: boolean

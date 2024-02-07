@@ -1,7 +1,7 @@
 import { NameResponse } from '@/common/types/OnboardingResponse'
 import FormInputField from '@/frontend/components/FormInputField'
-import { Box, Button, FormLabel, Input, Stack } from '@chakra-ui/react'
-import { Field, Form, Formik } from 'formik'
+import { Button, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { Heading } from '../../../../components/Heading.component'
 import { Text } from '../../../../components/Text.component'
 
@@ -56,16 +56,12 @@ export const NewName = ({ onSubmit }: { onSubmit: (name: NameResponse) => void }
                 isRequired
               />
               {/* format as month/day/year */}
-              <Field isRequired name="dateOfBirth" type="date">
-                {({ field }: any) => {
-                  return (
-                    <Box mt={'1rem'}>
-                      <FormLabel>Date of Birth</FormLabel>
-                      <Input bg={'white'} type="date" {...field} />
-                    </Box>
-                  )
-                }}
-              </Field>
+              <FormInputField<string>
+                label="Date of Birth"
+                name="dateOfBirth"
+                type="date"
+                isRequired
+              />
               <Button variant={'primary'} mt={'1rem'} isLoading={props.isSubmitting} type="submit">
                 Next
               </Button>
