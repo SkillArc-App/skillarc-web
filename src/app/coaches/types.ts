@@ -46,6 +46,12 @@ export type CoachSeeker = {
   applications: SeekerApplication[]
 }
 
+export type CoachJob = {
+  id: string
+  employmentTitle: string
+  isRecommended: boolean
+}
+
 export type Coach = {
   id: string
   email: string

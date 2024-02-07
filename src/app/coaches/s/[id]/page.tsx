@@ -15,6 +15,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  Button,
   Divider,
   Grid,
   GridItem,
@@ -28,6 +29,7 @@ import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 import ReactSelect from 'react-select'
+import { useCoachJobs } from '../../hooks/useCoachJobs'
 
 interface GroupedNotes {
   [key: string]: SeekerNote[]
@@ -41,7 +43,9 @@ const Seeker = () => {
   const { data: seeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { data: barriers } = useBarrierData()
+  const { data: allJobs } = useCoachJobs()
 
+  const [jobs, setJobs] = useState(allJobs)
   const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
   const [noteDraft, setNoteDraft] = useState('')
   const [workingSeeker, setWorkingSeeker] = useState(seeker)
@@ -97,6 +101,14 @@ const Seeker = () => {
 
     setBarrierOptions(options)
   }, [barriers])
+
+  useEffect(() => {
+    setJobs(
+      allJobs?.filter((job) => {
+        return !workingSeeker?.applications.some((a) => a.jobId === job.id)
+      }),
+    )
+  }, [allJobs, workingSeeker])
 
   const addNote = () => {
     if (!token) return
@@ -193,6 +205,28 @@ const Seeker = () => {
         ...workingSeeker,
         assignedCoach: coachId,
       })
+    })
+  }
+
+  const recommendJob = (jobId: string) => {
+    if (!token) return
+    if (!workingSeeker) return
+    if (!jobs) return
+
+    post(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
+      {
+        job_id: jobId,
+      },
+      token,
+      { camel: true },
+    ).then((res) => {
+      const job = jobs?.find((j) => j.id === jobId)
+      const filteredJobs = jobs?.filter((j) => j.id !== jobId)
+
+      if (!job) return
+
+      setJobs([...filteredJobs, { ...job, isRecommended: true }])
     })
   }
 
@@ -367,11 +401,13 @@ const Seeker = () => {
           </Stack>
         </GridItem>
         <GridItem pl="2" bg="gray.50" area={'right'}>
-          <Stack p={'2rem'} overflowY={'scroll'}>
-            <Heading type="h3" color={'black'}>
-              Applications
-            </Heading>
-            <Divider />
+          <Stack gap={'1rem'} p={'2rem'} overflowY={'scroll'}>
+            <Box>
+              <Heading type="h3" color={'black'}>
+                Applications
+              </Heading>
+              <Divider />
+            </Box>
             {workingSeeker.applications.map(({ employerName, employmentTitle, status, jobId }) => (
               <Stack p={'1rem'} key={jobId} bg="white" height={'100%'}>
                 <Box>
@@ -397,6 +433,31 @@ const Seeker = () => {
                 </Box>
               </Stack>
             ))}
+            <Stack>
+              <Heading type="h3" color={'black'}>
+                Other Jobs
+              </Heading>
+              <Divider />
+              {(jobs || []).map((job) => (
+                <Stack gap={'1rem'} p={'1rem'} key={job.id} bg="white" height={'100%'}>
+                  <Box>
+                    <Text variant={'b3'}>Job Title</Text>
+                    <Link variant={'b2'} as={NextLink} href={`/jobs/`}>
+                      {job.employmentTitle}
+                    </Link>
+                  </Box>
+                  <Box>
+                    {job.isRecommended ? (
+                      <i>Recommended</i>
+                    ) : (
+                      <Button onClick={() => recommendJob(job.id)} variant={'solid'} size={'sm'}>
+                        Recommend
+                      </Button>
+                    )}
+                  </Box>
+                </Stack>
+              ))}
+            </Stack>
           </Stack>
         </GridItem>
       </Grid>

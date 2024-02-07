@@ -8,7 +8,16 @@ import { usePathname } from 'next/navigation'
 const Coaches = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname()
 
-  const index = (pathName ?? '').includes('leads') ? 1 : 0
+  const index = (() => {
+    switch (pathName) {
+      case '/coaches/leads':
+        return 1
+      case '/coaches/jobs':
+        return 2
+      default:
+        return 0
+    }
+  })()
 
   return (
     <Box width={'100%'}>
@@ -21,6 +30,9 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
             </Tab>
             <Tab as={Link} href={'/coaches/leads'}>
               Leads
+            </Tab>
+            <Tab as={Link} href={'/coaches/jobs'}>
+              Jobs
             </Tab>
           </TabList>
         </Tabs>
