@@ -30,7 +30,12 @@ const nextConfig = {
         source: '/my_jobs',
         destination: '/my_jobs/recently-viewed',
         permanent: false
-      }
+      },
+      {
+        source: '/employers/jobs',
+        destination: '/employers/jobs/all',
+        permanent: false
+      },
     ]
   }
 }

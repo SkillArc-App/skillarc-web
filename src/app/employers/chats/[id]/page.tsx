@@ -1,3 +1,5 @@
+'use client'
+
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useEmployerChats } from '@/frontend/hooks/useEmployerChats'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'

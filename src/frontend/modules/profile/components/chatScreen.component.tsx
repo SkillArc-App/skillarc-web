@@ -11,8 +11,7 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { MdSend } from 'react-icons/md'
 import { Text } from '../../../../frontend/components/Text.component'
@@ -51,15 +50,9 @@ const ThreadItem = ({
   name: string
   prefix: string
 }) => {
-  const router = useRouter()
-
-  const handleClick = () => {
-    router.push(`${prefix}/${id}`, undefined, { shallow: true })
-  }
-
   return (
-    <Box cursor="pointer" bg={isCurrent ? 'gray.400' : ''} p={3} onClick={handleClick}>
-      <HStack>
+    <Box cursor="pointer" bg={isCurrent ? 'gray.400' : ''} p={3}>
+      <HStack as={Link} href={`${prefix}/${id}`}>
         <Text fontWeight="bold">{name}</Text>
         <Spacer />
         {isUnread && (
@@ -96,21 +89,6 @@ const ChatScreen = ({
   const [newMessage, setNewMessage] = useState('')
   const [chats, setChats] = useState(serverChats)
   const [currentChat, setCurrentChat] = useState<Chat>()
-
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      if (!isAuthenticated) return
-
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently, isAuthenticated])
 
   useEffect(() => {
     setChats(serverChats)

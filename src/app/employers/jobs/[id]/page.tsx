@@ -34,7 +34,7 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FaRegComment } from 'react-icons/fa6'
 
@@ -161,7 +161,7 @@ const Jobs = () => {
 
   useEffect(() => {
     if (!applicants) return
-    if (!jobId) {
+    if ((!jobId) || jobId === 'all') {
       setFilteredApplicants(applicants)
       return
     }
@@ -289,19 +289,16 @@ const Jobs = () => {
     }
   }
 
-  const onTabChange = (index: number) => {
-    if (!jobs) return
-
-    if (index === 0) {
-      router.push('/employers/jobs', undefined, { shallow: true })
-    } else {
-      router.push(`/employers/jobs/${jobs[index - 1].id}`, undefined, { shallow: true })
-    }
-  }
-
   if (isLoading) return <LoadingPage />
 
-  const tabIndex = jobId && jobs ? jobs.indexOf(jobs.find((job) => job.id === jobId) as Job) + 1 : 0
+  let tabIndex = 0
+  if (jobs) {
+    const matchJob = jobs.find((job) => job.id === jobId)
+
+    if (matchJob) {
+      tabIndex = jobs.indexOf(matchJob) + 1
+    }
+  }
 
   if (!activeEmployer) return <LoadingPage />
 
@@ -322,18 +319,17 @@ const Jobs = () => {
         )}
       </Heading>
       <Tabs
-        onChange={(index) => onTabChange(index)}
         index={tabIndex}
         variant="unstyled"
         colorScheme="gray"
         py={'12px'}
       >
         <TabList>
-          <Tab _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}>All</Tab>
+          <Tab _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }} as={NextLink} href='all' >All</Tab>
           {jobs &&
             jobs.map((job, index) => {
               return (
-                <Tab key={index} _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}>
+                <Tab as={NextLink} href={`/employers/jobs/${job.id}`} key={index}  _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}>
                   {job.name}
                 </Tab>
               )
