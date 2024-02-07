@@ -1,10 +1,10 @@
 'use client'
 
+import ChatScreen from '@/app/profiles/[profileId]/components/chatScreen'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useEmployerChats } from '@/frontend/hooks/useEmployerChats'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
-import ChatScreen from '@/frontend/modules/profile/components/chatScreen.component'
 import { useEffect } from 'react'
 
 const ChatUI = () => {

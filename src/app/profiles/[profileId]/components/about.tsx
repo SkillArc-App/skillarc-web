@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { FaUser } from 'react-icons/fa6'
-import { Text } from '../../../components/Text.component'
-import { ProfileBox } from './profileBox.component'
+import { Text } from '../../../../frontend/components/Text.component'
+import { ProfileBox } from './profileBox'
 
 export const ProfileAbout = () => {
   const router = useRouter()

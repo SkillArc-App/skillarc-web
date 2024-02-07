@@ -2,11 +2,11 @@ import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { FaPeopleCarryBox } from 'react-icons/fa6'
-import { Text } from '../../../components/Text.component'
-import { ProfileBox } from './profileBox.component'
+import { FaGraduationCap } from 'react-icons/fa6'
+import { Text } from '../../../../frontend/components/Text.component'
+import { ProfileBox } from './profileBox'
 
-export const PersonalExperience = () => {
+export const ProfileEducation = () => {
   const router = useRouter()
   const { profileId } = router.query
   const {
@@ -15,38 +15,32 @@ export const PersonalExperience = () => {
 
   return (
     <ProfileBox
-      title="Personal Experience"
-      icon={FaPeopleCarryBox}
+      title="Education"
+      icon={FaGraduationCap}
       onAddClick={() => {
         router.push({
           pathname: `${profileId}/editProfile`,
-          query: { section: 'personalExperience' },
+          query: { section: 'education' },
         })
       }}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.personalExperience.map((personalExperience: any, index: number) => {
+        {data?.educationExperiences.map((educationExperiences: any, index: number) => {
           return (
             <Flex key={index}>
-              <Flex direction="column" w="100%" gap="0.5rem">
-                <Flex direction="column" gap="0.5rem" w="100%">
-                  {!personalExperience.endDate && (
-                    <Text type="b3" color="greyscale.600">
-                      Current
-                    </Text>
-                  )}
-                  {personalExperience.endDate && (
-                    <Text type="b3" color="greyscale.600">
-                      {personalExperience.startDate} - {personalExperience.endDate}
-                    </Text>
-                  )}
-
+              <Flex flexDir={'column'} gap="0.5rem" flexGrow={1}>
+                <Flex flexDir={'column'} gap="0.5rem">
+                  <Text type="b2Bold" color="greyscale.600">
+                    {educationExperiences.graduationDate}
+                  </Text>
                   <Heading variant="h4" color={'greyscale.900'}>
-                    {personalExperience.activity}
+                    {educationExperiences.organizationName}
                   </Heading>
-
                   <Text type="b2" color="greyscale.600">
-                    {personalExperience.description}
+                    GPA: {educationExperiences.gpa}
+                  </Text>
+                  <Text type="b2" color="greyscale.600">
+                    {educationExperiences.activities}
                   </Text>
                 </Flex>
                 <Divider borderColor="greyscale.300" />
@@ -59,8 +53,8 @@ export const PersonalExperience = () => {
                     router.push({
                       pathname: `${profileId}/editProfile`,
                       query: {
-                        section: 'personalExperience',
-                        personalExperienceId: personalExperience.id,
+                        section: 'education',
+                        educationExperienceId: educationExperiences.id,
                       },
                     })
                   }

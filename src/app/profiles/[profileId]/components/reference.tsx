@@ -1,9 +1,9 @@
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { useRouter } from 'next/router'
 
-import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
-import { Text } from '../../../components/Text.component'
 import { LoadingPage } from '@/frontend/components/Loading'
+import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
+import { Text } from '../../../../frontend/components/Text.component'
 
 export const ProfileReferences = () => {
   const router = useRouter()

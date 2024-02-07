@@ -5,7 +5,7 @@ import { copyTextToClipboard } from '@/frontend/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
 import { Button, Flex, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { Text } from '../../../components/Text.component'
+import { Text } from '../../../../frontend/components/Text.component'
 
 export const ProfileSummary = () => {
   const router = useRouter()

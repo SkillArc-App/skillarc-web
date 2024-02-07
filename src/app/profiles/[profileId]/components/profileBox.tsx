@@ -4,7 +4,7 @@ import { Box, Button, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import { IconType } from 'react-icons'
-import { BlAddIcon } from './blAddIcon.component'
+import { BlAddIcon } from './blAddIcon'
 
 export const ProfileBox = ({
   children,

@@ -4,8 +4,8 @@ import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { FaSuitcase } from 'react-icons/fa6'
-import { Text } from '../../../components/Text.component'
-import { ProfileBox } from './profileBox.component'
+import { Text } from '../../../../frontend/components/Text.component'
+import { ProfileBox } from './profileBox'
 
 const ProfileExperience = () => {
   const router = useRouter()

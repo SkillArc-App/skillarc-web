@@ -1,8 +1,8 @@
+import ChatScreen from '@/app/profiles/[profileId]/components/chatScreen'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useSeekerChat } from '@/frontend/hooks/useSeekerChat'
 import { post } from '@/frontend/http-common'
-import ChatScreen from '@/frontend/modules/profile/components/chatScreen.component'
 
 const Chats = () => {
   const { data: chats, refetch } = useSeekerChat()

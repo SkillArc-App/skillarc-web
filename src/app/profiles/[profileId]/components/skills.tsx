@@ -5,8 +5,8 @@ import { Badge, Divider, Flex, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FaScrewdriverWrench } from 'react-icons/fa6'
-import { Text } from '../../../components/Text.component'
-import { ProfileBox } from './profileBox.component'
+import { Text } from '../../../../frontend/components/Text.component'
+import { ProfileBox } from './profileBox'
 
 export const ProfileSkills = () => {
   const router = useRouter()

@@ -5,7 +5,7 @@ import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Text } from '../../../components/Text.component'
+import { Text } from '../../../../frontend/components/Text.component'
 
 export const ProfileCertifications = () => {
   const router = useRouter()
