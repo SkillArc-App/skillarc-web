@@ -1,27 +1,27 @@
+import { TrainingProviderResponse } from '@/common/types/OnboardingResponse'
 import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
+import { useState } from 'react'
 import { Text } from '../../../../components/Text.component'
 
 export const Training = ({
-  trainingProviders,
-  setTrainingProviders,
   onSubmit,
 }: {
-  trainingProviders: string[]
-  setTrainingProviders: (trainingProviders: string[]) => void
-  onSubmit: () => void
+  onSubmit: (responses: TrainingProviderResponse) => void
 }) => {
   const {
     getAllTrainingProviders: { data: allTrainingProviders, isLoading },
   } = useAllTrainingProviderData()
 
-  const handleCheckboxChange = (checked: boolean, trainingProviderId: string) => {
-    if (checked) {
-      setTrainingProviders([...trainingProviders, trainingProviderId])
-    } else {
-      setTrainingProviders(trainingProviders.filter((id) => id !== trainingProviderId))
-    }
+  const [selectedTrainingProviders, setSelectedTrainingProviders] = useState<string[]>([])
+
+  const handleSubmit = () => {
+    onSubmit({
+      trainingProvider: {
+        response: selectedTrainingProviders,
+      },
+    })
   }
 
   if (!allTrainingProviders) return null
@@ -40,8 +40,16 @@ export const Training = ({
         return (
           <Checkbox
             key={trainingProvider.id}
-            onChange={(e) => handleCheckboxChange(e.target.checked, trainingProvider.id)}
-            isChecked={trainingProviders.includes(trainingProvider.id)}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setSelectedTrainingProviders([...selectedTrainingProviders, e.target.value])
+              } else {
+                setSelectedTrainingProviders(
+                  selectedTrainingProviders.filter((id) => id !== e.target.value),
+                )
+              }
+            }}
+            isChecked={selectedTrainingProviders.includes(trainingProvider.id)}
             value={trainingProvider.id}
             size={'lg'}
             width={'100%'}
@@ -53,7 +61,7 @@ export const Training = ({
         )
       })}
 
-      <Button onClick={onSubmit} variant={'primary'} mt={'0.5rem'}>
+      <Button onClick={handleSubmit} variant={'primary'} mt={'0.5rem'}>
         Next
       </Button>
     </>

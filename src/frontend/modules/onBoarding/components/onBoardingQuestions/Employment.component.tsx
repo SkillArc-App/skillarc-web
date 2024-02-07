@@ -1,6 +1,7 @@
+import { ExperienceResponse } from '@/common/types/OnboardingResponse'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Text } from '../../../../components/Text.component'
 
 export type ExperienceResponseProps = {
@@ -12,20 +13,31 @@ export type ExperienceResponseProps = {
   description?: string
 }
 
-export const Employment = ({
-  onSubmit,
-  experienceList,
-  setExperienceList,
-}: {
-  experienceList: ExperienceResponseProps[]
-  onSubmit: () => void
-  setExperienceList: (experienceList: ExperienceResponseProps[]) => void
-}) => {
+export const Employment = ({ onSubmit }: { onSubmit: (responses: ExperienceResponse) => void }) => {
+  const [experienceList, setExperienceList] = useState<ExperienceResponseProps[]>([
+    {
+      company: '',
+      position: '',
+      startDate: '',
+      current: false,
+      endDate: '',
+      description: '',
+    },
+  ])
+
   const handleAdd = () => {
     setExperienceList([
       ...experienceList,
       { company: '', position: '', startDate: '', current: false, endDate: '', description: '' },
     ])
+  }
+
+  const handleSubmit = () => {
+    onSubmit({
+      experience: {
+        response: experienceList,
+      },
+    })
   }
 
   const handleCompanyChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
@@ -207,7 +219,7 @@ export const Employment = ({
       <Button mt={'0.5rem'} variant={'secondary'} onClick={handleAdd}>
         Add another
       </Button>
-      <Button onClick={onSubmit} variant={'primary'} mt={'0.5rem'}>
+      <Button onClick={handleSubmit} variant={'primary'} mt={'0.5rem'}>
         Next
       </Button>
     </>
