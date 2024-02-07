@@ -2,6 +2,7 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { http } from '@/frontend/http-common'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'
@@ -9,32 +10,17 @@ import { Flex } from '@chakra-ui/react'
 import axios from 'axios'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const Home = () => {
   const router = useRouter()
-  const { getAccessTokenSilently, isLoading } = useAuth0()
+  const { isLoading } = useAuth0()
+  const token = useAuthToken()
 
   const { data: user, refetch: refetchUser } = useUser()
-  const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false)
-  const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
-
-  useEffect(() => {
-    if (!isLoading && !token) {
-      // router.push('/auth/signIn')
-    }
-  }, [isLoading, token])
-
-  useEffect(() => {
-    if (user && userCanSeeJobs(user)) setIsProfileComplete(true)
+    if (user && userCanSeeJobs(user))
     if (user?.trainingProviderProfile) {
       router.push('/students')
       return
