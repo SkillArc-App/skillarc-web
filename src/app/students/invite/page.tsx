@@ -1,13 +1,13 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useProgramDataForTrainingProvider } from '@/frontend/hooks/useProgramData'
 import { Box, Button, Flex, HStack, Input, Link, Select, Stack } from '@chakra-ui/react'
 import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 type SeekerInvite = {
   id: string
@@ -31,18 +31,7 @@ export default function Invite() {
     getPrograms: { data: programs },
   } = useProgramDataForTrainingProvider()
 
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const setInvitee = (invitee: Partial<SeekerInvite>, index: number) => {
     const newInvitees = [...invitees]

@@ -1,4 +1,7 @@
+import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useStudentData } from '@/frontend/hooks/useStudentData'
+import RadioCardGroup from '@/frontend/modules/onBoarding/components/RadioCardGroup.component'
 import {
   Button,
   Flex,
@@ -18,34 +21,26 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
-import RadioCardGroup from '../../onBoarding/components/RadioCardGroup.component'
 
-// add student prop interface with an onAddReference function
-// add reference prop interface with an onEditReference function
-interface StudentProps {
-  onAddReference: (seekerProfileId: string) => void
-  onEditReference: (referenceId: string) => void
+const valueFromStatus = (status: string) => {
+  switch (status) {
+    case 'not_enrolled':
+      return 'Not Enrolled'
+    case 'enrolled':
+      return 'Enrolled'
+    case 'graduated':
+      return 'Graduated'
+  }
 }
 
-export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
+export default function Students() {
   const {
     getStudents: { data, isLoading, refetch },
   } = useStudentData()
 
-  const [token, setToken] = useState<string | null>(null)
-
-  const { getAccessTokenSilently } = useAuth0()
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const [activeProgram, setActiveProgram] = useState(0)
   const [programStudents, setProgramStudents] = useState(
@@ -111,7 +106,7 @@ export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
   }
 
   if (!data || isLoading) {
-    return <></>
+    return <LoadingPage />
   } else
     return (
       <Flex py={'1.5rem'} px={'1rem'} flexDir={'column'} gap={'0.5rem'} width={'100%'}>
@@ -183,7 +178,8 @@ export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
                         {student.hiringStatus !== 'No Profile' ? (
                           student.reference.referenceText ? (
                             <Button
-                              onClick={() => onEditReference(student.reference.referenceId)}
+                              as={Link}
+                              href={`/reference/${student.reference.referenceId}/edit`}
                               color="white"
                               bg={'gray.900'}
                             >
@@ -191,9 +187,8 @@ export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
                             </Button>
                           ) : (
                             <Button
-                              onClick={() => {
-                                onAddReference(student.profileId)
-                              }}
+                              as={Link}
+                              href={`/reference/new?seekerProfileId=${student.profileId}`}
                               color="white"
                               bg={'gray.900'}
                             >
@@ -212,15 +207,4 @@ export const Students = ({ onAddReference, onEditReference }: StudentProps) => {
         </TableContainer>
       </Flex>
     )
-}
-
-const valueFromStatus = (status: string) => {
-  switch (status) {
-    case 'not_enrolled':
-      return 'Not Enrolled'
-    case 'enrolled':
-      return 'Enrolled'
-    case 'graduated':
-      return 'Graduated'
-  }
 }
