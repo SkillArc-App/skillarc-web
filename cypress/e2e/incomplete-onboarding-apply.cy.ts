@@ -13,10 +13,10 @@ describe('Incomplete Onboarding applying to jobs', () => {
   const minimalOnboardingAndJobApply = (job: any) => {
     cy.url().should('contain', 'onboarding')
 
-    cy.findByPlaceholderText('First name').type('John')
-    cy.findByPlaceholderText('Last name').type('Brauns')
-    cy.findByPlaceholderText('Phone number').type('222-333-4444')
-    cy.findByPlaceholderText('MM/DD/YYYY').type('01/20/1970')
+    cy.get('label').contains('First Name').next().type('John')
+    cy.get('label').contains('Last Name').next().type('Brauns')
+    cy.get('label').contains('Phone Number').next().type('570-555-5555')
+    cy.get('label').contains('Date of Birth').next().type('1970-01-20')
     cy.findByRole('button', { name: 'Next' }).click()
 
     cy.get('div').contains("I've had or currently have a job").click()
@@ -34,7 +34,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
 
     cy.url().should('contain', job.id)
 
-    cy.findByRole('button', { name:'Apply With Your SkillArc Profile' }).click()
+    cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
     cy.findByText(job.employmentTitle)
 
     // in modal
