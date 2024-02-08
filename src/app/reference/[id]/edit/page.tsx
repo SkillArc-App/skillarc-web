@@ -4,7 +4,7 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useReferenceData } from '@/frontend/hooks/useReferenceData'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 export default function EditReferences() {
   const router = useRouter()

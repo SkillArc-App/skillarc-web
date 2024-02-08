@@ -1,3 +1,5 @@
+"use client"
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
@@ -28,11 +30,9 @@ export const Reference = ({
   startingReferenceText?: string
   onSubmit: (reference: string) => void
 }) => {
-  const {
-    profileQuery: { data },
-  } = useProfileData(seekerProfileId as string)
+  const { data: seeker } = useProfileData(seekerProfileId)
 
-  const fullName = `${data?.user?.firstName} ${data?.user?.firstName}`
+  const fullName = `${seeker?.user?.firstName} ${seeker?.user?.firstName}`
 
   // const reference using state
   const [reference, setReference] = useState(startingReferenceText)
@@ -45,7 +45,7 @@ export const Reference = ({
     setReference(startingReferenceText)
   }, [startingReferenceText])
 
-  if (!data) return <LoadingPage />
+  if (!seeker) return <LoadingPage />
 
   return (
     <Flex w="100%" h="100%">
@@ -69,7 +69,7 @@ export const Reference = ({
           <Avatar
             w="90px"
             h="90px"
-            src={data?.user?.image ?? ''}
+            src={seeker?.user?.image ?? ''}
             boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.05)"
             border="4px solid #3AC87C"
           />
@@ -77,15 +77,15 @@ export const Reference = ({
             <Heading color={'greyscale.900'} type="h3">
               {fullName}
             </Heading>
-            {data?.user.zipCode && (
+            {seeker?.user.zipCode && (
               <Text color={'greyscale.600'} type="b3">
-                {data?.user.zipCode}
+                {seeker?.user.zipCode}
               </Text>
             )}
             <Flex>
               <Badge variant={'secondary'} borderRadius={'0.5rem'} color={'green'} p="4px 8px">
                 <Text type="b2Bold" color="primary.600">
-                  {data.hiringStatus}
+                  {seeker.hiringStatus}
                 </Text>
               </Badge>
             </Flex>
@@ -210,7 +210,7 @@ export const Reference = ({
             </CardHeader>
             <CardBody>
               <Stack divider={<StackDivider />} spacing="4">
-                {data?.programs?.map((program: any, index: number) => {
+                {seeker?.programs?.map((program: any, index: number) => {
                   return (
                     <Flex key={index} gap="1rem" flexWrap="wrap" w="100%">
                       <Text color="greyscale.600" variant={'b1Bold'} w="100%">
