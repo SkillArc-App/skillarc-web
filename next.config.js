@@ -22,6 +22,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/onboarding',
+        destination: '/onboarding/start',
+        permanent: false
+      },
+      {
         source: '/coaches',
         destination: '/coaches/seekers',
         permanent: false

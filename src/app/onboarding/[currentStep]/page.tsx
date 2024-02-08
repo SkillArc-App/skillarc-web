@@ -1,5 +1,9 @@
+'use client'
+
 import { AllResponses, OnboardingResponse } from '@/common/types/OnboardingResponse'
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useOnboardingData } from '@/frontend/hooks/useOnboardingData'
 import { put } from '@/frontend/http-common'
 import { Employment } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/Employment.component'
@@ -10,44 +14,30 @@ import { Other } from '@/frontend/modules/onBoarding/components/onBoardingQuesti
 import { Reliability } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/Reliability.component'
 import { Training } from '@/frontend/modules/onBoarding/components/onBoardingQuestions/Training.component'
 import { Flex, Progress } from '@chakra-ui/react'
-import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Onboarding = () => {
   const router = useRouter()
-
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  const { slug } = router.query
-  const currentStep = slug?.at(0)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-    getToken()
-  }, [getAccessTokenSilently])
+  const { currentStep } = useFixedParams('currentStep')
+  const token = useAuthToken()
 
   const {
     getOnboardingData: {
       data: onboardingData,
-      isLoading: onboardingDataIsLoading,
-      isFetching: onboardingDataIsFetching,
+      status: onboardingStatus,
       refetch: refetchOnboardingData,
     },
   } = useOnboardingData(token)
 
   useEffect(() => {
-    if (onboardingDataIsLoading) return
-    if (onboardingDataIsFetching) return
+    if (onboardingStatus !== 'success') return
     if (!token) return
 
     const routeToSlug = (newSlug: string) => {
       if (newSlug !== currentStep) {
-        router.push(`/onboarding/${newSlug}`, undefined, { shallow: true })
+        router.push(`/onboarding/${newSlug}`)
       }
     }
 
@@ -108,18 +98,22 @@ const Onboarding = () => {
       routeToSlug('opportunities')
       return
     }
-  }, [
-    currentStep,
-    onboardingData,
-    onboardingDataIsFetching,
-    onboardingDataIsLoading,
-    router,
-    token,
-  ])
+  }, [currentStep, onboardingData, onboardingStatus, router, token])
 
   const [workingOnboardingResponse, setWorkingOnboardingResponse] = useState<OnboardingResponse>({
     responses: { ...onboardingData?.responses },
   })
+
+  useEffect(() => {
+    if (onboardingStatus === 'success') {
+      setWorkingOnboardingResponse((onboarding) => {
+        return {
+          ...onboarding,
+          responses: onboardingData?.responses,
+        }
+      })
+    }
+  }, [onboardingStatus, onboardingData])
 
   const onSubmit = (responses: Partial<AllResponses>) => {
     if (!token) return
@@ -141,6 +135,8 @@ const Onboarding = () => {
       refetchOnboardingData()
     })
   }
+
+  console.log(workingOnboardingResponse)
 
   const stepScreen = (currentStep: string | undefined) => {
     if (!currentStep) return <LoadingPage />
