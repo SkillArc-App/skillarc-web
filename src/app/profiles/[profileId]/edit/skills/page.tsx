@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
@@ -42,10 +42,6 @@ const EditSkills = () => {
       return
     }
 
-    if (!seeker.profileSkills) {
-      setSkillsList([])
-      return
-    }
     setSkillsList(
       seeker.profileSkills.map(({ id, description, masterSkill }) => {
         return {
@@ -73,7 +69,6 @@ const EditSkills = () => {
   const handleAdd = (masterSkill: MasterSkill) => {
     setSkillsList((skills) => [
       ...skills,
-      // { name: skill.masterSkill?.skill, type: skill.type, description: '', id: '' },
       {
         id: '',
         description: '',
@@ -84,18 +79,11 @@ const EditSkills = () => {
     ])
   }
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (skill: OneProfileSkillResponse) => {
     if (!seeker) return
 
-    if (skillsList[index].id !== '') {
-      deleteProfileSkill({ profileSkillId: skillsList[index].id, profileId: seeker.id })
-    }
-    setSkillsList((skills) =>
-      [
-        ...skills.slice(0, index),
-        ...skills.slice(index + 1),
-      ]
-    )
+    deleteProfileSkill({ profileSkillId: skill.id, profileId: seeker.id })
+    setSkillsList((skills) => skills.filter(({ id }) => id !== skill.id))
   }
 
   const handleSave = () => {
@@ -153,7 +141,7 @@ const EditSkills = () => {
                     value={skill.description}
                     onChange={(e) => handleResponseChange(e, index)}
                   />
-                  <Button variant={'remove'} w={'100%'} onClick={() => handleDelete(index)}>
+                  <Button variant={'remove'} w={'100%'} onClick={() => handleDelete(skill)}>
                     Remove
                   </Button>
                 </Flex>
@@ -180,7 +168,7 @@ const EditSkills = () => {
                     value={skill.description}
                     onChange={(e) => handleResponseChange(e, index)}
                   />
-                  <Button variant={'remove'} w={'100%'} onClick={() => handleDelete(index)}>
+                  <Button variant={'remove'} w={'100%'} onClick={() => handleDelete(skill)}>
                     Remove
                   </Button>
                 </Flex>
@@ -200,42 +188,38 @@ const EditSkills = () => {
       <Flex bg={'greyscale.100'} height={'100%'} width={'100%'}>
         <Flex flexDir={'column'} px={'1rem'} py={'1rem'} gap={'0.5rem'} w="100%">
           <Flex flexDir={'column'} gap={'1rem'} w="100%">
-            <>
-              {masterSkills &&
-                masterSkills.data &&
-                masterSkills.data.map((option: MasterSkill, index: number) => {
-                  // Check if the skill is already present in the skillsList
-                  const isSkillAlreadyAdded = skillsList.some(
-                    (skill) => skill.masterSkill.skill === option.skill,
-                  )
+            {masterSkills.data.map((option: MasterSkill, index: number) => {
+              // Check if the skill is already present in the skillsList
+              const isSkillAlreadyAdded = skillsList.some(
+                (skill) => skill.masterSkill.skill === option.skill,
+              )
 
-                  // If the skill is already added, don't render the button
-                  if (isSkillAlreadyAdded) {
-                    return null
-                  }
+              // If the skill is already added, don't render the button
+              if (isSkillAlreadyAdded) {
+                return null
+              }
 
-                  // Render the button only for non-duplicate skills
-                  return (
-                    <Button
-                      whiteSpace="initial"
-                      padding="16px"
-                      h="min-content"
-                      bg="white"
-                      boxShadow="0px 4px 4px rgba(0, 0, 0, 0.05)"
-                      w="100%"
-                      onClick={() => {
-                        handleAdd(option)
-                        setShowSkills(false)
-                      }}
-                      key={index}
-                    >
-                      <Text type="b1" color="greyscale.600">
-                        {option.skill}
-                      </Text>
-                    </Button>
-                  )
-                })}
-            </>
+              // Render the button only for non-duplicate skills
+              return (
+                <Button
+                  whiteSpace="initial"
+                  padding="16px"
+                  h="min-content"
+                  bg="white"
+                  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.05)"
+                  w="100%"
+                  onClick={() => {
+                    handleAdd(option)
+                    setShowSkills(false)
+                  }}
+                  key={index}
+                >
+                  <Text type="b1" color="greyscale.600">
+                    {option.skill}
+                  </Text>
+                </Button>
+              )
+            })}
           </Flex>
         </Flex>
       </Flex>
