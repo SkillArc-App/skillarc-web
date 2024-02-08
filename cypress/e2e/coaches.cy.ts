@@ -33,9 +33,22 @@ describe('Coaches', () => {
     cy.get('@seeker').then((seeker: any) => {
       cy.get('a').contains(seeker['email']).click()
 
-      cy.get('body', { timeout: 10000 }).should('contain', `${seeker['first_name']} ${seeker['last_name']}`)
+      cy.get('body', { timeout: 10000 }).should(
+        'contain',
+        `${seeker['first_name']} ${seeker['last_name']}`,
+      )
       cy.get('body').should('contain', seeker['email'])
       cy.get('body').should('contain', 'Beginner')
+
+      cy.get('body')
+        .contains('Other Jobs')
+        .next()
+        .next()
+        .within(() => {
+          cy.get('button').contains('Recommend').click()
+          cy.get('div').should('contain', 'Recommended')
+          cy.get('button').should('not.exist')
+        })
 
       cy.get('p').contains('Barriers').next().type('Background{enter}')
       cy.get('body').should('contain', 'Background')
