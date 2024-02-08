@@ -31,19 +31,26 @@ export type SeekerApplication = {
 }
 
 export type CoachSeeker = {
-  seekerId: string
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  barriers: Barrier[]
+  applications: SeekerApplication[]
   assignedCoach: string
-  lastContacted: string
+  barriers: Barrier[]
+  email: string
+  jobRecommendations: string[]
+  firstName: string
   lastActiveOn: string
+  lastContacted: string
+  lastName: string
+  notes: SeekerNote[]
+  phoneNumber: string
+  seekerId: string
   skillLevel: string
   stage: string
-  notes: SeekerNote[]
-  applications: SeekerApplication[]
+}
+
+export type CoachJob = {
+  id: string
+  employmentTitle: string
+  isRecommended: boolean
 }
 
 export type Coach = {
