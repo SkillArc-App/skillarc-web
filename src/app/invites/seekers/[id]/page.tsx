@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'

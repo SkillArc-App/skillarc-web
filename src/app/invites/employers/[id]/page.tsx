@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { put } from '@/frontend/http-common'
-import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const SeekerInvite = () => {
   const router = useRouter()
