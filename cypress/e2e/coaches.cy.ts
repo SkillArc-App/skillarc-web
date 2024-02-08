@@ -99,7 +99,7 @@ describe('Coaches', () => {
       cy.go('back')
 
       cy.get('a').contains('Jump to Profile').click()
-      cy.get('button').filter('[aria-label="Edit Profile"]').click()
+      cy.findByLabelText('Edit Profile').click()
 
       cy.get('p').contains('First name').next().clear().type('Dwight')
       cy.get('p').contains('Last name').next().clear().type('Schrute')

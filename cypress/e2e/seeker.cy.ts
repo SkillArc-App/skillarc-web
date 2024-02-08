@@ -31,7 +31,7 @@ describe('Seeker', () => {
         cy.get('body').should('contain', user['firstName'])
         cy.get('body').should('contain', user['lastName'])
 
-        cy.findByRole('button', { name: 'View Jobs' }).click()
+        cy.findByRole('link', { name: 'View Jobs' }).click()
 
         cy.get('body').should('contain', 'Find your perfect job 💼')
 
@@ -55,9 +55,6 @@ describe('Seeker', () => {
         sharingModal.within(() => {
           cy.findByRole('button', { name: 'Back to Jobs' }).click()
         })
-
-        // cy.findByRole('dialog', { hidden: true, name: "Let's do this!" })
-        // cy.findByRole('dialog', { hidden: true, name: "Let's do this!" })
 
 
         // apply on individual job page
@@ -88,7 +85,7 @@ describe('Seeker', () => {
         })
 
         // on the profile page again
-        cy.findByRole('button', { name: 'View Jobs' }).click()
+        cy.findByRole('link', { name: 'View Jobs' }).click()
 
         cy.get('body').should('contain', 'Find your perfect job 💼')
 
