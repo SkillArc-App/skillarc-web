@@ -40,12 +40,11 @@ const Seeker = () => {
 
   const id = searchParams?.['id']
 
-  const { data: seeker } = useCoachSeekerData(id)
+  const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
 
-  const [jobs, setJobs] = useState(allJobs)
   const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
   const [noteDraft, setNoteDraft] = useState('')
   const [workingSeeker, setWorkingSeeker] = useState(seeker)
@@ -101,14 +100,6 @@ const Seeker = () => {
 
     setBarrierOptions(options)
   }, [barriers])
-
-  useEffect(() => {
-    setJobs(
-      allJobs?.filter((job) => {
-        return !workingSeeker?.applications.some((a) => a.jobId === job.id)
-      }),
-    )
-  }, [allJobs, workingSeeker])
 
   const addNote = () => {
     if (!token) return
@@ -208,26 +199,21 @@ const Seeker = () => {
     })
   }
 
-  const recommendJob = (jobId: string) => {
+  const recommendJob = async (jobId: string) => {
     if (!token) return
     if (!workingSeeker) return
     if (!jobs) return
 
-    post(
+    await post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
       {
         job_id: jobId,
       },
       token,
       { camel: true },
-    ).then((res) => {
-      const job = jobs?.find((j) => j.id === jobId)
-      const filteredJobs = jobs?.filter((j) => j.id !== jobId)
+    )
 
-      if (!job) return
-
-      setJobs([...filteredJobs, { ...job, isRecommended: true }])
-    })
+    refetchSeeker()
   }
 
   const updateBarriers = (barriers: Barrier[]) => {
@@ -259,6 +245,10 @@ const Seeker = () => {
 
     return <TimeIcon boxSize={3} color={'gray'} />
   }
+
+  const jobs = allJobs?.filter((job) => {
+    return !workingSeeker?.applications.some((a) => a.jobId === job.id)
+  })
 
   if (!workingSeeker) return <></>
 
@@ -447,7 +437,7 @@ const Seeker = () => {
                     </Link>
                   </Box>
                   <Box>
-                    {job.isRecommended ? (
+                    {workingSeeker.jobRecommendations.includes(job.id) ? (
                       <i>Recommended</i>
                     ) : (
                       <Button onClick={() => recommendJob(job.id)} variant={'solid'} size={'sm'}>
