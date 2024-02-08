@@ -1,3 +1,5 @@
+"use client"
+
 import ChatScreen from '@/app/profiles/[profileId]/components/chatScreen'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
