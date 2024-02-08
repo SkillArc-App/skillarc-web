@@ -1,14 +1,15 @@
+'use client'
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
-import { userCanSeeJobs } from '@/frontend/helpers/seeJobRequirements'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { http } from '@/frontend/http-common'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'
 import { Flex } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const Home = () => {
@@ -16,47 +17,50 @@ const Home = () => {
   const { isLoading } = useAuth0()
   const token = useAuthToken()
 
-  const { data: user, refetch: refetchUser } = useUser()
+  const { data: user, status, refetch: refetchUser } = useUser()
 
   useEffect(() => {
-    if (user?.trainingProviderProfile) {
+    if (status !== 'success') return
+    if (!user) return
+    if (!token) return
+
+    console.log('here')
+
+    if (user.trainingProviderProfile) {
       router.push('/students')
       return
     }
-    if (user?.recruiter) {
+    if (user.recruiter) {
       router.push('/employers/jobs')
       return
     }
 
-    if (token) {
-      const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
-      const seekerInviteCode = localStorage.getItem('seekerInviteCode')
-      const preOnboardingJobInterest = localStorage.getItem('preOnboardingJobInterest')
+    const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
+    const seekerInviteCode = localStorage.getItem('seekerInviteCode')
+    const preOnboardingJobInterest = localStorage.getItem('preOnboardingJobInterest')
 
-      if (trainingProviderInviteCode) {
-        localStorage.removeItem('trainingProviderInviteCode')
-        http.post('/api/invites', { trainingProviderInviteCode }).then((_) => {
-          refetchUser()
-        })
-      } else if (seekerInviteCode) {
-        localStorage.removeItem('seekerInviteCode')
-        http.post('/api/invites', { seekerInviteCode })
-      } else if (preOnboardingJobInterest) {
-        localStorage.removeItem('preOnboardingJobInterest')
-        router.push(`/jobs/${preOnboardingJobInterest}`)
-        return
-      }
-
-      if (!user) return
-      if (!user.onboardingSession?.completed_at) {
-        router.push('/onboarding')
-      } else if (user.profile.missingProfileItems.length > 0) {
-        router.push(`/profiles/${user.profile.id}`)
-      } else {
-        router.push(`/jobs`)
-      }
+    if (trainingProviderInviteCode) {
+      localStorage.removeItem('trainingProviderInviteCode')
+      http.post('/api/invites', { trainingProviderInviteCode }).then((_) => {
+        refetchUser()
+      })
+    } else if (seekerInviteCode) {
+      localStorage.removeItem('seekerInviteCode')
+      http.post('/api/invites', { seekerInviteCode })
+    } else if (preOnboardingJobInterest) {
+      router.push(`/jobs/${preOnboardingJobInterest}`)
+      return
     }
-  }, [refetchUser, router, token, user])
+
+    if (!user.onboardingSession.completed_at) {
+      router.push('/onboarding')
+    } else if (user.profile.missingProfileItems.length > 0) {
+      console.log("pushing to profile")
+      router.push(`/profiles/${user.profile.id}`)
+    } else {
+      router.push(`/jobs`)
+    }
+  }, [refetchUser, router, token, user, status])
 
   if (isLoading) return <LoadingPage />
   if ((user?.trainingProviderProfile || user?.recruiter?.length) ?? 0 > 0) return <></>
