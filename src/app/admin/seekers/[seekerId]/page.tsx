@@ -14,13 +14,11 @@ import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function Seeker({ params: { seekerId } }: { params: { seekerId: string } }) {
-  const {
-    profileQuery: { data },
-  } = useProfileData(seekerId)
+  const { data: seeker } = useProfileData(seekerId)
 
   const {
     userEventsQuery: { data: userEvents },
-  } = useUserEvents(data?.userId)
+  } = useUserEvents(seeker?.userId)
 
   const {
     getAllTrainingProviders: { data: trainingProviders },
@@ -41,10 +39,10 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
   const [workingProfile, setWorkingProfile] = useState<GetOneProfileResponse | undefined>()
 
   useEffect(() => {
-    if (!data) return
+    if (!seeker) return
 
-    setWorkingProfile(data)
-  }, [data])
+    setWorkingProfile(seeker)
+  }, [seeker])
 
   useEffect(() => {
     const getToken = async () => {
@@ -56,8 +54,8 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
   }, [getAccessTokenSilently])
 
   useEffect(() => {
-    if (data) {
-      const stp = data.user.SeekerTrainingProvider?.at(0)
+    if (seeker) {
+      const stp = seeker.user.SeekerTrainingProvider?.at(0)
       if (stp?.trainingProviderId) {
         setTrainingProviderExisted(true)
         setTrainingProviderId(stp.trainingProviderId)
@@ -66,7 +64,7 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
         setProgramId(stp.programId)
       }
     }
-  }, [data])
+  }, [seeker])
 
   const handleTrainingProviderChange = (e: any) => {
     setTrainingProviderId(e.target.value)
@@ -98,15 +96,15 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
     }
   }
 
-  if (!data) return <>Loading...</>
+  if (!seeker) return <>Loading...</>
 
   return (
     <Stack spacing={2}>
       <span>
-        <b>Name: </b> {`${data.user.firstName} ${data.user.lastName}`}
+        <b>Name: </b> {`${seeker.user.firstName} ${seeker.user.lastName}`}
       </span>
       <span>
-        <b>Email: </b> {data.user.email}
+        <b>Email: </b> {seeker.user.email}
       </span>
       <Divider />
       <span>
@@ -150,14 +148,14 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
       <Divider />
       <span>
         <b>Profile: </b>
-        <Link as={NextLink} href={`/profiles/${data.id}`}>
-          {data.id}
+        <Link as={NextLink} href={`/profiles/${seeker.id}`}>
+          {seeker.id}
         </Link>
       </span>
       <Divider />
       <span>
         <b>Industry Interests: </b>
-        {data.industryInterests.join(', ')}
+        {seeker.industryInterests.join(', ')}
       </span>
       <Divider />
       {workingProfile && (
