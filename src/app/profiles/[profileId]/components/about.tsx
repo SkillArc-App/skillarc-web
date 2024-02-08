@@ -1,4 +1,4 @@
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import {
   Accordion,
   AccordionButton,
@@ -9,31 +9,20 @@ import {
   Flex,
   Heading,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { FaUser } from 'react-icons/fa6'
 import { Text } from '../../../../frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
-export const ProfileAbout = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
-
+export const ProfileAbout = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   return (
     <ProfileBox
       title="About"
       icon={FaUser}
-      onAddClick={() => {
-        router.push({
-          pathname: `${profileId}/editProfile`,
-          query: { section: 'about' },
-        })
-      }}
+      isProfileEditor={seeker.isProfileEditor}
+      ctaHref={`${seeker.id}/edit/about`}
     >
       <Accordion defaultIndex={[0]} allowMultiple color={'greyscale.700'}>
-        {data?.stories.map((story: any, index: number) => {
+        {seeker?.stories.map((story: any, index: number) => {
           return (
             <Flex flexDir="column" key={index}>
               <AccordionItem>

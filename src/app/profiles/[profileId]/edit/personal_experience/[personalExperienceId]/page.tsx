@@ -1,16 +1,20 @@
+'use client'
+
 import { PersonalExperience } from '@/common/types/PersonalExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 
-export const EditPersonalExperience = () => {
+const EditPersonalExperience = () => {
   const router = useRouter()
+  const { personalExperienceId } = useFixedParams('profileId', 'personalExperienceId')
+
   const { data: user } = useUser()
-  const { personalExperienceId } = router.query
 
   const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
   const [personalExperience, setPersonalExperience] = useState<Partial<PersonalExperience>>()
@@ -20,17 +24,16 @@ export const EditPersonalExperience = () => {
       mutate: updatePersonalExperience,
       status: updatePersonalExperienceStatus,
     },
-    deleteOtherExperience: { mutate: deleteOtherExperience, status: deleteOtherExperienceStatus },
+    deletePersonalExperience: {
+      mutate: deletePersonalExperience,
+      status: deletePersonalExperienceStatus,
+    },
   } = useUpdateProfile()
   useEffect(() => {
-    const personalExperience = user?.profile?.personalExperience?.find(
-      (exp: PersonalExperience) => exp.id === personalExperienceId,
+    setPersonalExperience(
+      user?.profile?.personalExperience?.find(({ id }) => id === personalExperienceId),
     )
-
-    if (!personalExperience) return
-
-    setPersonalExperience(personalExperience)
-  }, [personalExperienceId, user])
+  }, [personalExperienceId, user?.profile?.personalExperience])
 
   useEffect(() => {
     if (currentlyWorking && personalExperience) {
@@ -42,14 +45,14 @@ export const EditPersonalExperience = () => {
     if (
       addPersonalExperienceStatus === 'success' ||
       updatePersonalExperienceStatus === 'success' ||
-      deleteOtherExperienceStatus === 'success'
+      deletePersonalExperienceStatus === 'success'
     ) {
       router.back()
     }
   }, [
     addPersonalExperienceStatus,
     updatePersonalExperienceStatus,
-    deleteOtherExperienceStatus,
+    deletePersonalExperienceStatus,
     router,
   ])
 
@@ -76,7 +79,16 @@ export const EditPersonalExperience = () => {
     }
   }
 
-  const handleDelete = () => {}
+  const handleDelete = () => {
+    if (!personalExperience?.id) router.back() // if experience is not saved, just go back
+    const personalExperienceId = personalExperience?.id
+    const profileId = user?.profile?.id
+    if (!profileId || !personalExperienceId) return
+    deletePersonalExperience({
+      profileId: profileId,
+      personalExperienceId: personalExperienceId,
+    })
+  }
 
   return (
     <Flex p="1rem" w="100%" gap="1rem" flexDir="column">
@@ -149,3 +161,5 @@ export const EditPersonalExperience = () => {
     </Flex>
   )
 }
+
+export default EditPersonalExperience

@@ -1,28 +1,14 @@
 import { Heading } from '@/frontend/components/Heading.component'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { Text } from '../../../../frontend/components/Text.component'
+import Link from 'next/link'
+import { Text } from '@/frontend/components/Text.component'
 
-export const ProfileCertifications = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
+export const ProfileCertifications = ({ seeker }: { seeker: GetOneProfileResponse }) => {
+  const profileCertifications = seeker.profileCertifications
 
-  const [profileData, setProfileData] = useState<GetOneProfileResponse>()
-  useEffect(() => {
-    if (data && data.profileCertifications) {
-      const res = data as GetOneProfileResponse // Cast data to GetOneResponse type
-      setProfileData(res)
-    }
-  }, [data])
-
-  if (!data?.profileCertifications?.length || 0 > 0) return <></>
+  if (profileCertifications.length > 0) return <></>
 
   return (
     <Flex
@@ -37,36 +23,30 @@ export const ProfileCertifications = () => {
         <Text type="overline" color="greyscale.700" w="100%">
           CERTIFICATIONS
         </Text>
-        {data.isProfileEditor && (
+        {seeker?.isProfileEditor && (
           <Button
+            as={Link}
             variant={'icon'}
             color="greyscale.600"
-            onClick={() =>
-              router.push({
-                pathname: `${profileId}/editProfile`,
-                query: { section: 'certifications' },
-              })
-            }
+            href={`${seeker.id}/edit/certification`}
           >
             <EditIcon />
           </Button>
         )}
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap="1rem">
-        {profileData &&
-          profileData.profileCertifications.length > 0 &&
-          profileData.profileCertifications.map((cert: any, index: number) => {
-            return (
-              <Flex w="100%" flexWrap="wrap" key={index}>
-                <Heading type="h4" color="greyscale.700" w="100%">
-                  {cert.masterCertification.certification}
-                </Heading>
-                {index != profileData.profileCertifications.length - 1 && (
-                  <Divider borderColor="#DEE2E6" w="100%" marginTop="1rem" />
-                )}
-              </Flex>
-            )
-          })}
+        {profileCertifications.map((cert: any, index: number) => {
+          return (
+            <Flex w="100%" flexWrap="wrap" key={index}>
+              <Heading type="h4" color="greyscale.700" w="100%">
+                {cert.masterCertification.certification}
+              </Heading>
+              {index != profileCertifications.length - 1 && (
+                <Divider borderColor="#DEE2E6" w="100%" marginTop="1rem" />
+              )}
+            </Flex>
+          )
+        })}
       </Flex>
     </Flex>
   )

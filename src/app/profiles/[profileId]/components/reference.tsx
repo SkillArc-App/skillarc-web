@@ -1,19 +1,8 @@
-import { useProfileData } from '@/frontend/hooks/useProfileData'
-import { useRouter } from 'next/router'
-
-import { LoadingPage } from '@/frontend/components/Loading'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
 import { Text } from '../../../../frontend/components/Text.component'
 
-export const ProfileReferences = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data: profile },
-  } = useProfileData(profileId as string)
-
-  if (!profile) return <LoadingPage />
-
+export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   return (
     <Flex
       w="100%"
@@ -27,7 +16,7 @@ export const ProfileReferences = () => {
       <Text type="overline" color="greyscale.700" pb={2}>
         REFERENCES
       </Text>
-      {profile.reference.map((reference: any, index: number) => {
+      {seeker.reference.map((reference: any, index: number) => {
         return (
           <HStack align="top" gap={2} pt={1} key={index}>
             <Avatar />

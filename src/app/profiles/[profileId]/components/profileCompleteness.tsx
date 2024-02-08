@@ -1,24 +1,19 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Box, Button, Progress, Stack } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
-const ProfileCompleteness = () => {
+const ProfileCompleteness = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data: profile },
-  } = useProfileData(profileId as string)
+  if (seeker.isProfileEditor) return <></>
 
-  if (!profile?.isProfileEditor) return <></>
-
-  const profileCompleteness = ((2 - (profile?.missingProfileItems?.length ?? 0)) / 2.0) * 100
+  const profileCompleteness = ((2 - seeker.missingProfileItems.length) / 2.0) * 100
 
   if (profileCompleteness === 100) return <></>
 
   const nextSection = (() => {
-    const missingItems = profile?.missingProfileItems
+    const missingItems = seeker.missingProfileItems
 
     if (missingItems?.includes('work')) return 'work'
     if (missingItems?.includes('education')) return 'education'
@@ -28,17 +23,11 @@ const ProfileCompleteness = () => {
 
   const onAddClick = () => {
     if (nextSection === 'work') {
-      router.push({
-        pathname: `${profileId}/editProfile`,
-        query: { section: 'experience' },
-      })
+      router.push(`/profiles/${seeker.id}/edit/experience/new`)
     }
 
     if (nextSection === 'education') {
-      router.push({
-        pathname: `${profileId}/editProfile`,
-        query: { section: 'education' },
-      })
+      router.push(`/profiles/${seeker.id}/edit/education/new`)
     }
   }
 

@@ -1,31 +1,21 @@
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { FaGraduationCap } from 'react-icons/fa6'
 import { Text } from '../../../../frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
-export const ProfileEducation = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
-
+export const ProfileEducation = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   return (
     <ProfileBox
       title="Education"
       icon={FaGraduationCap}
-      onAddClick={() => {
-        router.push({
-          pathname: `${profileId}/editProfile`,
-          query: { section: 'education' },
-        })
-      }}
+      isProfileEditor={seeker.isProfileEditor}
+      ctaHref={`${seeker.id}/edit/education/new`}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.educationExperiences.map((educationExperiences: any, index: number) => {
+        {seeker.educationExperiences.map((educationExperiences, index) => {
           return (
             <Flex key={index}>
               <Flex flexDir={'column'} gap="0.5rem" flexGrow={1}>
@@ -45,19 +35,12 @@ export const ProfileEducation = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {data.isProfileEditor && (
+              {seeker.isProfileEditor && (
                 <Button
+                  as={Link}
                   variant={'icon'}
                   color="greyscale.600"
-                  onClick={() =>
-                    router.push({
-                      pathname: `${profileId}/editProfile`,
-                      query: {
-                        section: 'education',
-                        educationExperienceId: educationExperiences.id,
-                      },
-                    })
-                  }
+                  href={`${seeker.id}/edit/education/${educationExperiences.id}`}
                 >
                   <EditIcon />
                 </Button>

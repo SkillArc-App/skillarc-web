@@ -1,31 +1,29 @@
+"use client"
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { put } from '@/frontend/http-common'
 import { Button, Flex, Input } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
-export const EditSummary = () => {
+const EditSummary = () => {
   const router = useRouter()
-  const { profileId } = router.query
+  const { profileId } = useFixedParams('profileId')
+  const { data: profile } = useProfileData(profileId)
   const {
-    profileQuery: { data: profile },
-  } = useProfileData(profileId as string)
-  const {
-    updateSummary: { mutate: updateSummary, status: updateSummaryStatus },
+    updateSummary: { status: updateSummaryStatus },
   } = useUpdateProfile()
 
   const [firstName, setFirstName] = useState<string>(profile?.user?.firstName ?? '')
   const [lastName, setLastName] = useState<string>(profile?.user?.lastName ?? '')
   const [zipCode, setZipCode] = useState<string>(profile?.user?.zipCode ?? '')
   const [phoneNumber, setPhoneNumber] = useState<string>(profile?.user?.phoneNumber ?? '')
-
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
+  const token = useAuthToken()
 
   useEffect(() => {
     const user = profile?.user
@@ -37,15 +35,6 @@ export const EditSummary = () => {
     setZipCode(user.zipCode ?? '')
     setPhoneNumber(user.phoneNumber ?? '')
   }, [profile])
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
 
   useEffect(() => {
     if (updateSummaryStatus === 'success') {
@@ -135,3 +124,5 @@ export const EditSummary = () => {
     </Flex>
   )
 }
+
+export default EditSummary

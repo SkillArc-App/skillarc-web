@@ -1,19 +1,20 @@
+"use client"
+
 import { EducationExperience } from '@/common/types/EducationExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Flex, Input } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 
-export const EditEducation = () => {
+const EditEducation = () => {
   const router = useRouter()
-  const { educationExperienceId } = router.query
-  const { profileId } = router.query
-  const {
-    profileQuery: { data: profile },
-  } = useProfileData(profileId as string)
+  const { educationId, profileId } = useFixedParams('profileId', 'educationId')
+
+  const { data: seeker } = useProfileData(profileId)
   const [experience, setExperience] = useState<Partial<EducationExperience>>()
   const {
     addEducationExperience: {
@@ -29,13 +30,10 @@ export const EditEducation = () => {
       status: deleteEducationExperienceStatus,
     },
   } = useUpdateProfile()
+
   useEffect(() => {
-    setExperience(
-      profile?.educationExperiences?.find(
-        (exp: EducationExperience) => exp.id === educationExperienceId,
-      ),
-    )
-  }, [educationExperienceId, profile])
+    setExperience(seeker?.educationExperiences?.find(({ id }) => id === educationId))
+  }, [educationId, seeker])
 
   useEffect(() => {
     if (
@@ -53,18 +51,17 @@ export const EditEducation = () => {
   ])
 
   const handleSave = () => {
-    const profileId = profile?.id
-    if (!profileId) return
+    if (!seeker?.id) return
     if (!experience?.id) {
       addEducationExperience({
-        profileId: profileId,
+        profileId: seeker.id,
         educationExperience: {
           ...experience,
         },
       })
     } else {
       updateEducationExperience({
-        profileId: profileId,
+        profileId: seeker.id,
         educationExperience: {
           ...experience,
           id: experience.id,
@@ -76,7 +73,7 @@ export const EditEducation = () => {
   const handleDelete = () => {
     if (!experience?.id) router.back() // if experience is not saved, just go back
     const educationExperienceId = experience?.id
-    const profileId = profile?.id
+    const profileId = seeker?.id
     if (!profileId || !educationExperienceId) return
     deleteEducationExperience({
       profileId: profileId,
@@ -148,3 +145,5 @@ export const EditEducation = () => {
     </Flex>
   )
 }
+
+export default EditEducation

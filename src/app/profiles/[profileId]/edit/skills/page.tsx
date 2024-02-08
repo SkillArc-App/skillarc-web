@@ -1,10 +1,13 @@
+"use client"
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { MasterSkill } from '@/frontend/services/skills.service'
 import { Badge, Button, Flex, Textarea } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
@@ -20,10 +23,11 @@ type OneProfileSkillResponse = {
   }
 }
 
-export const EditSkills = () => {
+const EditSkills = () => {
   const router = useRouter()
+  const { profileId } = useFixedParams('profileId')
   const { masterSkillQuery: masterSkills } = useMasterSkillData()
-  const { data: user } = useUser()
+  const { data: seeker } = useProfileData(profileId)
   const {
     addProfileSkill: { mutate: addProfileSkill },
     updateProfileSkill: { mutate: updateProfileSkill },
@@ -34,31 +38,30 @@ export const EditSkills = () => {
   const [showSkills, setShowSkills] = useState(false)
 
   useEffect(() => {
-    if (!user?.profile?.profileSkills) {
+    if (!seeker) {
+      return
+    }
+
+    if (!seeker.profileSkills) {
       setSkillsList([])
       return
     }
-    const mappedSkills: OneProfileSkillResponse[] = user.profile.profileSkills.map(
-      (skill: {
-        id: string
-        description: string | null
-        masterSkill: { id: string; skill: string; type: 'PERSONAL' | 'TECHNICAL' }
-      }) => {
+    setSkillsList(
+      seeker.profileSkills.map(({ id, description, masterSkill }) => {
         return {
-          id: skill.id,
-          description: skill.description ?? '',
+          id,
+          description: description ?? '',
           masterSkill: {
-            id: skill.masterSkill.id,
-            skill: skill.masterSkill.skill,
-            type: skill.masterSkill.type,
+            id: masterSkill.id,
+            skill: masterSkill.skill,
+            type: masterSkill.type,
           },
-          masterSkillId: skill.masterSkill.id,
-          profileId: user?.profile?.id ?? '',
+          masterSkillId: masterSkill.id,
+          profileId: seeker.id,
         }
-      },
+      }),
     )
-    setSkillsList(mappedSkills ?? [])
-  }, [user])
+  }, [seeker])
 
   const handleResponseChange = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
     const temp = [...skillsList]
@@ -75,7 +78,7 @@ export const EditSkills = () => {
         description: '',
         masterSkill: masterSkill,
         masterSkillId: masterSkill.id,
-        profileId: user?.profile?.id ?? '',
+        profileId: seeker?.id ?? '',
       },
     ])
   }
@@ -83,20 +86,18 @@ export const EditSkills = () => {
   const handleDelete = (index: number) => {
     const temp = [...skillsList]
     const deletedElement = temp.splice(index, 1)
-    // if (deletedElement[0].id !== '') {
-    //   deleteSkill({ id: deletedElement[0].id, profileId: user?.profile?.id })
-    // }
-    if (deletedElement[0].id !== '' && user && user.profile && user.profile.id) {
-      deleteProfileSkill({ profileSkillId: deletedElement[0].id, profileId: user?.profile?.id })
+
+    if (skillsList[index].id !== '' && seeker?.id) {
+      deleteProfileSkill({ profileSkillId: skillsList[index].id, profileId: seeker.id })
     }
     setSkillsList(temp)
   }
 
   const handleSave = () => {
-    const profileId = user?.profile?.id
+    const profileId = seeker?.id
     if (!profileId) return
 
-    skillsList.map((skill, index) => {
+    skillsList.map((skill) => {
       if (masterSkills && masterSkills.data && skill.masterSkill.skill) {
         if (skill.id === '') {
           addProfileSkill({
@@ -242,3 +243,5 @@ function getIdBySkill(data: MasterSkill[], skill: string): string | undefined {
   const foundItem = data.find((obj) => obj.skill === skill)
   return foundItem ? foundItem.id : undefined
 }
+
+export default EditSkills

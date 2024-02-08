@@ -1,3 +1,5 @@
+"use client"
+
 import { ProfileAbout } from '@/app/profiles/[profileId]/components/about'
 import { ProfileCertifications } from '@/app/profiles/[profileId]/components/certifications'
 import { ProfileEducation } from '@/app/profiles/[profileId]/components/education'
@@ -8,17 +10,14 @@ import { ProfileReferences } from '@/app/profiles/[profileId]/components/referen
 import { ProfileSkills } from '@/app/profiles/[profileId]/components/skills'
 import { ProfileSummary } from '@/app/profiles/[profileId]/components/summary'
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Box, Stack } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 function ProfileId() {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
+  const { profileId } = useFixedParams('profileId')
+  const { data: seeker } = useProfileData(profileId)
 
   const [isMobile, setIsMobile] = useState(false) // Assuming 768px as the breakpoint
 
@@ -34,14 +33,13 @@ function ProfileId() {
     }
   }, [])
 
-  if (!profileId) return <LoadingPage />
-  if (!data) return <LoadingPage />
+  if (!seeker) return <LoadingPage />
 
   return (
     <Box width={'100%'} bg="greyscale.300">
-      <ProfileSummary />
+      <ProfileSummary seeker={seeker} />
       <Box py={'1.5rem'} p={'1rem'}>
-        <ProfileCompleteness />
+        <ProfileCompleteness seeker={seeker} />
 
         {isMobile ? (
           <Box
@@ -50,13 +48,13 @@ function ProfileId() {
             gap={'1rem'}
             w={'100%'}
           >
-            <ProfileExperience />
-            <ProfileEducation />
+            <ProfileExperience seeker={seeker} />
+            <ProfileEducation seeker={seeker} />
             {/* Training */}
-            <ProfileCertifications />
-            <ProfileSkills />
-            <ProfileAbout />
-            <PersonalExperience />
+            <ProfileCertifications seeker={seeker} />
+            <ProfileSkills seeker={seeker} />
+            <ProfileAbout seeker={seeker} />
+            <PersonalExperience seeker={seeker} />
           </Box>
         ) : (
           <Box
@@ -66,14 +64,14 @@ function ProfileId() {
             w={'100%'}
           >
             <Stack>
-              <ProfileExperience />
-              <ProfileEducation />
-              <PersonalExperience />
+              <ProfileExperience seeker={seeker} />
+              <ProfileEducation seeker={seeker} />
+              <PersonalExperience seeker={seeker} />
             </Stack>
             <Stack>
-              <ProfileAbout />
-              <ProfileReferences />
-              <ProfileSkills />
+              <ProfileAbout seeker={seeker} />
+              <ProfileReferences seeker={seeker} />
+              <ProfileSkills seeker={seeker} />
             </Stack>
           </Box>
         )}

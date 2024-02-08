@@ -1,32 +1,22 @@
 import { Heading } from '@/frontend/components/Heading.component'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { FaSuitcase } from 'react-icons/fa6'
-import { Text } from '../../../../frontend/components/Text.component'
+import { Text } from '@/frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
-const ProfileExperience = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
-
+const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   return (
     <ProfileBox
       title="Experience"
       icon={FaSuitcase}
-      onAddClick={() => {
-        router.push({
-          pathname: `${profileId}/editProfile`,
-          query: { section: 'experience' },
-        })
-      }}
+      isProfileEditor={seeker.isProfileEditor}
+      ctaHref={`${seeker.id}/edit/experience/new`}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.otherExperiences.map((otherExperiences, index: number) => {
+        {seeker.otherExperiences.map((otherExperiences, index: number) => {
           return (
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">
@@ -55,16 +45,12 @@ const ProfileExperience = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {data.isProfileEditor && (
+              {seeker.isProfileEditor && (
                 <Button
                   variant={'icon'}
+                  as={Link}
                   color="greyscale.600"
-                  onClick={() =>
-                    router.push({
-                      pathname: `${profileId}/editProfile`,
-                      query: { section: 'experience', otherExperienceId: otherExperiences.id },
-                    })
-                  }
+                  href={`${seeker.id}/edit/experience/${otherExperiences.id}`}
                 >
                   <EditIcon />
                 </Button>

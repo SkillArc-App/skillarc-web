@@ -1,3 +1,5 @@
+"use client"
+
 import { Chat, Message } from '@/frontend/hooks/useEmployerChats'
 import {
   Box,

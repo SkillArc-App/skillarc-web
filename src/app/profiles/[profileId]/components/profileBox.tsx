@@ -1,7 +1,7 @@
+import { Maybe } from '@/common/types/maybe'
 import { Heading } from '@/frontend/components/Heading.component'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Box, Button, Flex } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 import { IconType } from 'react-icons'
 import { BlAddIcon } from './blAddIcon'
@@ -9,22 +9,16 @@ import { BlAddIcon } from './blAddIcon'
 export const ProfileBox = ({
   children,
   title,
-  icon,
-  onAddClick,
+  isProfileEditor,
+  icon: Icon,
+  ctaHref,
 }: {
   children: ReactNode
   title: string
+  isProfileEditor: Maybe<boolean>
   icon: IconType
-  onAddClick: () => void
+  ctaHref: string
 }) => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
-
-  const Icon = icon
-
   return (
     <Flex
       w="100%"
@@ -41,8 +35,8 @@ export const ProfileBox = ({
         <Heading type="h5" color="greyscale.700" w="100%">
           {title}
         </Heading>
-        {data?.isProfileEditor && (
-          <Button variant={'ghost'} onClick={onAddClick}>
+        {isProfileEditor && (
+          <Button as={Link} variant={'ghost'} href={ctaHref}>
             <BlAddIcon />
           </Button>
         )}

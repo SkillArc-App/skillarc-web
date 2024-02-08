@@ -1,13 +1,15 @@
+"use client"
+
 import { Story } from '@/common/types/Profile'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
-export const EditAbout = () => {
+const EditAbout = () => {
   const router = useRouter()
   const { data: user } = useUser()
   const {
@@ -51,8 +53,8 @@ export const EditAbout = () => {
   const handleDelete = (index: number) => {
     const temp = [...storyList]
     const deletedElement = temp.splice(index, 1)
-    if (deletedElement[0].id !== '') {
-      deleteStory({ id: deletedElement[0].id, profile_id: user?.profile?.id ?? '' })
+    if (storyList[index].id !== '') {
+      deleteStory({ id: storyList[index].id, profile_id: user?.profile?.id ?? '' })
     }
     setStoryList(temp)
   }
@@ -165,3 +167,5 @@ export const EditAbout = () => {
     )
   }
 }
+
+export default EditAbout

@@ -1,31 +1,21 @@
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { FaPeopleCarryBox } from 'react-icons/fa6'
 import { Text } from '../../../../frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
-export const PersonalExperience = () => {
-  const router = useRouter()
-  const { profileId } = router.query
-  const {
-    profileQuery: { data },
-  } = useProfileData(profileId as string)
-
+export const PersonalExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   return (
     <ProfileBox
       title="Personal Experience"
       icon={FaPeopleCarryBox}
-      onAddClick={() => {
-        router.push({
-          pathname: `${profileId}/editProfile`,
-          query: { section: 'personalExperience' },
-        })
-      }}
+      isProfileEditor={seeker.isProfileEditor}
+      ctaHref={`${seeker.id}/edit/personal_experience/new`}
     >
       <Flex flexDir={'column'} gap="1rem" pt="1rem">
-        {data?.personalExperience.map((personalExperience: any, index: number) => {
+        {seeker.personalExperience.map((personalExperience, index) => {
           return (
             <Flex key={index}>
               <Flex direction="column" w="100%" gap="0.5rem">
@@ -51,19 +41,12 @@ export const PersonalExperience = () => {
                 </Flex>
                 <Divider borderColor="greyscale.300" />
               </Flex>
-              {data.isProfileEditor && (
+              {seeker.isProfileEditor && (
                 <Button
                   variant={'icon'}
                   color="greyscale.600"
-                  onClick={() =>
-                    router.push({
-                      pathname: `${profileId}/editProfile`,
-                      query: {
-                        section: 'personalExperience',
-                        personalExperienceId: personalExperience.id,
-                      },
-                    })
-                  }
+                  as={Link}
+                  href={`${seeker.id}/edit/personal_experience/${personalExperience.id}`}
                 >
                   <EditIcon />
                 </Button>

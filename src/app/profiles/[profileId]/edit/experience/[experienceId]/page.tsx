@@ -1,18 +1,20 @@
+"use client"
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../hooks/useUpdateProfile'
+import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 
-export const EditExperience = () => {
+const EditExperience = () => {
   const router = useRouter()
-  const {
-    profileQuery: { data: profile },
-  } = useProfileData(router.query.profileId as string)
-  const { otherExperienceId } = router.query
+  const { profileId, experienceId } = useFixedParams('profileId', 'experienceId')
+
+  const { data: seeker } = useProfileData(profileId)
   const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
   const [experience, setExperience] = useState<Partial<OtherExperience>>()
   const {
@@ -20,14 +22,10 @@ export const EditExperience = () => {
     updateOtherExperience: { mutate: updateOtherExperience, status: updateOtherExperienceStatus },
     deleteOtherExperience: { mutate: deleteOtherExperience, status: deleteOtherExperienceStatus },
   } = useUpdateProfile()
-  useEffect(() => {
-    const otherExperience: OtherExperience | undefined = profile?.otherExperiences?.find(
-      (exp: OtherExperience) => exp.id === otherExperienceId,
-    )
-    if (!otherExperience) return
 
-    setExperience(otherExperience)
-  }, [otherExperienceId, profile])
+  useEffect(() => {
+    setExperience(seeker?.otherExperiences?.find(({ id }) => id === experienceId))
+  }, [experienceId, seeker])
 
   useEffect(() => {
     if (currentlyWorking && experience) {
@@ -46,7 +44,7 @@ export const EditExperience = () => {
   }, [addOtherExperienceStatus, updateOtherExperienceStatus, deleteOtherExperienceStatus, router])
 
   const handleSave = () => {
-    const profileId = profile?.id
+    const profileId = seeker?.id
     if (!profileId) return
     if (!experience?.id) {
       addOtherExperience({
@@ -70,7 +68,7 @@ export const EditExperience = () => {
   const handleDelete = () => {
     if (!experience?.id) router.back() // if experience is not saved, just go back
     const otherExperienceId = experience?.id
-    const profileId = profile?.id
+    const profileId = seeker?.id
     if (!profileId || !otherExperienceId) return
     deleteOtherExperience({
       profileId: profileId,
@@ -150,3 +148,5 @@ export const EditExperience = () => {
     </Flex>
   )
 }
+
+export default EditExperience
