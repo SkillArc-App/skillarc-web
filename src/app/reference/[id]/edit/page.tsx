@@ -1,3 +1,5 @@
+"use client"
+
 import { Reference } from '@/app/reference/components/reference'
 import { useUpdateReference } from '@/app/reference/[id]/edit/hooks/useUpdateReference'
 import { LoadingPage } from '@/frontend/components/Loading'
