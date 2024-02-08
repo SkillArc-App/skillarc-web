@@ -64,14 +64,15 @@ const EditSkills = () => {
   }, [seeker])
 
   const handleResponseChange = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
-    const temp = [...skillsList]
-    temp[index].description = e.target.value
-    setSkillsList(temp)
+    setSkillsList((skills) => {
+      skills[index].description = e.target.value
+      return skills
+    })
   }
 
   const handleAdd = (masterSkill: MasterSkill) => {
-    setSkillsList([
-      ...skillsList,
+    setSkillsList((skills) => [
+      ...skills,
       // { name: skill.masterSkill?.skill, type: skill.type, description: '', id: '' },
       {
         id: '',
@@ -84,13 +85,17 @@ const EditSkills = () => {
   }
 
   const handleDelete = (index: number) => {
-    const temp = [...skillsList]
-    const deletedElement = temp.splice(index, 1)
+    if (!seeker) return
 
-    if (skillsList[index].id !== '' && seeker?.id) {
+    if (skillsList[index].id !== '') {
       deleteProfileSkill({ profileSkillId: skillsList[index].id, profileId: seeker.id })
     }
-    setSkillsList(temp)
+    setSkillsList((skills) =>
+      [
+        ...skills.slice(0, index),
+        ...skills.slice(index + 1),
+      ]
+    )
   }
 
   const handleSave = () => {
