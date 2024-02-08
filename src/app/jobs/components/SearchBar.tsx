@@ -22,10 +22,10 @@ type SelectSearchProps<T> = {
 function SearchSelect<T>({ label, id, options, value, onChange }: SelectSearchProps<T>) {
   return (
     <FormControl width={'15rem'}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
       <Select
         closeMenuOnSelect={false}
-        id={id}
+        inputId={id}
         isMulti
         classNamePrefix={id}
         options={options}
