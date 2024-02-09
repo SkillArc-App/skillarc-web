@@ -6,6 +6,8 @@ import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 
 export const CareerJourney = ({ job }: { job: GetOneJobPosting }) => {
+  const header = job.careerPaths.length === 1 ? '🧗 Wages' : '🧗 Your career journey'
+
   return (
     <Flex
       bg="white"
@@ -16,7 +18,7 @@ export const CareerJourney = ({ job }: { job: GetOneJobPosting }) => {
       flexWrap="wrap"
     >
       <Heading type="h4" color="greyscale.700" w="100%" marginBottom="1rem">
-        🧗 Your career journey
+        {header}
       </Heading>
       {job.careerPaths
         .sort((a, b) => a.order - b.order)
