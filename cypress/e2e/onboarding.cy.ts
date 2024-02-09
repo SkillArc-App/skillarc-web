@@ -25,12 +25,11 @@ describe('Onboarding', () => {
       emailSelect.select(r['email'], { timeout: 10000 })
     })
 
-    cy.visit('/onboarding/name')
-    cy.get('label').contains('First Name').next().type('Dwight')
-    cy.get('label').contains('Last Name').next().type('Schrute')
-    cy.get('label').contains('Phone Number').next().type('570-555-5555')
-    cy.get('label').contains('Date of Birth').next().type('1970-01-20')
-
+    cy.visit('/onboarding/start')
+    cy.findByLabelText('First Name*').type('Dwight')
+    cy.findByLabelText('Last Name*').type('Schrute')
+    cy.findByLabelText('Phone Number*').type('570-555-5555')
+    cy.findByLabelText('Date of Birth*').type('1970-01-20')
     cy.get('button').contains('Next').click()
 
     // experience
@@ -105,7 +104,7 @@ describe('Onboarding', () => {
     personalExperience.should('contain', '2001 - 2010')
     personalExperience.should('contain', 'I learned to be a leader of my subordinates')
 
-    cy.get('button').filter('[aria-label="Edit Profile"]').click()
+    cy.findByLabelText('Edit Profile').click()
 
     const firstNameInput = cy.get('p').contains('First name').next()
     firstNameInput.should('have.value', 'Dwight')
@@ -134,7 +133,7 @@ describe('Onboarding', () => {
 
     const about = cy.get('div').contains('About').parent().parent()
     about.within(() => {
-      cy.get('button').click()
+      cy.findByRole('link').click()
     })
     cy.get('button').contains('Add another').click()
     cy.get('button').contains('What are you most passionate about?').click()

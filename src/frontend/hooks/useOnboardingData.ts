@@ -1,8 +1,9 @@
 import { OnboardingData } from '@/common/types/OnboardingData'
 import axios from 'axios'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
+import { Maybe } from '@/common/types/maybe'
 
-export const useOnboardingData = (token: string | null) => {
+export const useOnboardingData = (token: Maybe<string>) => {
   const getOnboardingData = useAuthenticatedQuery<OnboardingData>(
     ['onboarding_data'],
     ({ token }) => getData(token),
@@ -11,7 +12,7 @@ export const useOnboardingData = (token: string | null) => {
   return { getOnboardingData }
 }
 
-const getData = async (token: string | null): Promise<OnboardingData> => {
+const getData = async (token: Maybe<string>): Promise<OnboardingData> => {
   if (!token) {
     return Promise.reject('No user id')
   }

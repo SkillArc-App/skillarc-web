@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { destroy, post, put } from '../http-common'
 
 export type PersonalExperience = {
   id: string
@@ -16,15 +16,12 @@ const create = async (
   profileId: string,
   token: string,
 ) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .post(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences`,
-      personalExperience,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+  const res = await post(
+    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences`,
+    personalExperience,
+    token,
+    { camel: true },
+  )
   return res.data
 }
 
@@ -33,26 +30,20 @@ const update = async (
   profileId: string,
   token: string,
 ) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .put(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperience.id}`,
-      personalExperience,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+  const res = await put(
+    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperience.id}`,
+    personalExperience,
+    token,
+    { camel: true },
+  )
   return res.data
 }
 
 const deleteOne = async (personalExperienceId: string, profileId: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .delete(
+  const res = await destroy(
       `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperienceId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      token,
+      { camel: true }
     )
   return res.data
 }

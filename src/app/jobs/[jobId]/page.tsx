@@ -1,6 +1,7 @@
 'use client'
 
 import { SingleJobPosting } from '@/app/jobs/[jobId]/components/SingleJobPosting'
+import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
@@ -22,7 +23,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import useApply from '@/app/jobs/hooks/useApply'
 
 export default function JobPosting() {
   const jobId = useFixedParams('jobId')?.['jobId']
@@ -30,6 +30,9 @@ export default function JobPosting() {
     getOneJob: { data: job },
   } = useJobData(jobId)
 
+  if (jobId === localStorage.getItem('preOnboardingJobInterest')) {
+    localStorage.removeItem('preOnboardingJobInterest')
+  }
   const { data: user } = useUser()
   const token = useAuthToken()
   const userState = useUserState()

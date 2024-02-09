@@ -1,10 +1,15 @@
-import { Maybe } from '@/common/types/maybe'
 import { useParams } from 'next/navigation'
 
-export const useFixedParams = (...keys: string[]): Maybe<Record<string, string>> => {
+export const useFixedParams = (...keys: string[]): Record<string, string> => {
   const params = useParams()
 
-  return !!params ? toStringRecord(params, keys) : undefined
+  if (params == null) {
+    // https://nextjs.org/docs/app/api-reference/functions/use-params
+    // next claims this will return null only on /pages
+    throw new Error('useFixedParams used on a pages route')
+  }
+
+  return toStringRecord(params, keys)
 }
 
 function toStringRecord(

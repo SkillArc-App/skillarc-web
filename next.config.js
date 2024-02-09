@@ -22,6 +22,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/onboarding',
+        destination: '/onboarding/start',
+        permanent: false
+      },
+      {
         source: '/coaches',
         destination: '/coaches/seekers',
         permanent: false
@@ -30,7 +35,12 @@ const nextConfig = {
         source: '/my_jobs',
         destination: '/my_jobs/recently-viewed',
         permanent: false
-      }
+      },
+      {
+        source: '/employers/jobs',
+        destination: '/employers/jobs/all',
+        permanent: false
+      },
     ]
   }
 }

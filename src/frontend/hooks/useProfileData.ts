@@ -3,8 +3,9 @@ import { get } from '../http-common'
 import { GetOneProfileResponse } from '../services/profile.service'
 import { mixpanelInitProfile } from '../utils/mixpanel'
 import { useAuthToken } from './useAuthToken'
+import { Maybe } from '@/common/types/maybe'
 
-export const useProfileData = (id: string) => {
+export const useProfileData = (id: Maybe<string>) => {
   const token = useAuthToken()
 
   const profileQuery = useQuery(
@@ -17,7 +18,7 @@ export const useProfileData = (id: string) => {
     { enabled: !!id },
   )
 
-  return { profileQuery }
+  return profileQuery
 }
 
 const getOne = async (id: string, token?: string) => {

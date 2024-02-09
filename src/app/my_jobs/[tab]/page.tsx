@@ -116,13 +116,13 @@ const MyJobs = () => {
           </Flex>
           <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
             <TabList>
-              <Tab as={Link} href="/my_jobs/recently-viewed">
+              <Tab as={NextLink} href="/my_jobs/recently-viewed">
                 Viewed
               </Tab>
-              <Tab as={Link} href="/my_jobs/saved">
+              <Tab as={NextLink} href="/my_jobs/saved">
                 Saved
               </Tab>
-              <Tab as={Link} href="/my_jobs/applied">
+              <Tab as={NextLink} href="/my_jobs/applied">
                 Applied
               </Tab>
             </TabList>

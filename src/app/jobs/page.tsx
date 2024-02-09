@@ -159,7 +159,7 @@ export default function Jobs() {
     if (activeJob && (!isApplyModalOpen || !isSharingModalOpen)) {
       onApplyModalOpen()
     }
-  })
+  }, [activeJob, isApplyModalOpen, isSharingModalOpen, onApplyModalOpen])
 
   const token = useAuthToken()
 

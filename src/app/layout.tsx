@@ -2,13 +2,13 @@
 
 import { initializeMixpanel } from '@/frontend/utils/mixpanel'
 import { Auth0Provider } from '@auth0/auth0-react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import MainLayout from '../frontend/components/Main.layout'
 import { theme } from '../frontend/theme/theme'
+import { Header } from '@/frontend/components/Header.component'
 
 initializeMixpanel()
 
@@ -34,6 +34,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <title>SkillArc</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </head>
       <body>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools />
@@ -44,11 +48,8 @@ export default function RootLayout({
             clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
             onRedirectCallback={(appState) => {
               router.replace(
-                appState && appState.returnTo
-                  ? appState.returnTo
-                  : window.location.href
-              );
-
+                appState && appState.returnTo ? appState.returnTo : window.location.href,
+              )
             }}
             authorizationParams={{
               redirect_uri: `${process.env.NEXT_PUBLIC_ENVIRONMENT_URL}/auth/landing`,
@@ -56,7 +57,12 @@ export default function RootLayout({
             }}
           >
             <ChakraProvider theme={theme}>
-              <MainLayout>{children}</MainLayout>
+              <Flex flexWrap={'wrap'} bg={'greyscale.100'} flexDir={'column'} h="100vh">
+                <Header />
+                <Flex h={'100%'} flexWrap={'wrap'} marginTop="64px">
+                  {children}
+                </Flex>
+              </Flex>
             </ChakraProvider>
           </Auth0Provider>
         </QueryClientProvider>

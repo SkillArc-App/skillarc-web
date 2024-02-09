@@ -10,7 +10,7 @@ import {
   Spacer,
   Stack,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { FaCircle } from 'react-icons/fa6'
 import { useAuthToken } from '../hooks/useAuthToken'
 import { useUser } from '../hooks/useUser'
@@ -71,17 +71,16 @@ const NotificationCard = ({
   read: boolean
   url: string
 }) => {
-  const router = useRouter()
-
   return (
     <Box
+      as={Link}
       p={'1rem'}
       bg={!read ? 'gray.100' : 'white'}
       width={'20rem'}
       borderRadius={'0.25rem'}
       border={'1px'}
       borderColor={'gray.200'}
-      onClick={() => router.push(url)}
+      href={url}
     >
       <HStack>
         <Box pr={'1rem'}>
