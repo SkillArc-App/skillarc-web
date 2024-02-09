@@ -32,7 +32,7 @@ export const Reference = ({
 }) => {
   const { data: seeker } = useProfileData(seekerProfileId)
 
-  const fullName = `${seeker?.user?.firstName} ${seeker?.user?.firstName}`
+  const fullName = `${seeker?.user?.firstName} ${seeker?.user?.lastName}`
 
   // const reference using state
   const [reference, setReference] = useState(startingReferenceText)
