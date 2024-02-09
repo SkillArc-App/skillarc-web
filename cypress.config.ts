@@ -7,6 +7,7 @@ import createRecruiterWithApplicant from 'cypress/tasks/createRecruiterWithAppli
 import createSeeker from 'cypress/tasks/createSeeker'
 import createJob from 'cypress/tasks/createJob'
 import createSeekerLead from 'cypress/tasks/createSeekerLead'
+import createTrainerWithStudent from 'cypress/tasks/createTrainerWithStudent'
 import createUser from 'cypress/tasks/createUser'
 
 export default defineConfig({
@@ -21,6 +22,7 @@ export default defineConfig({
         createSeeker,
         createJob,
         createSeekerLead,
+        createTrainerWithStudent,
       })
     },
     experimentalRunAllSpecs: true,
