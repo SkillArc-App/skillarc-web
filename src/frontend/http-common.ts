@@ -31,7 +31,7 @@ export const get = <T = any, D = any>(
     headers.Authorization = `Bearer ${token}`
   }
 
-  if (options?.camel) {
+  if (options?.camel !== false) {
     headers['Key-Inflection'] = 'camel'
   }
 
@@ -51,7 +51,7 @@ export const post = <T = any, D = any>(
     Authorization: `Bearer ${token}`,
   }
 
-  if (options?.camel) {
+  if (options?.camel !== false) {
     headers['Key-Inflection'] = 'camel'
   }
 
@@ -70,7 +70,7 @@ export const put = <T = any, D = any>(
     Authorization: `Bearer ${token}`,
   }
 
-  if (options?.camel) {
+  if (options?.camel !== false) {
     headers['Key-Inflection'] = 'camel'
   }
 
@@ -88,7 +88,7 @@ export const destroy = <T = any, D = any>(
     Authorization: `Bearer ${token}`,
   }
 
-  if (options?.camel) {
+  if (options?.camel !== false) {
     headers['Key-Inflection'] = 'camel'
   }
 
