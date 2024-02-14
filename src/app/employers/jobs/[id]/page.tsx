@@ -283,6 +283,7 @@ const Jobs = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${applicant.id}`,
         { status },
         token,
+        { camel: false }
       ).then(() => {
         refetchEmployerJobs()
       })

@@ -5,7 +5,7 @@ import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 export const useJobSavedData = () => {
   const jobSavedQuery = useAuthenticatedQuery(['jobMatches'], ({ token }) => {
     const getSaved = async () => {
-      const res = await get<OneMatchedJobPosting[]>('seekers/jobs/saved', token)
+      const res = await get<OneMatchedJobPosting[]>('seekers/jobs/saved', token, { camel: false })
 
       return res.data
     }

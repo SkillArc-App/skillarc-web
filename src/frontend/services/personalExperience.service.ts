@@ -20,7 +20,6 @@ const create = async (
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences`,
     personalExperience,
     token,
-    { camel: true },
   )
   return res.data
 }
@@ -34,17 +33,15 @@ const update = async (
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperience.id}`,
     personalExperience,
     token,
-    { camel: true },
   )
   return res.data
 }
 
 const deleteOne = async (personalExperienceId: string, profileId: string, token: string) => {
   const res = await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperienceId}`,
-      token,
-      { camel: true }
-    )
+    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/personal_experiences/${personalExperienceId}`,
+    token,
+  )
   return res.data
 }
 

@@ -180,6 +180,7 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
                   metCareerCoach,
                 },
                 token,
+                { camel: false },
               )
             }}
           />

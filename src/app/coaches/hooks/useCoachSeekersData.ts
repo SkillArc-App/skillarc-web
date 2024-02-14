@@ -7,7 +7,7 @@ export const useCoachSeekersData = () =>
     const getCoachSeekersRequest = async () => {
       const res = await get<CoachSeeker[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/`,
-        token,
+        token
       )
 
       return res.data

@@ -10,7 +10,6 @@ export const useCoachSeekerData = (id?: string) =>
         const res = await get<CoachSeeker>(
           `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}`,
           token,
-          { camel: true },
         )
 
         return res.data

@@ -22,6 +22,6 @@ export const useJobSearch = ({ searchTerms, filters, otherUtmParams }: SearchVal
     // apparently axios tries to "help" ignores our recasing header for get requests
     params[camelToSnake('utm_term')] = searchTerms
 
-    return (await get<SearchJob[]>(`seekers/jobs`, token, { camel: true }, params)).data
+    return (await get<SearchJob[]>(`seekers/jobs`, token, {}, params)).data
   })
 }

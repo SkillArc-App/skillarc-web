@@ -177,10 +177,10 @@ export default function Jobs() {
 
     if (!job.saved) {
       FrontendAnalyticsService.track('Job-saved', { job })
-      await post(`seekers/jobs/${job.id}/save`, {}, token)
+      await post(`seekers/jobs/${job.id}/save`, {}, token, { camel: false })
     } else {
       FrontendAnalyticsService.track('Job-unsave', { job })
-      await post(`seekers/jobs/${job.id}/unsave`, {}, token)
+      await post(`seekers/jobs/${job.id}/unsave`, {}, token, { camel: false })
     }
 
     refetch()

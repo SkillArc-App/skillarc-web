@@ -11,7 +11,7 @@ export const useBarrierData = () =>
     const getBarriersRequest = async () => {
       const res = await get<Barrier[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/coaches/barriers/`,
-        token,
+        token
       )
 
       return res.data

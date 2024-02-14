@@ -116,6 +116,7 @@ const Seeker = () => {
         note_id: noteId,
       },
       token,
+      { camel: false }
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -133,7 +134,7 @@ const Seeker = () => {
     if (!token) return
     if (!workingSeeker) return
 
-    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token).then(
+    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token, { camel: false }).then(
       (res) => {
         setWorkingSeeker({
           ...workingSeeker,
@@ -153,6 +154,7 @@ const Seeker = () => {
         note: updatedNote,
       },
       token,
+      { camel: false }
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -173,6 +175,7 @@ const Seeker = () => {
         level,
       },
       token,
+      { camel: false }
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -191,6 +194,7 @@ const Seeker = () => {
         coach_id: coachId,
       },
       token,
+      { camel: false }
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -209,8 +213,7 @@ const Seeker = () => {
       {
         job_id: jobId,
       },
-      token,
-      { camel: true },
+      token
     )
 
     refetchSeeker()
@@ -226,6 +229,7 @@ const Seeker = () => {
         barriers: barriers.map((b) => b.id),
       },
       token,
+      { camel: false }
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,

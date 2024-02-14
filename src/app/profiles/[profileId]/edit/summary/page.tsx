@@ -54,8 +54,7 @@ const EditSummary = () => {
         zipCode,
         phoneNumber,
       },
-      token,
-      { camel: true },
+      token
     ).then((res) => {
       router.back()
     })

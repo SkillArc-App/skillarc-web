@@ -20,7 +20,7 @@ export type Message = {
 export const useEmployerChats = () =>
   useAuthenticatedQuery(['chats'], ({ token }) => {
     const getChats = async () => {
-      const res = await get<Chat[]>(`${process.env.NEXT_PUBLIC_API_URL}/employers/chats/`, token)
+      const res = await get<Chat[]>(`${process.env.NEXT_PUBLIC_API_URL}/employers/chats/`, token,)
 
       return res.data
     }

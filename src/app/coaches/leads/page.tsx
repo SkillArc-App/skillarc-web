@@ -19,9 +19,7 @@ const Leads = () => {
   const handleSubmit = (lead: SubmittableSeekerLead) => {
     if (!token) return
 
-    post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`, { lead }, token, {
-      camel: true,
-    }).then(() => {
+    post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`, { lead }, token).then(() => {
       setNewLeads((currentNewLeads) => {
         return [
           ...(currentNewLeads ?? []),
