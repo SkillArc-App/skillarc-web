@@ -34,8 +34,8 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import axios from 'axios'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { FaRegComment } from 'react-icons/fa6'
 
 type ApplicantStatusChanges = {
@@ -61,6 +61,14 @@ const Jobs = () => {
   const router = useRouter()
   const jobId = useFixedParams('id')?.['id']
 
+  const searchParams = useSearchParams()
+  const employerId = searchParams?.get('employer_id')
+  const terminalState = searchParams?.get('terminal_state')
+
+  const showPasses = terminalState === 'show'
+
+  const pathName = usePathname()
+
   const {
     getEmployerJobs: { data: employerJobs, refetch: refetchEmployerJobs, isLoading },
   } = useEmployerJobData()
@@ -69,20 +77,47 @@ const Jobs = () => {
     getPassReasons: { data: passReasons },
   } = usePassReasons()
 
-  const [jobs, setJobs] = useState<Job[]>([])
-  const [applicants, setApplicants] = useState<Applicant[]>([])
-  const [filteredApplicants, setFilteredApplicants] = useState(applicants)
   const [updatedStatuses, setUpdatedStatuses] = useState<ApplicantStatusChanges>({})
   const token = useAuthToken()
-
-  const [employers, setEmployers] = useState<{ id: string; name: string }[]>([])
-  const [activeEmployer, setActiveEmployer] = useState<string | null>(null)
-
-  const [showPasses, setShowPasses] = useState<boolean>(false)
 
   const { onClose } = useDisclosure()
 
   const [currentApplicant, setCurrentApplicant] = useState<Applicant | null>(null)
+
+  const groupedJobs =
+    employerJobs?.jobs.reduce((groups, job) => {
+      if (!groups[job.employerId]) {
+        groups[job.employerId] = []
+      }
+
+      groups[job.employerId].push(job)
+
+      return groups
+    }, {} as Record<string, Job[]>) ?? {}
+
+  const employers = Object.keys(groupedJobs).map((key) => {
+    return {
+      id: key,
+      name: groupedJobs[key][0].employerName,
+    }
+  })
+
+  const activeEmployerId = employerId
+    ? employers.find((employer) => employer.id === employerId)?.id
+    : employers[0]?.id ?? ''
+
+  const jobs = employerJobs?.jobs.filter((job) => job.employerId === activeEmployerId)
+
+  const jobIds = jobs?.map((job) => job.id)
+
+  const currentJob = jobs?.find((job) => job.id === jobId)
+
+  const filteredApplicants =
+    employerJobs?.applicants.filter((applicant) => {
+      if (!showPasses && (applicant.status === 'pass' || applicant.status === 'hire')) return false
+
+      return applicant.jobId === jobId || (jobId === 'all' && jobIds?.includes(applicant.jobId))
+    }) ?? []
 
   const data: ApplicantTable[] = filteredApplicants.map((applicant) => {
     return {
@@ -159,92 +194,6 @@ const Jobs = () => {
     },
   ]
 
-  useEffect(() => {
-    if (!applicants) return
-    if ((!jobId) || jobId === 'all') {
-      setFilteredApplicants(applicants)
-      return
-    }
-
-    setFilteredApplicants(applicants.filter((applicant) => applicant.jobId === jobId))
-  }, [jobId, applicants])
-
-  useEffect(() => {
-    if (!applicants) return
-
-    const us: ApplicantStatusChanges = {}
-
-    applicants.forEach((a) => {
-      us[a.id] = { status: a.status }
-    })
-
-    setUpdatedStatuses(us)
-  }, [applicants])
-
-  useEffect(() => {
-    if (!employerJobs) return
-
-    const groupedJobs = employerJobs.jobs.reduce((groups, job) => {
-      if (!groups[job.employerId]) {
-        groups[job.employerId] = []
-      }
-
-      groups[job.employerId].push(job)
-
-      return groups
-    }, {} as Record<string, Job[]>)
-
-    const employerArray = Object.keys(groupedJobs).map((key) => {
-      return {
-        id: key,
-        name: groupedJobs[key][0].employerName,
-      }
-    })
-    setEmployers(employerArray)
-
-    if (!activeEmployer) {
-      setActiveEmployer(employerArray[0].id)
-    } else {
-      const newJobs = employerJobs?.jobs.filter((job) => job.employerId === activeEmployer)
-      const newApplicants = employerJobs?.applicants.filter((applicant) => {
-        return newJobs?.find((job) => job.id === applicant.jobId)
-      })
-
-      if (newJobs) setJobs(newJobs)
-      if (newApplicants) {
-        if (showPasses) {
-          setApplicants(newApplicants)
-        } else {
-          setApplicants(
-            newApplicants.filter(
-              (applicant) => applicant.status !== 'pass' && applicant.status !== 'hire',
-            ),
-          )
-        }
-      }
-    }
-  }, [activeEmployer, employerJobs, showPasses])
-
-  useEffect(() => {
-    const newJobs = employerJobs?.jobs.filter((job) => job.employerId === activeEmployer)
-    const newApplicants = employerJobs?.applicants.filter((applicant) => {
-      return newJobs?.find((job) => job.id === applicant.jobId)
-    })
-
-    if (newJobs) setJobs(newJobs)
-    if (newApplicants) {
-      if (showPasses) {
-        setApplicants(newApplicants)
-      } else {
-        setApplicants(
-          newApplicants.filter(
-            (applicant) => applicant.status !== 'pass' && applicant.status !== 'hire',
-          ),
-        )
-      }
-    }
-  }, [activeEmployer, employerJobs?.applicants, employerJobs?.jobs, showPasses])
-
   const handleApplicantUpdate = async (id: string) => {
     const applicantStatusChange = updatedStatuses[id]
 
@@ -301,14 +250,21 @@ const Jobs = () => {
     }
   }
 
-  if (!activeEmployer) return <LoadingPage />
+  if (!activeEmployerId) return <LoadingPage />
 
   return (
     <Flex py={'1.5rem'} px={'1rem'} flexDir={'column'} gap={'0.5rem'} width={'100%'}>
       <Heading color={'greyscale.900'} variant={'h2'}>
         Applicants
         {employers.length > 1 && (
-          <select onChange={(e) => setActiveEmployer(e.target.value)} value={activeEmployer}>
+          <select
+            onChange={(e) => {
+              router.push(
+                `/employers/jobs/all?employer_id=${e.target.value}&terminal_state=${terminalState}`,
+              )
+            }}
+            value={activeEmployerId}
+          >
             {employers.map((employer) => {
               return (
                 <option key={employer.id} value={employer.id}>
@@ -319,18 +275,28 @@ const Jobs = () => {
           </select>
         )}
       </Heading>
-      <Tabs
-        index={tabIndex}
-        variant="unstyled"
-        colorScheme="gray"
-        py={'12px'}
-      >
+      <Tabs index={tabIndex} variant="unstyled" colorScheme="gray" py={'12px'}>
         <TabList>
-          <Tab _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }} as={NextLink} href='all' >All</Tab>
+          <Tab
+            _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}
+            as={NextLink}
+            href={`/employers/jobs/all?terminal_state=${terminalState}&employer_id=${
+              employerId ?? ''
+            }`}
+          >
+            All
+          </Tab>
           {jobs &&
             jobs.map((job, index) => {
               return (
-                <Tab as={NextLink} href={`/employers/jobs/${job.id}`} key={index}  _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}>
+                <Tab
+                  as={NextLink}
+                  href={`/employers/jobs/${job.id}?terminal_state=${
+                    terminalState ?? ''
+                  }&employer_id=${employerId ?? ''}`}
+                  key={index}
+                  _selected={{ color: 'white', bg: 'gray.900', borderRadius: 4 }}
+                >
                   {job.name}
                 </Tab>
               )
@@ -338,7 +304,16 @@ const Jobs = () => {
         </TabList>
         <TabPanels></TabPanels>
       </Tabs>
-      <Checkbox isChecked={showPasses} onChange={() => setShowPasses(!showPasses)}>
+      <Checkbox
+        isChecked={showPasses}
+        onChange={() => {
+          if (showPasses) {
+            router.replace(`${pathName}?terminal_state=`)
+          } else {
+            router.replace(`${pathName}?terminal_state=show`)
+          }
+        }}
+      >
         Show Passes/Hires
       </Checkbox>
       <DataTable columns={columns} data={data} initialSortState={initialSortState} />
