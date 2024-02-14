@@ -60,10 +60,19 @@ describe('Recruiters', () => {
             .should('contain', `${applicant_status['status']}`)
             .within(() => {
               cy.get('select').should('be.enabled')
-              cy.get('select').select('hire')
+              cy.get('select').parent().click()
+              cy.get('select').select('pass')
             })
 
+          cy.findByText('Give us Feedback')
+          // Chakra UI Tom foolery
+          cy.findByLabelText('The role is filled, no longer accepting applications').click({force: true})
+          cy.findByRole('button', { name: 'Submit' }).click()
+
+          cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).should('not.exist')
+
           cy.findByLabelText('Show Passes/Hires').parent().click()
+          cy.findByText('The role is filled, no longer accepting applications')
           cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).click()
 
           cy.url().should('contain', '/profiles/')

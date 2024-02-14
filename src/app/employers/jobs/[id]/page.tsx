@@ -119,36 +119,24 @@ const Jobs = () => {
       return applicant.jobId === jobId || (jobId === 'all' && jobIds?.includes(applicant.jobId))
     }) ?? []
 
-  const data: ApplicantTable[] = filteredApplicants.map((applicant) => {
-    return {
-      applicant,
-      id: applicant.id,
-      name: `${applicant.firstName} ${applicant.lastName}`,
-      contactInfo: `${applicant.email} ${applicant?.phoneNumber ?? ''}`,
-      job: applicant.jobName,
-      status: applicant.status,
-      appliedOn: applicant.createdAt,
-    }
-  })
-
-  const columnHelper = createColumnHelper<ApplicantTable>()
+  const columnHelper = createColumnHelper<Applicant>()
 
   const appliedOnId = 'applied-on'
 
   const columns = [
-    columnHelper.accessor('name', {
+    columnHelper.accessor('profileLink', {
       cell: (info) => (
-        <Link href={info.row.original.applicant.profileLink} as={NextLink}>
-          {info.row.original.applicant.firstName} {info.row.original.applicant.lastName}
+        <Link href={info.getValue()} as={NextLink}>
+          {info.row.original.firstName} {info.row.original.lastName}
         </Link>
       ),
       header: 'Name',
     }),
-    columnHelper.accessor('contactInfo', {
-      cell: (info) => info.getValue(),
+    columnHelper.accessor('email', {
+      cell: (info) => `${info.getValue()} ${info.row.original.phoneNumber ?? ''}`,
       header: 'Contact Info',
     }),
-    columnHelper.accessor('job', {
+    columnHelper.accessor('jobName', {
       cell: (info) => info.getValue(),
       header: 'Job',
     }),
@@ -156,7 +144,7 @@ const Jobs = () => {
       cell: (info) => (
         <HStack>
           <Select
-            onChange={(e) => handleUpdatedStatuses(info.row.original.applicant, e.target.value)}
+            onChange={(e) => handleUpdatedStatuses(info.row.original, e.target.value)}
             value={info.getValue()}
           >
             {['new', 'pending intro', 'intro made', 'interviewing', 'hire', 'pass'].map(
@@ -180,7 +168,11 @@ const Jobs = () => {
       ),
       header: 'Status',
     }),
-    columnHelper.accessor('appliedOn', {
+    columnHelper.accessor('statusReasons', {
+      cell: (info) => info.getValue()[0] ?? '',
+      header: 'Pass Reason',
+    }),
+    columnHelper.accessor('createdAt', {
       cell: (info) => new Date(info.getValue()).toLocaleDateString(),
       id: appliedOnId,
       header: 'Applied On',
@@ -316,7 +308,7 @@ const Jobs = () => {
       >
         Show Passes/Hires
       </Checkbox>
-      <DataTable columns={columns} data={data} initialSortState={initialSortState} />
+      <DataTable columns={columns} data={filteredApplicants} initialSortState={initialSortState} />
       <Drawer placement={'right'} isOpen={!!currentApplicant} onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
