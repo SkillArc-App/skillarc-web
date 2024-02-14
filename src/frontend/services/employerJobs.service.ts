@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '@/frontend/http-common'
 
 export type Applicant = {
   id: string
@@ -23,19 +23,15 @@ export type Job = {
   description: string
 }
 
-const get = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<{ jobs: Job[]; applicants: Applicant[] }>(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/jobs`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+const getJobs = async (token: string) => {
+  const res = await get<{ jobs: Job[]; applicants: Applicant[] }>(
+    `${process.env.NEXT_PUBLIC_API_URL}/employers/jobs`,
+    token
+  )
 
   return res.data
 }
 
 export const FrontendEmployerJobsService = {
-  get,
+  get: getJobs,
 }

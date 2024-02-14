@@ -32,6 +32,7 @@ const SeekerInvite = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/employer_invites/${employerInviteId}/used`,
         {},
         token,
+        { camel: false }
       )
 
       refetchUser()

@@ -131,6 +131,7 @@ const Onboarding = () => {
         responses: newOnboardingResponse.responses,
       },
       token,
+      { camel: false }
     ).then((_) => {
       refetchOnboardingData()
     })

@@ -8,7 +8,6 @@ export const useCoachLeadsQuery = () =>
       const res = await get<SeekerLead[]>(
         `${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`,
         token,
-        { camel: true },
       )
 
       return res.data

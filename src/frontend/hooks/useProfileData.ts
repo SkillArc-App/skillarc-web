@@ -1,9 +1,9 @@
+import { Maybe } from '@/common/types/maybe'
 import { useQuery } from 'react-query'
 import { get } from '../http-common'
 import { GetOneProfileResponse } from '../services/profile.service'
 import { mixpanelInitProfile } from '../utils/mixpanel'
 import { useAuthToken } from './useAuthToken'
-import { Maybe } from '@/common/types/maybe'
 
 export const useProfileData = (id: Maybe<string>) => {
   const token = useAuthToken()
@@ -24,8 +24,7 @@ export const useProfileData = (id: Maybe<string>) => {
 const getOne = async (id: string, token?: string) => {
   const res = await get<GetOneProfileResponse>(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
-    token,
-    { camel: true },
+    token
   )
 
   mixpanelInitProfile(res.data)

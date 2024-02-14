@@ -22,6 +22,7 @@ const Chats = () => {
         message: text,
       },
       token,
+      { camel: false }
     )
 
     refetch()
@@ -36,6 +37,7 @@ const Chats = () => {
         applicant_id: id,
       },
       token,
+      { camel: false }
     ).then((_) => {
       refetch()
     })

@@ -23,6 +23,7 @@ const ChatUI = () => {
           applicant_id: applicantId,
         },
         token,
+        { camel: false },
       ).then((_) => {
         refetchChats()
       })
@@ -46,6 +47,7 @@ const ChatUI = () => {
         message: text,
       },
       token,
+      { camel: false },
     )
 
     refetchChats()
@@ -60,6 +62,7 @@ const ChatUI = () => {
         applicant_id: id,
       },
       token,
+      { camel: false },
     ).then((_) => {
       refetchChats()
     })
