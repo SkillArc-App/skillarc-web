@@ -13,6 +13,7 @@ export type Applicant = {
   profileLink: string
   programs: any[]
   status: string
+  statusReasons: string[]
 }
 
 export type Job = {
