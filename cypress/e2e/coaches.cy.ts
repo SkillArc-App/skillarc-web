@@ -1,5 +1,27 @@
 export {}
 
+const reloadUntilConditionMet = (
+  predicate: () => Cypress.Chainable<boolean>,
+  { retryCount = 5, delay = 1000 } = {},
+) => {
+  const retrier = (count = retryCount) => {
+    predicate().then((result) => {
+      if (count === 0) {
+        predicate().should('be.true')
+      }
+      if (result) {
+        return
+      } else {
+        cy.wait(delay)
+        cy.reload()
+        retrier(count - 1)
+      }
+    })
+  }
+
+  retrier()
+}
+
 describe('Coaches', () => {
   beforeEach(() => {
     cy.task('createCoach').then((r: any) => {
@@ -83,25 +105,21 @@ describe('Coaches', () => {
         cy.visit(url)
       })
 
+      reloadUntilConditionMet(() => {
+        return cy
+          .get('body')
+          .contains('Phone Number')
+          .next()
+          .then((el) => el.text().includes('570-555-5555'))
+      })
+
       cy.get('body')
         .contains('Other Jobs')
         .next()
         .next()
         .within(() => {
-          let count = 5
-          const rec = () => {
-            cy.reload()
-            cy.get('button').contains('Recommend').click()
-
-            if (cy.get('button').contains('Recommend').should('not.exist')) {
-              return
-            } else {
-              if (count-- === 0) return
-
-              cy.wait(1000)
-              rec()
-            }
-          }
+          cy.get('button').contains('Recommend').click()
+          cy.get('div').should('contain', 'Recommended')
         })
 
       cy.get('a').contains('< Back to Seekers').click()
