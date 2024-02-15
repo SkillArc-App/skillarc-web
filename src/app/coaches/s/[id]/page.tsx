@@ -24,6 +24,7 @@ import {
   Select,
   Stack,
   Textarea,
+  useToast,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
@@ -44,6 +45,8 @@ const Seeker = () => {
   const { data: coaches } = useCoachesData()
   const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
+
+  const toast = useToast()
 
   const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
   const [noteDraft, setNoteDraft] = useState('')
@@ -116,7 +119,7 @@ const Seeker = () => {
         note_id: noteId,
       },
       token,
-      { camel: false }
+      { camel: false },
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -134,14 +137,14 @@ const Seeker = () => {
     if (!token) return
     if (!workingSeeker) return
 
-    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token, { camel: false }).then(
-      (res) => {
-        setWorkingSeeker({
-          ...workingSeeker,
-          notes: workingSeeker.notes.filter((n) => n.noteId !== noteId),
-        })
-      },
-    )
+    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token, {
+      camel: false,
+    }).then((res) => {
+      setWorkingSeeker({
+        ...workingSeeker,
+        notes: workingSeeker.notes.filter((n) => n.noteId !== noteId),
+      })
+    })
   }
 
   const modifyNote = (noteId: string, updatedNote: string) => {
@@ -154,7 +157,7 @@ const Seeker = () => {
         note: updatedNote,
       },
       token,
-      { camel: false }
+      { camel: false },
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -175,7 +178,7 @@ const Seeker = () => {
         level,
       },
       token,
-      { camel: false }
+      { camel: false },
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -194,7 +197,7 @@ const Seeker = () => {
         coach_id: coachId,
       },
       token,
-      { camel: false }
+      { camel: false },
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
@@ -208,15 +211,25 @@ const Seeker = () => {
     if (!workingSeeker) return
     if (!jobs) return
 
-    await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
-      {
-        job_id: jobId,
-      },
-      token
-    )
+    if (!workingSeeker.phoneNumber) {
+      toast({
+        title: 'Cannot recommend job without phone number',
+        status: 'error',
+        position: 'top',
+        duration: 3000,
+        isClosable: true,
+      })
+    } else {
+      await post(
+        `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
+        {
+          job_id: jobId,
+        },
+        token,
+      )
 
-    refetchSeeker()
+      refetchSeeker()
+    }
   }
 
   const updateBarriers = (barriers: Barrier[]) => {
@@ -229,7 +242,7 @@ const Seeker = () => {
         barriers: barriers.map((b) => b.id),
       },
       token,
-      { camel: false }
+      { camel: false },
     ).then((res) => {
       setWorkingSeeker({
         ...workingSeeker,
