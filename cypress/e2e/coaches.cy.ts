@@ -46,9 +46,8 @@ describe('Coaches', () => {
         .next()
         .within(() => {
           cy.get('button').contains('Recommend').click()
-          cy.get('div').should('contain', 'Recommended')
-          cy.get('button').should('not.exist')
         })
+      cy.get('body').should('contain', 'Cannot recommend job without phone number')
 
       cy.get('p').contains('Barriers').next().type('Background{enter}')
       cy.get('body').should('contain', 'Background')
@@ -73,6 +72,37 @@ describe('Coaches', () => {
       const coachSelect = cy.contains('p', 'Assigned Coach').parent().find('select')
       coachSelect.select(coachEmail)
       coachSelect.find('option:selected').should('have.text', coachEmail)
+
+      // save current route
+      cy.url().then((url) => {
+        cy.get('a').contains('Jump to Profile').click()
+        cy.findByLabelText('Edit Profile').click()
+
+        cy.get('p').contains('Phone number').next().clear().type('570-555-5555')
+        cy.get('button').contains('Save').click()
+        cy.visit(url)
+      })
+
+      cy.get('body')
+        .contains('Other Jobs')
+        .next()
+        .next()
+        .within(() => {
+          let count = 5
+          const rec = () => {
+            cy.reload()
+            cy.get('button').contains('Recommend').click()
+
+            if (cy.get('button').contains('Recommend').should('not.exist')) {
+              return
+            } else {
+              if (count-- === 0) return
+
+              cy.wait(1000)
+              rec()
+            }
+          }
+        })
 
       cy.get('a').contains('< Back to Seekers').click()
 
