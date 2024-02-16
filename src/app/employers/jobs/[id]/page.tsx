@@ -31,12 +31,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import axios from 'axios'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { FaRegComment } from 'react-icons/fa6'
+import { PassFeedback } from './components/PassFeedback'
+import { ReasonResponse } from '@/common/types/ApplicantStatus'
 
 type ApplicantStatusChanges = {
   [key: string]: ApplicantStatusChange
@@ -44,17 +45,7 @@ type ApplicantStatusChanges = {
 
 type ApplicantStatusChange = {
   status: string
-  reasons?: string[]
-}
-
-type ApplicantTable = {
-  applicant: Applicant
-  id: string
-  name: string
-  contactInfo: string
-  job: string
-  status: string
-  appliedOn: string
+  reasons?: ReasonResponse[]
 }
 
 const Jobs = () => {
@@ -73,9 +64,7 @@ const Jobs = () => {
     getEmployerJobs: { data: employerJobs, refetch: refetchEmployerJobs, isLoading },
   } = useEmployerJobData()
 
-  const {
-    getPassReasons: { data: passReasons },
-  } = usePassReasons()
+  const { data: passReasons } = usePassReasons()
 
   const [updatedStatuses, setUpdatedStatuses] = useState<ApplicantStatusChanges>({})
   const token = useAuthToken()
@@ -186,26 +175,17 @@ const Jobs = () => {
     },
   ]
 
-  const handleApplicantUpdate = async (id: string) => {
-    const applicantStatusChange = updatedStatuses[id]
+  const passOnApplicant = async (responses: ReasonResponse[]) => {
+    if (!currentApplicant) return
+    if (!token) return
 
-    await axios.create({ withCredentials: false }).put(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${id}`,
-      { ...applicantStatusChange },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${currentApplicant.id}`,
+      { status: 'pass', reasons: responses },
+      token,
     )
 
     refetchEmployerJobs()
-  }
-
-  const passOnApplicant = () => {
-    if (!currentApplicant) return
-
-    handleApplicantUpdate(currentApplicant.id)
     setCurrentApplicant(null)
   }
 
@@ -224,7 +204,7 @@ const Jobs = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${applicant.id}`,
         { status },
         token,
-        { camel: false }
+        { camel: false },
       ).then(() => {
         refetchEmployerJobs()
       })
@@ -314,38 +294,7 @@ const Jobs = () => {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">Give us Feedback</DrawerHeader>
           <DrawerBody>
-            <Stack gap={'2rem'}>
-              <Stack gap={'1rem'}>
-                <p>Help us find better candidates for you in the future!</p>
-              </Stack>
-              <CheckboxGroup
-                colorScheme="green"
-                onChange={(e) => {
-                  if (!currentApplicant) return
-
-                  setUpdatedStatuses({
-                    ...updatedStatuses,
-                    [currentApplicant?.id]: {
-                      status: 'pass',
-                      reasons: e as string[],
-                    },
-                  })
-                }}
-              >
-                <Stack>
-                  {(passReasons || []).map((reason) => {
-                    return (
-                      <Checkbox key={reason.id} value={reason.id}>
-                        {reason.description}
-                      </Checkbox>
-                    )
-                  })}
-                </Stack>
-              </CheckboxGroup>
-              <Button variant={'primary'} onClick={passOnApplicant}>
-                Submit
-              </Button>
-            </Stack>
+            {passReasons && <PassFeedback passReasons={passReasons} onApplicantPass={passOnApplicant} />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
