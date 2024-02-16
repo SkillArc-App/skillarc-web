@@ -66,7 +66,12 @@ describe('Recruiters', () => {
 
           cy.findByText('Give us Feedback')
           // Chakra UI Tom foolery
-          cy.findByLabelText('The role is filled, no longer accepting applications').click({force: true})
+          cy.findByLabelText('The role is filled, no longer accepting applications').click({
+            force: true,
+          })
+          cy.findByPlaceholderText('Can you provide some details...').type(
+            'We already have the best candidate',
+          )
           cy.findByRole('button', { name: 'Submit' }).click()
 
           cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).should('not.exist')
