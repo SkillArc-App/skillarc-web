@@ -27,9 +27,7 @@ import {
 import NextLink from 'next/link'
 
 export default function Seekers() {
-  const {
-    getSeekers: { data: seekers, isLoading: seekersIsLoading },
-  } = useSeekerData()
+  const { data: seekers, isLoading: seekersIsLoading } = useSeekerData()
 
   const { isOpen, onClose } = useDisclosure({})
 
@@ -54,19 +52,19 @@ export default function Seekers() {
                 <Tr key={index}>
                   <Td>
                     <Link as={NextLink} href={`/admin/seekers/${seeker.id}`}>
-                      {seeker.user?.firstName} {seeker.user?.lastName}
+                      {seeker.firstName} {seeker.lastName}
                     </Link>
                   </Td>
-                  <Td>{seeker.user?.email}</Td>
+                  <Td>{seeker?.email}</Td>
                   <Td>
-                    {seeker.user?.SeekerTrainingProvider.map((stp: any, index: number) => {
+                    {seeker.trainingProvider.map((stp, index) => {
                       return (
                         <Link
                           key={index}
                           as={NextLink}
-                          href={`/admin/training-providers/${stp.trainingProvider.id}`}
+                          href={`/admin/training-providers/${stp.id}`}
                         >
-                          {stp.trainingProvider?.name}
+                          {stp.name}
                         </Link>
                       )
                     })}

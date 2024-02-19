@@ -59,16 +59,6 @@ export type GetOneProfileResponse = {
   })[]
 } & Profile
 
-const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<GetOneProfileResponse[]>(`${process.env.NEXT_PUBLIC_API_URL}/profiles`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-
-  return res.data
-}
-
 const addStory = async (profileId: string, story: Partial<Story>, token: string) => {
   const res = await axios.create({ withCredentials: false }).post(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/stories`,
@@ -122,7 +112,6 @@ const addSkill = async (profileId: string, skill: Partial<Skill>, token: string)
 }
 
 export const FrontendProfileService = {
-  getAll,
   addStory,
   updateStory,
   deleteStory,
