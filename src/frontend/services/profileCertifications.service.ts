@@ -2,11 +2,7 @@ import { http } from '../http-common'
 
 export type ProfileCertification = {
   id: string
-  master_certification_id: string
-  profile_id: string
   description: string | null
-  created_at: Date
-  updated_at: Date
 }
 
 const create = async (profileCertification: Partial<ProfileCertification>, profileId?: string) => {

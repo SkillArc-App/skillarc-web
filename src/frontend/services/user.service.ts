@@ -39,18 +39,11 @@ export type Role = {
 
 export type User = {
   id: string
-  name: string | null
   email: string | null
-  emailVerified: Date | null
-  image: string | null
   firstName: string | null
   lastName: string | null
   zipCode: string | null
   phoneNumber: string | null
-  onboardingSessionId: string | null
-  userType: ['SEEKER' | 'TRAINING_PROVIDER']
-  created_at: Date
-  updated_at: Date
 }
 
 export type UserRoles = {

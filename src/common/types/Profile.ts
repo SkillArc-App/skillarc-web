@@ -2,32 +2,18 @@ import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { EducationExperience } from './EducationExperience'
 import { PersonalExperience } from './PersonalExperience'
 
-// export type GetOneProfileResponse = {
-//   user: User
-//   stories: PrismaStory[]
-//   skills: Skills[]
-//   otherExperiences: OtherExperience[]
-//   educationExperiences: EducationExperience[]
-//   profileSkills: ProfileSkill[]
-//   desiredOutcomes: DesiredOutcomes[]
-//   professionalInterests: ProfessionalInterests[]
-// } & PrismaProfile
-
 export type Profile = {
   id: string
   userId?: string
   bio?: string
   image?: string
   status?: string
-  // user: User
-  // credentials           Credential[]
   otherExperiences?: OtherExperience[]
   personalExperience?: PersonalExperience[]
   educationExperiences?: EducationExperience[]
   preferences?: Preference
   professionalInterests?: ProfessionalInterests[]
   desiredOutcomes?: DesiredOutcomes[]
-  // skills?: Skill[]
   stories?: Story[]
   profileSkills?: ProfileSkill[]
   profileCertifications?: ProfileCertification[]
@@ -80,8 +66,6 @@ export type MasterCertification = {
 }
 
 export type Reference = {
-  id: string
-  seekerProfileId: string
   referenceText: string
 }
 

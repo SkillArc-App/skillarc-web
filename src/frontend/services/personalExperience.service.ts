@@ -2,13 +2,10 @@ import { destroy, post, put } from '../http-common'
 
 export type PersonalExperience = {
   id: string
-  profileId: string
   activity: string | null
   startDate: string | null
   endDate: string | null
   description: string | null
-  createdAt: Date
-  updatedAt: Date
 }
 
 const create = async (
