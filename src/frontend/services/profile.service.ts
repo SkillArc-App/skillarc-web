@@ -16,6 +16,7 @@ export type Profile = {
 }
 
 export type GetOneProfileResponse = {
+  about: string
   industryInterests: string[]
   isProfileEditor: boolean
   user: User & {
