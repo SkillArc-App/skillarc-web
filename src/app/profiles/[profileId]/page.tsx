@@ -1,9 +1,8 @@
-"use client"
+'use client'
 
 import { ProfileAbout } from '@/app/profiles/[profileId]/components/about'
 import { ProfileEducation } from '@/app/profiles/[profileId]/components/education'
 import { ProfileExperience } from '@/app/profiles/[profileId]/components/experience'
-import { PersonalExperience } from '@/app/profiles/[profileId]/components/personalExperience'
 import ProfileCompleteness from '@/app/profiles/[profileId]/components/profileCompleteness'
 import { ProfileReferences } from '@/app/profiles/[profileId]/components/reference'
 import { ProfileSkills } from '@/app/profiles/[profileId]/components/skills'
@@ -52,7 +51,6 @@ function ProfileId() {
             {/* Training */}
             <ProfileSkills seeker={seeker} />
             <ProfileAbout seeker={seeker} />
-            <PersonalExperience seeker={seeker} />
           </Box>
         ) : (
           <Box
@@ -64,7 +62,6 @@ function ProfileId() {
             <Stack>
               <ProfileExperience seeker={seeker} />
               <ProfileEducation seeker={seeker} />
-              <PersonalExperience seeker={seeker} />
             </Stack>
             <Stack>
               <ProfileAbout seeker={seeker} />
