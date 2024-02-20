@@ -1,13 +1,15 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaSuitcase } from 'react-icons/fa6'
-import { Text } from '@/frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
 const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
+  if (seeker.otherExperiences.length === 0 && !seeker.isProfileEditor) return <></>
+
   return (
     <ProfileBox
       title="Experience"

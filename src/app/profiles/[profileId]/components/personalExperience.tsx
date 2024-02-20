@@ -7,6 +7,8 @@ import { Text } from '../../../../frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
 export const PersonalExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
+  if (seeker.personalExperience.length === 0 && !seeker.isProfileEditor) return <></>
+
   return (
     <ProfileBox
       title="Personal Experience"

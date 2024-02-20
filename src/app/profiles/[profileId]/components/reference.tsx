@@ -3,6 +3,8 @@ import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
 import { Text } from '../../../../frontend/components/Text.component'
 
 export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse }) => {
+  if (seeker.reference.length === 0 && !seeker.isProfileEditor) return <></>
+
   return (
     <Flex
       w="100%"
