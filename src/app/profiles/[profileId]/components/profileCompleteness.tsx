@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 const ProfileCompleteness = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   const router = useRouter()
-  if (seeker.isProfileEditor) return <></>
+  if (!seeker.isProfileEditor) return <></>
 
   const profileCompleteness = ((2 - seeker.missingProfileItems.length) / 2.0) * 100
 
