@@ -16,18 +16,18 @@ export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse })
       <Text type="overline" color="greyscale.700" pb={2}>
         REFERENCES
       </Text>
-      {seeker.reference.map((reference: any, index: number) => {
+      {seeker.reference.map((reference, index: number) => {
         return (
           <HStack align="top" gap={2} pt={1} key={index}>
             <Avatar />
             <VStack align="left" gap={2}>
               <Flex direction="column" gap={2}>
                 <Heading variant="h4" color={'greyscale.900'}>
-                  {reference.authorProfile.user.first_name} {reference.authorProfile.user.last_name}
+                  {reference.authorUser.firstName} {reference.authorUser.lastName}
                   , {reference.trainingProvider.name}
                 </Heading>
                 <Text type="b2" color="greyscale.600">
-                  {reference.reference_text}
+                  {reference.referenceText}
                 </Text>
               </Flex>
             </VStack>

@@ -1,9 +1,8 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Badge, Divider, Flex, VStack } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
 import { FaScrewdriverWrench } from 'react-icons/fa6'
-import { Text } from '@/frontend/components/Text.component'
 import { ProfileBox } from './profileBox'
 
 export const ProfileSkills = ({ seeker }: { seeker: GetOneProfileResponse }) => {
