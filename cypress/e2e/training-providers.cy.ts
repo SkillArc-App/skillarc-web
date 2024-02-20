@@ -1,6 +1,6 @@
 export {}
 
-describe('Onboarding', () => {
+describe('Training Providers', () => {
   beforeEach(() => {
     cy.task('createTrainerWithStudent').then((response: any) => {
       cy.wrap(response['trainer']).as('trainer')
