@@ -10,24 +10,20 @@ export const useProfileData = (id: Maybe<string>) => {
 
   const profileQuery = useQuery(
     ['profile', id, token],
-    () => {
+    async () => {
       if (!id) return
 
-      return getOne(id, token)
+      const res = await get<GetOneProfileResponse>(
+        `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
+        token,
+      )
+
+      mixpanelInitProfile(res.data)
+
+      return res.data
     },
     { enabled: !!id },
   )
 
   return profileQuery
-}
-
-const getOne = async (id: string, token?: string) => {
-  const res = await get<GetOneProfileResponse>(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
-    token
-  )
-
-  mixpanelInitProfile(res.data)
-
-  return res.data
 }
