@@ -36,7 +36,6 @@ describe('Onboarding', () => {
     cy.get('div').contains("I've had or currently have a job").click()
     cy.get('div').contains("I've attended a Training Program").click()
     cy.get('div').contains('I have a High School Diploma / GED').click()
-    cy.get('div').contains("I have other experience I'd like to share").click()
     cy.get('button').contains('Next').click()
 
     // job experience
@@ -61,15 +60,6 @@ describe('Onboarding', () => {
     cy.get('input').filter('[placeholder="YYYY"]').type('2014')
     cy.get('input').filter('[placeholder="3.6/4.0"]').type('2.9')
     cy.get('input').filter('[placeholder="Teams, clubs, etc."]').type('Paper Club')
-    cy.get('button').contains('Next').click()
-
-    // personal experience
-    cy.get('input')
-      .filter('[placeholder="Babysitting, fixing bikes, cleaning"]')
-      .type('Volunteer sheriff, beet farmer')
-    cy.get('input').filter('[placeholder="2021"]').type('2001')
-    cy.get('input').filter('[placeholder="2023"]').type('2010')
-    cy.get('input').last().type('I learned to be a leader of my subordinates')
     cy.get('button').contains('Next').click()
 
     // opportunity interests
@@ -98,11 +88,6 @@ describe('Onboarding', () => {
     education.should('contain', '2014')
     education.should('contain', 'GPA: 2.9')
     education.should('contain', 'Paper Club')
-
-    const personalExperience = cy.get('div').contains('Personal Experience').parent().parent()
-    personalExperience.should('contain', 'Volunteer sheriff, beet farmer')
-    personalExperience.should('contain', '2001 - 2010')
-    personalExperience.should('contain', 'I learned to be a leader of my subordinates')
 
     cy.findByLabelText('Edit Profile').click()
 

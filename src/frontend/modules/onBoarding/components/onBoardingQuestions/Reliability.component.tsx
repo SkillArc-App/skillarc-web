@@ -6,7 +6,6 @@ import { Form, Formik } from 'formik'
 const JOB = "I've had or currently have a job"
 const TRAINING_PROGRAM = "I've attended a Training Program"
 const EDUCATION = 'I have a High School Diploma / GED'
-const OTHER = "I have other experience I'd like to share"
 
 type ReliabilityProps = {
   job: boolean
@@ -33,7 +32,6 @@ export const Reliability = ({
     if (values.job) responses.push(JOB)
     if (values.trainingProgram) responses.push(TRAINING_PROGRAM)
     if (values.education) responses.push(EDUCATION)
-    if (values.other) responses.push(OTHER)
 
     onSubmit({
       reliability: {
@@ -54,7 +52,6 @@ export const Reliability = ({
               <FormikCheckBox name="job" label={JOB} />
               <FormikCheckBox name="trainingProgram" label={TRAINING_PROGRAM} />
               <FormikCheckBox name="education" label={EDUCATION} />
-              <FormikCheckBox name="other" label={OTHER} />
               <Button variant={'primary'} isLoading={props.isSubmitting} type="submit">
                 Next
               </Button>
