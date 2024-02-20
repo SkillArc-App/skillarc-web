@@ -6,6 +6,8 @@ import { FaScrewdriverWrench } from 'react-icons/fa6'
 import { ProfileBox } from './profileBox'
 
 export const ProfileSkills = ({ seeker }: { seeker: GetOneProfileResponse }) => {
+  if (seeker.profileSkills.length === 0 && !seeker.isProfileEditor) return <></>
+
   const technicalSkills = seeker.profileSkills.filter(
     ({ masterSkill }) => masterSkill.type == 'TECHNICAL',
   )
