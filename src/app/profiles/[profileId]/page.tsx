@@ -1,7 +1,6 @@
 "use client"
 
 import { ProfileAbout } from '@/app/profiles/[profileId]/components/about'
-import { ProfileCertifications } from '@/app/profiles/[profileId]/components/certifications'
 import { ProfileEducation } from '@/app/profiles/[profileId]/components/education'
 import { ProfileExperience } from '@/app/profiles/[profileId]/components/experience'
 import { PersonalExperience } from '@/app/profiles/[profileId]/components/personalExperience'
@@ -51,7 +50,6 @@ function ProfileId() {
             <ProfileExperience seeker={seeker} />
             <ProfileEducation seeker={seeker} />
             {/* Training */}
-            <ProfileCertifications seeker={seeker} />
             <ProfileSkills seeker={seeker} />
             <ProfileAbout seeker={seeker} />
             <PersonalExperience seeker={seeker} />
