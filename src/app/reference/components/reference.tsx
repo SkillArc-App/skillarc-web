@@ -1,10 +1,9 @@
-"use client"
+'use client'
 
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import {
-  Avatar,
   Badge,
   Button,
   Card,
@@ -66,13 +65,6 @@ export const Reference = ({
           Write a reference for:
         </Heading>
         <Flex gap={'1rem'} marginBottom="24px" w="100%">
-          <Avatar
-            w="90px"
-            h="90px"
-            src={seeker?.user?.image ?? ''}
-            boxShadow="0px 4px 4px 0px rgba(0, 0, 0, 0.05)"
-            border="4px solid #3AC87C"
-          />
           <Stack>
             <Heading color={'greyscale.900'} type="h3">
               {fullName}
@@ -208,36 +200,7 @@ export const Reference = ({
                 Employers want to know what {fullName} has learned with you!
               </Heading>
             </CardHeader>
-            <CardBody>
-              <Stack divider={<StackDivider />} spacing="4">
-                {seeker?.programs?.map((program: any, index: number) => {
-                  return (
-                    <Flex key={index} gap="1rem" flexWrap="wrap" w="100%">
-                      <Text color="greyscale.600" variant={'b1Bold'} w="100%">
-                        {program.name}
-                      </Text>
-                      <Text type="b2" color="greyscale.600" w="100%">
-                        {program.trainingProvider.name}
-                      </Text>
-                      {program.programSkill?.length > 0 && (
-                        <Flex gap={'0.5rem'}>
-                          {program.programSkill?.map((programSkill: any, index: any) => (
-                            <Badge
-                              variant={'primary'}
-                              borderRadius={'1rem'}
-                              key={index}
-                              padding="8px 12px"
-                            >
-                              {programSkill.skill.skill}
-                            </Badge>
-                          ))}
-                        </Flex>
-                      )}
-                    </Flex>
-                  )
-                })}
-              </Stack>
-            </CardBody>
+            <CardBody></CardBody>
           </Card>
         </Flex>
       </Flex>

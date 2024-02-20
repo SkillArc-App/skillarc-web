@@ -4,14 +4,11 @@ export type OtherExperience = {
   id: string
   organizationId: string | null
   organizationName: string | null
-  profileId: string
   startDate: string | null
   isCurrent: boolean | null
   endDate: string | null
   description: string | null
   position: string | null
-  created_at: Date
-  updated_at: Date
 }
 
 const create = async (

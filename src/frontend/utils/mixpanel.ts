@@ -47,32 +47,8 @@ export const mixpanelInitUser = (user: FullUser) => {
 export const mixpanelInitProfile = (profile: GetOneProfileResponse) => {
   if (!isProduction) return
 
-  let desiredOutcomes: any[] = []
-  let interests: string[] = []
   mixpanel.identify(profile.id)
-
-  if (profile.desiredOutcomes) {
-    profile.desiredOutcomes.forEach((outcome) => {
-      if (outcome.response && desiredOutcomesVars[outcome.response]) {
-        desiredOutcomes.push(desiredOutcomesVars[outcome.response])
-      }
-    })
-  }
-  if (profile.professionalInterests) {
-    profile.professionalInterests.forEach((interest) => {
-      if (interest.response && interestsVars[interest.response]) {
-        interests.push(interestsVars[interest.response])
-      }
-    })
-  }
-  let mixpanelProps: any = {}
-  desiredOutcomes.forEach((outcome: string) => {
-    mixpanelProps[outcome] = true
-  })
-  interests.forEach((interest: string) => {
-    mixpanelProps[interest] = true
-  })
-  mixpanel.people.set(mixpanelProps)
+  mixpanel.people.set({})
 }
 
 const desiredOutcomesVars: any = {

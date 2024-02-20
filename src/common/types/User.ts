@@ -28,9 +28,6 @@ export type User = {
   onboardingSession?: OnboardingSession
   otherExperience?: OtherExperience[]
   educationExperience?: EducationExperience[]
-  // accounts      Account[]
-  // sessions      Session[]
-  // emailVerified: DateTime
 }
 
 export type OnboardingSession = {

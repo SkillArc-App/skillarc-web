@@ -1,18 +1,10 @@
 import axios from 'axios'
-import { http } from '../http-common'
 
 export type MasterCertification = {
   id: string
   certification: string
   created_at: Date
   updated_at: Date
-}
-
-const getOne = async (masterCertificationId: string) => {
-  const res = await http.get<MasterCertification>(
-    `/api/masterCertifications/${masterCertificationId}`,
-  )
-  return res.data
 }
 
 const getAll = async (token: string) => {
@@ -26,6 +18,5 @@ const getAll = async (token: string) => {
 }
 
 export const FrontendMasterCertificationService = {
-  getOne,
   getAll,
 }

@@ -5,8 +5,6 @@ export type MasterSkill = {
   id: string
   skill: string
   type: 'PERSONAL' | 'TECHNICAL'
-  created_at: Date
-  updated_at: Date
 }
 
 const getOne = async (masterSkillId: string) => {

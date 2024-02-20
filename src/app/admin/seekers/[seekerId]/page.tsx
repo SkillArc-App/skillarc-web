@@ -158,36 +158,6 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
         {seeker.industryInterests.join(', ')}
       </span>
       <Divider />
-      {workingProfile && (
-        <HStack>
-          <b>Met with a career coach: </b>
-          <Switch
-            isChecked={workingProfile.metCareerCoach}
-            onChange={(e) => {
-              if (!workingProfile) return
-              if (!token) return
-
-              const metCareerCoach = !workingProfile.metCareerCoach
-
-              setWorkingProfile({
-                ...workingProfile,
-                metCareerCoach,
-              })
-
-              put(
-                `/profiles/${workingProfile.id}`,
-                {
-                  metCareerCoach,
-                },
-                token,
-                { camel: false },
-              )
-            }}
-          />
-          {workingProfile.metCareerCoach ? <p>Yes</p> : <p>No</p>}
-        </HStack>
-      )}
-      <Divider />
       <Milestones userEvents={userEvents || []} />
     </Stack>
   )

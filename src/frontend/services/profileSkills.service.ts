@@ -3,11 +3,7 @@ import axios from 'axios'
 
 export type ProfileSkill = {
   id: string
-  master_skill_id: string
-  profile_id: string
   description: string | null
-  created_at: Date
-  updated_at: Date
 }
 
 const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
