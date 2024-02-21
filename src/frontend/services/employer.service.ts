@@ -5,9 +5,9 @@ export type Employer = {
   name: string
   location: string | null
   bio: string
-  logo_url: string | null
-  created_at: Date
-  updated_at: Date
+  logoUrl: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 const getAll = async (token: string) => {

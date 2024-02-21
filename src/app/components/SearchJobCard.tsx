@@ -23,11 +23,13 @@ export const SearchJobCard = ({
   job,
   onCardClick,
   onApplyClick,
+  onAddElevatorPitchClick,
   onSaveClick,
 }: {
   job: SearchJob
   onCardClick: () => void
   onApplyClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onAddElevatorPitchClick: () => void
   onSaveClick: (jobId: string) => void
 }) => {
   const startingPay = () => {
@@ -129,6 +131,20 @@ export const SearchJobCard = ({
               <b>{steps[applicationStep()].title}</b>
             </Text>
           </Flex>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation()
+
+              onAddElevatorPitchClick()
+            }}
+          >
+            {job.elevatorPitch ? 'Update' : 'Add'} an Elevator Pitch
+          </Button>
+          {job.elevatorPitch && (
+            <Text>
+              <b>Pitch</b>: {job.elevatorPitch}
+            </Text>
+          )}
         </Stack>
       )}
     </Stack>

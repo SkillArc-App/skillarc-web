@@ -1,5 +1,6 @@
-import { OneMatchedJobPosting } from '@/app/jobs/page'
+import { OneMatchedJobPosting } from '@/app/components/JobCard'
 import axios from 'axios'
+import { get } from '../http-common'
 import { MasterCertification } from './certification.service'
 import { Employer } from './employer.service'
 import { MasterSkill } from './skills.service'
@@ -7,37 +8,37 @@ import { MasterSkill } from './skills.service'
 export type CareerPath = {
   id: string
   title: string
-  upper_limit: string
-  lower_limit: string
+  upperLimit: string
+  lowerLimit: string
   order: number
-  job_id: string
-  created_at: Date
-  updated_at: Date
+  jobId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type Job = {
   id: string
-  employer_id: string
-  benefits_description: string
-  responsibilities_description: string | null
-  employment_title: string
+  employerId: string
+  benefitsDescription: string
+  responsibilitiesDescription: string | null
+  employmentTitle: string
   location: string
-  employment_type: 'FULLTIME' | 'PARTTIME'
-  hide_job: boolean
+  employmentType: 'FULLTIME' | 'PARTTIME'
+  hideJob: boolean
   schedule: string | null
-  work_days: string | null
-  requirements_description: string | null
+  workDays: string | null
+  requirementsDescription: string | null
   industry: string[]
-  created_at: Date
-  updated_at: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type JobPhoto = {
   id: string
-  photo_url: string
-  job_id: string
-  created_at: Date
-  updated_at: Date
+  photoUrl: string
+  jobId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export type Testimonial = {
@@ -46,7 +47,7 @@ export type Testimonial = {
   name: string
   title: string
   testimonial: string
-  photo_url: string | null
+  photoUrl: string | null
   created_at: Date
   updated_at: Date
 }
@@ -81,10 +82,6 @@ export type GetOneJobPosting = {
   testimonials: Testimonial[]
 } & Job
 
-interface JobQueryData {
-  matchedJobs: OneMatchedJobPosting[]
-}
-
 const getOne = async (jobId: string) => {
   const res = await axios
     .create({ withCredentials: false })
@@ -104,14 +101,10 @@ const getAll = async (token: string) => {
 }
 
 const getJobMatches = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<{ matchedJobs: OneMatchedJobPosting[] }>(
-      `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+  const res = await get<{ matchedJobs: OneMatchedJobPosting[] }>(
+    `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
+    token,
+  )
 
   return res.data
 }

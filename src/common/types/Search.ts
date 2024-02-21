@@ -4,6 +4,7 @@ export type SearchJob = {
   industries: string[]
   location: string
   applicationStatus?: string
+  elevatorPitch?: string
   tags: string[]
   startingPay?: StartingPay
   saved: boolean

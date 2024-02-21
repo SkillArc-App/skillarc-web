@@ -1,7 +1,8 @@
 import { Text } from '@/frontend/components/Text.component'
 
-import { OneMatchedJobPosting } from '@/app/jobs/page'
+import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import {
   Box,
   Button,
@@ -20,15 +21,43 @@ import {
   TagLabel,
 } from '@chakra-ui/react'
 
+export type OneMatchedJobPosting = {
+  learnedSkills: {
+    id: string
+    masterSkillId: string
+    masterSkill: MasterSkill
+  }[]
+  desiredSkills: {
+    id: string
+    masterSkillId: string
+    masterSkill: MasterSkill
+  }[]
+  desiredCertifications: {
+    id: string
+    masterCertificationId: string
+    masterCertification: MasterCertification
+  }[]
+  jobInteractions?: {
+    percentMatch?: number
+    id?: string
+  }
+  saved: boolean
+  applied: boolean
+  applicationStatus?: string
+  elevatorPitch?: string
+} & GetOneJobPosting
+
 export const JobCard = ({
   job,
   onCardClick,
+  onAddElevatorPitchClick,
   onApplyClick,
   onSaveClick,
 }: {
   job: OneMatchedJobPosting
   onCardClick: () => void
-  onApplyClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onAddElevatorPitchClick: () => void
+  onApplyClick: () => void
   onSaveClick: (jobId: string) => void
 }) => {
   const prettify = (dollars: string) => {
@@ -65,19 +94,19 @@ export const JobCard = ({
       bg={'white'}
       width={'100%'}
       role="listitem"
-      aria-label={job.employment_title}
+      aria-label={job.employmentTitle}
       borderRadius={'0.25rem'}
       boxShadow={'0px 4px 4px 0px rgba(0, 0, 0, 0.10)'}
       spacing={'1rem'}
       onClick={onCardClick}
     >
       <Flex gap={'1rem'}>
-        {job.employer?.logo_url && (
-          <Image src={job.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
+        {job.employer?.logoUrl && (
+          <Image src={job.employer.logoUrl} alt="employer logo" boxSize={'4rem'} />
         )}
 
         <Box textAlign={'left'}>
-          <Text type={'b1Bold'}>{job.employment_title}</Text>
+          <Text type={'b1Bold'}>{job.employmentTitle}</Text>
           <Text type={'b1'}>{job.employer.name}</Text>
           <Text type={'b2'}>{job.location}</Text>
         </Box>
@@ -96,8 +125,8 @@ export const JobCard = ({
       <Flex>
         <Center fontWeight={'bold'} color={'green.500'}>
           {job.careerPaths?.length > 0 &&
-            `${prettify(job.careerPaths[0].lower_limit)} - ${prettify(
-              job.careerPaths[0].upper_limit,
+            `${prettify(job.careerPaths[0].lowerLimit)} - ${prettify(
+              job.careerPaths[0].upperLimit,
             )}`}
         </Center>
         <Spacer />
@@ -105,7 +134,7 @@ export const JobCard = ({
           <Button
             onClick={(e) => {
               e.stopPropagation()
-              onApplyClick(e)
+              onApplyClick()
             }}
             variant={'primary'}
           >
@@ -131,6 +160,20 @@ export const JobCard = ({
               <b>{steps[applicationStep(job)].title}</b>
             </Text>
           </Flex>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation()
+
+              onAddElevatorPitchClick()
+            }}
+          >
+            {job.elevatorPitch ? 'Update' : 'Add'} an Elevator Pitch
+          </Button>
+          {job.elevatorPitch && (
+            <Text>
+              <b>Pitch</b>: {job.elevatorPitch}
+            </Text>
+          )}
         </Stack>
       )}
     </Stack>
