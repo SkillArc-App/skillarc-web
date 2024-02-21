@@ -218,7 +218,7 @@ const Seeker = () => {
         minHeight={0}
       >
         <GridItem pl="2" bg="white" area={'nav'}>
-          <Stack p={'1rem'}>
+          <Stack p={'1rem'} spacing="1rem">
             <Breadcrumb>
               <BreadcrumbItem>
                 <BreadcrumbLink as={NextLink} href="/coaches">
@@ -230,44 +230,44 @@ const Seeker = () => {
               {seeker.firstName} {seeker.lastName}
             </Heading>
             <Divider />
-            <Box mt={'1rem'}>
+            <Box>
               <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
                 Jump to Profile
               </Link>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Email</Text>
               <Text variant={'b2'} color={'black'}>
                 {seeker.email}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Phone Number</Text>
               <Text variant={'b2'} color={'black'}>
                 {seeker.phoneNumber}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Last On</Text>
               <Text variant={'b2'} color={'black'}>
                 {seeker.lastActiveOn}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Last Contacted</Text>
               <Text variant={'b2'} color={'black'}>
                 {seeker.lastContacted}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Stack>
               <Text variant={'b3'}>Seeker Certification</Text>
               {!!seeker.certifiedBy ? (
                 <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
               ) : (
-                <Button onClick={certifySeeker}>Certify This Seeker&apos;s Profile</Button>
+                <Button onClick={certifySeeker}>Certify</Button>
               )}
-            </Box>
-            <Box mt={'1rem'}>
+            </Stack>
+            <Box>
               <Text variant={'b3'} mb={'0.25rem'}>
                 Barriers
               </Text>
@@ -278,7 +278,7 @@ const Seeker = () => {
                 value={seeker.barriers.map((b) => ({ value: b.id, label: b.name }))}
               />
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Skill Level</Text>
               <Select
                 variant={'unstyled'}
@@ -290,7 +290,7 @@ const Seeker = () => {
                 <option value="advanced">Advanced</option>
               </Select>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Assigned Coach</Text>
               <Select
                 variant={'unstyled'}

@@ -122,7 +122,7 @@ describe('Coaches', () => {
           cy.get('div').should('contain', 'Recommended')
         })
 
-      cy.findByRole('button', { name: "Certify This Seeker's Profile" }).click()
+      cy.findByRole('button', { name: "Certify" }).click()
       cy.findByText(`By ${coachEmail}`)
 
       cy.findByRole('link', { name: '< Back to Seekers' }).click()
