@@ -35,15 +35,11 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
       ),
     }),
     columnHelper.accessor('firstName', {
-      header: 'First Name',
-      cell: (row) => row.getValue(),
+      header: 'Name',
+      cell: (row) => `${row.getValue()} ${row.row.original.lastName}`,
     }),
-    columnHelper.accessor('lastName', {
-      header: 'Last Name',
-      cell: (row) => row.getValue(),
-    }),
-    columnHelper.accessor('assignedCoach', {
-      header: 'Assigned Coach',
+    columnHelper.accessor('certifiedBy', {
+      header: 'Certified By',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('barriers', {

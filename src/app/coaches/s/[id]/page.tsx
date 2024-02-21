@@ -4,8 +4,10 @@ import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
 import { SeekerNote } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { NoteBox } from '@/frontend/components/note-box'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { Barrier, useBarrierData } from '@/frontend/hooks/useBarrierData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
@@ -26,9 +28,8 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ReactSelect from 'react-select'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
 
@@ -37,181 +38,118 @@ interface GroupedNotes {
 }
 
 const Seeker = () => {
-  const searchParams = useFixedParams('id')
-
-  const id = searchParams?.['id']
-
+  const { id } = useFixedParams('id')
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
 
+  const [noteDraft, setNoteDraft] = useState('')
+
+  const token = useAuthToken()
   const toast = useToast()
 
-  const [groupedNotes, setGroupedNotes] = useState<GroupedNotes>({})
-  const [noteDraft, setNoteDraft] = useState('')
-  const [workingSeeker, setWorkingSeeker] = useState(seeker)
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0()
+  const groupedNotes = (seeker?.notes ?? [])
+    .sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
+    .reduce((acc: GroupedNotes, curr) => {
+      const month = new Date(curr.date).getMonth()
+      const year = new Date(curr.date).getFullYear()
 
-  const [token, setToken] = useState<string | null>(null)
-  const [barrierOptions, setBarrierOptions] = useState<{ value: string; label: string }[]>([])
+      const yearMonthDate = new Date(year, month).toString()
 
-  useEffect(() => {
-    const getToken = async () => {
-      if (!isAuthenticated) return
+      const monthNotes = acc[yearMonthDate] || []
 
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
+      return { ...acc, [yearMonthDate]: [...monthNotes, curr] }
+    }, {})
 
-    getToken()
-  }, [getAccessTokenSilently, isAuthenticated])
+  const barrierOptions = (barriers ?? []).map((b) => ({
+    value: b.id,
+    label: b.name,
+  }))
 
-  useEffect(() => {
-    if (!seeker) return
-    setWorkingSeeker(seeker)
-  }, [seeker])
+  const jobs = allJobs?.filter((job) => {
+    return !seeker?.applications.some((a) => a.jobId === job.id)
+  })
 
-  useEffect(() => {
-    if (!workingSeeker) return
-
-    setGroupedNotes(
-      workingSeeker.notes
-        .sort((a, b) => {
-          return new Date(b.date).getTime() - new Date(a.date).getTime()
-        })
-        .reduce((acc: GroupedNotes, curr) => {
-          const month = new Date(curr.date).getMonth()
-          const year = new Date(curr.date).getFullYear()
-
-          const yearMonthDate = new Date(year, month).toString()
-
-          const monthNotes = acc[yearMonthDate] || []
-
-          return { ...acc, [yearMonthDate]: [...monthNotes, curr] }
-        }, {}),
-    )
-  }, [workingSeeker])
-
-  useEffect(() => {
-    if (!barriers) return
-
-    const options = barriers.map((b) => ({
-      value: b.id,
-      label: b.name,
-    }))
-
-    setBarrierOptions(options)
-  }, [barriers])
-
-  const addNote = () => {
+  const addNote = async () => {
     if (!token) return
     if (!noteDraft) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
     const currentNoteDraft = noteDraft
     const noteId = crypto.randomUUID()
 
-    post(
+    await post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes`,
       {
         note: currentNoteDraft,
-        note_id: noteId,
+        noteId,
       },
       token,
-      { camel: false },
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        notes: [
-          ...workingSeeker.notes,
-          { note: currentNoteDraft, noteId, date: new Date().toString(), noteTakenBy: 'You' },
-        ],
-      })
+    )
 
-      setNoteDraft('')
-    })
+    refetchSeeker()
+    setNoteDraft('')
   }
 
-  const deleteNote = (noteId: string) => {
+  const deleteNote = async (noteId: string) => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
-    destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token, {
-      camel: false,
-    }).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        notes: workingSeeker.notes.filter((n) => n.noteId !== noteId),
-      })
-    })
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token)
+
+    refetchSeeker()
   }
 
-  const modifyNote = (noteId: string, updatedNote: string) => {
+  const modifyNote = async (noteId: string, updatedNote: string) => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
-    put(
+    await put(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
       {
         note: updatedNote,
       },
       token,
-      { camel: false },
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        notes: workingSeeker.notes.map((n) =>
-          n.noteId === noteId ? { ...n, note: updatedNote } : n,
-        ),
-      })
-    })
+    )
+
+    refetchSeeker()
   }
 
-  const changeSkillLevel = (level: string) => {
+  const changeSkillLevel = async (level: string) => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
-    post(
+    await post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/skill-levels`,
-      {
-        level,
-      },
+      { level },
       token,
-      { camel: false },
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        skillLevel: level,
-      })
-    })
+    )
+
+    refetchSeeker()
   }
 
-  const assignCoach = (coachId: string) => {
+  const assignCoach = async (coachId: string) => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
-    post(
+    await post(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/assign_coach`,
-      {
-        coach_id: coachId,
-      },
+      { coachId },
       token,
-      { camel: false },
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        assignedCoach: coachId,
-      })
-    })
+    )
+
+    refetchSeeker()
   }
 
   const recommendJob = async (jobId: string) => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
     if (!jobs) return
 
-    if (!workingSeeker.phoneNumber) {
+    if (!seeker.phoneNumber) {
       toast({
         title: 'Cannot recommend job without phone number',
         status: 'error',
@@ -222,9 +160,7 @@ const Seeker = () => {
     } else {
       await post(
         `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
-        {
-          job_id: jobId,
-        },
+        { jobId },
         token,
       )
 
@@ -232,23 +168,28 @@ const Seeker = () => {
     }
   }
 
-  const updateBarriers = (barriers: Barrier[]) => {
+  const certifySeeker = async () => {
     if (!token) return
-    if (!workingSeeker) return
+    if (!seeker) return
 
-    put(
+    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/certify`, {}, token)
+
+    refetchSeeker()
+  }
+
+  const updateBarriers = async (barriers: Barrier[]) => {
+    if (!token) return
+    if (!seeker) return
+
+    await put(
       `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/update_barriers`,
       {
         barriers: barriers.map((b) => b.id),
       },
       token,
-      { camel: false },
-    ).then((res) => {
-      setWorkingSeeker({
-        ...workingSeeker,
-        barriers,
-      })
-    })
+    )
+
+    refetchSeeker()
   }
 
   const applicationIcon = (applicationStatus: string) => {
@@ -263,11 +204,7 @@ const Seeker = () => {
     return <TimeIcon boxSize={3} color={'gray'} />
   }
 
-  const jobs = allJobs?.filter((job) => {
-    return !workingSeeker?.applications.some((a) => a.jobId === job.id)
-  })
-
-  if (!workingSeeker) return <></>
+  if (!seeker) return <LoadingPage />
 
   return (
     <Box width={'100%'} height={'100%'}>
@@ -281,7 +218,7 @@ const Seeker = () => {
         minHeight={0}
       >
         <GridItem pl="2" bg="white" area={'nav'}>
-          <Stack p={'1rem'}>
+          <Stack p={'1rem'} spacing="1rem">
             <Breadcrumb>
               <BreadcrumbItem>
                 <BreadcrumbLink as={NextLink} href="/coaches">
@@ -290,45 +227,47 @@ const Seeker = () => {
               </BreadcrumbItem>
             </Breadcrumb>
             <Heading type="h3" color={'black'}>
-              {workingSeeker.firstName} {workingSeeker.lastName}
+              {seeker.firstName} {seeker.lastName}
             </Heading>
             <Divider />
-            <Box mt={'1rem'}>
-              <Link as={NextLink} href={`/profiles/${workingSeeker.seekerId}`}>
+            <Box>
+              <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
                 Jump to Profile
               </Link>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Email</Text>
               <Text variant={'b2'} color={'black'}>
-                {workingSeeker.email}
+                {seeker.email}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Phone Number</Text>
               <Text variant={'b2'} color={'black'}>
-                {workingSeeker.phoneNumber}
+                {seeker.phoneNumber}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Last On</Text>
               <Text variant={'b2'} color={'black'}>
-                {workingSeeker.lastActiveOn}
+                {seeker.lastActiveOn}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Last Contacted</Text>
               <Text variant={'b2'} color={'black'}>
-                {workingSeeker.lastContacted}
+                {seeker.lastContacted}
               </Text>
             </Box>
-            <Box mt={'1rem'}>
-              <Text variant={'b3'}>Stage</Text>
-              <Text variant={'b2'} color={'black'}>
-                {workingSeeker.stage}
-              </Text>
-            </Box>
-            <Box mt={'1rem'}>
+            <Stack>
+              <Text variant={'b3'}>Seeker Certification</Text>
+              {!!seeker.certifiedBy ? (
+                <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
+              ) : (
+                <Button onClick={certifySeeker}>Certify</Button>
+              )}
+            </Stack>
+            <Box>
               <Text variant={'b3'} mb={'0.25rem'}>
                 Barriers
               </Text>
@@ -336,28 +275,28 @@ const Seeker = () => {
                 isMulti
                 options={barrierOptions}
                 onChange={(v) => updateBarriers(v.map((b) => ({ id: b.value, name: b.label })))}
-                value={workingSeeker.barriers.map((b) => ({ value: b.id, label: b.name }))}
+                value={seeker.barriers.map((b) => ({ value: b.id, label: b.name }))}
               />
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Skill Level</Text>
               <Select
                 variant={'unstyled'}
                 color={'black'}
                 onChange={(e) => changeSkillLevel(e.target.value)}
-                value={workingSeeker.skillLevel}
+                value={seeker.skillLevel}
               >
                 <option value="beginner">Beginner</option>
                 <option value="advanced">Advanced</option>
               </Select>
             </Box>
-            <Box mt={'1rem'}>
+            <Box>
               <Text variant={'b3'}>Assigned Coach</Text>
               <Select
                 variant={'unstyled'}
                 color={'black'}
                 onChange={(e) => assignCoach(e.target.value)}
-                value={workingSeeker.assignedCoach}
+                value={seeker.assignedCoach}
               >
                 <option value=""></option>
                 {coaches?.map((coach, key) => (
@@ -415,7 +354,7 @@ const Seeker = () => {
               </Heading>
               <Divider />
             </Box>
-            {workingSeeker.applications.map(({ employerName, employmentTitle, status, jobId }) => (
+            {seeker.applications.map(({ employerName, employmentTitle, status, jobId }) => (
               <Stack p={'1rem'} key={jobId} bg="white" height={'100%'}>
                 <Box>
                   <Text variant={'b3'}>Employer</Text>
@@ -454,7 +393,7 @@ const Seeker = () => {
                     </Link>
                   </Box>
                   <Box>
-                    {workingSeeker.jobRecommendations.includes(job.id) ? (
+                    {seeker.jobRecommendations.includes(job.id) ? (
                       <i>Recommended</i>
                     ) : (
                       <Button onClick={() => recommendJob(job.id)} variant={'solid'} size={'sm'}>
