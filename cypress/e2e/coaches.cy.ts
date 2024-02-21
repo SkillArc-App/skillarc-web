@@ -122,15 +122,25 @@ describe('Coaches', () => {
           cy.get('div').should('contain', 'Recommended')
         })
 
-      cy.get('a').contains('< Back to Seekers').click()
+      cy.findByRole('button', { name: "Certify This Seeker's Profile" }).click()
+      cy.findByText(`By ${coachEmail}`)
 
-      cy.get('body').should('contain', `${seeker['first_name']}`)
-      cy.get('body').should('contain', `${seeker['last_name']}`)
+      cy.findByRole('link', { name: '< Back to Seekers' }).click()
 
       cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
 
-      cy.get('a').contains(seeker['email']).click()
+      const table = cy.findByRole('table')
+      table.within(() => {
+        const row = cy.findByText(`${seeker['first_name']} ${seeker['last_name']}`).parent()
 
+        row.within(() => {
+          cy.findByText(coachEmail)
+        })
+      })
+
+      cy.findByRole('link', { name: seeker['email'] }).click()
+
+      cy.findByText('< Back to Seekers')
       cy.reload()
 
       cy.get('body').should('contain', 'This is a new note')
