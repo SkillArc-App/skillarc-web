@@ -7,7 +7,7 @@ export const useCoachesData = () =>
     if (!token) return Promise.reject('No user id')
 
     const getCoachesRequest = async () => {
-      const res = await get<Coach[]>(`${process.env.NEXT_PUBLIC_API_URL}/coaches/`, token, { camel: false })
+      const res = await get<Coach[]>(`${process.env.NEXT_PUBLIC_API_URL}/coaches/`, token)
 
       return res.data
     }
