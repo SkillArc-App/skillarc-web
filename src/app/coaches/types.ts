@@ -34,6 +34,7 @@ export type CoachSeeker = {
   applications: SeekerApplication[]
   assignedCoach: string
   barriers: Barrier[]
+  certifiedBy?: string,
   email: string
   jobRecommendations: string[]
   firstName: string

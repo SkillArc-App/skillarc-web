@@ -168,6 +168,15 @@ const Seeker = () => {
     }
   }
 
+  const certifyProfile = async () => {
+    if (!token) return
+    if (!seeker) return
+
+    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/certify`, {}, token)
+
+    refetchSeeker()
+  }
+
   const updateBarriers = async (barriers: Barrier[]) => {
     if (!token) return
     if (!seeker) return
@@ -249,6 +258,14 @@ const Seeker = () => {
               <Text variant={'b2'} color={'black'}>
                 {seeker.lastContacted}
               </Text>
+            </Box>
+            <Box mt={'1rem'}>
+              <Text variant={'b3'}>Seeker Certification</Text>
+              {!!seeker.certifiedBy ? (
+                <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
+              ) : (
+                <Button onClick={certifyProfile}>Certify This Seeker&apos;s Profile</Button>
+              )}
             </Box>
             <Box mt={'1rem'}>
               <Text variant={'b3'} mb={'0.25rem'}>
