@@ -38,8 +38,8 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
       header: 'Name',
       cell: (row) => `${row.getValue()} ${row.row.original.lastName}`,
     }),
-    columnHelper.accessor('assignedCoach', {
-      header: 'Assigned Coach',
+    columnHelper.accessor('certifiedBy', {
+      header: 'Certified By',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('barriers', {
