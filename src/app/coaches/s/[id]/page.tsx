@@ -168,7 +168,7 @@ const Seeker = () => {
     }
   }
 
-  const certifyProfile = async () => {
+  const certifySeeker = async () => {
     if (!token) return
     if (!seeker) return
 
@@ -264,7 +264,7 @@ const Seeker = () => {
               {!!seeker.certifiedBy ? (
                 <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
               ) : (
-                <Button onClick={certifyProfile}>Certify This Seeker&apos;s Profile</Button>
+                <Button onClick={certifySeeker}>Certify This Seeker&apos;s Profile</Button>
               )}
             </Box>
             <Box mt={'1rem'}>
