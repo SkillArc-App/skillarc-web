@@ -12,11 +12,11 @@ import { User } from './user.service'
 
 export type Profile = {
   id: string
+  about?: string
   userId: string
 }
 
 export type GetOneProfileResponse = {
-  about: string
   industryInterests: string[]
   isProfileEditor: boolean
   user: User & {
