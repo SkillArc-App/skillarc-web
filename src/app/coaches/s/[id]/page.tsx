@@ -251,12 +251,6 @@ const Seeker = () => {
               </Text>
             </Box>
             <Box mt={'1rem'}>
-              <Text variant={'b3'}>Stage</Text>
-              <Text variant={'b2'} color={'black'}>
-                {workingSeeker.stage}
-              </Text>
-            </Box>
-            <Box mt={'1rem'}>
               <Text variant={'b3'} mb={'0.25rem'}>
                 Barriers
               </Text>
