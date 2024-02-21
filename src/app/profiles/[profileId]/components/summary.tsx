@@ -3,7 +3,7 @@ import { Briefcase } from '@/frontend/icons/Briefcase.icon'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { copyTextToClipboard } from '@/frontend/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
-import { Button, Flex, useToast } from '@chakra-ui/react'
+import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
 import { Text } from '../../../../frontend/components/Text.component'
 
@@ -49,13 +49,21 @@ export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) =>
               </Button>
             )}
           </Flex>
-
-          <Text type="b3" color="greyscale.600" w="100%">
-            ZIP Code: {seeker.user.zipCode}
-          </Text>
-          <Text type="b3" color="greyscale.600" w="100%">
-            Phone Number: {seeker.user.phoneNumber}
-          </Text>
+          <Stack gap={'1rem'}>
+            {seeker.about && <Text>{seeker.about}</Text>}
+            <Box>
+              {(seeker.user.zipCode || seeker.isProfileEditor) && (
+                <Text type="b3" color="greyscale.600" w="100%">
+                  ZIP Code: {seeker.user.zipCode}
+                </Text>
+              )}
+              {(seeker.user.phoneNumber || seeker.isProfileEditor) && (
+                <Text type="b3" color="greyscale.600" w="100%">
+                  Phone Number: {seeker.user.phoneNumber}
+                </Text>
+              )}
+            </Box>
+          </Stack>
         </Flex>
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1rem">
