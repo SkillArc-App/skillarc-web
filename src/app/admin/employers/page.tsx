@@ -120,13 +120,13 @@ export default function Employers() {
                     </Link>
                   </Td>
                   <Td>
-                    <Link href={employer.logo_url ?? ''} as={NextLink}>
+                    <Link href={employer.logoUrl ?? ''} as={NextLink}>
                       link
                     </Link>
                   </Td>
                   <Td whiteSpace={'normal'}>{employer.bio}</Td>
                   <Td>{employer.location}</Td>
-                  <Td>{new Date(employer.created_at as unknown as string).toDateString()}</Td>
+                  <Td>{new Date(employer.createdAt as unknown as string).toDateString()}</Td>
                 </Tr>
               )
             })}

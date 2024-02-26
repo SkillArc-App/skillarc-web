@@ -137,7 +137,7 @@ export default function JobPosting() {
                   Would you like to apply to
                 </Text>
                 <Text type="b1Bold" color="primary.500" marginRight="4px">
-                  {job.employment_title}
+                  {job.employmentTitle}
                 </Text>
                 <Text type="b1" color="greyscale.600" marginRight="4px">
                   at

@@ -3,9 +3,8 @@
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
 import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
-import { Employer } from '@/common/types/Employer'
-import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import { SearchFilter, SearchJob, SearchValue, UtmParams } from '@/common/types/Search'
+import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
@@ -13,7 +12,6 @@ import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import {
   Box,
   Button,
@@ -30,8 +28,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Textarea,
   VStack,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
@@ -42,31 +40,7 @@ import SearchBar from './components/SearchBar'
 import useApply from './hooks/useApply'
 import { useJobSearch } from './hooks/useJobSearch'
 
-export type OneMatchedJobPosting = {
-  employer: Employer
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  jobInteractions?: {
-    percentMatch?: number
-    id?: string
-  }
-  saved: boolean
-  applied: boolean
-  applicationStatus?: string
-} & GetOneJobPosting
+type Action = 'apply' | 'pitch' | 'share' | ''
 
 // This is simply a shim until
 // We setup an endpoint for the server to
@@ -103,16 +77,17 @@ export default function Jobs() {
     otherUtmParams['utm_source'] = utm_source
   }
 
-  const [activeJobId, setActiveJobId] = useState<string>(searchParams?.get('activeJobId') ?? '')
+  const activeJobId = searchParams?.get('activeJobId')
+  const action = searchParams?.get('action') as Action
+
   const [searchValue, setSearchValue] = useState<SearchValue>({
     searchTerms,
     filters: {},
     otherUtmParams: otherUtmParams,
   })
 
-  const setActiveJobIdAndRoute = (id: string) => {
-    router.replace(`/jobs?utm_term=${searchValue.searchTerms}&activeJobId=${id}`)
-    setActiveJobId(id)
+  const setActiveJobIdAndRoute = (id: string, action: Action = '') => {
+    router.replace(`/jobs?utm_term=${searchValue.searchTerms}&activeJobId=${id}&action=${action}`)
   }
   const setSearchValueAndRoute = (searchValue: SearchValue) => {
     router.replace(`/jobs?utm_term=${searchValue.searchTerms}&activeJobId=${activeJobId}`)
@@ -136,30 +111,17 @@ export default function Jobs() {
         job: job,
         jobId: job.id,
       })
-      setActiveJobIdAndRoute('')
-      onApplyModalClose()
-      onSharingModalOpen()
+      setActiveJobIdAndRoute(job.id, 'share')
 
       refetch()
     },
   })
 
-  const {
-    isOpen: isApplyModalOpen,
-    onOpen: onApplyModalOpen,
-    onClose: onApplyModalClose,
-  } = useDisclosure()
-  const {
-    isOpen: isSharingModalOpen,
-    onOpen: onSharingModalOpen,
-    onClose: onSharingModalClose,
-  } = useDisclosure()
+  const [elevatorPitch, setElevatorPitch] = useState<Maybe<string>>(activeJob?.elevatorPitch)
 
   useEffect(() => {
-    if (activeJob && (!isApplyModalOpen || !isSharingModalOpen)) {
-      onApplyModalOpen()
-    }
-  }, [activeJob, isApplyModalOpen, isSharingModalOpen, onApplyModalOpen])
+    setElevatorPitch(activeJob?.elevatorPitch)
+  }, [activeJob])
 
   const token = useAuthToken()
 
@@ -186,6 +148,20 @@ export default function Jobs() {
     refetch()
   }
 
+  const onElevatorPitchOpen = (job: SearchJob) => {
+    setActiveJobIdAndRoute(job.id, 'pitch')
+  }
+
+  const onElevatorPitchSave = async () => {
+    if (!token) return
+
+    await post(`jobs/${activeJob?.id}/elevator_pitch`, { elevatorPitch }, token)
+
+    await refetch()
+
+    setActiveJobIdAndRoute('')
+  }
+
   if (!jobs) return
 
   return (
@@ -201,10 +177,10 @@ export default function Jobs() {
                 job={job}
                 onCardClick={() => router.push(`/jobs/${job.id}`)}
                 onApplyClick={(e) => {
-                  setActiveJobIdAndRoute(job.id)
+                  setActiveJobIdAndRoute(job.id, 'apply')
                   e.stopPropagation()
-                  onApplyModalOpen()
                 }}
+                onAddElevatorPitchClick={() => onElevatorPitchOpen(job)}
                 onSaveClick={() => onSaveClick(job)}
                 key={index}
               />
@@ -212,7 +188,7 @@ export default function Jobs() {
           })}
         </VStack>
       </VStack>
-      <Modal isOpen={isSharingModalOpen} onClose={onSharingModalClose}>
+      <Modal isOpen={!!activeJob && action === 'share'} onClose={() => setActiveJobIdAndRoute('')}>
         <ModalOverlay />
         <ModalContent m={'1rem'}>
           <ModalHeader>
@@ -225,17 +201,16 @@ export default function Jobs() {
           </ModalBody>
 
           <ModalFooter>
-            <Button width={'100%'} variant={'primary'} onClick={onSharingModalClose}>
+            <Button width={'100%'} variant={'primary'} onClick={() => setActiveJobIdAndRoute('')}>
               Back to Jobs
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
       <Modal
-        isOpen={isApplyModalOpen}
+        isOpen={!!activeJob && action === 'apply'}
         onClose={() => {
           setActiveJobIdAndRoute('')
-          onApplyModalClose()
         }}
       >
         <ModalOverlay />
@@ -268,6 +243,30 @@ export default function Jobs() {
                 <Button width={'100%'}>See Full Job Posting</Button>
               </Link>
             </Stack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={action === 'pitch'} onClose={() => setActiveJobIdAndRoute('')}>
+        <ModalOverlay />
+        <ModalContent m={'1rem'}>
+          <ModalHeader>
+            <Heading size={'xl'}>Elevator Pitch</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack gap={'1rem'}>
+              <Text type={'b2'}>Take 1-2 sentences to explain why you applied to this job</Text>
+              <Textarea
+                placeholder="I applied to this job because..."
+                value={elevatorPitch}
+                onChange={(e) => setElevatorPitch(e.target.value)}
+              />
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button width={'100%'} variant={'primary'} onClick={onElevatorPitchSave}>
+              Let&apos;s Go!
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

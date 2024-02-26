@@ -49,7 +49,7 @@ export default function Employer({ params: { id } }: { params: { id: string } })
     if (!employer) return
 
     setName(employer.name)
-    setLogoUrl(employer.logo_url ?? '')
+    setLogoUrl(employer.logoUrl ?? '')
     setBio(employer.bio)
     setLocation(employer.location ?? '')
   }, [employer])
@@ -104,7 +104,7 @@ export default function Employer({ params: { id } }: { params: { id: string } })
         <b>Location</b>: {employer.location}
       </div>
       <div>
-        <b>Logo URL</b>: {employer.logo_url}
+        <b>Logo URL</b>: {employer.logoUrl}
       </div>
       <Flex>
         <Button onClick={onOpen} leftIcon={<EditIcon />} size="sm">

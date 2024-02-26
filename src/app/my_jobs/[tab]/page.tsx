@@ -1,6 +1,6 @@
 'use client'
 
-import { JobCard } from '@/app/components/JobCard'
+import { JobCard, OneMatchedJobPosting } from '@/app/components/JobCard'
 import useApply from '@/app/jobs/hooks/useApply'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
@@ -30,13 +30,13 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { OneMatchedJobPosting } from '../../jobs/page'
+import { useEffect, useState } from 'react'
 
 const MyJobs = () => {
   const router = useRouter()
@@ -57,7 +57,14 @@ const MyJobs = () => {
     onClose: onSharingModalClose,
   } = useDisclosure()
 
+  const {
+    isOpen: isElevatorPitchModalOpen,
+    onOpen: onElevatorPitchModalOpen,
+    onClose: onElevatorPitchModalClose,
+  } = useDisclosure()
+
   const [activeJob, setActiveJob] = useState<Maybe<OneMatchedJobPosting>>(undefined)
+  const [elevatorPitch, setElevatorPitch] = useState<Maybe<string>>(undefined)
   const { applyCopy, onApply } = useApply({
     job: activeJob,
     async onReadyToApply(job, token) {
@@ -67,7 +74,7 @@ const MyJobs = () => {
         job: job,
         jobId: job.id,
       })
-      refetch()
+      await refetch()
       onSharingModalOpen()
     },
   })
@@ -75,6 +82,10 @@ const MyJobs = () => {
   const jobMatches = data?.matchedJobs ?? []
   const savedJobMatches = jobMatches.filter((jobMatch) => jobMatch.saved)
   const appliedJobMatches = jobMatches.filter((jobMatch) => jobMatch.applied)
+
+  useEffect(() => {
+    setElevatorPitch(activeJob?.elevatorPitch)
+  }, [activeJob])
 
   const onSaveClick = async (job: OneMatchedJobPosting) => {
     if (!token) {
@@ -92,6 +103,18 @@ const MyJobs = () => {
     refetch()
   }
 
+  const onElevatorPitchSave = async () => {
+    if (!token) {
+      return
+    }
+
+    await post(`jobs/${activeJob?.id}/elevator_pitch`, { elevatorPitch }, token)
+
+    await refetch()
+
+    onElevatorPitchModalClose()
+  }
+
   const index = (tab: Maybe<string>) => {
     if (tab === 'recently-viewed') return 0
     if (tab === 'saved') return 1
@@ -99,10 +122,27 @@ const MyJobs = () => {
     return 0
   }
 
-  const onApplyOpen = (e: React.MouseEvent<HTMLButtonElement>, job: OneMatchedJobPosting) => {
+  const onElevatorPitchOpen = (job: OneMatchedJobPosting) => {
     setActiveJob(job)
-    e.stopPropagation()
+    onElevatorPitchModalOpen()
+  }
+
+  const onApplyOpen = (job: OneMatchedJobPosting) => {
+    setActiveJob(job)
     onApplyModalOpen()
+  }
+
+  const jobElement = (job: OneMatchedJobPosting) => {
+    return (
+      <JobCard
+        key={job.id}
+        job={job}
+        onAddElevatorPitchClick={() => onElevatorPitchOpen(job)}
+        onApplyClick={() => onApplyOpen(job)}
+        onCardClick={() => router.push(`/jobs/${job.id}`)}
+        onSaveClick={() => onSaveClick(job)}
+      />
+    )
   }
 
   return (
@@ -129,41 +169,17 @@ const MyJobs = () => {
             <TabPanels>
               <TabPanel px={0}>
                 <Stack gap={'1rem'} overflow={'scroll'}>
-                  {jobMatches.map((jobMatch) => (
-                    <JobCard
-                      key={jobMatch.id}
-                      job={jobMatch}
-                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
-                      onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch)}
-                    />
-                  ))}
+                  {jobMatches.map((jobMatch) => jobElement(jobMatch))}
                 </Stack>
               </TabPanel>
               <TabPanel px={0}>
                 <Stack gap={'1rem'} overflow={'scroll'}>
-                  {savedJobMatches.map((jobMatch) => (
-                    <JobCard
-                      key={jobMatch.id}
-                      job={jobMatch}
-                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
-                      onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch)}
-                    />
-                  ))}
+                  {savedJobMatches.map((jobMatch) => jobElement(jobMatch))}
                 </Stack>
               </TabPanel>
               <TabPanel px={0}>
                 <Stack gap={'1rem'} overflow={'scroll'}>
-                  {appliedJobMatches.map((jobMatch) => (
-                    <JobCard
-                      key={jobMatch.id}
-                      job={jobMatch}
-                      onApplyClick={(e) => onApplyOpen(e, jobMatch)}
-                      onCardClick={() => router.push(`/jobs/${jobMatch.id}`)}
-                      onSaveClick={() => onSaveClick(jobMatch)}
-                    />
-                  ))}
+                  {appliedJobMatches.map((jobMatch) => jobElement(jobMatch))}
                 </Stack>
               </TabPanel>
             </TabPanels>
@@ -198,12 +214,12 @@ const MyJobs = () => {
           <ModalCloseButton />
           <ModalBody>
             <Flex gap={'1rem'}>
-              {activeJob?.employer?.logo_url && (
-                <Image src={activeJob.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
+              {activeJob?.employer?.logoUrl && (
+                <Image src={activeJob.employer.logoUrl} alt="employer logo" boxSize={'4rem'} />
               )}
 
               <Box>
-                <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
+                <Text type={'b1Bold'}>{activeJob?.employmentTitle}</Text>
                 <Text type={'b2'}>{activeJob?.employer.name}</Text>
                 <Text type={'b3'}>{activeJob?.location}</Text>
               </Box>
@@ -220,6 +236,30 @@ const MyJobs = () => {
                 <Button width={'100%'}>See Full Job Posting</Button>
               </Link>
             </Stack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isElevatorPitchModalOpen} onClose={onElevatorPitchModalClose}>
+        <ModalOverlay />
+        <ModalContent m={'1rem'}>
+          <ModalHeader>
+            <Heading size={'xl'}>Elevator Pitch</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Stack gap={'1rem'}>
+              <Text type={'b2'}>Take 1-2 sentences to explain why you applied to this job</Text>
+              <Textarea
+                placeholder="I applied to this job because..."
+                value={elevatorPitch}
+                onChange={(e) => setElevatorPitch(e.target.value)}
+              />
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            <Button width={'100%'} variant={'primary'} onClick={onElevatorPitchSave}>
+              Let&apos;s Go!
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

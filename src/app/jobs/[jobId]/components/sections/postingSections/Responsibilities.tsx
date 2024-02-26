@@ -80,7 +80,7 @@ export const Responsibilities = ({ job }: { job: GetOneJobPosting }) => {
         <AccordionPanel>
           <ReactMarkdown
             // eslint-disable-next-line react/no-children-prop
-            children={job.responsibilities_description ?? ''}
+            children={job.responsibilitiesDescription ?? ''}
             components={ChakraUIRenderer(newTheme)}
             skipHtml
           />

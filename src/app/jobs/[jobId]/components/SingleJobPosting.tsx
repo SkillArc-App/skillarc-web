@@ -61,11 +61,11 @@ export const SingleJobPosting = ({ job, percentMatch, user }: SingleJobPostingPr
             profileCertifications={user?.profile?.profileCertifications}
           />
         )}
-        {job.employment_title && job.location && <EmployerSummary job={job} />}
-        {job.requirements_description && <Requirements job={job} />}
-        {job.employment_type && <WhatToExpect job={job} />}
-        {job.benefits_description && <Benefits job={job} />}
-        {job.responsibilities_description && <Responsibilities job={job} />}
+        {job.employmentTitle && job.location && <EmployerSummary job={job} />}
+        {job.requirementsDescription && <Requirements job={job} />}
+        {job.employmentType && <WhatToExpect job={job} />}
+        {job.benefitsDescription && <Benefits job={job} />}
+        {job.responsibilitiesDescription && <Responsibilities job={job} />}
         {job.careerPaths.length > 0 && <CareerJourney job={job} />}
         {job.learnedSkills.length > 0 && <LearnedSkills job={job} />}
         {job.testimonials.length > 0 && <Testimonials job={job} />}

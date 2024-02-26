@@ -47,8 +47,8 @@ export const DesiredSkills = ({
       flexWrap="wrap"
     >
       <Flex flexDir="row" alignItems="center" gap=".5rem" w="100%">
-        {job.employer.logo_url && (
-          <Image boxSize="32px" objectFit="cover" src={job.employer.logo_url} alt="logo" />
+        {job.employer.logoUrl && (
+          <Image boxSize="32px" objectFit="cover" src={job.employer.logoUrl} alt="logo" />
         )}
 
         <Text type="b2" color="greyscale.900">
@@ -60,7 +60,7 @@ export const DesiredSkills = ({
           We&apos;re looking for
         </Heading>
         <Heading type="h3" color="primary.500" w="100%">
-          {pluralizeJobTitle(job.employment_title)}
+          {pluralizeJobTitle(job.employmentTitle)}
         </Heading>
         <Heading type="h3" color="greyscale.600" marginRight=".25rem">
           in

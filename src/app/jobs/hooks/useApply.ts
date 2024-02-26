@@ -1,11 +1,11 @@
-import { SearchJob } from "@/common/types/Search"
-import { OneMatchedJobPosting } from "../page"
-import useUserState, { UserState } from "./useUserState"
-import { Maybe } from "@/common/types/maybe"
-import { useAuth0 } from "lib/auth-wrapper"
-import { useRouter } from "next/navigation"
-import { useAuthToken } from "@/frontend/hooks/useAuthToken"
-import { GetOneJobPosting } from "@/frontend/services/jobs.service"
+import { OneMatchedJobPosting } from '@/app/components/JobCard'
+import { SearchJob } from '@/common/types/Search'
+import { Maybe } from '@/common/types/maybe'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { useAuth0 } from 'lib/auth-wrapper'
+import { useRouter } from 'next/navigation'
+import useUserState, { UserState } from './useUserState'
 
 export const applyCopyOptions = {
   [UserState.UnAuthenticated]: 'Apply by Login',
@@ -18,7 +18,10 @@ type UseApplyProps<T> = {
   onReadyToApply: (job: T, token: string) => void
 }
 
-function useApply<T extends SearchJob | OneMatchedJobPosting | GetOneJobPosting>({ job, onReadyToApply }: UseApplyProps<T>) {
+function useApply<T extends SearchJob | OneMatchedJobPosting | GetOneJobPosting>({
+  job,
+  onReadyToApply,
+}: UseApplyProps<T>) {
   const userState = useUserState()
   const { loginWithRedirect } = useAuth0()
   const router = useRouter()
@@ -41,7 +44,6 @@ function useApply<T extends SearchJob | OneMatchedJobPosting | GetOneJobPosting>
       return
     }
 
-
     if (userState == UserState.IncompleteOnboarding) {
       localStorage.setItem('preOnboardingJobInterest', job.id)
       router.push('/onboarding')
@@ -54,7 +56,7 @@ function useApply<T extends SearchJob | OneMatchedJobPosting | GetOneJobPosting>
 
   return {
     onApply,
-    applyCopy
+    applyCopy,
   }
 }
 

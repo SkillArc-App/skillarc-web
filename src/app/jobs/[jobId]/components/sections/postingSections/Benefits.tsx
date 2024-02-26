@@ -1,4 +1,5 @@
 import { Heading } from '@/frontend/components/Heading.component'
+import { Text } from '@/frontend/components/Text.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { GetOneJobPosting } from '@/frontend/services/jobs.service'
 import {
@@ -11,7 +12,6 @@ import {
 } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
-import { Text } from '@/frontend/components/Text.component'
 
 export const Benefits = ({ job }: { job: GetOneJobPosting }) => {
   function trackToggleAnalytics(): void {
@@ -87,10 +87,10 @@ export const Benefits = ({ job }: { job: GetOneJobPosting }) => {
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          {job && job.benefits_description && (
+          {job && job.benefitsDescription && (
             <ReactMarkdown
               // eslint-disable-next-line react/no-children-prop
-              children={job.benefits_description}
+              children={job.benefitsDescription}
               components={ChakraUIRenderer(newTheme)}
               skipHtml
             />

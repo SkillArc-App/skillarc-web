@@ -83,19 +83,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
   const [employerId, setEmployerId] = useState(job?.employer.id)
-  const [employmentTitle, setEmploymentTitle] = useState(job?.employment_title)
+  const [employmentTitle, setEmploymentTitle] = useState(job?.employmentTitle)
   const [location, setLocation] = useState(job?.location)
-  const [employmentType, setEmploymentType] = useState(job?.employment_type)
-  const [benefitsDescription, setBenefitsDescription] = useState(job?.benefits_description)
+  const [employmentType, setEmploymentType] = useState(job?.employmentType)
+  const [benefitsDescription, setBenefitsDescription] = useState(job?.benefitsDescription)
   const [responsibilitiesDescription, setResponsibilitiesDescription] = useState(
-    job?.responsibilities_description,
+    job?.responsibilitiesDescription,
   )
   const [requirementsDescription, setRequirementsDescription] = useState(
-    job?.requirements_description,
+    job?.requirementsDescription,
   )
-  const [workDays, setWorkDays] = useState(job?.work_days)
+  const [workDays, setWorkDays] = useState(job?.workDays)
   const [schedule, setSchedule] = useState(job?.schedule)
-  const [hideJob, setHideJob] = useState(job?.hide_job)
+  const [hideJob, setHideJob] = useState(job?.hideJob)
 
   const [careerPathTitle, setCareerPathTitle] = useState('')
   const [careerPathLowerLimit, setCareerPathLowerLimit] = useState('')
@@ -112,15 +112,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!job) return
 
     setEmployerId(job.employer.id)
-    setEmploymentTitle(job.employment_title)
+    setEmploymentTitle(job.employmentTitle)
     setLocation(job.location)
-    setEmploymentType(job.employment_type)
-    setBenefitsDescription(job.benefits_description)
-    setResponsibilitiesDescription(job.responsibilities_description)
-    setRequirementsDescription(job.requirements_description)
-    setWorkDays(job.work_days)
+    setEmploymentType(job.employmentType)
+    setBenefitsDescription(job.benefitsDescription)
+    setResponsibilitiesDescription(job.responsibilitiesDescription)
+    setRequirementsDescription(job.requirementsDescription)
+    setWorkDays(job.workDays)
     setSchedule(job.schedule)
-    setHideJob(job.hide_job)
+    setHideJob(job.hideJob)
   }, [job])
 
   const handleEmployerIdChange = (e: any) => {
@@ -565,40 +565,34 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               </Link>
             </Box>
             <Box>
-              <b>Employment Title</b>: {job.employment_title}
+              <b>Employment Title</b>: {job.employmentTitle}
             </Box>
             <Box>
               <b>Location</b>: {job.location}
             </Box>
             <Box>
-              <b>Employment Type</b>: {job.employment_type}
+              <b>Employment Type</b>: {job.employmentType}
             </Box>
             <Box>
               <b>Benefits Description</b>:
-              <ReactMarkdown>
-                {job.benefits_description ?? ''}
-              </ReactMarkdown>
+              <ReactMarkdown>{job.benefitsDescription ?? ''}</ReactMarkdown>
             </Box>
             <Box>
               <b>Responsibilities Description</b>:
-              <ReactMarkdown>
-                {job.responsibilities_description ?? ''}
-              </ReactMarkdown>
+              <ReactMarkdown>{job.responsibilitiesDescription ?? ''}</ReactMarkdown>
             </Box>
             <Box>
               <b>Requirements Description</b>:
-              <ReactMarkdown>
-                {job.requirements_description ?? ''}
-              </ReactMarkdown>
+              <ReactMarkdown>{job.requirementsDescription ?? ''}</ReactMarkdown>
             </Box>
             <Box>
-              <b>Work Days</b>: {job.work_days}
+              <b>Work Days</b>: {job.workDays}
             </Box>
             <Box>
               <b>Schedule</b>: {job.schedule}
             </Box>
             <Box>
-              <b>Hidden</b>: {job.hide_job ? 'Yes' : 'No'}
+              <b>Hidden</b>: {job.hideJob ? 'Yes' : 'No'}
             </Box>
             <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
