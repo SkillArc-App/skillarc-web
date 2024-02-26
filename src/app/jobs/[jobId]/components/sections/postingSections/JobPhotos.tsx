@@ -28,7 +28,6 @@ export const JobPhotos = ({ job }: { job: GetOneJobPosting }) => {
     )
   }
 
-
   return (
     <>
       <Image
@@ -36,7 +35,7 @@ export const JobPhotos = ({ job }: { job: GetOneJobPosting }) => {
         w="100%"
         objectFit="cover"
         alt="photo"
-        src={job?.jobPhotos[currentIndex].photo_url}
+        src={job?.jobPhotos[currentIndex].photoUrl}
         zIndex={0}
         position="initial"
       />

@@ -1,5 +1,4 @@
 import { OneMatchedJobPosting } from '@/app/components/JobCard'
-import axios from 'axios'
 import { get } from '../http-common'
 import { MasterCertification } from './certification.service'
 import { Employer } from './employer.service'
@@ -83,19 +82,13 @@ export type GetOneJobPosting = {
 } & Job
 
 const getOne = async (jobId: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<GetOneJobPosting>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`)
+  const res = await get<GetOneJobPosting>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`)
 
   return res.data
 }
 
 const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<GetOneJobPosting[]>(`${process.env.NEXT_PUBLIC_API_URL}/jobs`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get<GetOneJobPosting[]>(`${process.env.NEXT_PUBLIC_API_URL}/jobs`, token)
 
   return res.data
 }

@@ -37,8 +37,7 @@ export const CareerJourney = ({ job }: { job: GetOneJobPosting }) => {
                   {careerPath.title}
                 </Text>
                 <Text type="b2" color="greyscale.600" w="100%" marginBottom="1rem">
-                  {formatCurrency(careerPath.lower_limit)} -{' '}
-                  {formatCurrency(careerPath.upper_limit)}
+                  {formatCurrency(careerPath.lowerLimit)} - {formatCurrency(careerPath.upperLimit)}
                 </Text>
               </Flex>
             </Flex>

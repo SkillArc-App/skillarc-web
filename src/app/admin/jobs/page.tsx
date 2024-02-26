@@ -75,7 +75,7 @@ export default function Jobs() {
 
     const filteredJobs = jobs.filter((job) => {
       if (showHiddenJobs) return true
-      return !job.hide_job
+      return !job.hideJob
     })
 
     setFilteredJobs(filteredJobs)
@@ -152,11 +152,11 @@ export default function Jobs() {
     filteredJobs?.map((job) => {
       return {
         id: job.id,
-        hidden: job.hide_job,
-        title: job.employment_title,
+        hidden: job.hideJob,
+        title: job.employmentTitle,
         employer: job.employer.name,
         applicantCount: job.numberOfApplicants,
-        createdAt: new Date(job.created_at as unknown as string).toDateString(),
+        createdAt: new Date(job.createdAt as unknown as string).toDateString(),
       }
     }) ?? []
 

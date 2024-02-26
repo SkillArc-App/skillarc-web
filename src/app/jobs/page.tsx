@@ -265,7 +265,7 @@ export default function Jobs() {
           </ModalBody>
           <ModalFooter>
             <Button width={'100%'} variant={'primary'} onClick={onElevatorPitchSave}>
-              Let's Go!
+              Let&apos;s Go!
             </Button>
           </ModalFooter>
         </ModalContent>

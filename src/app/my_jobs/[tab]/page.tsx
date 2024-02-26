@@ -1,6 +1,6 @@
 'use client'
 
-import { JobCard } from '@/app/components/JobCard'
+import { JobCard, OneMatchedJobPosting } from '@/app/components/JobCard'
 import useApply from '@/app/jobs/hooks/useApply'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
@@ -37,7 +37,6 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { OneMatchedJobPosting } from '../../jobs/page'
 
 const MyJobs = () => {
   const router = useRouter()
@@ -215,12 +214,12 @@ const MyJobs = () => {
           <ModalCloseButton />
           <ModalBody>
             <Flex gap={'1rem'}>
-              {activeJob?.employer?.logo_url && (
-                <Image src={activeJob.employer.logo_url} alt="employer logo" boxSize={'4rem'} />
+              {activeJob?.employer?.logoUrl && (
+                <Image src={activeJob.employer.logoUrl} alt="employer logo" boxSize={'4rem'} />
               )}
 
               <Box>
-                <Text type={'b1Bold'}>{activeJob?.employment_title}</Text>
+                <Text type={'b1Bold'}>{activeJob?.employmentTitle}</Text>
                 <Text type={'b2'}>{activeJob?.employer.name}</Text>
                 <Text type={'b3'}>{activeJob?.location}</Text>
               </Box>
@@ -259,7 +258,7 @@ const MyJobs = () => {
           </ModalBody>
           <ModalFooter>
             <Button width={'100%'} variant={'primary'} onClick={onElevatorPitchSave}>
-              Let's Go!
+              Let&apos;s Go!
             </Button>
           </ModalFooter>
         </ModalContent>

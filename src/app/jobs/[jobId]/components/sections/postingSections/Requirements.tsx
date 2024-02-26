@@ -76,10 +76,10 @@ export const Requirements = ({ job }: { job: GetOneJobPosting }) => {
       </Heading>
 
       <div>
-        {job && job.requirements_description && (
+        {job && job.requirementsDescription && (
           <ReactMarkdown
             // eslint-disable-next-line react/no-children-prop
-            children={job.requirements_description}
+            children={job.requirementsDescription}
             components={ChakraUIRenderer(newTheme)}
             skipHtml
           />
