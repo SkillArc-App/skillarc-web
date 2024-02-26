@@ -22,6 +22,12 @@ const Onboarding = () => {
   const { currentStep } = useFixedParams('currentStep')
   const token = useAuthToken()
 
+  const jobInterest = localStorage.getItem('preOnboardingJobInterest')
+  if (jobInterest) {
+    localStorage.setItem('onboardingJobInterest', jobInterest)
+    localStorage.removeItem('preOnboardingJobInterest')
+  }
+
   const {
     getOnboardingData: {
       data: onboardingData,

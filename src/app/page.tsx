@@ -37,7 +37,7 @@ const Home = () => {
 
     const trainingProviderInviteCode = localStorage.getItem('trainingProviderInviteCode')
     const seekerInviteCode = localStorage.getItem('seekerInviteCode')
-    const preOnboardingJobInterest = localStorage.getItem('preOnboardingJobInterest')
+    const onboardingJobInterest = localStorage.getItem('onboardingJobInterest')
 
     if (trainingProviderInviteCode) {
       localStorage.removeItem('trainingProviderInviteCode')
@@ -47,8 +47,8 @@ const Home = () => {
     } else if (seekerInviteCode) {
       localStorage.removeItem('seekerInviteCode')
       http.post('/api/invites', { seekerInviteCode })
-    } else if (preOnboardingJobInterest) {
-      router.push(`/jobs/${preOnboardingJobInterest}`)
+    } else if (onboardingJobInterest) {
+      router.push(`/jobs/${onboardingJobInterest}`)
       return
     }
 
