@@ -106,6 +106,7 @@ jobs:
           POSTGRES_PASSWORD: 'postgres'
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
+          SMS_GATEWAY_STRATEGY: fake
           KLAVIYO_API_KEY: 'fake'
         credentials:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}

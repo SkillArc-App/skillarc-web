@@ -30,8 +30,8 @@ export default function JobPosting() {
     getOneJob: { data: job },
   } = useJobData(jobId)
 
-  if (jobId === localStorage.getItem('preOnboardingJobInterest')) {
-    localStorage.removeItem('preOnboardingJobInterest')
+  if (jobId === localStorage.getItem('onboardingJobInterest')) {
+    localStorage.removeItem('onboardingJobInterest')
   }
   const { data: user } = useUser()
   const token = useAuthToken()

@@ -3,6 +3,7 @@ import { get } from '@/frontend/http-common'
 export type Applicant = {
   id: string
   chatEnabled: boolean
+  certifiedBy?: string
   createdAt: string
   jobId: string
   jobName: string
