@@ -1,5 +1,6 @@
 'use client'
 
+import { ReasonResponse } from '@/common/types/ApplicantStatus'
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
@@ -9,9 +10,8 @@ import { usePassReasons } from '@/frontend/hooks/usePassReasons'
 import { put } from '@/frontend/http-common'
 import { Applicant, Job } from '@/frontend/services/employerJobs.service'
 import {
-  Button,
+  Box,
   Checkbox,
-  CheckboxGroup,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -22,8 +22,11 @@ import {
   Heading,
   IconButton,
   Link,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Select,
-  Stack,
   Tab,
   TabList,
   TabPanels,
@@ -35,9 +38,9 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { FaUserCheck } from 'react-icons/fa'
 import { FaRegComment } from 'react-icons/fa6'
 import { PassFeedback } from './components/PassFeedback'
-import { ReasonResponse } from '@/common/types/ApplicantStatus'
 
 type ApplicantStatusChanges = {
   [key: string]: ApplicantStatusChange
@@ -128,6 +131,29 @@ const Jobs = () => {
     columnHelper.accessor('jobName', {
       cell: (info) => info.getValue(),
       header: 'Job',
+    }),
+    columnHelper.accessor('certifiedBy', {
+      cell: (info) => {
+        const certifiedBy = info.getValue()
+
+        return (
+          !!certifiedBy && (
+            <HStack justify={'center'}>
+              <Popover trigger="hover">
+                <PopoverTrigger>
+                  <Box>
+                    <FaUserCheck />
+                  </Box>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverBody>Certified By: {certifiedBy}</PopoverBody>
+                </PopoverContent>
+              </Popover>
+            </HStack>
+          )
+        )
+      },
+      header: 'Certified',
     }),
     columnHelper.accessor('status', {
       cell: (info) => (
@@ -294,7 +320,9 @@ const Jobs = () => {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">Give us Feedback</DrawerHeader>
           <DrawerBody>
-            {passReasons && <PassFeedback passReasons={passReasons} onApplicantPass={passOnApplicant} />}
+            {passReasons && (
+              <PassFeedback passReasons={passReasons} onApplicantPass={passOnApplicant} />
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
