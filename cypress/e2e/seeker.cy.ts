@@ -56,6 +56,13 @@ describe('Seeker', () => {
           cy.findByRole('button', { name: 'Back to Jobs' }).click()
         })
 
+        cy.findByRole('button', { name: 'Add an Elevator Pitch' }).click()
+        cy.findByRole('dialog', { name: 'Elevator Pitch' }).within(() => {
+          cy.findByRole('textbox').type('I am a mechanic')
+          cy.findByRole('button', { name: "Let's Go!" }).click()
+        })
+        cy.get('body').should('contain', 'Update an Elevator Pitch')
+        cy.get('body').should('contain', 'Pitch: I am a mechanic')
 
         // apply on individual job page
         const earthworkJourneyman = cy.findByRole('listitem', { name: 'Earthwork Journeyman' })
