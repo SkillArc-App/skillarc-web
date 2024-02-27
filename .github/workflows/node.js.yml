@@ -25,6 +25,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Checkout Skillarc GH action
+        uses: actions/checkout@v4
+        with:
+          repository: SkillArc-App/skillarc-ci-action
+          ref: v0.1.4
+          ssh-key: ${{ secrets.SKILLARC_CI_ACTION_ACCESS }}
+          path: .github/actions/skillarc-ci-action
+      - name: Run SkillArc GH action
+        uses: ./.github/actions/skillarc-ci-action
+        with:
+          alert_threshold: 120
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       - name: Next Cache
         uses: actions/cache@v4
         with:
@@ -149,6 +162,19 @@ jobs:
           container_name=$(docker ps --filter "ancestor=ghcr.io/skillarc-app/server:latest" --format "{{.Names}}" | head -n 1)
           echo "Container name: $container_name"
           docker exec "$container_name" bin/rails db:reset
+      - name: Checkout Skillarc GH action
+        uses: actions/checkout@v4
+        with:
+          repository: SkillArc-App/skillarc-ci-action
+          ref: v0.1.4
+          ssh-key: ${{ secrets.SKILLARC_CI_ACTION_ACCESS }}
+          path: .github/actions/skillarc-ci-action
+      - name: Run SkillArc GH action
+        uses: ./.github/actions/skillarc-ci-action
+        with:
+          alert_threshold: 300
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
