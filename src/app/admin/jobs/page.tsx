@@ -4,6 +4,7 @@ import DataTable from '@/frontend/components/DataTable.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useAllJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
+import { post } from '@/frontend/http-common'
 import {
   Badge,
   Box,
@@ -24,7 +25,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -117,35 +117,28 @@ export default function Jobs() {
     setSchedule(e.target.value)
   }
 
-  const handleSubmit = () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs`,
-        {
-          employer_id: employerId,
-          employment_title: employmentTitle,
-          location,
-          employment_type: employmentType,
-          benefits_description: benefitsDescription,
-          responsibilities_description: responsibilitiesDescription,
-          requirements_description: requirementsDescription,
-          work_days: workDays,
-          schedule,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then(() => {
-        refetchJobs()
-        onClose()
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+  const handleSubmit = async () => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs`,
+      {
+        employer_id: employerId,
+        employment_title: employmentTitle,
+        location,
+        employment_type: employmentType,
+        benefits_description: benefitsDescription,
+        responsibilities_description: responsibilitiesDescription,
+        requirements_description: requirementsDescription,
+        work_days: workDays,
+        schedule,
+      },
+      token,
+    )
+
+    await refetchJobs()
+
+    onClose()
   }
 
   const data =

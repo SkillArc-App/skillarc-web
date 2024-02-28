@@ -8,6 +8,7 @@ import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
+import { destroy, post, put } from '@/frontend/http-common'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -44,7 +45,6 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -163,140 +163,117 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     setHideJob(!hideJob)
   }
 
-  const onSubmit = () => {
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
-        {
-          employer_id: employerId,
-          employment_title: employmentTitle,
-          location,
-          employment_type: employmentType,
-          benefits_description: benefitsDescription,
-          responsibilities_description: responsibilitiesDescription,
-          requirements_description: requirementsDescription,
-          work_days: workDays,
-          schedule,
-          hide_job: hideJob,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-        onClose()
-      })
+  const onSubmit = async () => {
+    if (!token) return
+
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      {
+        employer_id: employerId,
+        employment_title: employmentTitle,
+        location,
+        employment_type: employmentType,
+        benefits_description: benefitsDescription,
+        responsibilities_description: responsibilitiesDescription,
+        requirements_description: requirementsDescription,
+        work_days: workDays,
+        schedule,
+        hide_job: hideJob,
+      },
+      token,
+    )
+    refetchJob()
+    onClose()
   }
 
-  const createPath = () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths`,
-        {
-          job_id: id,
-          title: careerPathTitle,
-          lower_limit: careerPathLowerLimit,
-          upper_limit: careerPathUpperLimit,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        setCareerPathTitle('')
-        setCareerPathLowerLimit('')
-        setCareerPathUpperLimit('')
-        refetchJob()
-      })
+  const createPath = async () => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths`,
+      {
+        job_id: id,
+        title: careerPathTitle,
+        lower_limit: careerPathLowerLimit,
+        upper_limit: careerPathUpperLimit,
+      },
+      token,
+    )
+
+    setCareerPathTitle('')
+    setCareerPathLowerLimit('')
+    setCareerPathUpperLimit('')
+    refetchJob()
   }
 
-  const createTestimonial = () => {
+  const createTestimonial = async () => {
     if (!job) return
+    if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials`,
-        {
-          jobId: id,
-          name: testimonialName,
-          title: testimonialTitle,
-          testimonial,
-          photoUrl: testimonialPhotoUrl,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        setTestimonialName('')
-        setTestimonialTitle('')
-        setTestimonial('')
-        setTestimonialPhotoUrl('')
-        refetchJob()
-      })
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials`,
+      {
+        jobId: id,
+        name: testimonialName,
+        title: testimonialTitle,
+        testimonial,
+        photoUrl: testimonialPhotoUrl,
+      },
+      token,
+    )
+
+    setTestimonialName('')
+    setTestimonialTitle('')
+    setTestimonial('')
+    setTestimonialPhotoUrl('')
+    refetchJob()
   }
 
-  const createPhoto = () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos`,
-        {
-          photo_url: photoUrl,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        setPhotoUrl('')
-        refetchJob()
-      })
+  const createPhoto = async () => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos`,
+      {
+        photo_url: photoUrl,
+      },
+      token,
+    )
+    await setPhotoUrl('')
+    await refetchJob()
   }
 
-  const movePathUp = (path: CareerPath) => {
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/up`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
-      .then(() => {
-        refetchJob()
-      })
+  const movePathUp = async (path: CareerPath) => {
+    if (!token) return
+
+    await put(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/up`, {}, token)
+
+    refetchJob()
   }
 
-  const movePathDown = (path: CareerPath) => {
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/down`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
-      .then(() => {
-        refetchJob()
-      })
+  const movePathDown = async (path: CareerPath) => {
+    if (!token) return
+
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/down`,
+      {},
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removePath = (path: CareerPath) => {
-    axios
-      .create({ withCredentials: false })
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        refetchJob()
-      })
+  const removePath = async (path: CareerPath) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}`, token)
+
+    refetchJob()
   }
 
-  const removeLearnedSkill = (learnedSkillId: string) => () => {
+  const removeLearnedSkill = (learnedSkillId: string) => async () => {
     if (!job) return
+    if (!token) return
 
     const existingLearnedSkill = job.learnedSkills.find((ds: any) => {
       return ds.id === learnedSkillId
@@ -304,20 +281,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
 
     if (!existingLearnedSkill) return
 
-    axios
-      .create({ withCredentials: false })
-      .delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills/${learnedSkillId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills/${learnedSkillId}`,
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removeDesiredSkill = (desiredSkillId: string) => () => {
+  const removeDesiredSkill = (desiredSkillId: string) => async () => {
     if (!job) return
 
     const existingDesiredSkill = job.desiredSkills.find((ds: any) => {
@@ -327,21 +299,17 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!existingDesiredSkill) return
     if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills/${existingDesiredSkill.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills/${existingDesiredSkill.id}`,
+      token,
+    )
+
+    refetchJob()
   }
 
-  const addLearnedSkill = (learnedSkillName: string) => {
+  const addLearnedSkill = async (learnedSkillName: string) => {
     if (!masterSkills) return
+    if (!token) return
 
     const learnedSkill = masterSkills.find((ms: { skill: string }) => ms.skill === learnedSkillName)
     if (!learnedSkill) return
@@ -353,48 +321,40 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
 
     if (existingLearnedSkill) return
 
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills`,
-        {
-          master_skill_id: learnedSkill.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills`,
+      {
+        master_skill_id: learnedSkill.id,
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
-  const addDesiredSkill = (desiredSkillName: string) => {
+  const addDesiredSkill = async (desiredSkillName: string) => {
     if (!masterSkills) return
     if (!job) return
 
     const desiredSkill = masterSkills.find((ms: { skill: string }) => ms.skill === desiredSkillName)
     if (!desiredSkill) return
+    if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills`,
-        {
-          master_skill_id: desiredSkill.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills`,
+      {
+        master_skill_id: desiredSkill.id,
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
-  const addDesiredCertification = (desiredCertificationName: string) => {
+  const addDesiredCertification = async (desiredCertificationName: string) => {
     if (!masterCertifications) return
     if (!job) return
+    if (!token) return
 
     const desiredCertification = masterCertifications.find(
       (mc) => mc.certification === desiredCertificationName,
@@ -407,25 +367,21 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
 
     if (existingDesiredCertification) return
 
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications`,
-        {
-          job_id: id,
-          master_certification_id: desiredCertification.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications`,
+      {
+        job_id: id,
+        master_certification_id: desiredCertification.id,
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removeDesiredCertification = (desiredCertificationId: string) => () => {
+  const removeDesiredCertification = async (desiredCertificationId: string) => async () => {
     if (!job) return
+    if (!token) return
 
     const existingDesiredCertification = job?.desiredCertifications.find((dc: any) => {
       return dc.id === desiredCertificationId
@@ -433,107 +389,86 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
 
     if (!existingDesiredCertification) return
 
-    axios
-      .create({ withCredentials: false })
-      .delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications/${existingDesiredCertification.id}`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications/${existingDesiredCertification.id}`,
+      token,
+    )
+
+    refetchJob()
   }
 
-  const addTag = (tag: string) => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags`,
-        {
-          job_id: id,
-          tag,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+  const addTag = async (tag: string) => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags`,
+      {
+        job_id: id,
+        tag,
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removeTag = (jobTagId: string) => {
-    axios
-      .create({ withCredentials: false })
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags/${jobTagId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        refetchJob()
-      })
+  const removeTag = async (jobTagId: string) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags/${jobTagId}`, token)
+
+    refetchJob()
   }
 
-  const removeTestimonial = (testimonial: any) => {
+  const removeTestimonial = async (testimonial: any) => {
     if (!job) return
+    if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials/${testimonial.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        refetchJob()
-      })
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials/${testimonial.id}`,
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removePhoto = (photoId: string) => {
-    axios
-      .create({ withCredentials: false })
-      .delete(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos/${photoId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        refetchJob()
-      })
+  const removePhoto = async (photoId: string) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos/${photoId}`, token)
+
+    refetchJob()
   }
 
-  const addIndustry = (industry: string) => {
+  const addIndustry = async (industry: string) => {
     if (!job) return
     if (job.industry.includes(industry)) return
+    if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
-        {
-          industry: [...job.industry, industry],
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      {
+        industry: [...job.industry, industry],
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
-  const removeIndustry = (industry: string) => {
+  const removeIndustry = async (industry: string) => {
     if (!job) return
+    if (!token) return
 
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
-        {
-          industry: job.industry.filter((i: any) => i !== industry),
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then(() => {
-        refetchJob()
-      })
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      {
+        industry: job.industry.filter((i: any) => i !== industry),
+      },
+      token,
+    )
+
+    refetchJob()
   }
 
   if (!job) return <div>loading...</div>
@@ -777,7 +712,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                       <Td>{dc.masterCertification.certification}</Td>
                       <Td>
                         <Button size={'xs'}>
-                          <DeleteIcon onClick={removeDesiredCertification(dc.id)} />
+                          <DeleteIcon onClick={() => removeDesiredCertification(dc.id)} />
                         </Button>
                       </Td>
                     </Tr>
