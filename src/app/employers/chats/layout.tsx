@@ -1,8 +1,7 @@
 'use client'
 
 import ChatList from '@/app/chats/[id]/components/ChatList'
-import { useEmployerChats } from '@/frontend/hooks/useEmployerChats'
-import { useSeekerChat } from '@/frontend/hooks/useSeekerChat'
+import { useEmployerChats } from '@/app/employers/chats/hooks/useEmployerChats'
 import { HStack } from '@chakra-ui/react'
 import { useParams } from 'next/navigation'
 

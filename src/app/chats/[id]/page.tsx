@@ -1,8 +1,8 @@
 'use client'
 
+import { useSeekerChat } from '@/app/chats/hooks/useSeekerChat'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useSeekerChat } from '@/frontend/hooks/useSeekerChat'
 import { post } from '@/frontend/http-common'
 import ChatWindow from './components/ChatWindow'
 
