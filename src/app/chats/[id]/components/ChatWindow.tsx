@@ -1,4 +1,4 @@
-import { Chat, Message } from '@/frontend/hooks/useEmployerChats'
+import { Chat, Message } from '@/common/types/Chat'
 import {
   Box,
   Flex,

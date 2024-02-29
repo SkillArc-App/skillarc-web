@@ -1,4 +1,4 @@
-import { Chat } from '@/frontend/hooks/useEmployerChats'
+import { Chat } from '@/common/types/Chat'
 import { Box, HStack, Spacer, Text } from '@chakra-ui/react'
 import Link from 'next/link'
 

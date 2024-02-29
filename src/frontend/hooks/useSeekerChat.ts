@@ -2,7 +2,7 @@ import { Maybe } from '@/common/types/maybe'
 import { UseQueryOptions } from 'react-query'
 import { get } from '../http-common'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
-import { Chat } from './useEmployerChats'
+import { Chat } from '@/common/types/Chat'
 
 export const useSeekerChat = (
   options: Omit<

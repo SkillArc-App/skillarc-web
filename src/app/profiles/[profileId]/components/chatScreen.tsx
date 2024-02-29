@@ -1,6 +1,5 @@
 "use client"
 
-import { Chat, Message } from '@/frontend/hooks/useEmployerChats'
 import {
   Box,
   Center,
@@ -17,6 +16,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { MdSend } from 'react-icons/md'
 import { Text } from '../../../../frontend/components/Text.component'
+import { Chat, Message } from '@/common/types/Chat'
 
 const ChatBubble = ({ message }: { message: Message }) => {
   const bg = message.isUser ? 'green.500' : 'gray.100'
