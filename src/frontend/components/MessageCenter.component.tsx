@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { FaInbox } from 'react-icons/fa'
-import { useSeekerChat } from '../hooks/useSeekerChat'
 import { useUser } from '../hooks/useUser'
 import BadgeIcon from './BadgeIcon.component'
+import { useSeekerChat } from '@/app/chats/hooks/useSeekerChat'
 
 const MessageCenter = () => {
   const router = useRouter()

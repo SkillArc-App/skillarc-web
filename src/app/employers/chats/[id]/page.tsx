@@ -1,41 +1,36 @@
 'use client'
 
-import ChatScreen from '@/app/profiles/[profileId]/components/chatScreen'
+import ChatWindow from '@/app/chats/[id]/components/ChatWindow'
+import { useEmployerChats } from '@/app/employers/chats/hooks/useEmployerChats'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useEmployerChats } from '@/frontend/hooks/useEmployerChats'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { useEffect } from 'react'
 
 const ChatUI = () => {
-  const { data: serverChats, refetch: refetchChats } = useEmployerChats()
-
-  const id = useFixedParams('id')?.['id']
+  const { id } = useFixedParams('id')
   const token = useAuthToken()
 
-  useEffect(() => {
-    const createChat = (applicantId: string) => {
+  const { data: chats = [], refetch: refetchChats } = useEmployerChats({
+    onSuccess: async (chats) => {
+      const currentChat = chats.find((chat) => chat.id === id)
+
+      if (!currentChat) return
       if (!token) return
 
-      post(
-        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats`,
+      const allRead = currentChat.messages.every(({ isRead }) => isRead)
+
+      if (allRead) return
+
+      await post(
+        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats/mark_read`,
         {
-          applicant_id: applicantId,
+          applicantId: id,
         },
         token,
-        { camel: false },
-      ).then((_) => {
-        refetchChats()
-      })
-    }
-
-    if (id && serverChats) {
-      const chat = serverChats.find((chat) => chat.id === id)
-      if (!chat) {
-        createChat(id)
-      }
-    }
-  }, [id, refetchChats, serverChats, token])
+      )
+    },
+  })
 
   const createMessage = async (id: string, text: string) => {
     if (!token) return
@@ -43,42 +38,40 @@ const ChatUI = () => {
     await post(
       `${process.env.NEXT_PUBLIC_API_URL}/employers/chats/send_message`,
       {
-        applicant_id: id,
+        applicantId: id,
         message: text,
       },
       token,
-      { camel: false },
     )
 
     refetchChats()
   }
 
-  const markRead = (id: string) => {
-    if (!token) return
+  const currentChat = chats.find((chat) => chat.id === id)
 
-    post(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/chats/mark_read`,
-      {
-        applicant_id: id,
-      },
-      token,
-      { camel: false },
-    ).then((_) => {
+  useEffect(() => {
+    const createChat = async (applicantId: string) => {
+      if (!token) return
+
+      await post(
+        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats`,
+        {
+          applicantId: applicantId,
+        },
+        token,
+      )
+
       refetchChats()
-    })
-  }
+    }
 
-  if (!serverChats) return <></>
+    if (id && chats && !currentChat) {
+      createChat(id)
+    }
+  }, [id, refetchChats, chats, token, currentChat])
 
-  return (
-    <ChatScreen
-      id={id}
-      createMessage={createMessage}
-      markRead={markRead}
-      prefix="/employers/chats"
-      serverChats={serverChats}
-    />
-  )
+  if (!currentChat) return <></>
+
+  return <ChatWindow chats={chats} createMessage={createMessage} currentChat={currentChat} />
 }
 
 export default ChatUI
