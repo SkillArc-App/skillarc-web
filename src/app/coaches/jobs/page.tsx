@@ -25,6 +25,10 @@ const Table = ({ data }: { data: CoachJob[] }) => {
         </Link>
       ),
     }),
+    columnHelper.accessor('employerName', {
+      header: 'Employer',
+      cell: (row) => row.getValue(),
+    }),
   ]
 
   return <DataTable columns={columns} data={data} />

@@ -387,6 +387,12 @@ const Seeker = () => {
               {(jobs || []).map((job) => (
                 <Stack gap={'1rem'} p={'1rem'} key={job.id} bg="white" height={'100%'}>
                   <Box>
+                    <Text variant={'b3'}>Employer</Text>
+                    <Link variant={'b2'} as={NextLink} href={`/jobs/`}>
+                      {job.employerName}
+                    </Link>
+                  </Box>
+                  <Box>
                     <Text variant={'b3'}>Job Title</Text>
                     <Link variant={'b2'} as={NextLink} href={`/jobs/`}>
                       {job.employmentTitle}
