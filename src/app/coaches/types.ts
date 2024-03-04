@@ -34,7 +34,7 @@ export type CoachSeeker = {
   applications: SeekerApplication[]
   assignedCoach: string
   barriers: Barrier[]
-  certifiedBy?: string,
+  certifiedBy?: string
   email: string
   jobRecommendations: string[]
   firstName: string
@@ -50,6 +50,7 @@ export type CoachSeeker = {
 
 export type CoachJob = {
   id: string
+  employerName: string
   employmentTitle: string
   isRecommended: boolean
 }
