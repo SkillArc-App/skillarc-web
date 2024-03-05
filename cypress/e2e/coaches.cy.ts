@@ -53,7 +53,13 @@ describe('Coaches', () => {
     })
 
     cy.get('@seeker').then((seeker: any) => {
-      cy.get('a').contains(seeker['email']).click()
+      cy.findByRole('table').within(() => {
+        const row = cy.findByText(`${seeker['first_name']} ${seeker['last_name']}`).parent()
+
+        row.within(() => {
+          cy.findByRole('link', { name: 'Dash' }).click()
+        })
+      })
 
       cy.get('body', { timeout: 10000 }).should(
         'contain',
@@ -122,7 +128,7 @@ describe('Coaches', () => {
           cy.get('div').should('contain', 'Recommended')
         })
 
-      cy.findByRole('button', { name: "Certify" }).click()
+      cy.findByRole('button', { name: 'Certify' }).click()
       cy.findByText(`By ${coachEmail}`)
 
       cy.findByRole('link', { name: '< Back to Seekers' }).click()
@@ -134,11 +140,10 @@ describe('Coaches', () => {
         const row = cy.findByText(`${seeker['first_name']} ${seeker['last_name']}`).parent()
 
         row.within(() => {
-          cy.findByText(coachEmail)
+          cy.findAllByText(coachEmail).should((elements) => expect(elements).to.have.length(2))
+          cy.findByRole('link', { name: 'Dash' }).click()
         })
       })
-
-      cy.findByRole('link', { name: seeker['email'] }).click()
 
       cy.findByText('< Back to Seekers')
       cy.reload()
