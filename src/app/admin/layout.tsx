@@ -97,7 +97,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
             </Box>
             <Box>
               <Divider />
-              <Text variant={'b1Bold'}>Analaytics</Text>
+              <Text variant={'b1Bold'}>Analytics</Text>
               {analyticsAdminLinks.map((link, index) => {
                 return (
                   <Box key={index} bg={pathName === link.path ? 'gray.300' : ''}>
