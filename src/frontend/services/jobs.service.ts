@@ -52,6 +52,7 @@ export type Testimonial = {
 }
 
 export type GetOneJobPosting = {
+  category: 'marketplace' | 'staffing'
   employer: Employer
   learnedSkills: {
     id: string
@@ -87,12 +88,6 @@ const getOne = async (jobId: string) => {
   return res.data
 }
 
-const getAll = async (token: string) => {
-  const res = await get<GetOneJobPosting[]>(`${process.env.NEXT_PUBLIC_API_URL}/jobs`, token)
-
-  return res.data
-}
-
 const getJobMatches = async (token: string) => {
   const res = await get<{ matchedJobs: OneMatchedJobPosting[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
@@ -104,6 +99,5 @@ const getJobMatches = async (token: string) => {
 
 export const FrontendJobService = {
   getOne,
-  getAll,
   getJobMatches,
 }

@@ -1,11 +1,21 @@
 import { Maybe } from '@/common/types/maybe'
 import { useQuery } from 'react-query'
-import { FrontendJobService } from '../services/jobs.service'
+import { get } from '../http-common'
+import { FrontendJobService, GetOneJobPosting } from '../services/jobs.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useAllJobData = () => {
+  const getAll = async (token: string) => {
+    const res = await get<GetOneJobPosting[]>(
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs`,
+      token,
+    )
+
+    return res.data
+  }
+
   const getJobs = useAuthenticatedQuery(['jobs'], ({ token }) => {
-    return FrontendJobService.getAll(token)
+    return getAll(token)
   })
 
   return { getJobs }
