@@ -20,7 +20,11 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
   const columns = [
     columnHelper.accessor('firstName', {
       header: 'Name',
-      cell: (row) => `${row.getValue()} ${row.row.original.lastName}`,
+      cell: (row) => (
+        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+          {`${row.getValue()} ${row.row.original.lastName}`}
+        </Link>
+      ),
     }),
     columnHelper.accessor('seekerId', {
       header: 'Navigation',
@@ -28,8 +32,7 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
         <div>
           <Link as={NextLink} href={`/profiles/${row.row.original.seekerId}`}>
             Profile
-          </Link>
-          {' '}
+          </Link>{' '}
           <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
             Dash
           </Link>
