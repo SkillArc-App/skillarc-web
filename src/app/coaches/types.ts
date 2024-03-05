@@ -31,6 +31,7 @@ export type SeekerApplication = {
 }
 
 export type CoachSeeker = {
+  id: string
   applications: SeekerApplication[]
   assignedCoach: string
   barriers: Barrier[]
