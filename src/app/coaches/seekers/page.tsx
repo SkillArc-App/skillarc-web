@@ -18,25 +18,30 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
   const lastActiveColumnId = 'last-active-on'
 
   const columns = [
-    columnHelper.accessor('email', {
-      header: 'Email',
+    columnHelper.accessor('firstName', {
+      header: 'Name',
       cell: (row) => (
-        <Link as={NextLink} href={`/coaches/s/${row.row.original.seekerId}`}>
-          {row.getValue()}
+        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+          {`${row.getValue()} ${row.row.original.lastName}`}
         </Link>
       ),
     }),
     columnHelper.accessor('seekerId', {
-      header: 'Profile',
+      header: 'Navigation',
       cell: (row) => (
-        <Link as={NextLink} href={`/profiles/${row.row.original.seekerId}`}>
-          Jump to Profile
-        </Link>
+        <div>
+          <Link as={NextLink} href={`/profiles/${row.row.original.seekerId}`}>
+            Profile
+          </Link>{' '}
+          <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+            Dash
+          </Link>
+        </div>
       ),
     }),
-    columnHelper.accessor('firstName', {
-      header: 'Name',
-      cell: (row) => `${row.getValue()} ${row.row.original.lastName}`,
+    columnHelper.accessor('assignedCoach', {
+      header: 'Coach',
+      cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('certifiedBy', {
       header: 'Certified By',
@@ -55,7 +60,13 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
     columnHelper.accessor('lastActiveOn', {
       header: 'Last Active On',
       id: lastActiveColumnId,
-      cell: (row) => row.getValue(),
+      cell: (row) => {
+        try {
+          return new Date(row.getValue()).toDateString()
+        } catch (e) {
+          return row.getValue()
+        }
+      },
       sortUndefined: 1,
       sortDescFirst: false,
       sortingFn: (row1, row2, columnId) => {
@@ -67,7 +78,9 @@ const Table = ({ data }: { data: CoachSeeker[] }) => {
     }),
     columnHelper.accessor('lastContacted', {
       header: 'Last Contacted',
-      cell: (row) => row.getValue(),
+      cell: (row) => {
+        return row.getValue() === 'Never' ? row.getValue() : new Date(row.getValue()).toDateString()
+      },
       sortingFn: 'datetime',
     }),
   ]

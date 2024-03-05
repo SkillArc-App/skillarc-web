@@ -8,7 +8,7 @@ export const useCoachSeekerData = (id?: string) =>
     ({ token }) => {
       const getCoachSeekerRequest = async () => {
         const res = await get<CoachSeeker>(
-          `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}`,
           token,
         )
 

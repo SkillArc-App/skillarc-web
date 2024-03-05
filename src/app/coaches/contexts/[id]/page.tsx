@@ -82,7 +82,7 @@ const Seeker = () => {
     const noteId = crypto.randomUUID()
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes`,
       {
         note: currentNoteDraft,
         noteId,
@@ -98,7 +98,10 @@ const Seeker = () => {
     if (!token) return
     if (!seeker) return
 
-    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`, token)
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
+      token,
+    )
 
     refetchSeeker()
   }
@@ -108,7 +111,7 @@ const Seeker = () => {
     if (!seeker) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/notes/${noteId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
       {
         note: updatedNote,
       },
@@ -123,7 +126,7 @@ const Seeker = () => {
     if (!seeker) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/skill-levels`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/skill-levels`,
       { level },
       token,
     )
@@ -136,7 +139,7 @@ const Seeker = () => {
     if (!seeker) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/assign_coach`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/assign_coach`,
       { coachId },
       token,
     )
@@ -159,7 +162,7 @@ const Seeker = () => {
       })
     } else {
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/recommend_job`,
+        `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/recommend_job`,
         { jobId },
         token,
       )
@@ -172,7 +175,7 @@ const Seeker = () => {
     if (!token) return
     if (!seeker) return
 
-    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/certify`, {}, token)
+    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/certify`, {}, token)
 
     refetchSeeker()
   }
@@ -182,7 +185,7 @@ const Seeker = () => {
     if (!seeker) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/update_barriers`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/update_barriers`,
       {
         barriers: barriers.map((b) => b.id),
       },
@@ -296,7 +299,7 @@ const Seeker = () => {
                 variant={'unstyled'}
                 color={'black'}
                 onChange={(e) => assignCoach(e.target.value)}
-                value={seeker.assignedCoach}
+                value={coaches?.find((c) => c.email === seeker.assignedCoach)?.id}
               >
                 <option value=""></option>
                 {coaches?.map((coach, key) => (

@@ -20,7 +20,7 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
   })()
 
   return (
-    <Box width={'100%'}>
+    <Box width={'100%'} bg={"gray.50"}>
       <Box px={'4rem'} pt={'1rem'}>
         <Heading>Coaches Dashboard</Heading>
         <Tabs my={'1rem'} variant={'enclosed'} index={index}>

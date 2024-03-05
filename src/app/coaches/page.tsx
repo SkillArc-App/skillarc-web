@@ -1,10 +1,10 @@
 'use client'
 
-import { Box } from '@chakra-ui/react'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 
 const Coaches = () => {
-  return <Box width={'100%'}>SUP!</Box>
+  return <LoadingPage />
 }
 
 export default withAuthenticationRequired(Coaches)
