@@ -27,6 +27,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   Switch,
@@ -67,6 +69,17 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     masterCertificationQuery: { data: masterCertifications },
   } = useMasterCertificationData()
 
+  const categoryOptions = [
+    {
+      value: 'marketplace',
+      label: 'Marketplace',
+    },
+    {
+      value: 'staffing',
+      label: 'Staffing',
+    },
+  ]
+
   const { getAccessTokenSilently } = useAuth0()
 
   const [token, setToken] = useState<string | null>(null)
@@ -82,6 +95,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
+  const [category, setCategory] = useState<string>(job?.category ?? '')
   const [employerId, setEmployerId] = useState(job?.employer.id)
   const [employmentTitle, setEmploymentTitle] = useState(job?.employmentTitle)
   const [location, setLocation] = useState(job?.location)
@@ -111,6 +125,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
   useEffect(() => {
     if (!job) return
 
+    setCategory(job.category)
     setEmployerId(job.employer.id)
     setEmploymentTitle(job.employmentTitle)
     setLocation(job.location)
@@ -167,8 +182,9 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
       {
+        category,
         employer_id: employerId,
         employment_title: employmentTitle,
         location,
@@ -494,6 +510,9 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               </Button>
             </Flex>
             <Box>
+              <b>Category</b>: {job.category}
+            </Box>
+            <Box>
               <b>Employer</b>:{' '}
               <Link href={`/admin/employers/${job.employer.id}`} as={NextLink}>
                 {job.employer?.name}
@@ -536,6 +555,17 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={3}>
+                    <RadioGroup value={category} onChange={(e) => setCategory(e)}>
+                      <Stack>
+                        {categoryOptions.map((category, index) => {
+                          return (
+                            <Radio key={index} value={category.value}>
+                              {category.label}
+                            </Radio>
+                          )
+                        })}
+                      </Stack>
+                    </RadioGroup>
                     <Select
                       placeholder="Employer"
                       value={employerId}

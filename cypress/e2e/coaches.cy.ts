@@ -54,7 +54,10 @@ describe('Coaches', () => {
 
     cy.get('@seeker').then((seeker: any) => {
       cy.findByRole('table').within(() => {
-        const row = cy.findByText(`${seeker['first_name']} ${seeker['last_name']}`).parent()
+        const row = cy
+          .findByText(`${seeker['first_name']} ${seeker['last_name']}`)
+          .parent()
+          .parent()
 
         row.within(() => {
           cy.findByRole('link', { name: 'Dash' }).click()
@@ -137,7 +140,10 @@ describe('Coaches', () => {
 
       const table = cy.findByRole('table')
       table.within(() => {
-        const row = cy.findByText(`${seeker['first_name']} ${seeker['last_name']}`).parent()
+        const row = cy
+          .findByText(`${seeker['first_name']} ${seeker['last_name']}`)
+          .parent()
+          .parent()
 
         row.within(() => {
           cy.findAllByText(coachEmail).should((elements) => expect(elements).to.have.length(2))

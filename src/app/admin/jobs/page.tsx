@@ -3,13 +3,13 @@
 import DataTable from '@/frontend/components/DataTable.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useAllJobData } from '@/frontend/hooks/useJobData'
-import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { post } from '@/frontend/http-common'
 import {
   Badge,
   Box,
   Button,
   Checkbox,
+  Divider,
   Input,
   Link,
   Modal,
@@ -19,6 +19,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
   Select,
   Stack,
   Textarea,
@@ -35,17 +37,25 @@ export default function Jobs() {
   } = useAllJobData()
 
   const {
-    getEmployers: { data: employers, isLoading: employersIsLoading, refetch },
+    getEmployers: { data: employers },
   } = useAllEmployerData()
 
-  const {
-    masterCertificationQuery: { data: masterCertifications },
-  } = useMasterCertificationData()
+  const categoryOptions = [
+    {
+      value: 'marketplace',
+      label: 'Marketplace',
+    },
+    {
+      value: 'staffing',
+      label: 'Staffing',
+    },
+  ]
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
   const [filteredJobs, setFilteredJobs] = useState(jobs)
 
+  const [category, setCategory] = useState(categoryOptions[0].value)
   const [employerId, setEmployerId] = useState('')
   const [employmentTitle, setEmploymentTitle] = useState('')
   const [location, setLocation] = useState('')
@@ -121,8 +131,9 @@ export default function Jobs() {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs`,
       {
+        category,
         employer_id: employerId,
         employment_title: employmentTitle,
         location,
@@ -221,10 +232,22 @@ export default function Jobs() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Seeker Invite</ModalHeader>
+          <ModalHeader>New Job</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Stack spacing={3}>
+            <Stack spacing={3} aria-label="job-category">
+              <RadioGroup value={category} onChange={(e) => setCategory(e)}>
+                <Stack>
+                  {categoryOptions.map((category, index) => {
+                    return (
+                      <Radio key={index} value={category.value}>
+                        {category.label}
+                      </Radio>
+                    )
+                  })}
+                </Stack>
+              </RadioGroup>
+              <Divider />
               <Select placeholder="Employer" onChange={handleEmployerIdChange}>
                 {employers?.map((employer: { name: string; id: string }, index: number) => {
                   return (
@@ -254,15 +277,6 @@ export default function Jobs() {
               />
               <Textarea placeholder="Work days" onChange={handleWorkDaysChange} />
               <Textarea placeholder="Schedule" onChange={handleScheduleChange} />
-              {/* <Select placeholder="Certifications Learned">
-                {masterCertifications?.map((c, index: number) => {
-                  return (
-                    <option key={index} value={c.id}>
-                      {c.certification}
-                    </option>
-                  )
-                })}
-              </Select> */}
             </Stack>
           </ModalBody>
 
