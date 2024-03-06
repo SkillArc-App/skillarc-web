@@ -23,16 +23,12 @@ jobs:
     runs-on:
       group: organization/Default
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
       - name: Checkout Skillarc GH action
         uses: actions/checkout@v4
@@ -67,27 +63,16 @@ jobs:
         with:
           runTests: false
           build: npm run build
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: .next
-          if-no-files-found: error
-          retention-days: 1
   lint:
     runs-on:
       group: organization/Default
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
       - run: npm ci
       - run: npm run lint
@@ -95,16 +80,12 @@ jobs:
     runs-on:
       group: organization/Default
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
       - run: npm ci
       - run: npm run test
@@ -118,7 +99,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.x]
         specs: ${{ fromJson(needs.build-cypress-matrix.outputs.specs) }}
 
     services:
@@ -198,10 +178,10 @@ jobs:
           alert_threshold: 300
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
       - run: npm ci
       - name: Run Cypress e2e tests
