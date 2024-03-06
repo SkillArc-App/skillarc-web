@@ -4,11 +4,13 @@ import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
 import DataTable from '@/frontend/components/DataTable.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
-import { Box, Button, VStack } from '@chakra-ui/react'
+import { Box, Button, Link, VStack } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
+import NextLink from 'next/link'
 import { useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
+import { LoadingPage } from '@/frontend/components/Loading'
 
 const Leads = () => {
   const { data: leads, isLoading, refetch } = useCoachLeadsQuery()
@@ -49,12 +51,20 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
 
   const columns = [
     columnHelper.accessor('firstName', {
-      header: 'First Name',
-      cell: (row) => row.getValue(),
+      header: 'Name',
+      cell: (row) => (
+        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+          {`${row.getValue()} ${row.row.original.lastName}`}
+        </Link>
+      ),
     }),
-    columnHelper.accessor('lastName', {
-      header: 'Last Name',
-      cell: (row) => row.getValue(),
+    columnHelper.accessor('id', {
+      header: 'Navigation',
+      cell: (row) => (
+        <Link as={NextLink} href={`/coaches/contexts/${row.getValue()}`}>
+          Dash
+        </Link>
+      ),
     }),
     columnHelper.accessor('email', {
       header: 'Email',
