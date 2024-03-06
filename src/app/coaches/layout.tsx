@@ -8,16 +8,13 @@ import { usePathname } from 'next/navigation'
 const Coaches = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname()
 
-  const index = (() => {
-    switch (pathName) {
-      case '/coaches/leads':
-        return 1
-      case '/coaches/jobs':
-        return 2
-      default:
-        return 0
-    }
-  })()
+  const tabs: Record<string, number> = {
+    '/coaches/seekers': 0,
+    '/coaches/leads': 1,
+    '/coaches/jobs': 2,
+  }
+
+  const index = tabs[pathName] || 0
 
   return (
     <Box width={'100%'} bg={"gray.50"}>
