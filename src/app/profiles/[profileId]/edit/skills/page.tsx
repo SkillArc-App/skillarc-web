@@ -60,10 +60,13 @@ const EditSkills = () => {
   }, [seeker])
 
   const handleResponseChange = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
-    setSkillsList((skills) => {
-      skills[index].description = e.target.value
-      return skills
+    const newSkillsList = skillsList.map((skill, i) => {
+      if (i === index) {
+        return { ...skill, description: e.target.value }
+      }
+      return skill
     })
+    setSkillsList(newSkillsList)
   }
 
   const handleAdd = (masterSkill: MasterSkill) => {
