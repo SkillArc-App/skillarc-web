@@ -22,11 +22,13 @@ const Onboarding = () => {
   const { currentStep } = useFixedParams('currentStep')
   const token = useAuthToken()
 
-  const jobInterest = localStorage.getItem('preOnboardingJobInterest')
-  if (jobInterest) {
-    localStorage.setItem('onboardingJobInterest', jobInterest)
-    localStorage.removeItem('preOnboardingJobInterest')
-  }
+  useEffect(() => {
+    const jobInterest = localStorage.getItem('preOnboardingJobInterest')
+    if (jobInterest) {
+      localStorage.setItem('onboardingJobInterest', jobInterest)
+      localStorage.removeItem('preOnboardingJobInterest')
+    }
+  }, [])
 
   const {
     getOnboardingData: {
@@ -133,8 +135,6 @@ const Onboarding = () => {
       refetchOnboardingData()
     })
   }
-
-  console.log(workingOnboardingResponse)
 
   const stepScreen = (currentStep: string | undefined) => {
     if (!currentStep) return <LoadingPage />
