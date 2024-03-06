@@ -11,25 +11,21 @@ import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
 
 const Leads = () => {
-  const { data: leads } = useCoachLeadsQuery()
+  const { data: leads, isLoading, refetch } = useCoachLeadsQuery()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [newLeads, setNewLeads] = useState<SeekerLead[]>([])
   const token = useAuthToken()
 
   const handleSubmit = (lead: SubmittableSeekerLead) => {
     if (!token) return
 
     post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`, { lead }, token).then(() => {
-      setNewLeads((currentNewLeads) => {
-        return [
-          ...(currentNewLeads ?? []),
-          { ...lead, leadCapturedBy: 'You', leadCapturedAt: 'Now', status: 'new' },
-        ]
-      })
+      refetch()
 
       setIsModalOpen(false)
     })
   }
+
+  if (isLoading) { return <LoadingPage/>}
 
   return (
     <Box>
@@ -42,7 +38,7 @@ const Leads = () => {
         <Button variant={'solid'} colorScheme="green" onClick={() => setIsModalOpen(true)}>
           New Lead
         </Button>
-        {leads && <Table data={[...leads, ...newLeads]} />}
+        {leads && <Table data={leads} />}
       </VStack>
     </Box>
   )
