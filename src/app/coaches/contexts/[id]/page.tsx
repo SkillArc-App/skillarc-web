@@ -209,6 +209,18 @@ const Seeker = () => {
 
   if (!seeker) return <LoadingPage />
 
+  const certifySeekerSection = () => {
+    if (seeker.kind === 'lead') {
+      return <Text variant={'b2'}>{`This seeker need to create a profile to be certified`}</Text>
+    }
+
+    return !!seeker.certifiedBy ? (
+      <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
+    ) : (
+      <Button onClick={certifySeeker}>Certify</Button>
+    )
+  }
+
   return (
     <Box width={'100%'} height={'100%'}>
       <Grid
@@ -224,20 +236,28 @@ const Seeker = () => {
           <Stack p={'1rem'} spacing="1rem">
             <Breadcrumb>
               <BreadcrumbItem>
-                <BreadcrumbLink as={NextLink} href="/coaches">
-                  {'< Back to Seekers'}
-                </BreadcrumbLink>
+                {seeker.kind === 'seeker' ? (
+                  <BreadcrumbLink as={NextLink} href="/coaches/seekers">
+                    {'< Back to Seekers'}
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbLink as={NextLink} href="/coaches/leads">
+                    {'< Back to Leads'}
+                  </BreadcrumbLink>
+                )}
               </BreadcrumbItem>
             </Breadcrumb>
             <Heading type="h3" color={'black'}>
               {seeker.firstName} {seeker.lastName}
             </Heading>
             <Divider />
-            <Box>
-              <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
-                Jump to Profile
-              </Link>
-            </Box>
+            {seeker.seekerId && (
+              <Box>
+                <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
+                  Jump to Profile
+                </Link>
+              </Box>
+            )}
             <Box>
               <Text variant={'b3'}>Email</Text>
               <Text variant={'b2'} color={'black'}>
@@ -264,11 +284,7 @@ const Seeker = () => {
             </Box>
             <Stack>
               <Text variant={'b3'}>Seeker Certification</Text>
-              {!!seeker.certifiedBy ? (
-                <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
-              ) : (
-                <Button onClick={certifySeeker}>Certify</Button>
-              )}
+              {certifySeekerSection()}
             </Stack>
             <Box>
               <Text variant={'b3'} mb={'0.25rem'}>

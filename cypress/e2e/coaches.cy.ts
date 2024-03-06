@@ -106,7 +106,7 @@ describe('Coaches', () => {
 
       // save current route
       cy.url().then((url) => {
-        cy.get('a').contains('Jump to Profile').click()
+        cy.findByRole('link', { name: 'Jump to Profile'}).click()
         cy.findByLabelText('Edit Profile').click()
 
         cy.get('p').contains('Phone number').next().clear().type('570-555-5555')
@@ -167,7 +167,7 @@ describe('Coaches', () => {
       cy.url().should('contain', '/jobs/')
       cy.go('back')
 
-      cy.get('a').contains('Jump to Profile').click()
+      cy.findByRole('link', { name: 'Jump to Profile'}).click()
       cy.findByLabelText('Edit Profile').click()
 
       cy.get('p').contains('First name').next().clear().type('Dwight')
@@ -210,11 +210,27 @@ describe('Coaches', () => {
       cy.get('table').should('contain', newLead.lastName)
       cy.get('table').should('contain', newLead.phoneNumber)
 
-      cy.reload()
+      cy.findByRole('table').within(() => {
+        const row = cy
+          .findByText(`${newLead.firstName} ${newLead.lastName}`)
+          .parent()
+          .parent()
 
-      cy.get('table').should('contain', newLead.firstName)
-      cy.get('table').should('contain', newLead.lastName)
-      cy.get('table').should('contain', newLead.phoneNumber)
+        row.within(() => {
+          cy.findByRole('link', { name: 'Dash' }).click()
+        })
+      })
+
+      cy.findByText('< Back to Leads')
+
+      cy.findByRole('link', { name: 'Jump to Profile'}).should('not.exist')
+      cy.findByText('This seeker need to create a profile to be certified')
+
+      cy.findByPlaceholderText('Add a note').type('This is a note').type('{enter}')
+      cy.findByPlaceholderText('Add a note').should('have.value', '')
+
+      cy.findByText('< Back to Leads').click()
+      cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
     })
   })
 })

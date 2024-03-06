@@ -2,33 +2,33 @@
 
 import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
 import DataTable from '@/frontend/components/DataTable.component'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
-import { Box, Button, VStack } from '@chakra-ui/react'
+import { Box, Button, Link, VStack } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
+import NextLink from 'next/link'
 import { useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
 
 const Leads = () => {
-  const { data: leads } = useCoachLeadsQuery()
+  const { data: leads, isLoading, refetch } = useCoachLeadsQuery()
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [newLeads, setNewLeads] = useState<SeekerLead[]>([])
   const token = useAuthToken()
 
   const handleSubmit = (lead: SubmittableSeekerLead) => {
     if (!token) return
 
     post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`, { lead }, token).then(() => {
-      setNewLeads((currentNewLeads) => {
-        return [
-          ...(currentNewLeads ?? []),
-          { ...lead, leadCapturedBy: 'You', leadCapturedAt: 'Now', status: 'new' },
-        ]
-      })
+      refetch()
 
       setIsModalOpen(false)
     })
+  }
+
+  if (isLoading) {
+    return <LoadingPage />
   }
 
   return (
@@ -42,7 +42,7 @@ const Leads = () => {
         <Button variant={'solid'} colorScheme="green" onClick={() => setIsModalOpen(true)}>
           New Lead
         </Button>
-        {leads && <Table data={[...leads, ...newLeads]} />}
+        {leads && <Table data={leads} />}
       </VStack>
     </Box>
   )
@@ -53,12 +53,20 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
 
   const columns = [
     columnHelper.accessor('firstName', {
-      header: 'First Name',
-      cell: (row) => row.getValue(),
+      header: 'Name',
+      cell: (row) => (
+        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+          {`${row.getValue()} ${row.row.original.lastName}`}
+        </Link>
+      ),
     }),
-    columnHelper.accessor('lastName', {
-      header: 'Last Name',
-      cell: (row) => row.getValue(),
+    columnHelper.accessor('id', {
+      header: 'Navigation',
+      cell: (row) => (
+        <Link as={NextLink} href={`/coaches/contexts/${row.getValue()}`}>
+          Dash
+        </Link>
+      ),
     }),
     columnHelper.accessor('email', {
       header: 'Email',
@@ -70,14 +78,24 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
     }),
     columnHelper.accessor('leadCapturedAt', {
       header: 'Lead Captured',
-      cell: (row) => row.getValue(),
+      cell: (row) => {
+        try {
+          return new Date(row.getValue()).toDateString()
+        } catch (e) {
+          return row.getValue()
+        }
+      },
+      sortUndefined: 1,
+      sortDescFirst: false,
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId))
+        const date2 = new Date(row2.getValue(columnId))
+
+        return date1.getTime() - date2.getTime()
+      },
     }),
     columnHelper.accessor('leadCapturedBy', {
       header: 'Lead Captured By',
-      cell: (row) => row.getValue(),
-    }),
-    columnHelper.accessor('status', {
-      header: 'Status',
       cell: (row) => row.getValue(),
     }),
   ]
