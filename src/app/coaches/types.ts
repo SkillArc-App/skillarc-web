@@ -8,6 +8,8 @@ export type SeekerNote = {
 }
 
 export type SeekerLead = {
+  id: string
+  kind: ContextKind,
   leadId: string
   email?: string
   phoneNumber: string
@@ -17,6 +19,8 @@ export type SeekerLead = {
   leadCapturedBy: string
   status: string
 }
+
+type ContextKind = 'lead' | 'seeker'
 
 export type SubmittableSeekerLead = Pick<
   SeekerLead,
@@ -32,6 +36,7 @@ export type SeekerApplication = {
 
 export type CoachSeeker = {
   id: string
+  kind: ContextKind,
   applications: SeekerApplication[]
   assignedCoach: string
   barriers: Barrier[]
@@ -46,7 +51,6 @@ export type CoachSeeker = {
   phoneNumber: string
   seekerId: string
   skillLevel: string
-  stage: string
 }
 
 export type CoachJob = {
