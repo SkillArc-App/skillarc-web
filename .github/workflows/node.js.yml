@@ -193,3 +193,10 @@ jobs:
           install: false
           record: false
           spec: ${{ matrix.specs }}
+  e2e-complete:
+    needs: [e2e]
+    runs-on:
+      group: organization/Default
+    steps:
+      - name: Checkout Skillarc GH action
+        uses: actions/checkout@v4
