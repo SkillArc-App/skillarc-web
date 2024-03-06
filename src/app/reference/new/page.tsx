@@ -1,15 +1,16 @@
-"use client"
+'use client'
 
-import { Reference } from '@/app/reference/components/reference'
 import { useAddReference } from '@/app/reference/new/hooks/useAddReference'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
+import { Reference } from '../components/reference'
 
-export default function NewReference() {
+const NewReference = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const seekerProfileId = searchParams?.get('seekerProfileId')
+  const seekerProfileId = searchParams.get('seekerProfileId')
 
   const { onAddReference } = useAddReference()
 
@@ -28,4 +29,12 @@ export default function NewReference() {
   } else {
     return <LoadingPage />
   }
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<LoadingPage />}>
+      <NewReference />
+    </Suspense>
+  )
 }
