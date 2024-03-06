@@ -23,6 +23,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 export default function JobPosting() {
   const jobId = useFixedParams('jobId')?.['jobId']
@@ -30,9 +31,12 @@ export default function JobPosting() {
     getOneJob: { data: job },
   } = useJobData(jobId)
 
-  if (jobId === localStorage.getItem('onboardingJobInterest')) {
-    localStorage.removeItem('onboardingJobInterest')
-  }
+  useEffect(() => {
+    if (jobId === localStorage.getItem('onboardingJobInterest')) {
+      localStorage.removeItem('onboardingJobInterest')
+    }
+  }, [jobId])
+
   const { data: user } = useUser()
   const token = useAuthToken()
   const userState = useUserState()

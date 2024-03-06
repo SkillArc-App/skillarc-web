@@ -5,6 +5,7 @@ import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { SearchFilter, SearchJob, SearchValue, UtmParams } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
@@ -34,7 +35,7 @@ import {
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { SearchJobCard } from '../components/SearchJobCard'
 import SearchBar from './components/SearchBar'
 import useApply from './hooks/useApply'
@@ -64,7 +65,7 @@ const filters: SearchFilter[] = [
   },
 ]
 
-export default function Jobs() {
+const Jobs = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { loginWithRedirect } = useAuth0()
@@ -162,7 +163,7 @@ export default function Jobs() {
     setActiveJobIdAndRoute('')
   }
 
-  if (!jobs) return
+  if (!jobs) return <LoadingPage />
 
   return (
     <Box height={'100%'} width={'100%'}>
@@ -270,6 +271,16 @@ export default function Jobs() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+    </Box>
+  )
+}
+
+export default function Page() {
+  return (
+    <Box height={'100%'} width={'100%'}>
+      <Suspense fallback={<LoadingPage />}>
+        <Jobs />
+      </Suspense>
     </Box>
   )
 }

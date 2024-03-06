@@ -24,8 +24,6 @@ const Home = () => {
     if (!user) return
     if (!token) return
 
-    console.log('here')
-
     if (user.trainingProviderProfile) {
       router.push('/students')
       return
@@ -55,7 +53,6 @@ const Home = () => {
     if (!user.onboardingSession.completed_at) {
       router.push('/onboarding')
     } else if (user.profile.missingProfileItems.length > 0) {
-      console.log("pushing to profile")
       router.push(`/profiles/${user.profile.id}`)
     } else {
       router.push(`/jobs`)
