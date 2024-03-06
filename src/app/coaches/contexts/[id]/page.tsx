@@ -251,11 +251,13 @@ const Seeker = () => {
               {seeker.firstName} {seeker.lastName}
             </Heading>
             <Divider />
-            <Box>
-              <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
-                Jump to Profile
-              </Link>
-            </Box>
+            {seeker.seekerId && (
+              <Box>
+                <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
+                  Jump to Profile
+                </Link>
+              </Box>
+            )}
             <Box>
               <Text variant={'b3'}>Email</Text>
               <Text variant={'b2'} color={'black'}>
