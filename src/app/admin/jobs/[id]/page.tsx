@@ -50,7 +50,7 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 export default function Job({ params: { id } }: { params: { id: string } }) {
@@ -602,12 +602,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
-                <option></option>
-                {industries.map((i) => {
-                  return <option key={i}>{i}</option>
-                })}
-              </Select>
+              <label>
+                Add New Industries
+                <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {industries.map((i) => {
+                    return <option key={i}>{i}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
@@ -633,12 +636,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               <Heading type="h5">Desired Skills</Heading>
               <TableContainer>
                 <Box px={'1rem'}>
-                  <Select onChange={(e) => addDesiredSkill(e.target.value)} size={'sm'}>
-                    <option></option>
-                    {masterSkills?.map((ms: { id: string; skill: string }) => {
-                      return <option key={ms.id}>{ms.skill}</option>
-                    })}
-                  </Select>
+                  <label>
+                    Add New Desired Skills
+                    <Select onChange={(e) => addDesiredSkill(e.target.value)} size={'sm'}>
+                      <option></option>
+                      {masterSkills?.map((ms: { id: string; skill: string }) => {
+                        return <option key={ms.id}>{ms.skill}</option>
+                      })}
+                    </Select>
+                  </label>
                 </Box>
                 <Table variant="simple">
                   <Tbody>
@@ -662,12 +668,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               <Heading type="h5">Learned Skills</Heading>
               <TableContainer>
                 <Box px={'1rem'}>
-                  <Select onChange={(e) => addLearnedSkill(e.target.value)} size={'sm'}>
-                    <option></option>
-                    {masterSkills?.map((ms: { id: string; skill: string }) => {
-                      return <option key={ms.id}>{ms.skill}</option>
-                    })}
-                  </Select>
+                  <label>
+                    Add New Learned Skills
+                    <Select onChange={(e) => addLearnedSkill(e.target.value)} size={'sm'}>
+                      <option></option>
+                      {masterSkills?.map((ms: { id: string; skill: string }) => {
+                        return <option key={ms.id}>{ms.skill}</option>
+                      })}
+                    </Select>
+                  </label>
                 </Box>
                 <Table variant="simple">
                   <Tbody>
@@ -692,12 +701,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addDesiredCertification(e.target.value)} size={'sm'}>
-                <option></option>
-                {masterCertifications?.map((mc) => {
-                  return <option key={mc.id}>{mc.certification}</option>
-                })}
-              </Select>
+              <label>
+                Add A Desired Certification
+                <Select onChange={(e) => addDesiredCertification(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {masterCertifications?.map((mc) => {
+                    return <option key={mc.id}>{mc.certification}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
@@ -726,7 +738,8 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                     <Th>Name</Th>
                     <Th>Title</Th>
                     <Th>Testimonial</Th>
-                    <Th>Photo URL </Th>
+                    <Th>Photo Preview</Th>
+                    <Th>Photo URL</Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
@@ -737,6 +750,9 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                         <Td>{testimonial.name}</Td>
                         <Td>{testimonial.title}</Td>
                         <Td whiteSpace={'normal'}>{testimonial.testimonial}</Td>
+                        <Td>
+                          <Image src={testimonial.photoUrl ?? undefined} alt="Testimonial image" />
+                        </Td>
                         <Td whiteSpace={'normal'}>{testimonial.photoUrl}</Td>
                         <Td>
                           <HStack>
@@ -758,7 +774,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                 onChange={(e) => setTestimonialName(e.target.value)}
               />
               <Input
-                placeholder="Title"
+                placeholder="Job Title"
                 value={testimonialTitle}
                 onChange={(e) => setTestimonialTitle(e.target.value)}
               />
@@ -816,7 +832,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
             </TableContainer>
             <Stack gap={'1rem'} flex={1}>
               <Input
-                placeholder="Url"
+                placeholder="URL"
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
               />
@@ -904,12 +920,15 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
-                <option></option>
-                {tags.map((tag) => {
-                  return <option key={tag}>{tag}</option>
-                })}
-              </Select>
+              <label>
+                Add A New Tag
+                <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {tags.map((tag) => {
+                    return <option key={tag}>{tag}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
