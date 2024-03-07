@@ -34,7 +34,6 @@ describe('Recruiters', () => {
             .should('contain', `${job['employment_title']}`)
             .should('contain', `${applicant_status['status']}`)
 
-          cy.findByLabelText('Show Passes/Hires').parent().click()
           cy.get('table').within(() => {
             cy.findByLabelText('Start conversation with applicant').click()
           })
@@ -76,7 +75,13 @@ describe('Recruiters', () => {
 
           cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).should('not.exist')
 
-          cy.findByLabelText('Show Passes/Hires').parent().click()
+          const box = cy.findByRole('checkbox')
+          box.should('not.be.checked')
+          box.click({ force: true })
+
+          // Have to refind checkbox because the DOM is updated
+          cy.findByRole('checkbox').should('be.checked')
+
           cy.findByText('The role is filled, no longer accepting applications')
           cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).click()
 

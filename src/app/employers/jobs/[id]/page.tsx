@@ -306,9 +306,9 @@ const Jobs = () => {
         isChecked={showPasses}
         onChange={() => {
           if (showPasses) {
-            router.replace(`${pathName}?terminal_state=`)
+            router.replace(`${pathName}?terminal_state=&employer_id=${employerId ?? ''}`)
           } else {
-            router.replace(`${pathName}?terminal_state=show`)
+            router.replace(`${pathName}?terminal_state=show&employer_id=${employerId ?? ''}`)
           }
         }}
       >
