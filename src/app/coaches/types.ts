@@ -9,8 +9,9 @@ export type SeekerNote = {
 
 export type SeekerLead = {
   id: string
-  kind: ContextKind,
+  kind: ContextKind
   leadId: string
+  assignedCoach: string
   email?: string
   phoneNumber: string
   firstName: string
@@ -36,7 +37,7 @@ export type SeekerApplication = {
 
 export type CoachSeeker = {
   id: string
-  kind: ContextKind,
+  kind: ContextKind
   applications: SeekerApplication[]
   assignedCoach: string
   barriers: Barrier[]
