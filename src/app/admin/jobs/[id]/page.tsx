@@ -9,6 +9,7 @@ import { useJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post, put } from '@/frontend/http-common'
+import { Testimonial } from '@/frontend/services/jobs.service'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -138,42 +139,6 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     setHideJob(job.hideJob)
   }, [job])
 
-  const handleEmployerIdChange = (e: any) => {
-    setEmployerId(e.target.value)
-  }
-
-  const handleEmploymentTitleChange = (e: any) => {
-    setEmploymentTitle(e.target.value)
-  }
-
-  const handleLocationChange = (e: any) => {
-    setLocation(e.target.value)
-  }
-
-  const handleEmploymentTypeChange = (e: any) => {
-    setEmploymentType(e.target.value)
-  }
-
-  const handleBenefitsDescriptionChange = (e: any) => {
-    setBenefitsDescription(e.target.value)
-  }
-
-  const handleResponsibilitiesDescriptionChange = (e: any) => {
-    setResponsibilitiesDescription(e.target.value)
-  }
-
-  const handleRequirementsDescriptionChange = (e: any) => {
-    setRequirementsDescription(e.target.value)
-  }
-
-  const handleWorkDaysChange = (e: any) => {
-    setWorkDays(e.target.value)
-  }
-
-  const handleScheduleChange = (e: any) => {
-    setSchedule(e.target.value)
-  }
-
   const handleHideJobChange = () => {
     setHideJob(!hideJob)
   }
@@ -251,7 +216,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     await post(
       `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos`,
       {
-        photo_url: photoUrl,
+        photoUrl,
       },
       token,
     )
@@ -291,7 +256,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!job) return
     if (!token) return
 
-    const existingLearnedSkill = job.learnedSkills.find((ds: any) => {
+    const existingLearnedSkill = job.learnedSkills.find((ds) => {
       return ds.id === learnedSkillId
     })
 
@@ -308,7 +273,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
   const removeDesiredSkill = (desiredSkillId: string) => async () => {
     if (!job) return
 
-    const existingDesiredSkill = job.desiredSkills.find((ds: any) => {
+    const existingDesiredSkill = job.desiredSkills.find((ds) => {
       return ds.id === desiredSkillId
     })
 
@@ -332,8 +297,8 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!job) return
 
     const existingLearnedSkill = job?.learnedSkills
-      .map((ds: any) => ds.masterSkill)
-      .some((ms: any) => ms.id === learnedSkill.id)
+      .map((ds) => ds.masterSkill)
+      .some((ms) => ms.id === learnedSkill.id)
 
     if (existingLearnedSkill) return
 
@@ -378,8 +343,8 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!desiredCertification) return
 
     const existingDesiredCertification = job?.desiredCertifications
-      .map((dc: any) => dc.masterCertification)
-      .some((mc: any) => mc.id === desiredCertification.id)
+      .map((dc) => dc.masterCertification)
+      .some((mc) => mc.id === desiredCertification.id)
 
     if (existingDesiredCertification) return
 
@@ -399,7 +364,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!job) return
     if (!token) return
 
-    const existingDesiredCertification = job?.desiredCertifications.find((dc: any) => {
+    const existingDesiredCertification = job?.desiredCertifications.find((dc) => {
       return dc.id === desiredCertificationId
     })
 
@@ -436,7 +401,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     refetchJob()
   }
 
-  const removeTestimonial = async (testimonial: any) => {
+  const removeTestimonial = async (testimonial: Testimonial) => {
     if (!job) return
     if (!token) return
 
@@ -462,7 +427,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
       {
         industry: [...job.industry, industry],
       },
@@ -477,9 +442,9 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
       {
-        industry: job.industry.filter((i: any) => i !== industry),
+        industry: job.industry.filter((i) => i !== industry),
       },
       token,
     )
@@ -569,7 +534,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                     <Select
                       placeholder="Employer"
                       value={employerId}
-                      onChange={handleEmployerIdChange}
+                      onChange={(e) => setEmployerId(e.target.value)}
                     >
                       {employers?.map((employer: { id: string; name: string }, index: number) => {
                         return (
@@ -581,42 +546,42 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                     </Select>
                     <Input
                       value={employmentTitle}
-                      onChange={handleEmploymentTitleChange}
+                      onChange={(e) => setEmploymentTitle(e.target.value)}
                       placeholder="Employment Title"
                     />
                     <Input
                       value={location}
-                      onChange={handleLocationChange}
+                      onChange={(e) => setLocation(e.target.value)}
                       placeholder="Location"
                     />
                     <Input
                       value={employmentType}
-                      onChange={handleEmploymentTypeChange}
+                      onChange={(e) => setEmploymentType(e.target.value as 'FULLTIME' | 'PARTTIME')}
                       placeholder="Employment Type"
                     />
                     <Textarea
                       value={benefitsDescription}
-                      onChange={handleBenefitsDescriptionChange}
+                      onChange={(e) => setBenefitsDescription(e.target.value)}
                       placeholder="Benefits Description"
                     />
                     <Textarea
                       value={responsibilitiesDescription ?? ''}
-                      onChange={handleResponsibilitiesDescriptionChange}
+                      onChange={(e) => setResponsibilitiesDescription(e.target.value)}
                       placeholder="Responsibilities Description"
                     />
                     <Textarea
                       value={requirementsDescription ?? ''}
-                      onChange={handleRequirementsDescriptionChange}
+                      onChange={(e) => setRequirementsDescription(e.target.value)}
                       placeholder="Requirements Description"
                     />
                     <Input
                       value={workDays ?? ''}
-                      onChange={handleWorkDaysChange}
+                      onChange={(e) => setWorkDays(e.target.value)}
                       placeholder="Work Days"
                     />
                     <Input
                       value={schedule ?? ''}
-                      onChange={handleScheduleChange}
+                      onChange={(e) => setSchedule(e.target.value)}
                       placeholder="Schedule"
                     />
                     <span>
@@ -637,16 +602,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
-                <option></option>
-                {industries.map((i) => {
-                  return <option key={i}>{i}</option>
-                })}
-              </Select>
+              <label>
+                Add New Industries
+                <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {industries.map((i) => {
+                    return <option key={i}>{i}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.industry.map((industry: any, index: number) => {
+                {job.industry.map((industry, index) => {
                   return (
                     <Tr key={index}>
                       <Td>{industry}</Td>
@@ -668,16 +636,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               <Heading type="h5">Desired Skills</Heading>
               <TableContainer>
                 <Box px={'1rem'}>
-                  <Select onChange={(e) => addDesiredSkill(e.target.value)} size={'sm'}>
-                    <option></option>
-                    {masterSkills?.map((ms: { id: string; skill: string }) => {
-                      return <option key={ms.id}>{ms.skill}</option>
-                    })}
-                  </Select>
+                  <label>
+                    Add New Desired Skills
+                    <Select onChange={(e) => addDesiredSkill(e.target.value)} size={'sm'}>
+                      <option></option>
+                      {masterSkills?.map((ms: { id: string; skill: string }) => {
+                        return <option key={ms.id}>{ms.skill}</option>
+                      })}
+                    </Select>
+                  </label>
                 </Box>
                 <Table variant="simple">
                   <Tbody>
-                    {job.desiredSkills.map((ds: any, index: number) => {
+                    {job.desiredSkills.map((ds, index) => {
                       return (
                         <Tr key={index}>
                           <Td>{ds.masterSkill.skill}</Td>
@@ -697,16 +668,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
               <Heading type="h5">Learned Skills</Heading>
               <TableContainer>
                 <Box px={'1rem'}>
-                  <Select onChange={(e) => addLearnedSkill(e.target.value)} size={'sm'}>
-                    <option></option>
-                    {masterSkills?.map((ms: { id: string; skill: string }) => {
-                      return <option key={ms.id}>{ms.skill}</option>
-                    })}
-                  </Select>
+                  <label>
+                    Add New Learned Skills
+                    <Select onChange={(e) => addLearnedSkill(e.target.value)} size={'sm'}>
+                      <option></option>
+                      {masterSkills?.map((ms: { id: string; skill: string }) => {
+                        return <option key={ms.id}>{ms.skill}</option>
+                      })}
+                    </Select>
+                  </label>
                 </Box>
                 <Table variant="simple">
                   <Tbody>
-                    {job.learnedSkills.map((ls: any, index: number) => {
+                    {job.learnedSkills.map((ls, index) => {
                       return (
                         <Tr key={index}>
                           <Td>{ls.masterSkill.skill}</Td>
@@ -727,16 +701,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addDesiredCertification(e.target.value)} size={'sm'}>
-                <option></option>
-                {masterCertifications?.map((mc) => {
-                  return <option key={mc.id}>{mc.certification}</option>
-                })}
-              </Select>
+              <label>
+                Add A Desired Certification
+                <Select onChange={(e) => addDesiredCertification(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {masterCertifications?.map((mc) => {
+                    return <option key={mc.id}>{mc.certification}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.desiredCertifications.map((dc: any, index: number) => {
+                {job.desiredCertifications.map((dc, index: number) => {
                   return (
                     <Tr key={index}>
                       <Td>{dc.masterCertification.certification}</Td>
@@ -761,18 +738,22 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                     <Th>Name</Th>
                     <Th>Title</Th>
                     <Th>Testimonial</Th>
-                    <Th>Photo URL </Th>
+                    <Th>Photo Preview</Th>
+                    <Th>Photo URL</Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {job.testimonials.map((testimonial: any, index: number) => {
+                  {job.testimonials.map((testimonial, index) => {
                     return (
                       <Tr key={index}>
                         <Td>{testimonial.name}</Td>
                         <Td>{testimonial.title}</Td>
                         <Td whiteSpace={'normal'}>{testimonial.testimonial}</Td>
-                        <Td whiteSpace={'normal'}>{testimonial.photo_url}</Td>
+                        <Td>
+                          <Image src={testimonial.photoUrl ?? undefined} alt="Testimonial image" />
+                        </Td>
+                        <Td whiteSpace={'normal'}>{testimonial.photoUrl}</Td>
                         <Td>
                           <HStack>
                             <Button onClick={() => removeTestimonial(testimonial)} size={'xs'}>
@@ -793,7 +774,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                 onChange={(e) => setTestimonialName(e.target.value)}
               />
               <Input
-                placeholder="Title"
+                placeholder="Job Title"
                 value={testimonialTitle}
                 onChange={(e) => setTestimonialTitle(e.target.value)}
               />
@@ -831,13 +812,13 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {job.jobPhotos.map((jp: any, index: number) => {
+                  {job.jobPhotos.map((jp, index: number) => {
                     return (
                       <Tr key={index}>
                         <Td>
-                          <Image src={jp.photo_url} alt="Job image" />
+                          <Image src={jp.photoUrl} alt="Job image" />
                         </Td>
-                        <Td whiteSpace={'normal'}>{jp.photo_url}</Td>
+                        <Td whiteSpace={'normal'}>{jp.photoUrl}</Td>
                         <Td>
                           <Button onClick={() => removePhoto(jp.id)} size={'xs'}>
                             <DeleteIcon />
@@ -851,7 +832,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
             </TableContainer>
             <Stack gap={'1rem'} flex={1}>
               <Input
-                placeholder="Title"
+                placeholder="URL"
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
               />
@@ -878,14 +859,14 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
                 </Thead>
                 <Tbody>
                   {job.careerPaths
-                    ?.sort((a: any, b: any) => a.order - b.order)
-                    .map((cp: any, index: number) => {
+                    .sort((a, b) => a.order - b.order)
+                    .map((cp, index: number) => {
                       return (
                         <Tr key={index}>
                           <Td>{cp.order}</Td>
                           <Td>{cp.title}</Td>
-                          <Td>{cp.lower_limit}</Td>
-                          <Td>{cp.upper_limit}</Td>
+                          <Td>{cp.lowerLimit}</Td>
+                          <Td>{cp.upperLimit}</Td>
                           <Td>
                             <HStack>
                               <Button onClick={() => movePathUp(cp)} size={'xs'}>
@@ -939,16 +920,19 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
         <TabPanel>
           <TableContainer>
             <Box px={'1rem'}>
-              <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
-                <option></option>
-                {tags.map((tag) => {
-                  return <option key={tag}>{tag}</option>
-                })}
-              </Select>
+              <label>
+                Add A New Tag
+                <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
+                  <option></option>
+                  {tags.map((tag) => {
+                    return <option key={tag}>{tag}</option>
+                  })}
+                </Select>
+              </label>
             </Box>
             <Table variant="simple">
               <Tbody>
-                {job.jobTag.map((tag: any, index: number) => {
+                {job.jobTag.map((tag, index) => {
                   return (
                     <Tr key={index}>
                       <Td>{tag.tag.name}</Td>
