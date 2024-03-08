@@ -68,6 +68,10 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
         </Link>
       ),
     }),
+    columnHelper.accessor('assignedCoach', {
+      header: 'Coach',
+      cell: (row) => row.getValue(),
+    }),
     columnHelper.accessor('email', {
       header: 'Email',
       cell: (row) => row.getValue(),
