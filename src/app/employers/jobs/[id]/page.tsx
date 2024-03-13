@@ -102,8 +102,6 @@ const Jobs = () => {
 
   const jobIds = jobs?.map((job) => job.id)
 
-  const currentJob = jobs?.find((job) => job.id === jobId)
-
   const filteredApplicants =
     employerJobs?.applicants.filter((applicant) => {
       if (!showPasses && (applicant.status === 'pass' || applicant.status === 'hire')) return false
@@ -160,6 +158,7 @@ const Jobs = () => {
         <HStack>
           <Select
             onChange={(e) => handleUpdatedStatuses(info.row.original, e.target.value)}
+            id={info.row.original.id}
             value={info.getValue()}
           >
             {['new', 'pending intro', 'intro made', 'interviewing', 'hire', 'pass'].map(
@@ -248,6 +247,7 @@ const Jobs = () => {
     }
   }
 
+  console.log("Re-Render")
   if (!activeEmployerId) return <LoadingPage />
 
   return (
@@ -256,6 +256,7 @@ const Jobs = () => {
         Applicants
         {employers.length > 1 && (
           <select
+            name="employer_select"
             onChange={(e) => {
               router.push(
                 `/employers/jobs/all?employer_id=${e.target.value}&terminal_state=${terminalState}`,
@@ -304,6 +305,7 @@ const Jobs = () => {
       </Tabs>
       <Checkbox
         isChecked={showPasses}
+        name='Show or Hide Applicants'
         onChange={() => {
           if (showPasses) {
             router.replace(`${pathName}?terminal_state=&employer_id=${employerId ?? ''}`)
