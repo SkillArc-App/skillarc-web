@@ -12,7 +12,7 @@ const Chat = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <HStack align={'stretch'} width={'100%'}>
-      <ChatList chats={chats} prefix="/chats" currentChat={currentChat} />
+      <ChatList chats={chats} prefix="/employers/chats" currentChat={currentChat} />
       {children}
     </HStack>
   )
