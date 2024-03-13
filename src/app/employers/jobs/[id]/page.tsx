@@ -21,6 +21,7 @@ import {
   HStack,
   Heading,
   IconButton,
+  Link,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -115,9 +116,9 @@ const Jobs = () => {
   const columns = [
     columnHelper.accessor('profileLink', {
       cell: (info) => (
-        <NextLink href={info.getValue()}>
+        <Link href={info.getValue()} as={NextLink}>
           {info.row.original.firstName} {info.row.original.lastName}
-        </NextLink>
+        </Link>
       ),
       header: 'Name',
     }),
