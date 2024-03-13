@@ -116,7 +116,7 @@ const Jobs = () => {
   const columns = [
     columnHelper.accessor('profileLink', {
       cell: (info) => (
-        <Link href={info.getValue()} as={NextLink}>
+        <Link href={info.getValue()}>
           {info.row.original.firstName} {info.row.original.lastName}
         </Link>
       ),
