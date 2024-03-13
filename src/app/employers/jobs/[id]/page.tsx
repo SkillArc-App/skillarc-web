@@ -21,7 +21,6 @@ import {
   HStack,
   Heading,
   IconButton,
-  Link,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -116,9 +115,9 @@ const Jobs = () => {
   const columns = [
     columnHelper.accessor('profileLink', {
       cell: (info) => (
-        <Link href={info.getValue()} as={NextLink}>
+        <NextLink href={info.getValue()}>
           {info.row.original.firstName} {info.row.original.lastName}
-        </Link>
+        </NextLink>
       ),
       header: 'Name',
     }),
@@ -247,7 +246,7 @@ const Jobs = () => {
     }
   }
 
-  console.log("Re-Render")
+  console.log('Re-Render')
   if (!activeEmployerId) return <LoadingPage />
 
   return (
@@ -305,7 +304,7 @@ const Jobs = () => {
       </Tabs>
       <Checkbox
         isChecked={showPasses}
-        name='Show or Hide Applicants'
+        name="Show or Hide Applicants"
         onChange={() => {
           if (showPasses) {
             router.replace(`${pathName}?terminal_state=&employer_id=${employerId ?? ''}`)
