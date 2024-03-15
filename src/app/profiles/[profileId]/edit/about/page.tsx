@@ -1,9 +1,10 @@
-"use client"
+'use client'
 
 import { Story } from '@/common/types/Profile'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
@@ -11,7 +12,8 @@ import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 const EditAbout = () => {
   const router = useRouter()
-  const { data: user } = useUser()
+  const { profileId } = useFixedParams('profileId')
+  const { data: seeker } = useProfileData(profileId)
   const {
     updateStory: { mutate: updateStory },
     addStory: { mutate: addStory },
@@ -37,8 +39,8 @@ const EditAbout = () => {
   ]
 
   useEffect(() => {
-    setStoryList(user?.profile?.stories ?? [])
-  }, [user])
+    setStoryList(seeker?.stories ?? [])
+  }, [seeker])
 
   const handleResponseChange = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
     const temp = [...storyList]
@@ -52,16 +54,14 @@ const EditAbout = () => {
 
   const handleDelete = (index: number) => {
     const temp = [...storyList]
-    const deletedElement = temp.splice(index, 1)
     if (storyList[index].id !== '') {
-      deleteStory({ id: storyList[index].id, profile_id: user?.profile?.id ?? '' })
+      deleteStory({ id: storyList[index].id, profile_id: seeker?.id ?? '' })
     }
     setStoryList(temp)
   }
 
   const handleSave = () => {
-    // if (!user || !user.profile || !user.profile.id) return
-    const profileId = user?.profile?.id
+    const profileId = seeker?.id
     if (!profileId) return
 
     storyList.map((story, index) => {
@@ -110,9 +110,6 @@ const EditAbout = () => {
                 <Button variant={'remove'} w={'100%'} onClick={() => handleDelete(index)}>
                   Remove
                 </Button>
-                {/* <Button variant={'secondary'} w={'100%'}>
-                  Replace
-                </Button> */}
               </Flex>
             </Flex>
           )
