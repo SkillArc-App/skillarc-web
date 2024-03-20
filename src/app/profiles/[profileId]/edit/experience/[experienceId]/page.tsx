@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
@@ -31,7 +31,7 @@ const EditExperience = () => {
     if (currentlyWorking && experience) {
       setExperience({ ...experience, endDate: '' })
     }
-  }, [currentlyWorking, experience])
+  }, [currentlyWorking])
 
   useEffect(() => {
     if (
