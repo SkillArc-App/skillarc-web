@@ -16,7 +16,7 @@ const Feed = () => {
     columnHelper.accessor('seekerEmail', {
       header: 'Email',
       cell: (row) => (
-        <Link as={NextLink} href={`/profiles/${row.row.original.contextId}`}>
+        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.contextId}`}>
           {row.getValue()}
         </Link>
       ),
