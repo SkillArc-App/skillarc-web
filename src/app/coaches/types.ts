@@ -35,6 +35,14 @@ export type SeekerApplication = {
   employmentTitle: string
 }
 
+export type FeedEvent = {
+  id: string
+  seekerEmail: string
+  description: string
+  contextId: string
+  occurredAt: string
+}
+
 export type CoachSeeker = {
   id: string
   kind: ContextKind
