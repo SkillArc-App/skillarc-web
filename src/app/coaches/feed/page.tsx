@@ -2,7 +2,7 @@
 
 import DataTable from '@/frontend/components/DataTable.component'
 import { Link } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useCoachFeed } from '../hooks/useCoachFeed'
 import { FeedEvent } from '../types'
@@ -11,6 +11,7 @@ const Feed = () => {
   const { data: feedEvents } = useCoachFeed()
 
   const columnHelper = createColumnHelper<FeedEvent>()
+  const occurredAtColumnId = 'occurred-at'
 
   const columns = [
     columnHelper.accessor('seekerEmail', {
@@ -22,10 +23,20 @@ const Feed = () => {
       ),
     }),
     columnHelper.accessor('description', {
-      cell: (row) => row.getValue(),
+      cell: (row) => (
+        <div
+          style={{
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+          }}
+        >
+          {row.getValue()}
+        </div>
+      ),
     }),
     columnHelper.accessor('occurredAt', {
       header: 'Occurred At',
+      id: occurredAtColumnId,
       cell: (row) => {
         const date = new Date(row.getValue())
 
@@ -40,9 +51,14 @@ const Feed = () => {
     }),
   ]
 
-  console.log(feedEvents)
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: occurredAtColumnId,
+    },
+  ]
 
-  return <DataTable columns={columns} data={feedEvents ?? []} />
+  return <DataTable columns={columns} data={feedEvents ?? []} initialSortState={initialSortState} />
 }
 
 export default Feed
