@@ -6,7 +6,7 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { Box, Button, Link, VStack } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
@@ -50,6 +50,7 @@ const Leads = () => {
 
 const Table = ({ data }: { data: SeekerLead[] }) => {
   const columnHelper = createColumnHelper<SeekerLead>()
+  const occurredAtColumnId = 'occurred-at'
 
   const columns = [
     columnHelper.accessor('firstName', {
@@ -82,6 +83,7 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
     }),
     columnHelper.accessor('leadCapturedAt', {
       header: 'Lead Captured',
+      id: occurredAtColumnId,
       cell: (row) => {
         try {
           return new Date(row.getValue()).toDateString()
@@ -104,7 +106,14 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
     }),
   ]
 
-  return <DataTable columns={columns} data={data} />
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: occurredAtColumnId,
+    },
+  ]
+
+  return <DataTable columns={columns} data={data} initialSortState={initialSortState} />
 }
 
 export default Leads
