@@ -126,7 +126,7 @@ export default function Employers() {
                   </Td>
                   <Td whiteSpace={'normal'}>{employer.bio}</Td>
                   <Td>{employer.location}</Td>
-                  <Td>{new Date(employer.createdAt as unknown as string).toDateString()}</Td>
+                  <Td>{new Date(employer.createdAt).toDateString()}</Td>
                 </Tr>
               )
             })}

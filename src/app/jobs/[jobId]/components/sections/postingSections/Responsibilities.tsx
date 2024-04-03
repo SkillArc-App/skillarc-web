@@ -1,6 +1,6 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import {
   Accordion,
   AccordionButton,
@@ -12,7 +12,7 @@ import {
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 
-export const Responsibilities = ({ job }: { job: GetOneJobPosting }) => {
+export const Responsibilities = ({ job }: { job: Job }) => {
   const newTheme = {
     p: (props: any) => {
       const { children } = props

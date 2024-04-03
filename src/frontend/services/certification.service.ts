@@ -3,8 +3,6 @@ import axios from 'axios'
 export type MasterCertification = {
   id: string
   certification: string
-  created_at: Date
-  updated_at: Date
 }
 
 const getAll = async (token: string) => {
