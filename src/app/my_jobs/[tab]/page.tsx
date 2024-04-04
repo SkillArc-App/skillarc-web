@@ -1,6 +1,6 @@
 'use client'
 
-import { JobCard, OneMatchedJobPosting } from '@/app/components/JobCard'
+import { JobCard, JobWithSeekerStatus } from '@/app/components/JobCard'
 import useApply from '@/app/jobs/hooks/useApply'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
@@ -63,7 +63,7 @@ const MyJobs = () => {
     onClose: onElevatorPitchModalClose,
   } = useDisclosure()
 
-  const [activeJob, setActiveJob] = useState<Maybe<OneMatchedJobPosting>>(undefined)
+  const [activeJob, setActiveJob] = useState<Maybe<JobWithSeekerStatus>>(undefined)
   const [elevatorPitch, setElevatorPitch] = useState<Maybe<string>>(undefined)
   const { applyCopy, onApply } = useApply({
     job: activeJob,
@@ -87,7 +87,7 @@ const MyJobs = () => {
     setElevatorPitch(activeJob?.elevatorPitch)
   }, [activeJob])
 
-  const onSaveClick = async (job: OneMatchedJobPosting) => {
+  const onSaveClick = async (job: JobWithSeekerStatus) => {
     if (!token) {
       return
     }
@@ -122,17 +122,17 @@ const MyJobs = () => {
     return 0
   }
 
-  const onElevatorPitchOpen = (job: OneMatchedJobPosting) => {
+  const onElevatorPitchOpen = (job: JobWithSeekerStatus) => {
     setActiveJob(job)
     onElevatorPitchModalOpen()
   }
 
-  const onApplyOpen = (job: OneMatchedJobPosting) => {
+  const onApplyOpen = (job: JobWithSeekerStatus) => {
     setActiveJob(job)
     onApplyModalOpen()
   }
 
-  const jobElement = (job: OneMatchedJobPosting) => {
+  const jobElement = (job: JobWithSeekerStatus) => {
     return (
       <JobCard
         key={job.id}

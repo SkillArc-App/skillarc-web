@@ -5,12 +5,12 @@ import { Text } from '@/frontend/components/Text.component'
 import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Flex, Image, Tag, TagLeftIcon } from '@chakra-ui/react'
 
 interface DesiredSkillsProps {
-  job: GetOneJobPosting
+  job: Job
   profileSkills?: ProfileSkill[]
   profileCertifications?: ProfileCertification[]
   percentMatch?: number

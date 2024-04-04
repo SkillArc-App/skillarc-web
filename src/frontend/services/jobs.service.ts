@@ -1,4 +1,4 @@
-import { OneMatchedJobPosting } from '@/app/components/JobCard'
+import { JobWithSeekerStatus } from '@/app/components/JobCard'
 import { get } from '../http-common'
 import { MasterCertification } from './certification.service'
 import { Employer } from './employer.service'
@@ -10,14 +10,24 @@ export type CareerPath = {
   upperLimit: string
   lowerLimit: string
   order: number
+}
+
+export type JobPhoto = {
+  id: string
+  photoUrl: string
   jobId: string
-  createdAt: Date
-  updatedAt: Date
+}
+
+export type Testimonial = {
+  id: string
+  name: string
+  title: string
+  testimonial: string
+  photoUrl: string | null
 }
 
 export type Job = {
   id: string
-  employerId: string
   benefitsDescription: string
   responsibilitiesDescription: string | null
   employmentTitle: string
@@ -28,45 +38,19 @@ export type Job = {
   workDays: string | null
   requirementsDescription: string | null
   industry: string[]
-  createdAt: Date
-  updatedAt: Date
-}
-
-export type JobPhoto = {
-  id: string
-  photoUrl: string
-  jobId: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-export type Testimonial = {
-  id: string
-  job_id: string
-  name: string
-  title: string
-  testimonial: string
-  photoUrl: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type GetOneJobPosting = {
+  createdAt: string
   category: 'marketplace' | 'staffing'
   employer: Employer
   learnedSkills: {
     id: string
-    masterSkillId: string
     masterSkill: MasterSkill
   }[]
   desiredSkills: {
     id: string
-    masterSkillId: string
     masterSkill: MasterSkill
   }[]
   desiredCertifications: {
     id: string
-    masterCertificationId: string
     masterCertification: MasterCertification
   }[]
   careerPaths: CareerPath[]
@@ -80,16 +64,16 @@ export type GetOneJobPosting = {
   }[]
   numberOfApplicants: number
   testimonials: Testimonial[]
-} & Job
+}
 
 const getOne = async (jobId: string) => {
-  const res = await get<GetOneJobPosting>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`)
+  const res = await get<Job>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`)
 
   return res.data
 }
 
 const getJobMatches = async (token: string) => {
-  const res = await get<{ matchedJobs: OneMatchedJobPosting[] }>(
+  const res = await get<{ matchedJobs: JobWithSeekerStatus[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
     token,
   )

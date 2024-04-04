@@ -123,6 +123,7 @@ jobs:
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
           SMS_GATEWAY_STRATEGY: fake
+          KLAYVIO_GATEWAY_STRATEGY: fake
           KLAVIYO_API_KEY: 'fake'
         credentials:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -140,6 +141,7 @@ jobs:
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
           SMS_GATEWAY_STRATEGY: fake
+          KLAYVIO_GATEWAY_STRATEGY: fake
           KLAVIYO_API_KEY: 'fake'
           CI: true
         credentials:

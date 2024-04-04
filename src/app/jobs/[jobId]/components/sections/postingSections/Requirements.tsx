@@ -1,12 +1,12 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { Flex, ListItem } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 
-export const Requirements = ({ job }: { job: GetOneJobPosting }) => {
+export const Requirements = ({ job }: { job: Job }) => {
   function trackToggleAnalytics(): void {
     FrontendAnalyticsService.track('Job-dropdown-toggled', {
       job,

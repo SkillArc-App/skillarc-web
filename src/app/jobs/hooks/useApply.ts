@@ -1,8 +1,8 @@
-import { OneMatchedJobPosting } from '@/app/components/JobCard'
+import { JobWithSeekerStatus } from '@/app/components/JobCard'
 import { SearchJob } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import useUserState, { UserState } from './useUserState'
@@ -18,7 +18,7 @@ type UseApplyProps<T> = {
   onReadyToApply: (job: T, token: string) => void
 }
 
-function useApply<T extends SearchJob | OneMatchedJobPosting | GetOneJobPosting>({
+function useApply<T extends SearchJob | JobWithSeekerStatus | Job>({
   job,
   onReadyToApply,
 }: UseApplyProps<T>) {

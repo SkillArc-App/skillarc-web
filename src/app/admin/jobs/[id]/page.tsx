@@ -2,14 +2,13 @@
 
 import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
-import { CareerPath } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post, put } from '@/frontend/http-common'
-import { Testimonial } from '@/frontend/services/jobs.service'
+import { CareerPath, Testimonial } from '@/frontend/services/jobs.service'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import {
   Box,

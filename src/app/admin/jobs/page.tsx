@@ -160,7 +160,7 @@ export default function Jobs() {
         title: job.employmentTitle,
         employer: job.employer.name,
         applicantCount: job.numberOfApplicants,
-        createdAt: new Date(job.createdAt as unknown as string).toDateString(),
+        createdAt: new Date(job.createdAt).toDateString(),
       }
     }) ?? []
 

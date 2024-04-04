@@ -17,7 +17,7 @@ export type Applicant = {
   statusReasons: string[]
 }
 
-export type Job = {
+export type EmployerJob = {
   id: string
   employerId: string
   employerName: string
@@ -26,9 +26,9 @@ export type Job = {
 }
 
 const getJobs = async (token: string) => {
-  const res = await get<{ jobs: Job[]; applicants: Applicant[] }>(
+  const res = await get<{ jobs: EmployerJob[]; applicants: Applicant[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/employers/jobs`,
-    token
+    token,
   )
 
   return res.data

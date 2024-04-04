@@ -2,10 +2,10 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { formatCurrency } from '@/frontend/helpers/formatCurrency.helper'
 import { NeonCircleIcon } from '@/frontend/icons/NeonCircle.icon'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 
-export const CareerJourney = ({ job }: { job: GetOneJobPosting }) => {
+export const CareerJourney = ({ job }: { job: Job }) => {
   const header = job.careerPaths.length === 1 ? '🧗 Wages' : '🧗 Your career journey'
 
   return (

@@ -1,10 +1,10 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 
 interface EmployerSummaryProps {
-  job: GetOneJobPosting
+  job: Job
 }
 
 export const EmployerSummary = ({ job }: EmployerSummaryProps) => {

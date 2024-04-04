@@ -1,9 +1,9 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 
-export const WhatToExpect = ({ job }: { job: GetOneJobPosting }) => {
+export const WhatToExpect = ({ job }: { job: Job }) => {
   return (
     <Flex
       bg="white"

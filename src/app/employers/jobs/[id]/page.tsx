@@ -8,7 +8,7 @@ import { useEmployerJobData } from '@/frontend/hooks/useEmployerJobData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { usePassReasons } from '@/frontend/hooks/usePassReasons'
 import { put } from '@/frontend/http-common'
-import { Applicant, Job } from '@/frontend/services/employerJobs.service'
+import { Applicant, EmployerJob } from '@/frontend/services/employerJobs.service'
 import {
   Box,
   Checkbox,
@@ -85,7 +85,7 @@ const Jobs = () => {
       groups[job.employerId].push(job)
 
       return groups
-    }, {} as Record<string, Job[]>) ?? {}
+    }, {} as Record<string, EmployerJob[]>) ?? {}
 
   const employers = Object.keys(groupedJobs).map((key) => {
     return {

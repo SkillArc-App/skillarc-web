@@ -1,8 +1,7 @@
 import { Text } from '@/frontend/components/Text.component'
 
-import { MasterCertification, MasterSkill } from '@/common/types/Profile'
 import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
-import { GetOneJobPosting } from '@/frontend/services/jobs.service'
+import { Job } from '@/frontend/services/jobs.service'
 import {
   Box,
   Button,
@@ -21,31 +20,12 @@ import {
   TagLabel,
 } from '@chakra-ui/react'
 
-export type OneMatchedJobPosting = {
-  learnedSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredSkills: {
-    id: string
-    masterSkillId: string
-    masterSkill: MasterSkill
-  }[]
-  desiredCertifications: {
-    id: string
-    masterCertificationId: string
-    masterCertification: MasterCertification
-  }[]
-  jobInteractions?: {
-    percentMatch?: number
-    id?: string
-  }
+export type JobWithSeekerStatus = {
   saved: boolean
   applied: boolean
   applicationStatus?: string
   elevatorPitch?: string
-} & GetOneJobPosting
+} & Job
 
 export const JobCard = ({
   job,
@@ -54,7 +34,7 @@ export const JobCard = ({
   onApplyClick,
   onSaveClick,
 }: {
-  job: OneMatchedJobPosting
+  job: JobWithSeekerStatus
   onCardClick: () => void
   onAddElevatorPitchClick: () => void
   onApplyClick: () => void
@@ -75,7 +55,7 @@ export const JobCard = ({
     { title: 'Interview in Progress' },
   ]
 
-  const applicationStep = (job: OneMatchedJobPosting) => {
+  const applicationStep = (job: JobWithSeekerStatus) => {
     if (job.applicationStatus === 'Application Sent') {
       return 0
     } else if (job.applicationStatus === 'Introduction Sent') {
