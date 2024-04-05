@@ -105,7 +105,7 @@ export const Header = () => {
                 />
                 <Stack gap={'0rem'}>
                   <b>Need some help?</b>
-                  <p>Talk to one of SkillArc's coaches for career tips!</p>
+                  <p>Talk to one of SkillArc&apos;s coaches for career tips!</p>
                 </Stack>
               </HStack>
               <Box
