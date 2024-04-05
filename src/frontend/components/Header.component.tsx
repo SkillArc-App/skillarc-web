@@ -1,5 +1,5 @@
-import { Text } from '@/frontend/components/Text.component'
 import { SkillArc } from '@/frontend/icons/SkillArc.icon'
+import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
@@ -13,8 +13,16 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spacer,
   Stack,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
@@ -23,10 +31,12 @@ import { Logo } from '../icons/Logo.icon'
 import MessageCenter from './MessageCenter.component'
 import NotificationCenter from './NotificationCenter'
 import TestingTools from './TestingTools.component'
+import { Text } from './Text.component'
 
 export const Header = () => {
   const { isLoading, isAuthenticated, logout, loginWithRedirect } = useAuth0()
   const { data: user } = useUser()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const isAuthenticatedWithProfile = isAuthenticated && !!user?.profile?.id
 
@@ -94,8 +104,8 @@ export const Header = () => {
                   src="https://www.heartlandvc.com/wp-content/uploads/2020/07/Hannah-Wexner-HVC.jpg"
                 />
                 <Stack gap={'0rem'}>
-                  <b>Need some tips?</b>
-                  <p>I&apos;m Hannah! I can help you with resumes and job searching. 😊</p>
+                  <b>Need some help?</b>
+                  <p>Talk to one of SkillArc's coaches for career tips!</p>
                 </Stack>
               </HStack>
               <Box
@@ -104,9 +114,7 @@ export const Header = () => {
                 borderRadius={'4px'}
                 textAlign={'center'}
                 py={'0.5rem'}
-                onClick={() => {
-                  window.location.assign('https://meetings.hubspot.com/hannah-wexner')
-                }}
+                onClick={onOpen}
               >
                 <Text type={'b2Bold'}>Schedule a Free Call</Text>
               </Box>
@@ -126,6 +134,26 @@ export const Header = () => {
           )}
         </MenuList>
       </Menu>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent maxW="60rem">
+          <ModalHeader>Schedule Time with a Coach</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Cal
+              calLink="team/skillarc/career-consultation"
+              style={{ width: '100%', height: '100%', overflow: 'scroll' }}
+              config={{ layout: 'month_view', theme: 'light' }}
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="green" mr={3} onClick={onClose}>
+              Done
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Flex>
   )
 }
