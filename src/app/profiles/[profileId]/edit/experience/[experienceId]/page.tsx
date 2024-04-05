@@ -28,8 +28,8 @@ const EditExperience = () => {
   }, [experienceId, seeker])
 
   useEffect(() => {
-    if (currentlyWorking && experience) {
-      setExperience({ ...experience, endDate: '' })
+    if (currentlyWorking) {
+      setExperience((e) => ({ ...e, endDate: '' }))
     }
   }, [currentlyWorking])
 
