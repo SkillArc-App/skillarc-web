@@ -3,8 +3,8 @@
 import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { Heading } from '@/frontend/components/Heading.component'
+import { useAdminJobData } from '@/frontend/hooks/useAdminJobData'
 import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
-import { useJobData } from '@/frontend/hooks/useJobData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post, put } from '@/frontend/http-common'
@@ -55,7 +55,7 @@ import ReactMarkdown from 'react-markdown'
 export default function Job({ params: { id } }: { params: { id: string } }) {
   const {
     getOneJob: { data: job, refetch: refetchJob },
-  } = useJobData(id)
+  } = useAdminJobData(id)
 
   const {
     getEmployers: { data: employers },
