@@ -60,7 +60,7 @@ const Home = () => {
   }, [refetchUser, router, token, user, status])
 
   if (isLoading) return <LoadingPage />
-  if ((user?.trainingProviderProfile || user?.recruiter?.length) ?? 0 > 0) return <></>
+  if ((user?.trainingProviderProfile?.id ?? user?.recruiter?.id)) return <></>
   if (!token) return <LoadingPage />
 
   if (user?.onboardingSession?.completed_at)
