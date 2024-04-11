@@ -1,20 +1,20 @@
 'use client'
 
-import { PersonalExperience } from '@/common/types/PersonalExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateProfile } from '../../hooks/useUpdateProfile'
+import { PersonalExperience } from '@/frontend/services/personalExperience.service'
 
 const EditPersonalExperience = () => {
   const router = useRouter()
-  const { personalExperienceId } = useFixedParams('profileId', 'personalExperienceId')
+  const { profileId, personalExperienceId } = useFixedParams('profileId', 'personalExperienceId')
 
-  const { data: user } = useUser()
+  const { data: seeker } = useProfileData(profileId)
 
   const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
   const [personalExperience, setPersonalExperience] = useState<Partial<PersonalExperience>>()
@@ -29,11 +29,10 @@ const EditPersonalExperience = () => {
       status: deletePersonalExperienceStatus,
     },
   } = useUpdateProfile()
+
   useEffect(() => {
-    setPersonalExperience(
-      user?.profile?.personalExperience?.find(({ id }) => id === personalExperienceId),
-    )
-  }, [personalExperienceId, user?.profile?.personalExperience])
+    setPersonalExperience(seeker?.personalExperience?.find(({ id }) => id === personalExperienceId))
+  }, [personalExperienceId, seeker])
 
   useEffect(() => {
     if (currentlyWorking && personalExperience) {
@@ -57,7 +56,7 @@ const EditPersonalExperience = () => {
   ])
 
   const handleSave = () => {
-    const profileId = user?.profile?.id
+    const profileId = seeker?.id
     if (!profileId) return
     if (!personalExperience) return
 
@@ -82,7 +81,7 @@ const EditPersonalExperience = () => {
   const handleDelete = () => {
     if (!personalExperience?.id) router.back() // if experience is not saved, just go back
     const personalExperienceId = personalExperience?.id
-    const profileId = user?.profile?.id
+    const profileId = seeker?.id
     if (!profileId || !personalExperienceId) return
     deletePersonalExperience({
       profileId: profileId,

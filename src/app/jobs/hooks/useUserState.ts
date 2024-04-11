@@ -15,7 +15,7 @@ const useUserState = () => {
     return UserState.UnAuthenticated
   }
 
-  if (!user?.onboardingSession?.completed_at) {
+  if (!user?.onboardingSession?.completedAt) {
     return UserState.IncompleteOnboarding
   }
 

@@ -50,7 +50,7 @@ const Home = () => {
       return
     }
 
-    if (!user.onboardingSession.completed_at) {
+    if (!user.onboardingSession.completedAt) {
       router.push('/onboarding')
     } else if (user.profile.missingProfileItems.length > 0) {
       router.push(`/profiles/${user.profile.id}`)
@@ -60,10 +60,10 @@ const Home = () => {
   }, [refetchUser, router, token, user, status])
 
   if (isLoading) return <LoadingPage />
-  if ((user?.trainingProviderProfile || user?.recruiter?.length) ?? 0 > 0) return <></>
+  if ((user?.trainingProviderProfile ?? user?.recruiter)) return <></>
   if (!token) return <LoadingPage />
 
-  if (user?.onboardingSession?.completed_at)
+  if (user?.onboardingSession?.completedAt)
     return (
       <Flex color={'greyscale.100'} height={'100%'} width={'100%'}>
         <Flex

@@ -1,5 +1,4 @@
 import { EducationExperience } from '@/common/types/EducationExperience'
-import { PersonalExperience } from '@/common/types/PersonalExperience'
 import { Skill } from '@/common/types/Profile'
 import { useUser } from '@/frontend/hooks/useUser'
 import { FrontendEducationExperiencesService } from '@/frontend/services/educationexperiences.service'
@@ -7,7 +6,7 @@ import {
   FrontendOtherExperiencesService,
   OtherExperience,
 } from '@/frontend/services/otherExperiences.service'
-import { FrontendPersonalExperiencesService } from '@/frontend/services/personalExperience.service'
+import { FrontendPersonalExperiencesService, PersonalExperience } from '@/frontend/services/personalExperience.service'
 import { FrontendProfileService } from '@/frontend/services/profile.service'
 import { FrontendProfileCertificationService } from '@/frontend/services/profileCertifications.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'

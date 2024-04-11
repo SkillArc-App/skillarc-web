@@ -22,24 +22,6 @@ export const mixpanelInitUser = (user: FullUser) => {
   }
   if (user.profile) {
     mixpanelPerson['$profile'] = user.profile
-    if (user.profile.desiredOutcomes) {
-      let responses: string[] = []
-      user.profile.desiredOutcomes.forEach((outcome) => {
-        if (outcome.response) {
-          responses.push(outcome.response)
-        }
-      })
-      mixpanelPerson['$desired_outcomes_responses'] = responses
-    }
-    if (user.profile.professionalInterests) {
-      let responses: string[] = []
-      user.profile.professionalInterests.forEach((interest) => {
-        if (interest.response) {
-          responses.push(interest.response)
-        }
-      })
-      mixpanelPerson['$professional_interests_responses'] = responses
-    }
   }
   mixpanel.people.set(mixpanelPerson)
 }
