@@ -15,7 +15,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) return <LoadingPage />
   if (!user) return <div>Unauthorized</div>
-  if (!user.userRoles?.some((ur: { role: { name: string } }) => ur.role.name === 'admin')) {
+  if (!user.userRoles?.some((ur) => ur.role.name === 'admin')) {
     return <div>Unauthorized</div>
   }
 

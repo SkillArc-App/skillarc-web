@@ -11,8 +11,7 @@ export type Recruiter = {
 }
 
 export type Role = {
-  id: string
-  name: 'admin' | 'coach' | 'recruiter' | 'seeker' | 'training_provider'
+  name: 'admin' | 'coach' | 'employer_admin'
 }
 
 export type User = {
@@ -22,12 +21,6 @@ export type User = {
   lastName: string | null
   zipCode: string | null
   phoneNumber: string | null
-}
-
-export type UserRoles = {
-  id: string
-  user_id: string
-  role_id: string
 }
 
 export type FullUser = {
@@ -48,7 +41,7 @@ export type FullUser = {
   trainingProviderProfile: TrainingProviderProfile
   recruiter: Recruiter
   onboardingSession: OnboardingSession
-  userRoles: (UserRoles & { role: Role })[]
+  userRoles: { role: Role }[]
 }
 
 const update = async (user: Partial<User>) => {
