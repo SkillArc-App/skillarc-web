@@ -1,10 +1,9 @@
 import { TrainingProviderProfile } from '@/common/types/TrainingProviderProfile'
 import { http } from '../http-common'
-import { mixpanelInitUser } from '../utils/mixpanel'
 import { Profile } from './profile.service'
 
 export type OnboardingSession = {
-  completed_at: string | null
+  completedAt: string | null
 }
 
 export type Recruiter = {
@@ -52,24 +51,11 @@ export type FullUser = {
   userRoles: (UserRoles & { role: Role })[]
 }
 
-const getOne = async (userId: string) => {
-  const res = await http.get<FullUser>(`/api/users/${userId}`)
-  mixpanelInitUser(res.data)
-  return res.data
-}
-
 const update = async (user: Partial<User>) => {
   const res = await http.put<FullUser>(`/api/users/${user.id}`, user)
   return res.data
 }
 
-const updateUserWithTempData = async (user: Partial<User>, id: string) => {
-  const res = await http.put<FullUser>(`/api/users/tempData/${id}`, user)
-  return res.data
-}
-
 export const FrontendUserService = {
-  getOne,
   update,
-  updateUserWithTempData,
 }
