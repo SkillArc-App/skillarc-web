@@ -18,9 +18,7 @@ const Coaches = () => {
   const filter = searchParams.get('filter')
 
   const filteredData =
-    filter === 'yes'
-      ? data?.filter((seeker) => seeker.assignedCoach == user?.email) ?? []
-      : data ?? []
+    filter === 'yes' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
 
   return (
     <Stack width={'100%'}>
@@ -34,7 +32,7 @@ const Coaches = () => {
       >
         Owned by Me
       </Checkbox>
-      {data && <Table data={filteredData} />}
+      {filteredData && <Table data={filteredData} />}
     </Stack>
   )
 }
