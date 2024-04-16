@@ -53,6 +53,10 @@ describe('Coaches', () => {
     })
 
     cy.get('@seeker').then((seeker: any) => {
+      cy.get('tbody').should('not.contain', seeker['first_name'])
+
+      cy.get('label').contains('Owned by Me').parent().click()
+
       cy.findByRole('table').within(() => {
         const row = cy
           .findByText(`${seeker['first_name']} ${seeker['last_name']}`)
@@ -106,7 +110,7 @@ describe('Coaches', () => {
 
       // save current route
       cy.url().then((url) => {
-        cy.findByRole('link', { name: 'Jump to Profile'}).click()
+        cy.findByRole('link', { name: 'Jump to Profile' }).click()
         cy.findByLabelText('Edit Profile').click()
 
         cy.get('p').contains('Phone number').next().clear().type('570-555-5555')
@@ -167,7 +171,7 @@ describe('Coaches', () => {
       cy.url().should('contain', '/jobs/')
       cy.go('back')
 
-      cy.findByRole('link', { name: 'Jump to Profile'}).click()
+      cy.findByRole('link', { name: 'Jump to Profile' }).click()
       cy.findByLabelText('Edit Profile').click()
 
       cy.get('p').contains('First name').next().clear().type('Dwight')
@@ -188,6 +192,10 @@ describe('Coaches', () => {
       cy.url().should('contain', '/coaches/leads')
 
       cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
+
+      cy.get('table').should('not.contain', lead['first_name'])
+
+      cy.get('label').contains('Owned by Me').parent().click()
 
       cy.get('table').should('contain', lead['first_name'])
       cy.get('table').should('contain', lead['last_name'])
@@ -211,10 +219,7 @@ describe('Coaches', () => {
       cy.get('table').should('contain', newLead.phoneNumber)
 
       cy.findByRole('table').within(() => {
-        const row = cy
-          .findByText(`${newLead.firstName} ${newLead.lastName}`)
-          .parent()
-          .parent()
+        const row = cy.findByText(`${newLead.firstName} ${newLead.lastName}`).parent().parent()
 
         row.within(() => {
           cy.findByRole('link', { name: 'Dash' }).click()
@@ -223,7 +228,7 @@ describe('Coaches', () => {
 
       cy.findByText('< Back to Leads')
 
-      cy.findByRole('link', { name: 'Jump to Profile'}).should('not.exist')
+      cy.findByRole('link', { name: 'Jump to Profile' }).should('not.exist')
       cy.findByText('This seeker need to create a profile to be certified')
 
       cy.findByPlaceholderText('Add a note').type('This is a note').type('{enter}')
