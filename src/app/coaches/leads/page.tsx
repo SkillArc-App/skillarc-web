@@ -4,10 +4,12 @@ import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
-import { Box, Button, Link, VStack } from '@chakra-ui/react'
+import { Box, Button, Checkbox, Link, VStack } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
@@ -16,6 +18,15 @@ const Leads = () => {
   const { data: leads, isLoading, refetch } = useCoachLeadsQuery()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const token = useAuthToken()
+
+  const { data: user } = useUser()
+  const router = useRouter()
+
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
+
+  const filteredLeads =
+    filter !== 'no' ? leads?.filter((lead) => lead.assignedCoach == user?.email) : leads
 
   const handleSubmit = (lead: SubmittableSeekerLead) => {
     if (!token) return
@@ -42,7 +53,17 @@ const Leads = () => {
         <Button variant={'solid'} colorScheme="green" onClick={() => setIsModalOpen(true)}>
           New Lead
         </Button>
-        {leads && <Table data={leads} />}
+        <Checkbox
+          isChecked={filter !== 'no'}
+          onChange={() =>
+            filter !== 'no'
+              ? router.push('/coaches/leads?filter=no')
+              : router.push('/coaches/leads?filter=yes')
+          }
+        >
+          Owned by Me
+        </Checkbox>
+        {filteredLeads && <Table data={filteredLeads} />}
       </VStack>
     </Box>
   )

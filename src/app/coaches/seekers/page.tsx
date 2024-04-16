@@ -3,14 +3,38 @@
 import { useCoachSeekersData } from '@/app/coaches/hooks/useCoachSeekersData'
 import { CoachSeeker } from '@/app/coaches/types'
 import DataTable from '@/frontend/components/DataTable.component'
-import { Box, HStack, Link, Tag } from '@chakra-ui/react'
+import { useUser } from '@/frontend/hooks/useUser'
+import { Checkbox, HStack, Link, Stack, Tag } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 const Coaches = () => {
   const { data } = useCoachSeekersData()
+  const { data: user } = useUser()
+  const router = useRouter()
 
-  return <Box width={'100%'}>{data && <Table data={data} />}</Box>
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
+
+  const filteredData =
+    filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
+
+  return (
+    <Stack width={'100%'}>
+      <Checkbox
+        isChecked={filter !== 'no'}
+        onChange={() =>
+          filter !== 'no'
+            ? router.push('/coaches/seekers?filter=no')
+            : router.push('/coaches/seekers?filter=yes')
+        }
+      >
+        Owned by Me
+      </Checkbox>
+      {filteredData && <Table data={filteredData} />}
+    </Stack>
+  )
 }
 
 const Table = ({ data }: { data: CoachSeeker[] }) => {
