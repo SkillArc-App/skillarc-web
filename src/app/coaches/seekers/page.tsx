@@ -18,14 +18,14 @@ const Coaches = () => {
   const filter = searchParams.get('filter')
 
   const filteredData =
-    filter === 'yes' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
+    filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
 
   return (
     <Stack width={'100%'}>
       <Checkbox
-        isChecked={filter === 'yes'}
+        isChecked={filter !== 'no'}
         onChange={() =>
-          filter === 'yes'
+          filter !== 'no'
             ? router.push('/coaches/seekers?filter=no')
             : router.push('/coaches/seekers?filter=yes')
         }

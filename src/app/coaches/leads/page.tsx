@@ -26,7 +26,7 @@ const Leads = () => {
   const filter = searchParams.get('filter')
 
   const filteredLeads =
-    filter === 'yes' ? leads?.filter((lead) => lead.assignedCoach == user?.email) : leads
+    filter !== 'no' ? leads?.filter((lead) => lead.assignedCoach == user?.email) : leads
 
   const handleSubmit = (lead: SubmittableSeekerLead) => {
     if (!token) return
@@ -54,9 +54,9 @@ const Leads = () => {
           New Lead
         </Button>
         <Checkbox
-          isChecked={filter === 'yes'}
+          isChecked={filter !== 'no'}
           onChange={() =>
-            filter === 'yes'
+            filter !== 'no'
               ? router.push('/coaches/leads?filter=no')
               : router.push('/coaches/leads?filter=yes')
           }
