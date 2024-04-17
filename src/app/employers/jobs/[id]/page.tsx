@@ -254,6 +254,8 @@ const Jobs = () => {
     <Flex py={'1.5rem'} px={'1rem'} flexDir={'column'} gap={'0.5rem'} width={'100%'}>
       <Heading color={'greyscale.900'} variant={'h2'}>
         Applicants
+      </Heading>
+      <Box>
         {employers.length > 1 && (
           <select
             name="employer_select"
@@ -264,16 +266,19 @@ const Jobs = () => {
             }}
             value={activeEmployerId}
           >
-            {employers.map((employer) => {
-              return (
-                <option key={employer.id} value={employer.id}>
-                  {employer.name}
-                </option>
-              )
-            })}
+            {employers
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((employer) => {
+                return (
+                  <option key={employer.id} value={employer.id}>
+                    {employer.name}
+                  </option>
+                )
+              })}
           </select>
         )}
-      </Heading>
+      </Box>
+
       <Tabs index={tabIndex} variant="unstyled" colorScheme="gray" py={'12px'}>
         <TabList>
           <Tab
