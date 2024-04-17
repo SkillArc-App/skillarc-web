@@ -1,7 +1,7 @@
 'use client'
 
 import { useCoachSeekersData } from '@/app/coaches/hooks/useCoachSeekersData'
-import { CoachSeeker } from '@/app/coaches/types'
+import { CoachSeekerTable } from '@/app/coaches/types'
 import DataTable from '@/frontend/components/DataTable.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Checkbox, HStack, Link, Stack, Tag } from '@chakra-ui/react'
@@ -37,18 +37,24 @@ const Coaches = () => {
   )
 }
 
-const Table = ({ data }: { data: CoachSeeker[] }) => {
-  const columnHelper = createColumnHelper<CoachSeeker>()
+const Table = ({ data }: { data: CoachSeekerTable[] }) => {
+  const columnHelper = createColumnHelper<CoachSeekerTable>()
   const lastActiveColumnId = 'last-active-on'
 
   const columns = [
     columnHelper.accessor('firstName', {
       header: 'Name',
-      cell: (row) => (
-        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
-          {`${row.getValue()} ${row.row.original.lastName}`}
-        </Link>
-      ),
+      cell: (row) => {
+        const name = !!row.getValue()
+          ? `${row.getValue()} ${row.row.original.lastName}`
+          : 'Name not provided'
+
+        return (
+          <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+            {name}
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor('seekerId', {
       header: 'Navigation',
