@@ -44,11 +44,17 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
   const columns = [
     columnHelper.accessor('firstName', {
       header: 'Name',
-      cell: (row) => (
-        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
-          {`${row.getValue()} ${row.row.original.lastName}`}
-        </Link>
-      ),
+      cell: (row) => {
+        const name = !!row.getValue()
+          ? `${row.getValue()} ${row.row.original.lastName}`
+          : 'Name not provided'
+
+        return (
+          <Link as={NextLink} href={`/coaches/contexts/${row.row.original.id}`}>
+            {name}
+          </Link>
+        )
+      },
     }),
     columnHelper.accessor('seekerId', {
       header: 'Navigation',
