@@ -182,8 +182,8 @@ const Jobs = () => {
       ),
       header: 'Status',
     }),
-    columnHelper.accessor('statusReasons', {
-      cell: (info) => info.getValue()[0] ?? '',
+    columnHelper.accessor('statusReason', {
+      cell: (info) => info.getValue() ?? '',
       header: 'Pass Reason',
     }),
     columnHelper.accessor('createdAt', {
