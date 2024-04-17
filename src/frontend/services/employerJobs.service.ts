@@ -12,9 +12,8 @@ export type Applicant = {
   email: string
   phoneNumber: string
   profileLink: string
-  programs: any[]
   status: string
-  statusReasons: string[]
+  statusReason: string
 }
 
 export type EmployerJob = {
