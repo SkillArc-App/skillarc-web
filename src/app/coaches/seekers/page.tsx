@@ -1,7 +1,7 @@
 'use client'
 
 import { useCoachSeekersData } from '@/app/coaches/hooks/useCoachSeekersData'
-import { CoachSeeker } from '@/app/coaches/types'
+import { CoachSeekerTable } from '@/app/coaches/types'
 import DataTable from '@/frontend/components/DataTable.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Checkbox, HStack, Link, Stack, Tag } from '@chakra-ui/react'
@@ -37,8 +37,8 @@ const Coaches = () => {
   )
 }
 
-const Table = ({ data }: { data: CoachSeeker[] }) => {
-  const columnHelper = createColumnHelper<CoachSeeker>()
+const Table = ({ data }: { data: CoachSeekerTable[] }) => {
+  const columnHelper = createColumnHelper<CoachSeekerTable>()
   const lastActiveColumnId = 'last-active-on'
 
   const columns = [

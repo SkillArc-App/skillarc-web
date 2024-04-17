@@ -43,6 +43,21 @@ export type FeedEvent = {
   occurredAt: string
 }
 
+export type CoachSeekerTable = Pick<
+  CoachSeeker,
+  | 'id'
+  | 'assignedCoach'
+  | 'barriers'
+  | 'certifiedBy'
+  | 'email'
+  | 'firstName'
+  | 'lastName'
+  | 'phoneNumber'
+  | 'lastActiveOn'
+  | 'lastContacted'
+  | 'seekerId'
+>
+
 export type CoachSeeker = {
   id: string
   kind: ContextKind
