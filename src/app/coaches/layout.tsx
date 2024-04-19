@@ -10,9 +10,10 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
 
   const tabs: Record<string, number> = {
     '/coaches/seekers': 0,
-    '/coaches/feed': 1,
-    '/coaches/leads': 2,
-    '/coaches/jobs': 3,
+    '/coaches/tasks': 1,
+    '/coaches/feed': 2,
+    '/coaches/leads': 3,
+    '/coaches/jobs': 4,
   }
 
   const index = tabs[pathName] || 0
@@ -25,6 +26,9 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
           <TabList>
             <Tab as={Link} href={'/coaches/seekers'}>
               Seekers
+            </Tab>
+            <Tab as={Link} href={'/coaches/tasks'}>
+              Tasks
             </Tab>
             <Tab as={Link} href={'/coaches/feed'}>
               Feed

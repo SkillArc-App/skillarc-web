@@ -138,9 +138,38 @@ describe('Coaches', () => {
       cy.findByRole('button', { name: 'Certify' }).click()
       cy.findByText(`By ${coachEmail}`)
 
-      cy.findByRole('link', { name: '< Back to Seekers' }).click()
+      const now = new Date()
+      const pad = (x: number) => x.toString().padStart(2, '0')
 
-      cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
+      const dateString = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate() + 1)}`
+
+      cy.findByRole('button', { name: 'Create Reminder' }).click()
+      cy.findByLabelText('Reminder Time*').type(`${dateString}T09:00`)
+      cy.findByLabelText('Reminder Note*').type("Let's reach back out to this seeker in a few days")
+      cy.findByRole('button', { name: 'Save' }).click()
+
+      cy.findByRole('tab', { name: 'Tasks' }).click()
+
+      cy.findByRole('button', { name: 'New Reminder' }).click()
+      cy.findByLabelText('Reminder Time*').type(`${dateString}T11:00`)
+      cy.findByLabelText('Reminder Note*').type('Give yourself a high five')
+      cy.findByRole('button', { name: 'Save' }).click()
+
+      const taskTable = cy.findByRole('table')
+      taskTable.within(() => {
+        const row = cy
+          .findByText("Let's reach back out to this seeker in a few days")
+          .parent()
+          .parent()
+
+        row.within(() => {
+          cy.findByLabelText('Complete Task').click()
+        })
+      })
+
+      cy.get('body').should('not.contain', "Let's reach back out to this seeker in a few days")
+
+      cy.findByRole('tab', { name: 'Seekers' }).click()
 
       const table = cy.findByRole('table')
       table.within(() => {
@@ -156,7 +185,6 @@ describe('Coaches', () => {
       })
 
       cy.findByText('< Back to Seekers')
-      cy.reload()
 
       cy.get('body').should('contain', 'This is a new note')
       cy.get('button[aria-label="Delete Note"]').click()

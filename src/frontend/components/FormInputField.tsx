@@ -5,6 +5,8 @@ import { HTMLInputTypeAttribute } from 'react'
 type InputProps = {
   label: string
   placeholder?: string
+  min?: string | number
+  max?: string | number
   type: HTMLInputTypeAttribute
   isRequired?: boolean
 }
@@ -17,6 +19,8 @@ export default function FormInputField<T extends InputTypes>({
   label,
   placeholder,
   type,
+  min,
+  max,
   isRequired,
   ...props
 }: InputField<T>) {
@@ -25,7 +29,7 @@ export default function FormInputField<T extends InputTypes>({
   return (
     <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>
       <FormLabel>{label}</FormLabel>
-      <Input bg={'white'} {...field} placeholder={placeholder} type={type} />
+      <Input bg={'white'} {...field} min={min} max={max} placeholder={placeholder} type={type} />
       <FormErrorMessage>{meta.touched && meta.error}</FormErrorMessage>
     </FormControl>
   )
