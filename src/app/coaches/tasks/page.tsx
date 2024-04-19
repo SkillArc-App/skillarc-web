@@ -105,7 +105,21 @@ const Table = ({
     columnHelper.accessor('reminderAt', {
       header: 'Due at',
       id: dueAtColumnId,
-      cell: (row) => new Date(row.getValue()).toLocaleString(),
+      cell: (row) => {
+        const reminderDate = new Date(row.getValue())
+
+        if (new Date() > reminderDate) {
+          return (
+            <p
+              style={{
+                color: 'red',
+              }}
+            >{`Overdue: ${new Date(row.getValue()).toLocaleString()}`}</p>
+          )
+        } else {
+          return new Date(row.getValue()).toLocaleString()
+        }
+      },
       sortDescFirst: false,
       sortingFn: (row1, row2, columnId) => {
         const date1 = new Date(row1.getValue(columnId))
