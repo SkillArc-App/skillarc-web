@@ -2,7 +2,7 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { SeekerNote } from '@/app/coaches/types'
+import { SeekerNote, SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
@@ -32,6 +32,7 @@ import NextLink from 'next/link'
 import { useState } from 'react'
 import ReactSelect from 'react-select'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
+import ReminderModal from '../../tasks/components/ReminderModal'
 
 interface GroupedNotes {
   [key: string]: SeekerNote[]
@@ -45,6 +46,7 @@ const Seeker = () => {
   const { data: allJobs } = useCoachJobs()
 
   const [noteDraft, setNoteDraft] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const token = useAuthToken()
   const toast = useToast()
@@ -195,6 +197,14 @@ const Seeker = () => {
     refetchSeeker()
   }
 
+  const handleSubmitReminder = async (reminder: SubmittableCoachTask) => {
+    if (!token) return
+
+    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders`, { reminder }, token)
+
+    setIsModalOpen(false)
+  }
+
   const applicationIcon = (applicationStatus: string) => {
     if (applicationStatus == 'hire') {
       return <CheckIcon boxSize={3} color={'green'} />
@@ -223,6 +233,12 @@ const Seeker = () => {
 
   return (
     <Box width={'100%'} height={'100%'}>
+      <ReminderModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        contextId={id}
+        onSubmit={handleSubmitReminder}
+      />
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}
@@ -285,6 +301,10 @@ const Seeker = () => {
             <Stack>
               <Text variant={'b3'}>Seeker Certification</Text>
               {certifySeekerSection()}
+            </Stack>
+            <Stack>
+              <Text variant={'b3'}>Seeker Reminder</Text>
+              <Button onClick={() => setIsModalOpen(true)}>Create Reminder</Button>
             </Stack>
             <Box>
               <Text variant={'b3'} mb={'0.25rem'}>
