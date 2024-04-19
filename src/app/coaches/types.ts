@@ -43,6 +43,16 @@ export type FeedEvent = {
   occurredAt: string
 }
 
+export type CoachTask = {
+  id: string
+  note: string
+  state: 'set' | 'complete'
+  reminderAt: string
+  contextId: string | null
+}
+
+export type SubmittableCoachTask = Pick<CoachTask, 'reminderAt' | 'note' | 'contextId'>
+
 export type CoachSeekerTable = Pick<
   CoachSeeker,
   | 'id'
