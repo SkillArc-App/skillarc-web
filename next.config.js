@@ -41,6 +41,11 @@ const nextConfig = {
         destination: '/employers/jobs/all',
         permanent: false
       },
+      {
+        source: '/coaches/contexts/:id',
+        destination: '/coaches/contexts/:id/notes',
+        permanent: false
+      },
     ]
   }
 }
