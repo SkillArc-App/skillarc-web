@@ -78,6 +78,8 @@ export type Job = {
   requirementsDescription: string | null
   category: 'marketplace' | 'staffing'
   employer: Employer
+  applicationStatus?: string
+  elevatorPitch?: string
   learnedSkills: {
     id: string
     masterSkill: MasterSkill
