@@ -1,10 +1,10 @@
 'use client'
 
+import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { Heading } from '@/frontend/components/Heading.component'
-import { useAdminJobData } from '@/frontend/hooks/useAdminJobData'
-import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post, put } from '@/frontend/http-common'
@@ -53,13 +53,8 @@ import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 
 export default function Job({ params: { id } }: { params: { id: string } }) {
-  const {
-    getOneJob: { data: job, refetch: refetchJob },
-  } = useAdminJobData(id)
-
-  const {
-    getEmployers: { data: employers },
-  } = useAllEmployerData()
+  const { data: job, refetch: refetchJob } = useAdminJob(id)
+  const { data: employers } = useAllEmployers()
 
   const {
     masterSkillQuery: { data: masterSkills },

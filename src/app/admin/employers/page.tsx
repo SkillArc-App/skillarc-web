@@ -1,6 +1,6 @@
 'use client'
 
-import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
+import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import {
   Box,
   Button,
@@ -33,7 +33,7 @@ export default function Employers() {
   // use employer data
   const {
     getEmployers: { data: employers, refetch },
-  } = useAllEmployerData()
+  } = useAllEmployers()
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const [name, setName] = useState('')

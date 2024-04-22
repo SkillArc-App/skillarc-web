@@ -1,6 +1,6 @@
 'use client'
 
-import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
+import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import { useAllEmployerInviteData } from '@/frontend/hooks/useAllEmployerInviteData'
 import {
   Box,
@@ -37,7 +37,7 @@ export default function EmployerInvites() {
 
   const {
     getEmployers: { data: employers },
-  } = useAllEmployerData()
+  } = useAllEmployers()
 
   const { getAccessTokenSilently } = useAuth0()
   const [token, setToken] = useState<string | null>(null)
