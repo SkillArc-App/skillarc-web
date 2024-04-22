@@ -31,9 +31,7 @@ import { useEffect, useState } from 'react'
 
 export default function Employers() {
   // use employer data
-  const {
-    getEmployers: { data: employers, refetch },
-  } = useAllEmployers()
+  const { data: employers, refetch } = useAllEmployers()
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const [name, setName] = useState('')

@@ -35,9 +35,7 @@ export default function EmployerInvites() {
     getEmployerInvites: { data: invites, refetch: refetchInvites },
   } = useAllEmployerInviteData()
 
-  const {
-    getEmployers: { data: employers },
-  } = useAllEmployers()
+  const { data: employers } = useAllEmployers()
 
   const { getAccessTokenSilently } = useAuth0()
   const [token, setToken] = useState<string | null>(null)
