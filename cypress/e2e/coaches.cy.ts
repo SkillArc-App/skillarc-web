@@ -155,7 +155,23 @@ describe('Coaches', () => {
       cy.findByLabelText('Reminder Note*').type('Give yourself a high five')
       cy.findByRole('button', { name: 'Save' }).click()
 
-      const taskTable = cy.findByRole('table')
+      let taskTable = cy.findByRole('table')
+      taskTable.within(() => {
+        const row = cy
+          .findByText("Let's reach back out to this seeker in a few days")
+          .parent()
+          .parent()
+
+        row.within(() => {
+          cy.findByText('Jump to Seeker').click()
+        })
+      })
+
+      cy.findByRole('tab', { name: 'Seeker Tasks' }).should('have.attr', 'aria-selected', 'true')
+      cy.findByText("Let's reach back out to this seeker in a few days")
+      cy.go('back')
+
+      taskTable = cy.findByRole('table')
       taskTable.within(() => {
         const row = cy
           .findByText("Let's reach back out to this seeker in a few days")
