@@ -19,7 +19,7 @@ const Tasks = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const token = useAuthToken()
 
-  const handleSubmitReminder = async (reminder: SubmittableCoachTask) => {
+  const handleSubmitTask = async (reminder: SubmittableCoachTask) => {
     if (!token) return
 
     await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders`, { reminder }, token)
@@ -29,7 +29,7 @@ const Tasks = () => {
   }
 
   // For now this both "completes" and "cancels" tasks
-  const handleCompleteReminder = async (id: string) => {
+  const handleCompleteTask = async (id: string) => {
     if (!token) return
 
     await put(
@@ -51,14 +51,14 @@ const Tasks = () => {
       <ReminderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onSubmit={handleSubmitReminder}
+        onSubmit={handleSubmitTask}
       />
       <VStack width={'100%'} align={'start'}>
         <Button variant={'solid'} colorScheme="green" onClick={() => setIsModalOpen(true)}>
           New Reminder
         </Button>
 
-        {tasks && <Table data={filteredTasks} handleCompleteReminder={handleCompleteReminder} />}
+        {tasks && <Table data={filteredTasks} handleCompleteReminder={handleCompleteTask} />}
       </VStack>
     </Box>
   )
@@ -80,7 +80,7 @@ const Table = ({
       cell: (row) => {
         if (!!row.getValue()) {
           return (
-            <Link as={NextLink} href={`/coaches/contexts/${row.getValue()}`}>
+            <Link as={NextLink} href={`/coaches/contexts/${row.getValue()}/tasks`}>
               Jump to Seeker
             </Link>
           )

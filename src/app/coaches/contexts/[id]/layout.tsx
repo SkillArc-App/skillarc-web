@@ -2,15 +2,14 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { SeekerNote, SubmittableCoachTask } from '@/app/coaches/types'
+import { SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
-import { NoteBox } from '@/frontend/components/note-box'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { Barrier, useBarrierData } from '@/frontend/hooks/useBarrierData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { destroy, post, put } from '@/frontend/http-common'
+import { post, put } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -25,46 +24,37 @@ import {
   Link,
   Select,
   Stack,
-  Textarea,
+  Tab,
+  TabList,
+  Tabs,
   useToast,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import ReactSelect from 'react-select'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
+import { useCoachSeekerTasks } from '../../hooks/useCoachTasks'
 import ReminderModal from '../../tasks/components/ReminderModal'
 
-interface GroupedNotes {
-  [key: string]: SeekerNote[]
+const tabs: Record<string, number> = {
+  notes: 0,
+  tasks: 1,
 }
 
-const Seeker = () => {
+const Context = ({ children }: { children: React.ReactNode }) => {
   const { id } = useFixedParams('id')
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
+  const { refetch: refetchTasks } = useCoachSeekerTasks(id)
+  const pathName = usePathname()
 
-  const [noteDraft, setNoteDraft] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const token = useAuthToken()
   const toast = useToast()
-
-  const groupedNotes = (seeker?.notes ?? [])
-    .sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
-    })
-    .reduce((acc: GroupedNotes, curr) => {
-      const month = new Date(curr.date).getMonth()
-      const year = new Date(curr.date).getFullYear()
-
-      const yearMonthDate = new Date(year, month).toString()
-
-      const monthNotes = acc[yearMonthDate] || []
-
-      return { ...acc, [yearMonthDate]: [...monthNotes, curr] }
-    }, {})
 
   const barrierOptions = (barriers ?? []).map((b) => ({
     value: b.id,
@@ -74,54 +64,6 @@ const Seeker = () => {
   const jobs = allJobs?.filter((job) => {
     return !seeker?.applications.some((a) => a.jobId === job.id)
   })
-
-  const addNote = async () => {
-    if (!token) return
-    if (!noteDraft) return
-    if (!seeker) return
-
-    const currentNoteDraft = noteDraft
-    const noteId = crypto.randomUUID()
-
-    await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes`,
-      {
-        note: currentNoteDraft,
-        noteId,
-      },
-      token,
-    )
-
-    refetchSeeker()
-    setNoteDraft('')
-  }
-
-  const deleteNote = async (noteId: string) => {
-    if (!token) return
-    if (!seeker) return
-
-    await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
-      token,
-    )
-
-    refetchSeeker()
-  }
-
-  const modifyNote = async (noteId: string, updatedNote: string) => {
-    if (!token) return
-    if (!seeker) return
-
-    await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
-      {
-        note: updatedNote,
-      },
-      token,
-    )
-
-    refetchSeeker()
-  }
 
   const changeSkillLevel = async (level: string) => {
     if (!token) return
@@ -201,6 +143,7 @@ const Seeker = () => {
     if (!token) return
 
     await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders`, { reminder }, token)
+    refetchTasks()
 
     setIsModalOpen(false)
   }
@@ -230,6 +173,8 @@ const Seeker = () => {
       <Button onClick={certifySeeker}>Certify</Button>
     )
   }
+
+  const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
   return (
     <Box width={'100%'} height={'100%'}>
@@ -348,42 +293,17 @@ const Seeker = () => {
           </Stack>
         </GridItem>
         <GridItem pl="2" pt={'1rem'} bg="gray.50" area={'main'} height={'100%'}>
-          <Stack pr={'1rem'} pb={'10rem'} gap={'1rem'} overflowY={'scroll'} height={'100%'}>
-            <Textarea
-              placeholder="Add a note"
-              bg={'white'}
-              onChange={(e) => {
-                setNoteDraft(e.target.value)
-              }}
-              value={noteDraft}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  addNote()
-                  e.preventDefault()
-                }
-              }}
-            />
-            {Object.entries(groupedNotes)
-              .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-              .map(([date, notes]) => (
-                <Stack key={date}>
-                  <Heading type="h3" color={'black'}>
-                    {new Date(date).toLocaleString('default', {
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </Heading>
-                  {notes.map((note) => (
-                    <NoteBox
-                      key={note.noteId}
-                      note={note}
-                      onDeleteClicked={deleteNote}
-                      onNoteModified={modifyNote}
-                    />
-                  ))}
-                </Stack>
-              ))}
-          </Stack>
+          <Tabs my={'1rem'} variant={'enclosed'} index={index}>
+            <TabList>
+              <Tab as={NextLink} href={'notes'}>
+                Notes
+              </Tab>
+              <Tab as={NextLink} href={'tasks'}>
+                Seeker Tasks
+              </Tab>
+            </TabList>
+          </Tabs>
+          {children}
         </GridItem>
         <GridItem pl="2" bg="gray.50" area={'right'}>
           <Stack gap={'1rem'} p={'2rem'} overflowY={'scroll'}>
@@ -456,4 +376,4 @@ const Seeker = () => {
   )
 }
 
-export default Seeker
+export default Context
