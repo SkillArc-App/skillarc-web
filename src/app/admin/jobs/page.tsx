@@ -1,8 +1,8 @@
 'use client'
 
+import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import DataTable from '@/frontend/components/DataTable.component'
-import { useAllEmployerData } from '@/frontend/hooks/useAllEmployerData'
-import { useAllJobData } from '@/frontend/hooks/useJobData'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
   Badge,
@@ -27,18 +27,13 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useAllAdminJobs } from '../hooks/useAllAdminJobs'
 
 export default function Jobs() {
-  const {
-    getJobs: { data: jobs, refetch: refetchJobs },
-  } = useAllJobData()
-
-  const {
-    getEmployers: { data: employers },
-  } = useAllEmployerData()
+  const { data: jobs, refetch: refetchJobs } = useAllAdminJobs()
+  const { data: employers } = useAllEmployers()
 
   const categoryOptions = [
     {
@@ -53,8 +48,6 @@ export default function Jobs() {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
-  const [filteredJobs, setFilteredJobs] = useState(jobs)
-
   const [category, setCategory] = useState(categoryOptions[0].value)
   const [employerId, setEmployerId] = useState('')
   const [employmentTitle, setEmploymentTitle] = useState('')
@@ -67,29 +60,7 @@ export default function Jobs() {
   const [schedule, setSchedule] = useState('')
   const [showHiddenJobs, setShowHiddenJobs] = useState(false)
 
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
-
-  useEffect(() => {
-    if (!jobs) return
-
-    const filteredJobs = jobs.filter((job) => {
-      if (showHiddenJobs) return true
-      return !job.hideJob
-    })
-
-    setFilteredJobs(filteredJobs)
-  }, [jobs, showHiddenJobs])
+  const token = useAuthToken()
 
   const handleEmployerIdChange = (e: any) => {
     setEmployerId(e.target.value)
@@ -152,8 +123,9 @@ export default function Jobs() {
     onClose()
   }
 
-  const data =
-    filteredJobs?.map((job) => {
+  const data = (jobs ?? [])
+    .filter((job) => (showHiddenJobs ? true : !job.hideJob))
+    .map((job) => {
       return {
         id: job.id,
         hidden: job.hideJob,
@@ -162,7 +134,7 @@ export default function Jobs() {
         applicantCount: job.numberOfApplicants,
         createdAt: new Date(job.createdAt).toDateString(),
       }
-    }) ?? []
+    })
 
   const columnHelper = createColumnHelper<{
     id: string

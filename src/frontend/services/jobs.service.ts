@@ -26,7 +26,7 @@ export type Testimonial = {
   photoUrl: string | null
 }
 
-export type Job = {
+export type AdminJob = {
   id: string
   benefitsDescription: string
   responsibilitiesDescription: string | null
@@ -63,6 +63,44 @@ export type Job = {
     }
   }[]
   numberOfApplicants: number
+  testimonials: Testimonial[]
+}
+
+export type Job = {
+  id: string
+  benefitsDescription: string
+  responsibilitiesDescription: string | null
+  employmentTitle: string
+  location: string
+  employmentType: 'FULLTIME' | 'PARTTIME'
+  schedule: string | null
+  workDays: string | null
+  requirementsDescription: string | null
+  category: 'marketplace' | 'staffing'
+  employer: Employer
+  applicationStatus?: string
+  elevatorPitch?: string
+  learnedSkills: {
+    id: string
+    masterSkill: MasterSkill
+  }[]
+  desiredSkills: {
+    id: string
+    masterSkill: MasterSkill
+  }[]
+  desiredCertifications: {
+    id: string
+    masterCertification: MasterCertification
+  }[]
+  careerPaths: CareerPath[]
+  jobPhotos: JobPhoto[]
+  jobTag: {
+    id: string
+    tag: {
+      id: string
+      name: string
+    }
+  }[]
   testimonials: Testimonial[]
 }
 

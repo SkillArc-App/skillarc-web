@@ -81,9 +81,11 @@ export default function JobPosting() {
       <Flex flexWrap="wrap" mb="156px">
         <SingleJobPosting job={job} />
         <Flex w="100%" p="1rem" gap="1rem" flexWrap="wrap" zIndex={2} position="fixed" bottom="0px">
-          <Button w="100%" variant="primary" onClick={onApply}>
-            {applyCopy}
-          </Button>
+          {!job.applicationStatus && (
+            <Button w="100%" variant="primary" onClick={onApply}>
+              {applyCopy}
+            </Button>
+          )}
         </Flex>
       </Flex>
       <Modal isOpen={isSuccessModalOpen} onClose={onSuccessModalClose}>
