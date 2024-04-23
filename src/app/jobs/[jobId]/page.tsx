@@ -8,7 +8,7 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useJobData } from '@/frontend/hooks/useJobData'
+import { useJob } from '@/frontend/hooks/useJobData'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Success } from '@/frontend/icons/Success.icon'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
@@ -27,9 +27,7 @@ import { useEffect } from 'react'
 
 export default function JobPosting() {
   const jobId = useFixedParams('jobId')?.['jobId']
-  const {
-    getOneJob: { data: job },
-  } = useJobData(jobId)
+  const { data: job, refetch } = useJob(jobId)
 
   useEffect(() => {
     if (jobId === localStorage.getItem('onboardingJobInterest')) {
@@ -67,6 +65,7 @@ export default function JobPosting() {
     })
 
     FrontendJobInteractionsService.apply(job.id, token)
+    refetch()
     onSuccessModalOpen()
   }
 
