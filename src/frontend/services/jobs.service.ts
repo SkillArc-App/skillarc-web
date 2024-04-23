@@ -104,12 +104,6 @@ export type Job = {
   testimonials: Testimonial[]
 }
 
-const getOne = async (jobId: string) => {
-  const res = await get<Job>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`)
-
-  return res.data
-}
-
 const getJobMatches = async (token: string) => {
   const res = await get<{ matchedJobs: JobWithSeekerStatus[] }>(
     `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
@@ -120,6 +114,5 @@ const getJobMatches = async (token: string) => {
 }
 
 export const FrontendJobService = {
-  getOne,
   getJobMatches,
 }
