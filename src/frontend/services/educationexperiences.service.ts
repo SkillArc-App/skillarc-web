@@ -6,13 +6,11 @@ const create = async (
   profileId: string,
   token: string,
 ) => {
-  const res = await post(
+  await post(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences`,
     educationExperience,
     token,
   )
-
-  return res.data
 }
 
 const update = async (
@@ -20,22 +18,18 @@ const update = async (
   profileId: string,
   token: string,
 ) => {
-  const res = await put(
+  await put(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences/${educationExperience.id}`,
     educationExperience,
     token,
   )
-
-  return res.data
 }
 
 const deleteOne = async (educationExperienceId: string, profileId: string, token: string) => {
-  const res = await destroy(
+  await destroy(
     `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences/${educationExperienceId}`,
     token,
   )
-
-  return res.data
 }
 
 export const FrontendEducationExperiencesService = {

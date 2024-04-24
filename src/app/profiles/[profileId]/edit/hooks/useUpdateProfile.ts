@@ -6,7 +6,10 @@ import {
   FrontendOtherExperiencesService,
   OtherExperience,
 } from '@/frontend/services/otherExperiences.service'
-import { FrontendPersonalExperiencesService, PersonalExperience } from '@/frontend/services/personalExperience.service'
+import {
+  FrontendPersonalExperiencesService,
+  PersonalExperience,
+} from '@/frontend/services/personalExperience.service'
 import { FrontendProfileService } from '@/frontend/services/profile.service'
 import { FrontendProfileCertificationService } from '@/frontend/services/profileCertifications.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'
@@ -125,8 +128,8 @@ export const useUpdateProfile = () => {
   )
 
   const deleteSkill = useMutation((skill: Skill) => FrontendProfileService.deleteSkill(skill), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['profile', data.profileId])
+    onSuccess: (_, { profileId }) => {
+      queryClient.invalidateQueries(['profile', profileId])
       queryClient.invalidateQueries('me')
     },
   })
@@ -144,8 +147,8 @@ export const useUpdateProfile = () => {
       return FrontendProfileService.addSkill(profileId, skill, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profileId])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
         queryClient.invalidateQueries('me')
       },
     },
@@ -166,8 +169,8 @@ export const useUpdateProfile = () => {
       return FrontendPersonalExperiencesService.create(personalExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profileId])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -187,8 +190,8 @@ export const useUpdateProfile = () => {
       return FrontendPersonalExperiencesService.update(personalExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profileId])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -202,8 +205,8 @@ export const useUpdateProfile = () => {
       return FrontendPersonalExperiencesService.deleteOne(personalExperienceId, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', data.profileId])
+      onSuccess: (data, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -222,8 +225,8 @@ export const useUpdateProfile = () => {
       return FrontendOtherExperiencesService.create(otherExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -239,8 +242,8 @@ export const useUpdateProfile = () => {
       return FrontendOtherExperiencesService.update(otherExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -256,8 +259,8 @@ export const useUpdateProfile = () => {
       return FrontendOtherExperiencesService.deleteOne(otherExperienceId, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -275,8 +278,8 @@ export const useUpdateProfile = () => {
       return FrontendEducationExperiencesService.create(educationExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -294,8 +297,8 @@ export const useUpdateProfile = () => {
       return FrontendEducationExperiencesService.update(educationExperience, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -313,8 +316,8 @@ export const useUpdateProfile = () => {
       return FrontendEducationExperiencesService.deleteOne(educationExperienceId, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -333,8 +336,8 @@ export const useUpdateProfile = () => {
       return FrontendProfileSkillsService.create(profileSkill, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -351,8 +354,8 @@ export const useUpdateProfile = () => {
       return FrontendProfileSkillsService.update(profileSkill, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -370,8 +373,8 @@ export const useUpdateProfile = () => {
       return FrontendProfileSkillsService.deleteOne(profileSkillId, profileId, token)
     },
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -385,8 +388,8 @@ export const useUpdateProfile = () => {
     ({ profileCertification, profileId }: AddProfileCertificationType) =>
       FrontendProfileCertificationService.create(profileCertification, profileId),
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
@@ -399,8 +402,8 @@ export const useUpdateProfile = () => {
     ({ profileCertificationId, profileId }: DeleteProfileCertificationType) =>
       FrontendProfileCertificationService.deleteOne(profileCertificationId, profileId),
     {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries(['profile', user?.profile?.id])
+      onSuccess: (_, { profileId }) => {
+        queryClient.invalidateQueries(['profile', profileId])
       },
     },
   )
