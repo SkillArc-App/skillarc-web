@@ -21,6 +21,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   const adminLinks = [
     {
+      name: 'Attributes',
+      path: '/admin/attributes',
+    },
+    {
       name: 'Seeker Invites',
       path: '/admin/seeker-invites',
     },

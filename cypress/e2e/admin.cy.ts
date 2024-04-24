@@ -2,18 +2,30 @@ export {}
 
 describe('Admin', () => {
   it('should navigate through admin tasks', () => {
-    cy.visit('/admin/jobs')
+    cy.visit('/admin/attributes')
 
     const emailSelect = cy.get('select').filter((_, element) => {
       return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
     })
     emailSelect.should('be.enabled')
     emailSelect.select('admin@blocktrainapp.com', { timeout: 10000 })
-
     cy.reload()
-
     cy.get('body').should('contain', 'Operations')
     cy.get('body').should('contain', 'Analytics')
+
+    const name = crypto.randomUUID()
+
+    cy.get('button').contains('+ New Attribute').click()
+    cy.get('label').contains('Name').next().type(name)
+    cy.get('label').contains('Set (newline separated)').next().type('Test1\nTest2')
+    cy.get('label').contains('Default (newline separated)').next().type('Test1')
+    cy.get('button').contains('Save').click()
+
+    cy.get('body').should('not.contain', 'Save')
+    cy.get('body').should('contain', 'Test1, Test2')
+    cy.findByLabelText('delete-attribute').click()
+
+    cy.visit('/admin/jobs')
 
     cy.get('button').contains('+ New Job').click()
 
@@ -37,15 +49,15 @@ describe('Admin', () => {
 
     // Add an industry
     cy.findByRole('tab', { name: 'Industries' }).click()
-    cy.findByLabelText('Add New Industries').select("healthcare")
+    cy.findByLabelText('Add New Industries').select('healthcare')
     cy.findByText('healthcare')
 
     // Skills
     cy.findByRole('tab', { name: 'Attached Skills' }).click()
-    cy.findByLabelText('Add New Desired Skills').select("Creativity")
+    cy.findByLabelText('Add New Desired Skills').select('Creativity')
     cy.get('td').contains('Creativity')
 
-    cy.findByLabelText('Add New Learned Skills').select("Leadership")
+    cy.findByLabelText('Add New Learned Skills').select('Leadership')
     cy.get('td').contains('Leadership')
 
     // Certifications
