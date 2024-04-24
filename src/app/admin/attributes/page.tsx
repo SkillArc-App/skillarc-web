@@ -1,5 +1,6 @@
 'use client'
 
+import { Attribute } from '@/common/types/Attribute'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormInputField from '@/frontend/components/FormInputField'
 import FormTextAreaField from '@/frontend/components/FormTextAreaField'
@@ -27,6 +28,14 @@ import { useState } from 'react'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { useAttributes } from '../hooks/useAttributes'
 
+type FormInputType = {
+  id?: string
+  name: string
+  description: string
+  set: string
+  default: string
+}
+
 const Attributes = () => {
   const { data: attributes, refetch } = useAttributes()
 
@@ -40,7 +49,6 @@ const Attributes = () => {
   })
 
   const handleEdit = (id: string) => {
-    console.log(id)
     const editVal = attributes?.find((attr) => attr.id === id)
 
     if (!editVal) return
@@ -66,13 +74,7 @@ const Attributes = () => {
     refetch()
   }
 
-  const columnHelper = createColumnHelper<{
-    id: string
-    name: string
-    description: string
-    set: string[]
-    default: string[]
-  }>()
+  const columnHelper = createColumnHelper<Attribute>()
 
   const columns = [
     columnHelper.accessor('name', {
@@ -103,14 +105,6 @@ const Attributes = () => {
       ),
     }),
   ]
-
-  type FormInputType = {
-    id?: string
-    name: string
-    description: string
-    set: string
-    default: string
-  }
 
   const token = useAuthToken()
 
@@ -188,11 +182,9 @@ const Attributes = () => {
                 </ModalBody>
 
                 <ModalFooter>
-                  {
-                    <Button colorScheme="green" mr={3} isLoading={props.isSubmitting} type="submit">
-                      Save
-                    </Button>
-                  }
+                  <Button colorScheme="green" mr={3} isLoading={props.isSubmitting} type="submit">
+                    Save
+                  </Button>
                 </ModalFooter>
               </Form>
             )}
