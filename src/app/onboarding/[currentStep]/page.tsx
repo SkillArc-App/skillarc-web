@@ -36,7 +36,7 @@ const Onboarding = () => {
       status: onboardingStatus,
       refetch: refetchOnboardingData,
     },
-  } = useOnboardingData(token)
+  } = useOnboardingData()
 
   useEffect(() => {
     if (onboardingStatus !== 'success') return
@@ -130,7 +130,6 @@ const Onboarding = () => {
         responses: newOnboardingResponse.responses,
       },
       token,
-      { camel: false },
     ).then((_) => {
       refetchOnboardingData()
     })
