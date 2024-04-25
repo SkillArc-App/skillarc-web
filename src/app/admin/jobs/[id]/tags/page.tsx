@@ -1,18 +1,43 @@
-import { AdminJob } from '@/frontend/services/jobs.service'
+'use client'
+
+import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { tags } from '@/common/static/tags'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
 
-const Tags = ({
-  job,
-  tags,
-  addTag,
-  removeTag,
-}: {
-  job: AdminJob
-  tags: string[]
-  addTag: (val: string) => void
-  removeTag: (val: string) => void
-}) => {
+const TagsPage = () => {
+  const { id } = useFixedParams('id')
+  const { data: job, refetch: refetchJob } = useAdminJob(id)
+  const token = useAuthToken()
+
+  const addTag = async (tag: string) => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags`,
+      {
+        job_id: id,
+        tag,
+      },
+      token,
+    )
+
+    refetchJob()
+  }
+
+  const removeTag = async (jobTagId: string) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags/${jobTagId}`, token)
+
+    refetchJob()
+  }
+
+  if (!job) return <></>
+
   return (
     <TableContainer>
       <Box px={'1rem'}>
@@ -46,4 +71,4 @@ const Tags = ({
   )
 }
 
-export default Tags
+export default TagsPage

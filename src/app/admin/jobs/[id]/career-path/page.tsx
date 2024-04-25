@@ -1,4 +1,10 @@
-import { AdminJob } from '@/frontend/services/jobs.service'
+'use client'
+
+import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { destroy, post, put } from '@/frontend/http-common'
+import { CareerPath } from '@/frontend/services/jobs.service'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -16,32 +22,69 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 
-const CareerPaths = ({
-  job,
-  careerPathTitle,
-  setCareerPathTitle,
-  careerPathLowerLimit,
-  setCareerPathLowerLimit,
-  careerPathUpperLimit,
-  setCareerPathUpperLimit,
-  createPath,
-  removePath,
-  movePathUp,
-  movePathDown,
-}: {
-  job: AdminJob
-  careerPathTitle: string
-  setCareerPathTitle: (val: string) => void
-  careerPathLowerLimit: string
-  setCareerPathLowerLimit: (val: string) => void
-  careerPathUpperLimit: string
-  setCareerPathUpperLimit: (val: string) => void
-  createPath: () => void
-  removePath: (val: any) => void
-  movePathUp: (val: any) => void
-  movePathDown: (val: any) => void
-}) => {
+const CareerPathPage = () => {
+  const { id } = useFixedParams('id')
+
+  const { data: job, refetch: refetchJob } = useAdminJob(id)
+
+  const token = useAuthToken()
+
+  const [careerPathTitle, setCareerPathTitle] = useState('')
+  const [careerPathLowerLimit, setCareerPathLowerLimit] = useState('')
+  const [careerPathUpperLimit, setCareerPathUpperLimit] = useState('')
+
+  const createPath = async () => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths`,
+      {
+        job_id: id,
+        title: careerPathTitle,
+        lower_limit: careerPathLowerLimit,
+        upper_limit: careerPathUpperLimit,
+      },
+      token,
+    )
+
+    setCareerPathTitle('')
+    setCareerPathLowerLimit('')
+    setCareerPathUpperLimit('')
+    refetchJob()
+  }
+
+  const movePathUp = async (path: CareerPath) => {
+    if (!token) return
+
+    await put(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/up`, {}, token)
+
+    refetchJob()
+  }
+
+  const movePathDown = async (path: CareerPath) => {
+    if (!token) return
+
+    await put(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/down`,
+      {},
+      token,
+    )
+
+    refetchJob()
+  }
+
+  const removePath = async (path: CareerPath) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}`, token)
+
+    refetchJob()
+  }
+
+  if (!job) return <></>
+
   return (
     <Flex gap={'1rem'}>
       <TableContainer>
@@ -117,4 +160,4 @@ const CareerPaths = ({
   )
 }
 
-export default CareerPaths
+export default CareerPathPage

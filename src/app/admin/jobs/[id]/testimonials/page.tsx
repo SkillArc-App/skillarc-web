@@ -1,4 +1,10 @@
-import { AdminJob, Testimonial } from '@/frontend/services/jobs.service'
+'use client'
+
+import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { destroy, post } from '@/frontend/http-common'
+import { Testimonial } from '@/frontend/services/jobs.service'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -18,32 +24,57 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 
-const Testimonials = ({
-  job,
-  testimonialName,
-  setTestimonialName,
-  testimonialTitle,
-  setTestimonialTitle,
-  testimonial,
-  setTestimonial,
-  testimonialPhotoUrl,
-  setTestimonialPhotoUrl,
-  createTestimonial,
-  removeTestimonial,
-}: {
-  job: AdminJob
-  testimonialName: string
-  setTestimonialName: (val: string) => void
-  testimonialTitle: string
-  setTestimonialTitle: (val: string) => void
-  testimonial: string
-  setTestimonial: (val: string) => void
-  testimonialPhotoUrl: string
-  setTestimonialPhotoUrl: (val: string) => void
-  createTestimonial: () => void
-  removeTestimonial: (val: Testimonial) => void
-}) => {
+const TestimonialsPage = () => {
+  const { id } = useFixedParams('id')
+
+  const { data: job, refetch: refetchJob } = useAdminJob(id)
+
+  const token = useAuthToken()
+
+  const [testimonialName, setTestimonialName] = useState('')
+  const [testimonialTitle, setTestimonialTitle] = useState('')
+  const [testimonial, setTestimonial] = useState('')
+  const [testimonialPhotoUrl, setTestimonialPhotoUrl] = useState('')
+
+  const createTestimonial = async () => {
+    if (!job) return
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials`,
+      {
+        jobId: id,
+        name: testimonialName,
+        title: testimonialTitle,
+        testimonial,
+        photoUrl: testimonialPhotoUrl,
+      },
+      token,
+    )
+
+    setTestimonialName('')
+    setTestimonialTitle('')
+    setTestimonial('')
+    setTestimonialPhotoUrl('')
+    refetchJob()
+  }
+
+  const removeTestimonial = async (testimonial: Testimonial) => {
+    if (!job) return
+    if (!token) return
+
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials/${testimonial.id}`,
+      token,
+    )
+
+    refetchJob()
+  }
+
+  if (!job) return <></>
+
   return (
     <Flex gap={'1rem'}>
       <TableContainer flex={2}>
@@ -117,4 +148,4 @@ const Testimonials = ({
   )
 }
 
-export default Testimonials
+export default TestimonialsPage

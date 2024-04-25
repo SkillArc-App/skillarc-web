@@ -22,6 +22,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/admin/jobs/:id',
+        destination: '/admin/jobs/:id/the-basics',
+        permanent: false
+      },
+      {
         source: '/onboarding',
         destination: '/onboarding/start',
         permanent: false

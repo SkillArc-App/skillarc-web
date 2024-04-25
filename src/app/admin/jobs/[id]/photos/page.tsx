@@ -1,4 +1,9 @@
-import { AdminJob } from '@/frontend/services/jobs.service'
+'use client'
+
+import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -14,20 +19,41 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 
-const Photos = ({
-  job,
-  photoUrl,
-  setPhotoUrl,
-  createPhoto,
-  removePhoto,
-}: {
-  job: AdminJob
-  photoUrl: string
-  setPhotoUrl: (val: string) => void
-  createPhoto: () => void
-  removePhoto: (val: string) => void
-}) => {
+const PhotosPage = () => {
+  const { id } = useFixedParams('id')
+
+  const { data: job, refetch: refetchJob } = useAdminJob(id)
+
+  const token = useAuthToken()
+
+  const [photoUrl, setPhotoUrl] = useState('')
+
+  const createPhoto = async () => {
+    if (!token) return
+
+    await post(
+      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos`,
+      {
+        photoUrl,
+      },
+      token,
+    )
+    await setPhotoUrl('')
+    await refetchJob()
+  }
+
+  const removePhoto = async (photoId: string) => {
+    if (!token) return
+
+    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos/${photoId}`, token)
+
+    refetchJob()
+  }
+
+  if (!job) return <></>
+
   return (
     <Flex gap={'1rem'}>
       <TableContainer flex={2}>
@@ -70,4 +96,4 @@ const Photos = ({
   )
 }
 
-export default Photos
+export default PhotosPage
