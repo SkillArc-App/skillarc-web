@@ -2,55 +2,22 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
-import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
-import { Heading } from '@/frontend/components/Heading.component'
+import AttachedCertifications from '@/frontend/components/admin/jobs/AttachedCertifications.component'
+import AttachedSkills from '@/frontend/components/admin/jobs/AttachedSkills.component'
+import CareerPaths from '@/frontend/components/admin/jobs/CareerPaths.component'
+import Industries from '@/frontend/components/admin/jobs/Industries.component'
+import Photos from '@/frontend/components/admin/jobs/Photos.component'
+import Tags from '@/frontend/components/admin/jobs/Tags.component'
+import Testimonials from '@/frontend/components/admin/jobs/Testimonials.component'
+import TheBasics from '@/frontend/components/admin/jobs/TheBasics.component'
 import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post, put } from '@/frontend/http-common'
 import { CareerPath, Testimonial } from '@/frontend/services/jobs.service'
-import { ArrowDownIcon, ArrowUpIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Link,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Radio,
-  RadioGroup,
-  Select,
-  Stack,
-  Switch,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Table,
-  TableContainer,
-  Tabs,
-  Tbody,
-  Td,
-  Textarea,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Tab, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
-import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
 
 export default function Job({ params: { id } }: { params: { id: string } }) {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
@@ -246,7 +213,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     refetchJob()
   }
 
-  const removeLearnedSkill = (learnedSkillId: string) => async () => {
+  const removeLearnedSkill = async (learnedSkillId: string) => {
     if (!job) return
     if (!token) return
 
@@ -264,7 +231,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     refetchJob()
   }
 
-  const removeDesiredSkill = (desiredSkillId: string) => async () => {
+  const removeDesiredSkill = async (desiredSkillId: string) => {
     if (!job) return
 
     const existingDesiredSkill = job.desiredSkills.find((ds) => {
@@ -354,7 +321,7 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
     refetchJob()
   }
 
-  const removeDesiredCertification = async (desiredCertificationId: string) => async () => {
+  const removeDesiredCertification = async (desiredCertificationId: string) => {
     if (!job) return
     if (!token) return
 
@@ -462,485 +429,100 @@ export default function Job({ params: { id } }: { params: { id: string } }) {
       </TabList>
       <TabPanels>
         <TabPanel>
-          <Stack m={'1rem'} spacing={'1rem'}>
-            <Flex>
-              <Button onClick={onOpen} leftIcon={<EditIcon />} size="sm">
-                edit
-              </Button>
-            </Flex>
-            <Box>
-              <b>Category</b>: {job.category}
-            </Box>
-            <Box>
-              <b>Employer</b>:{' '}
-              <Link href={`/admin/employers/${job.employer.id}`} as={NextLink}>
-                {job.employer?.name}
-              </Link>
-            </Box>
-            <Box>
-              <b>Employment Title</b>: {job.employmentTitle}
-            </Box>
-            <Box>
-              <b>Location</b>: {job.location}
-            </Box>
-            <Box>
-              <b>Employment Type</b>: {job.employmentType}
-            </Box>
-            <Box>
-              <b>Benefits Description</b>:
-              <ReactMarkdown>{job.benefitsDescription ?? ''}</ReactMarkdown>
-            </Box>
-            <Box>
-              <b>Responsibilities Description</b>:
-              <ReactMarkdown>{job.responsibilitiesDescription ?? ''}</ReactMarkdown>
-            </Box>
-            <Box>
-              <b>Requirements Description</b>:
-              <ReactMarkdown>{job.requirementsDescription ?? ''}</ReactMarkdown>
-            </Box>
-            <Box>
-              <b>Work Days</b>: {job.workDays}
-            </Box>
-            <Box>
-              <b>Schedule</b>: {job.schedule}
-            </Box>
-            <Box>
-              <b>Hidden</b>: {job.hideJob ? 'Yes' : 'No'}
-            </Box>
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>New Seeker Invite</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Stack spacing={3}>
-                    <RadioGroup value={category} onChange={(e) => setCategory(e)}>
-                      <Stack>
-                        {categoryOptions.map((category, index) => {
-                          return (
-                            <Radio key={index} value={category.value}>
-                              {category.label}
-                            </Radio>
-                          )
-                        })}
-                      </Stack>
-                    </RadioGroup>
-                    <Select
-                      placeholder="Employer"
-                      value={employerId}
-                      onChange={(e) => setEmployerId(e.target.value)}
-                    >
-                      {employers?.map((employer: { id: string; name: string }, index: number) => {
-                        return (
-                          <option value={employer.id} key={employer.id}>
-                            {employer.name}
-                          </option>
-                        )
-                      })}
-                    </Select>
-                    <Input
-                      value={employmentTitle}
-                      onChange={(e) => setEmploymentTitle(e.target.value)}
-                      placeholder="Employment Title"
-                    />
-                    <Input
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="Location"
-                    />
-                    <Input
-                      value={employmentType}
-                      onChange={(e) => setEmploymentType(e.target.value as 'FULLTIME' | 'PARTTIME')}
-                      placeholder="Employment Type"
-                    />
-                    <Textarea
-                      value={benefitsDescription}
-                      onChange={(e) => setBenefitsDescription(e.target.value)}
-                      placeholder="Benefits Description"
-                    />
-                    <Textarea
-                      value={responsibilitiesDescription ?? ''}
-                      onChange={(e) => setResponsibilitiesDescription(e.target.value)}
-                      placeholder="Responsibilities Description"
-                    />
-                    <Textarea
-                      value={requirementsDescription ?? ''}
-                      onChange={(e) => setRequirementsDescription(e.target.value)}
-                      placeholder="Requirements Description"
-                    />
-                    <Input
-                      value={workDays ?? ''}
-                      onChange={(e) => setWorkDays(e.target.value)}
-                      placeholder="Work Days"
-                    />
-                    <Input
-                      value={schedule ?? ''}
-                      onChange={(e) => setSchedule(e.target.value)}
-                      placeholder="Schedule"
-                    />
-                    <span>
-                      Hide Job: <Switch isChecked={hideJob} onChange={handleHideJobChange} />
-                    </span>
-                  </Stack>
-                </ModalBody>
-
-                <ModalFooter>
-                  <Button colorScheme="green" mr={3} onClick={onSubmit}>
-                    Save
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>{' '}
-          </Stack>
+          <TheBasics
+            categoryOptions={categoryOptions}
+            employmentTitle={employmentTitle ?? ''}
+            setEmploymentTitle={setEmploymentTitle}
+            location={location ?? ''}
+            setLocation={setLocation}
+            employmentType={employmentType ?? 'FULLTIME'}
+            setEmploymentType={setEmploymentType}
+            category={category ?? 'marketplace'}
+            setCategory={setCategory}
+            employers={employers ?? []}
+            employerId={employerId ?? ''}
+            setEmployerId={setEmployerId}
+            benefitsDescription={benefitsDescription ?? ''}
+            setBenefitsDescription={setBenefitsDescription}
+            responsibilitiesDescription={responsibilitiesDescription ?? ''}
+            setResponsibilitiesDescription={setResponsibilitiesDescription}
+            requirementsDescription={requirementsDescription ?? ''}
+            setRequirementsDescription={setRequirementsDescription}
+            workDays={workDays ?? ''}
+            setWorkDays={setWorkDays}
+            schedule={schedule ?? ''}
+            setSchedule={setSchedule}
+            hideJob={hideJob ?? false}
+            handleHideJobChange={handleHideJobChange}
+            onSubmit={onSubmit}
+            isOpen={isOpen}
+            onClose={onClose}
+            job={job}
+            onOpen={onOpen}
+          />
         </TabPanel>
         <TabPanel>
-          <TableContainer>
-            <Box px={'1rem'}>
-              <label>
-                Add New Industries
-                <Select onChange={(e) => addIndustry(e.target.value)} size={'sm'}>
-                  <option></option>
-                  {industries.map((i) => {
-                    return <option key={i}>{i}</option>
-                  })}
-                </Select>
-              </label>
-            </Box>
-            <Table variant="simple">
-              <Tbody>
-                {job.industry.map((industry, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td>{industry}</Td>
-                      <Td>
-                        <Button size={'xs'}>
-                          <DeleteIcon onClick={() => removeIndustry(industry)} />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  )
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <Industries job={job} addIndustry={addIndustry} removeIndustry={removeIndustry} />
         </TabPanel>
         <TabPanel>
-          <Flex gap={'1rem'}>
-            <Stack spacing={'1rem'}>
-              <Heading type="h5">Desired Skills</Heading>
-              <TableContainer>
-                <Box px={'1rem'}>
-                  <label>
-                    Add New Desired Skills
-                    <Select onChange={(e) => addDesiredSkill(e.target.value)} size={'sm'}>
-                      <option></option>
-                      {masterSkills?.map((ms: { id: string; skill: string }) => {
-                        return <option key={ms.id}>{ms.skill}</option>
-                      })}
-                    </Select>
-                  </label>
-                </Box>
-                <Table variant="simple">
-                  <Tbody>
-                    {job.desiredSkills.map((ds, index) => {
-                      return (
-                        <Tr key={index}>
-                          <Td>{ds.masterSkill.skill}</Td>
-                          <Td>
-                            <Button size={'xs'}>
-                              <DeleteIcon onClick={removeDesiredSkill(ds.id)} />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            </Stack>
-            <Stack spacing={'1rem'}>
-              <Heading type="h5">Learned Skills</Heading>
-              <TableContainer>
-                <Box px={'1rem'}>
-                  <label>
-                    Add New Learned Skills
-                    <Select onChange={(e) => addLearnedSkill(e.target.value)} size={'sm'}>
-                      <option></option>
-                      {masterSkills?.map((ms: { id: string; skill: string }) => {
-                        return <option key={ms.id}>{ms.skill}</option>
-                      })}
-                    </Select>
-                  </label>
-                </Box>
-                <Table variant="simple">
-                  <Tbody>
-                    {job.learnedSkills.map((ls, index) => {
-                      return (
-                        <Tr key={index}>
-                          <Td>{ls.masterSkill.skill}</Td>
-                          <Td>
-                            <Button size={'xs'}>
-                              <DeleteIcon onClick={removeLearnedSkill(ls.id)} />
-                            </Button>
-                          </Td>
-                        </Tr>
-                      )
-                    })}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            </Stack>
-          </Flex>
+          <AttachedSkills
+            job={job}
+            addLearnedSkill={addLearnedSkill}
+            removeLearnedSkill={removeLearnedSkill}
+            addDesiredSkill={addDesiredSkill}
+            removeDesiredSkill={removeDesiredSkill}
+            masterSkills={masterSkills}
+          />
         </TabPanel>
         <TabPanel>
-          <TableContainer>
-            <Box px={'1rem'}>
-              <label>
-                Add A Desired Certification
-                <Select onChange={(e) => addDesiredCertification(e.target.value)} size={'sm'}>
-                  <option></option>
-                  {masterCertifications?.map((mc) => {
-                    return <option key={mc.id}>{mc.certification}</option>
-                  })}
-                </Select>
-              </label>
-            </Box>
-            <Table variant="simple">
-              <Tbody>
-                {job.desiredCertifications.map((dc, index: number) => {
-                  return (
-                    <Tr key={index}>
-                      <Td>{dc.masterCertification.certification}</Td>
-                      <Td>
-                        <Button size={'xs'}>
-                          <DeleteIcon onClick={() => removeDesiredCertification(dc.id)} />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  )
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <AttachedCertifications
+            job={job}
+            addDesiredCertification={addDesiredCertification}
+            removeDesiredCertification={removeDesiredCertification}
+            masterCertifications={masterCertifications ?? []}
+          />
         </TabPanel>
         <TabPanel>
-          <Flex gap={'1rem'}>
-            <TableContainer flex={2}>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Name</Th>
-                    <Th>Title</Th>
-                    <Th>Testimonial</Th>
-                    <Th>Photo Preview</Th>
-                    <Th>Photo URL</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {job.testimonials.map((testimonial, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Td>{testimonial.name}</Td>
-                        <Td>{testimonial.title}</Td>
-                        <Td whiteSpace={'normal'}>{testimonial.testimonial}</Td>
-                        <Td>
-                          <Image src={testimonial.photoUrl ?? undefined} alt="Testimonial image" />
-                        </Td>
-                        <Td whiteSpace={'normal'}>{testimonial.photoUrl}</Td>
-                        <Td>
-                          <HStack>
-                            <Button onClick={() => removeTestimonial(testimonial)} size={'xs'}>
-                              <DeleteIcon />
-                            </Button>
-                          </HStack>
-                        </Td>
-                      </Tr>
-                    )
-                  })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Stack gap={'1rem'} flex={1}>
-              <Input
-                placeholder="Name"
-                value={testimonialName}
-                onChange={(e) => setTestimonialName(e.target.value)}
-              />
-              <Input
-                placeholder="Job Title"
-                value={testimonialTitle}
-                onChange={(e) => setTestimonialTitle(e.target.value)}
-              />
-              <Textarea
-                placeholder="Testimonial"
-                value={testimonial}
-                onChange={(e) => setTestimonial(e.target.value)}
-              />
-
-              <InputGroup>
-                <InputLeftAddon>http://</InputLeftAddon>
-                <Input
-                  placeholder="Photo URL"
-                  value={testimonialPhotoUrl}
-                  onChange={(e) => setTestimonialPhotoUrl(e.target.value)}
-                />
-              </InputGroup>
-              <Flex>
-                <Button onClick={createTestimonial} colorScheme={'green'}>
-                  Create
-                </Button>
-              </Flex>
-            </Stack>
-          </Flex>
+          <Testimonials
+            job={job}
+            testimonialName={testimonialName}
+            setTestimonialName={setTestimonialName}
+            testimonialTitle={testimonialTitle}
+            setTestimonialTitle={setTestimonialTitle}
+            testimonial={testimonial}
+            setTestimonial={setTestimonial}
+            testimonialPhotoUrl={testimonialPhotoUrl}
+            setTestimonialPhotoUrl={setTestimonialPhotoUrl}
+            createTestimonial={createTestimonial}
+            removeTestimonial={removeTestimonial}
+          />
         </TabPanel>
         <TabPanel>
-          <Flex gap={'1rem'}>
-            <TableContainer flex={2}>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Preview</Th>
-                    <Th>Photo URL</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {job.jobPhotos.map((jp, index: number) => {
-                    return (
-                      <Tr key={index}>
-                        <Td>
-                          <Image src={jp.photoUrl} alt="Job image" />
-                        </Td>
-                        <Td whiteSpace={'normal'}>{jp.photoUrl}</Td>
-                        <Td>
-                          <Button onClick={() => removePhoto(jp.id)} size={'xs'}>
-                            <DeleteIcon />
-                          </Button>
-                        </Td>
-                      </Tr>
-                    )
-                  })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Stack gap={'1rem'} flex={1}>
-              <Input
-                placeholder="URL"
-                value={photoUrl}
-                onChange={(e) => setPhotoUrl(e.target.value)}
-              />
-              <Flex>
-                <Button onClick={createPhoto} colorScheme={'green'}>
-                  Create
-                </Button>
-              </Flex>
-            </Stack>
-          </Flex>
+          <Photos
+            job={job}
+            photoUrl={photoUrl}
+            setPhotoUrl={setPhotoUrl}
+            createPhoto={createPhoto}
+            removePhoto={removePhoto}
+          />
         </TabPanel>
         <TabPanel>
-          <Flex gap={'1rem'}>
-            <TableContainer>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Order</Th>
-                    <Th>Title</Th>
-                    <Th>Lower limit</Th>
-                    <Th>Upper limit</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {job.careerPaths
-                    .sort((a, b) => a.order - b.order)
-                    .map((cp, index: number) => {
-                      return (
-                        <Tr key={index}>
-                          <Td>{cp.order}</Td>
-                          <Td>{cp.title}</Td>
-                          <Td>{cp.lowerLimit}</Td>
-                          <Td>{cp.upperLimit}</Td>
-                          <Td>
-                            <HStack>
-                              <Button onClick={() => movePathUp(cp)} size={'xs'}>
-                                <ArrowUpIcon />
-                              </Button>
-                              <Button onClick={() => movePathDown(cp)} size={'xs'}>
-                                <ArrowDownIcon />
-                              </Button>
-                              <Button onClick={() => removePath(cp)} size={'xs'}>
-                                <DeleteIcon />
-                              </Button>
-                            </HStack>
-                          </Td>
-                        </Tr>
-                      )
-                    })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Stack gap={'1rem'}>
-              <Input
-                placeholder="Title"
-                value={careerPathTitle}
-                onChange={(e) => setCareerPathTitle(e.target.value)}
-              />
-              <InputGroup>
-                <InputLeftAddon>$</InputLeftAddon>
-                <Input
-                  placeholder="Lower limit"
-                  value={careerPathLowerLimit}
-                  onChange={(e) => setCareerPathLowerLimit(e.target.value)}
-                />
-              </InputGroup>
-
-              <InputGroup>
-                <InputLeftAddon>$</InputLeftAddon>
-                <Input
-                  placeholder="Upper limit"
-                  value={careerPathUpperLimit}
-                  onChange={(e) => setCareerPathUpperLimit(e.target.value)}
-                />
-              </InputGroup>
-              <Flex>
-                <Button onClick={createPath} colorScheme={'green'}>
-                  Create
-                </Button>
-              </Flex>
-            </Stack>
-          </Flex>
+          <CareerPaths
+            job={job}
+            careerPathTitle={careerPathTitle}
+            setCareerPathTitle={setCareerPathTitle}
+            careerPathLowerLimit={careerPathLowerLimit}
+            setCareerPathLowerLimit={setCareerPathLowerLimit}
+            careerPathUpperLimit={careerPathUpperLimit}
+            setCareerPathUpperLimit={setCareerPathUpperLimit}
+            createPath={createPath}
+            removePath={removePath}
+            movePathUp={movePathUp}
+            movePathDown={movePathDown}
+          />
         </TabPanel>
         <TabPanel>
-          <TableContainer>
-            <Box px={'1rem'}>
-              <label>
-                Add A New Tag
-                <Select onChange={(e) => addTag(e.target.value)} size={'sm'}>
-                  <option></option>
-                  {tags.map((tag) => {
-                    return <option key={tag}>{tag}</option>
-                  })}
-                </Select>
-              </label>
-            </Box>
-            <Table variant="simple">
-              <Tbody>
-                {job.jobTag.map((tag, index) => {
-                  return (
-                    <Tr key={index}>
-                      <Td>{tag.tag.name}</Td>
-                      <Td>
-                        <Button size={'xs'}>
-                          <DeleteIcon onClick={() => removeTag(tag.id)} />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  )
-                })}
-              </Tbody>
-            </Table>
-          </TableContainer>
+          <Tags job={job} addTag={addTag} removeTag={removeTag} tags={tags} />
         </TabPanel>
       </TabPanels>
     </Tabs>
