@@ -58,7 +58,7 @@ const AttributesPage = () => {
         `/admin/jobs/${job.id}/job_attributes/${values.id}`,
         {
           attributeId: values.attributeId,
-          acceptibleSet: values.acceptibleSet.split('\n'),
+          acceptibleSet: values.acceptibleSet.split('\n').map((s) => s.trim()),
         },
         token,
       )
@@ -67,7 +67,7 @@ const AttributesPage = () => {
         `/admin/jobs/${job.id}/job_attributes`,
         {
           attributeId: values.attributeId,
-          acceptibleSet: values.acceptibleSet.split('\n'),
+          acceptibleSet: values.acceptibleSet.split('\n').map((s) => s.trim()),
         },
         token,
       )
