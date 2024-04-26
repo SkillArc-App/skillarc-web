@@ -23,7 +23,10 @@ describe('Admin', () => {
 
     cy.get('body').should('not.contain', 'Save')
     cy.get('body').should('contain', 'Test1, Test2')
-    cy.findByLabelText('delete-attribute').click()
+
+    cy.get('button[aria-label="delete-attribute"]').last().click()
+
+    cy.get('body').should('not.contain', 'Test1, Test2')
 
     cy.visit('/admin/jobs')
 
@@ -47,6 +50,15 @@ describe('Admin', () => {
 
     cy.findByRole('link', { name: title }).click()
 
+    // Add an attribute
+    cy.findByRole('tab', { name: 'Attributes' }).click()
+    cy.findByRole('button', { name: '+ New Job Attribute' }).click()
+    cy.findByDisplayValue('Attribute').select('Background')
+    cy.findByLabelText('Acceptible Set (newline separated)*').type('Misdemeanor\n')
+    cy.findByRole('button', { name: 'Save' }).click()
+    cy.findByText('Misdemeanor')
+    cy.findByText('Background')
+
     // Add an industry
     cy.findByRole('tab', { name: 'Industries' }).click()
     cy.findByLabelText('Add New Industries').select('healthcare')
@@ -63,7 +75,7 @@ describe('Admin', () => {
     // Certifications
     // For some reason I can get it to pick these certification
     // cy.findByRole('tab', { name: 'Attached Certifications' }).click()
-    // cy.findByLabelText('Add New Desired Skills').select("OSHA 10")
+    // cy.findByLabelText('Add New Desired Skills').select('OSHA 10')
     // cy.get('td').contains('OSHA 10')
 
     // Testimonials
