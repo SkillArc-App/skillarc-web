@@ -26,6 +26,13 @@ export type Testimonial = {
   photoUrl: string | null
 }
 
+export type AdminJobAttribute = {
+  id: string
+  attributeId: string
+  attributeName: string
+  acceptibleSet: string[]
+}
+
 export type AdminJob = {
   id: string
   benefitsDescription: string
@@ -41,6 +48,7 @@ export type AdminJob = {
   createdAt: string
   category: 'marketplace' | 'staffing'
   employer: Employer
+  jobAttributes: AdminJobAttribute[]
   learnedSkills: {
     id: string
     masterSkill: MasterSkill

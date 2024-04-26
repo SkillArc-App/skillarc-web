@@ -12,7 +12,7 @@ const AdminJobLayout = ({
   children: React.ReactNode
   params: { id: string }
 }) => {
-  const { data: job, refetch: refetchJob } = useAdminJob(id)
+  const { data: job } = useAdminJob(id)
 
   const pathName = usePathname()
 
@@ -34,7 +34,7 @@ const AdminJobLayout = ({
 
   return (
     <Tabs my={'1rem'} variant={'enclosed'} index={index}>
-      <TabList>
+      <TabList mb={'1rem'}>
         <Tab as={NextLink} href={`the-basics`}>
           The Basics
         </Tab>
