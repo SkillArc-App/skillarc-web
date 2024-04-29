@@ -7,7 +7,6 @@ import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
 import { theme } from '../frontend/theme/theme'
 import SessionWrapper from './components/SessionWrapper'
 
@@ -35,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
 
           <Auth0Provider
             cacheLocation="localstorage"
@@ -53,9 +52,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             <ChakraProvider theme={theme}>
               <SessionWrapper>
-                <Flex flexWrap={'wrap'} bg={'greyscale.100'} flexDir={'column'} h="100vh">
+                <Flex flexWrap={'wrap'} flexDir={'column'} height={'100vh'} overscroll={'none'}>
                   <Header />
-                  <Flex h={'100%'} flexWrap={'wrap'} marginTop="64px">
+                  <Flex
+                    flexWrap={'wrap'}
+                    flexGrow={1}
+                    marginTop="64px"
+                    height={'calc(100% - 64px)'}
+                    overflow={'scroll'}
+                    overscroll={'none'}
+                  >
                     {children}
                   </Flex>
                 </Flex>

@@ -1,7 +1,7 @@
 'use client'
 
+import { useAdminAttributes } from '@/app/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
-import { useAttributes } from '@/app/admin/hooks/useAttributes'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormTextAreaField from '@/frontend/components/FormTextAreaField'
 import FormikSelect from '@/frontend/components/FormikSelect'
@@ -42,7 +42,7 @@ const AttributesPage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
-  const { data: attributes } = useAttributes()
+  const { data: attributes } = useAdminAttributes()
 
   const [initialValue, setInitialValue] = useState<FormInputType>({
     attributeId: '',

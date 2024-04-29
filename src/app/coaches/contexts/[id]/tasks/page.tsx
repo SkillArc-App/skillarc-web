@@ -49,7 +49,7 @@ const Tasks = () => {
   }
 
   return (
-    <Stack pr={'1rem'} pb={'10rem'} gap={'1rem'} overflowY={'scroll'} height={'100%'}>
+    <Stack pr={'1rem'} gap={'1rem'} overflowY={'scroll'}>
       {Object.entries(groupedReminders)
         .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
         .map(([date, tasks]) => (

@@ -86,7 +86,7 @@ const Notes = () => {
   if (!seeker) return <LoadingPage />
 
   return (
-    <Stack pr={'1rem'} pb={'10rem'} gap={'1rem'} overflowY={'scroll'} height={'100%'}>
+    <Stack pr={'1rem'} gap={'1rem'} overflowY={'scroll'}>
       <Textarea
         placeholder="Add a note"
         bg={'white'}
