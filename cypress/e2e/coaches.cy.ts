@@ -143,7 +143,7 @@ describe('Coaches', () => {
       const now = new Date()
       const pad = (x: number) => x.toString().padStart(2, '0')
 
-      const dateString = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate() + 1)}`
+      const dateString = `${now.getFullYear()}-${pad(now.getMonth() + 2)}-01`
 
       cy.findByRole('button', { name: 'Create Reminder' }).click()
       cy.findByLabelText('Reminder Time*').type(`${dateString}T09:00`)
