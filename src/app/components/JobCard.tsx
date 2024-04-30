@@ -1,6 +1,6 @@
 import { Text } from '@/frontend/components/Text.component'
 
-import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
+import ToggleIcon from '@/app/components/ToggleIcon'
 import { Job } from '@/frontend/services/jobs.service'
 import {
   Box,
