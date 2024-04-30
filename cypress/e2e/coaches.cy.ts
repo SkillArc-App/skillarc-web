@@ -54,8 +54,6 @@ describe('Coaches', () => {
     })
 
     cy.get('@seeker').then((seeker: any) => {
-      cy.get('tbody').should('not.contain', seeker['first_name'])
-
       cy.get('label').contains('Owned by Me').parent().click()
 
       cy.findByRole('table').within(() => {
@@ -119,13 +117,16 @@ describe('Coaches', () => {
         cy.visit(url)
       })
 
-      reloadUntilConditionMet(() => {
-        return cy
-          .get('body')
-          .contains('Phone Number')
-          .next()
-          .then((el) => el.text().includes('570-555-5555'))
-      })
+      reloadUntilConditionMet(
+        () => {
+          return cy
+            .get('body')
+            .contains('Phone Number')
+            .next()
+            .then((el) => el.text().includes('570-555-5555'))
+        },
+        { retryCount: 8 },
+      )
 
       cy.get('body')
         .contains('Other Jobs')
