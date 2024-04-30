@@ -29,12 +29,6 @@ export default function JobPosting() {
   const jobId = useFixedParams('jobId')?.['jobId']
   const { data: job, refetch } = useJob(jobId)
 
-  useEffect(() => {
-    if (jobId === localStorage.getItem('onboardingJobInterest')) {
-      localStorage.removeItem('onboardingJobInterest')
-    }
-  }, [jobId])
-
   const { data: user } = useUser()
   const token = useAuthToken()
   const userState = useUserState()

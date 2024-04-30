@@ -1,7 +1,9 @@
-import { EducationResponse } from '@/common/types/OnboardingResponse'
+'use client'
+
 import { Button, Flex, Heading, Input } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '../../../frontend/components/Text.component'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export type EducationResponseProps = {
   org?: string
@@ -11,11 +13,7 @@ export type EducationResponseProps = {
   activities?: string
 }
 
-export const NewEducation = ({
-  onSubmit,
-}: {
-  onSubmit: (responses: EducationResponse) => void
-}) => {
+export default function Education() {
   const [educationList, setEducationList] = useState<EducationResponseProps[]>([
     {
       org: '',
@@ -25,6 +23,7 @@ export const NewEducation = ({
       activities: '',
     },
   ])
+  const onboarding = useOnboardingMutation()
 
   const handleAdd = () => {
     setEducationList([
@@ -34,11 +33,7 @@ export const NewEducation = ({
   }
 
   const handleSubmit = () => {
-    onSubmit({
-      education: {
-        response: educationList,
-      },
-    })
+    onboarding.mutate({ education: { response: educationList } })
   }
 
   const handleRemove = (index: number) => {

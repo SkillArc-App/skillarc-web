@@ -1,25 +1,20 @@
+'use client'
+
 import { industries } from '@/common/static/industries'
-import { OpportunityInterestsResponse } from '@/common/types/OnboardingResponse'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '../../../frontend/components/Text.component'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
-export const NewOpportunityInterests = ({
-  onSubmit,
-}: {
-  onSubmit: (responses: OpportunityInterestsResponse) => void
-}) => {
+export default function Opportunities() {
   const [opportunityInterests, setOpportunityInterests] = useState<string[]>([])
+  const onboarding = useOnboardingMutation()
 
   const checkboxOptions: string[] = industries.map((i) => i[0].toLocaleUpperCase() + i.slice(1))
 
   const handleSubmit = () => {
-    onSubmit({
-      opportunityInterests: {
-        response: opportunityInterests,
-      },
-    })
+    onboarding.mutate({ opportunityInterests: { response: opportunityInterests } })
   }
 
   return (

@@ -1,27 +1,22 @@
-import { TrainingProviderResponse } from '@/common/types/OnboardingResponse'
+'use client'
+
 import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '../../../frontend/components/Text.component'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
-export const Training = ({
-  onSubmit,
-}: {
-  onSubmit: (responses: TrainingProviderResponse) => void
-}) => {
+export default function Training() {
   const {
     getAllTrainingProviders: { data: allTrainingProviders, isLoading },
   } = useAllTrainingProviderData()
+  const onboarding = useOnboardingMutation()
 
   const [selectedTrainingProviders, setSelectedTrainingProviders] = useState<string[]>([])
 
   const handleSubmit = () => {
-    onSubmit({
-      trainingProvider: {
-        response: selectedTrainingProviders,
-      },
-    })
+    onboarding.mutate({ trainingProvider: { response: selectedTrainingProviders } })
   }
 
   if (!allTrainingProviders) return null

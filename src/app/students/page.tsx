@@ -3,7 +3,7 @@
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useStudentData } from '@/frontend/hooks/useStudentData'
-import RadioCardGroup from '@/frontend/modules/onBoarding/components/RadioCardGroup.component'
+import RadioCardGroup from '@/app/students/components/RadioCardGroup'
 import {
   Button,
   Flex,
