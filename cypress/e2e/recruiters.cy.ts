@@ -8,6 +8,7 @@ describe('Recruiters', () => {
       cy.wrap(response['job']).as('job')
       cy.wrap(response['applicant_status']).as('applicant_status')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through employers dashboard', () => {

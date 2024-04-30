@@ -33,6 +33,7 @@ describe('Coaches', () => {
     cy.task('createSeekerLead').then((r: any) => {
       cy.wrap(r).as('lead')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through coaches dashboard', () => {

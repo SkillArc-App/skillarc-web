@@ -6,6 +6,7 @@ describe('Seeker', () => {
       cy.wrap(seeker['seeker']).as('seeker')
       cy.wrap(seeker['user']).as('user')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through onboarding', () => {

@@ -6,6 +6,7 @@ describe('Onboarding', () => {
       cy.log(r['email'])
       cy.wrap(r).as('response')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through onboarding', () => {
