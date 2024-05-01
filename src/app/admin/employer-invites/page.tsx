@@ -71,7 +71,7 @@ export default function EmployerInvites() {
         onClose()
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
       })
   }
 

@@ -8,8 +8,6 @@ export default function Complete() {
   const router = useRouter()
   const isRouting = useRef(false)
 
-  console.log(localStorage.getItem('preOnboardingJobInterest'))
-
   useEffect(() => {
     if (isRouting.current) {
       return

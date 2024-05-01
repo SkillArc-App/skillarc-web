@@ -26,7 +26,6 @@ export const useOnboardingMutation = () => {
       onSuccess: (data) => {
         queryClient.invalidateQueries('onboarding_data')
         queryClient.invalidateQueries('me')
-        // whateverat
         router.push(`/onboarding/${data.nextStep}`)
       },
     },
