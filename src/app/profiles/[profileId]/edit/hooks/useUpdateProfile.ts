@@ -7,43 +7,6 @@ import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.
 import { FrontendUserService } from '@/frontend/services/user.service'
 import { useQueryClient } from 'react-query'
 
-export type ProfileCertification = {
-  id: string
-  master_certification_id: string
-  profile_id: string
-  description: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type ProfileSkill = {
-  id: string
-  master_skill_id: string
-  profile_id: string
-  description: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type Skills = {
-  id: string
-  name: string | null
-  type: string | null
-  profile_id: string
-  description: string | null
-  created_at: Date
-  updated_at: Date
-}
-
-export type Story = {
-  id: string
-  profileId: string
-  prompt: string
-  response: string
-  created_at: Date
-  updated_at: Date
-}
-
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient()
 
@@ -156,11 +119,6 @@ export const useUpdateProfile = () => {
     },
   )
 
-  // Profile Skills
-  type AddProfileSkillType = {
-    profileSkill: Partial<ProfileSkill>
-    profileId: string
-  }
   const addProfileSkill = useAuthenticatedMutation(FrontendProfileSkillsService.create, {
     onSuccess: (_, { profileId }) => {
       queryClient.invalidateQueries(['profile', profileId])

@@ -225,7 +225,7 @@ const Jobs = () => {
     } else {
       if (!token) return
 
-      put(`/employers/applicants/${applicant.id}`, { status }, token, { camel: false }).then(() => {
+      put(`/employers/applicants/${applicant.id}`, { status }, token).then(() => {
         refetchEmployerJobs()
       })
     }

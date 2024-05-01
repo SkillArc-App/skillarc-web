@@ -55,7 +55,7 @@ const Applications = () => {
 
   const tableData = applicationAnalytics?.currentStatusTimes
     .map((ast) => ({
-      application: `${ast.id} - ${ast.applicant_name} - ${ast.employment_title} - ${ast.employer_name}`,
+      application: `${ast.id} - ${ast.applicantName} - ${ast.employmentTitle} - ${ast.employerName}`,
       status: ast.status,
       timeSpent: ast.time.days * 24 + ast.time.hours,
     }))

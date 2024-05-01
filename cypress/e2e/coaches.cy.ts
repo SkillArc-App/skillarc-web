@@ -58,7 +58,7 @@ describe('Coaches', () => {
 
       cy.findByRole('table').within(() => {
         const row = cy
-          .findByText(`${seeker['first_name']} ${seeker['last_name']}`)
+          .findByText(`${seeker['firstName']} ${seeker['lastName']}`)
           .parent()
           .parent()
 
@@ -69,7 +69,7 @@ describe('Coaches', () => {
 
       cy.get('body', { timeout: 10000 }).should(
         'contain',
-        `${seeker['first_name']} ${seeker['last_name']}`,
+        `${seeker['firstName']} ${seeker['lastName']}`,
       )
       cy.get('body').should('contain', seeker['email'])
       cy.get('body').should('contain', 'Beginner')
@@ -192,7 +192,7 @@ describe('Coaches', () => {
       const table = cy.findByRole('table')
       table.within(() => {
         const row = cy
-          .findByText(`${seeker['first_name']} ${seeker['last_name']}`)
+          .findByText(`${seeker['firstName']} ${seeker['lastName']}`)
           .parent()
           .parent()
 
@@ -239,13 +239,13 @@ describe('Coaches', () => {
 
       cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
 
-      cy.get('table').should('not.contain', lead['first_name'])
+      cy.get('table').should('not.contain', lead['firstName'])
 
       cy.get('label').contains('Owned by Me').parent().click()
 
-      cy.get('table').should('contain', lead['first_name'])
-      cy.get('table').should('contain', lead['last_name'])
-      cy.get('table').should('contain', lead['phone_number'])
+      cy.get('table').should('contain', lead['firstName'])
+      cy.get('table').should('contain', lead['lastName'])
+      cy.get('table').should('contain', lead['phoneNumber'])
 
       cy.findByRole('button', { name: 'New Lead' }).click()
 

@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { Reference } from '@/app/reference/components/reference'
 import { useUpdateReference } from '@/app/reference/[id]/edit/hooks/useUpdateReference'
+import { Reference } from '@/app/reference/components/reference'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
@@ -25,8 +25,8 @@ export default function EditReferences() {
 
     onUpdateReference(
       {
-        seeker_profile_id: data.seeker_profile_id,
-        reference_text: reference,
+        seekerProfileId: data.seekerProfileId,
+        referenceText: reference,
         id,
       },
       token,
@@ -38,8 +38,8 @@ export default function EditReferences() {
     return (
       <Reference
         onSubmit={handleSubmit}
-        seekerProfileId={data.seeker_profile_id}
-        startingReferenceText={data.reference_text}
+        seekerProfileId={data.seekerProfileId}
+        startingReferenceText={data.referenceText}
       />
     )
   } else {

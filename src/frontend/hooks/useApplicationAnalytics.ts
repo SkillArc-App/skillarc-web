@@ -8,9 +8,9 @@ export const useApplicationAnalytics = () => {
         averageStatusTimes: { status: string; time: { days: number; hours: number } }[]
         currentStatusTimes: {
           id: string
-          applicant_name: string
-          employment_title: string
-          employer_name: string
+          applicantName: string
+          employmentTitle: string
+          employerName: string
           status: string
           time: { days: number; hours: number }
         }[]

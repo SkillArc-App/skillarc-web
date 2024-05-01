@@ -28,7 +28,7 @@ const SeekerInvite = () => {
       if (!token) return
       if (!employerInviteId) return
 
-      await put(`/employer_invites/${employerInviteId}/used`, {}, token, { camel: false })
+      await put(`/employer_invites/${employerInviteId}/used`, {}, token)
 
       refetchUser()
     }

@@ -140,10 +140,10 @@ const Jobs = () => {
 
     if (!job.saved) {
       FrontendAnalyticsService.track('Job-saved', { job })
-      await post(`seekers/jobs/${job.id}/save`, {}, token, { camel: false })
+      await post(`seekers/jobs/${job.id}/save`, {}, token)
     } else {
       FrontendAnalyticsService.track('Job-unsave', { job })
-      await post(`seekers/jobs/${job.id}/unsave`, {}, token, { camel: false })
+      await post(`seekers/jobs/${job.id}/unsave`, {}, token)
     }
 
     refetch()

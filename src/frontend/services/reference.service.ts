@@ -2,12 +2,10 @@ import { get, post, put } from '../http-common'
 
 export type Reference = {
   id: string
-  author_profile_id: string
-  reference_text: string
-  seeker_profile_id: string
-  training_provider_id: string
-  created_at: Date
-  updated_at: Date
+  authorProfileId: string
+  referenceText: string
+  seekerProfileId: string
+  trainingProviderId: string
 }
 
 const addReference = async (seekerProfileId: string, reference: string, token: string) => {

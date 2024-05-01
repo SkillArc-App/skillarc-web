@@ -3,7 +3,6 @@ import { Reference, Skill } from '@/common/types/Profile'
 import { SeekerTrainingProvider } from '@/common/types/SeekerTrainingProvider'
 import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { PartialRequired } from '@/common/types/partial-required'
-import { Story } from '../../app/profiles/[profileId]/edit/hooks/useUpdateProfile'
 import { destroy, post, put } from '../http-common'
 import { OtherExperience } from './otherExperiences.service'
 import { PersonalExperience } from './personalExperience.service'
@@ -15,6 +14,13 @@ export type Profile = {
   id: string
   about?: string
   userId: string
+}
+
+export type Story = {
+  id: string
+  profileId: string
+  prompt: string
+  response: string
 }
 
 export type GetOneProfileResponse = {

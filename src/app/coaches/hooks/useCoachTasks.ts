@@ -18,7 +18,7 @@ export const useCoachSeekerTasks = (id?: string) =>
     ['coachTasks', id],
     ({ token }) => {
       const getCoachTasks = async () => {
-        const res = await get<CoachTask[]>(`/coaches/tasks`, token, undefined, { context_id: id })
+        const res = await get<CoachTask[]>(`/coaches/tasks`, token, { contextId: id })
 
         return res.data
       }
