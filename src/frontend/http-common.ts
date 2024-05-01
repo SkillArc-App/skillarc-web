@@ -10,7 +10,7 @@ type Options = {
   camel?: boolean
 }
 
-export const http = axios.create({
+const http = axios.create({
   withCredentials: false,
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
