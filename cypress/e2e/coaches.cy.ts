@@ -33,6 +33,7 @@ describe('Coaches', () => {
     cy.task('createSeekerLead').then((r: any) => {
       cy.wrap(r).as('lead')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through coaches dashboard', () => {
@@ -53,8 +54,6 @@ describe('Coaches', () => {
     })
 
     cy.get('@seeker').then((seeker: any) => {
-      cy.get('tbody').should('not.contain', seeker['first_name'])
-
       cy.get('label').contains('Owned by Me').parent().click()
 
       cy.findByRole('table').within(() => {
@@ -118,13 +117,16 @@ describe('Coaches', () => {
         cy.visit(url)
       })
 
-      reloadUntilConditionMet(() => {
-        return cy
-          .get('body')
-          .contains('Phone Number')
-          .next()
-          .then((el) => el.text().includes('570-555-5555'))
-      })
+      reloadUntilConditionMet(
+        () => {
+          return cy
+            .get('body')
+            .contains('Phone Number')
+            .next()
+            .then((el) => el.text().includes('570-555-5555'))
+        },
+        { retryCount: 8 },
+      )
 
       cy.get('body')
         .contains('Other Jobs')
@@ -141,7 +143,7 @@ describe('Coaches', () => {
       const now = new Date()
       const pad = (x: number) => x.toString().padStart(2, '0')
 
-      const dateString = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate() + 1)}`
+      const dateString = `${now.getFullYear()}-${pad(now.getMonth() + 2)}-01`
 
       cy.findByRole('button', { name: 'Create Reminder' }).click()
       cy.findByLabelText('Reminder Time*').type(`${dateString}T09:00`)

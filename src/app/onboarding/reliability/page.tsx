@@ -1,7 +1,9 @@
-import { ReliabilityResponse } from '@/common/types/OnboardingResponse'
+'use client'
+
 import FormikCheckBox from '@/frontend/components/FormikCheckbox'
 import { Button, Heading, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 const JOB = "I've had or currently have a job"
 const TRAINING_PROGRAM = "I've attended a Training Program"
@@ -14,17 +16,14 @@ type ReliabilityProps = {
   other: boolean
 }
 
-export const Reliability = ({
-  onSubmit,
-}: {
-  onSubmit: (responses: ReliabilityResponse) => void
-}) => {
+export default function Reliability() {
   const initialValue: ReliabilityProps = {
     job: false,
     trainingProgram: false,
     education: false,
     other: false,
   }
+  const onboarding = useOnboardingMutation()
 
   const handleSubmit = (values: ReliabilityProps) => {
     const responses = []
@@ -33,11 +32,7 @@ export const Reliability = ({
     if (values.trainingProgram) responses.push(TRAINING_PROGRAM)
     if (values.education) responses.push(EDUCATION)
 
-    onSubmit({
-      reliability: {
-        response: responses,
-      },
-    })
+    onboarding.mutate({ reliability: { response: responses } })
   }
 
   return (

@@ -1,6 +1,6 @@
+import ToggleIcon from '@/app/components/ToggleIcon'
 import { SearchJob } from '@/common/types/Search'
 import { Text } from '@/frontend/components/Text.component'
-import ToggleIcon from '@/frontend/modules/onBoarding/components/ToggleIcon.component'
 import {
   Box,
   Button,

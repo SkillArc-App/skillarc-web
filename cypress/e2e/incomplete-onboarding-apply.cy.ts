@@ -8,6 +8,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
     cy.task('createJob').then((r: any) => {
       cy.wrap(r).as('job')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   const minimalOnboardingAndJobApply = (job: any) => {

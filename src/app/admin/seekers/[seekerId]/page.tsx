@@ -5,9 +5,9 @@ import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { useAllProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { useUserEvents } from '@/frontend/hooks/useUserEvents'
+import { post, put } from '@/frontend/http-common'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Button, Divider, Link, Select, Stack } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -77,20 +77,19 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
     if (!token) return
 
     if (trainingProviderExisted) {
-      await axios.create({ withCredentials: false }).put(
+      await put(
         `${process.env.NEXT_PUBLIC_API_URL}/seekers/${seekerId}/training_providers/${trainingProviderId}`,
         { programId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
+        token,
       )
     } else {
-      await axios.create({ withCredentials: false }).post(
+      await post(
         `${process.env.NEXT_PUBLIC_API_URL}/seekers/${seekerId}/training_providers`,
-        { programId, trainingProviderId },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          programId,
+          trainingProviderId,
         },
+        token,
       )
     }
   }

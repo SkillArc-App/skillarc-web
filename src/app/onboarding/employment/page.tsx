@@ -1,8 +1,10 @@
-import { ExperienceResponse } from '@/common/types/OnboardingResponse'
+'use client'
+
 import { Heading } from '@/frontend/components/Heading.component'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Text } from '../../../../components/Text.component'
+import { Text } from '../../../frontend/components/Text.component'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export type ExperienceResponseProps = {
   company?: string
@@ -13,7 +15,7 @@ export type ExperienceResponseProps = {
   description?: string
 }
 
-export const Employment = ({ onSubmit }: { onSubmit: (responses: ExperienceResponse) => void }) => {
+export default function Employment() {
   const [experienceList, setExperienceList] = useState<ExperienceResponseProps[]>([
     {
       company: '',
@@ -24,6 +26,7 @@ export const Employment = ({ onSubmit }: { onSubmit: (responses: ExperienceRespo
       description: '',
     },
   ])
+  const onboarding = useOnboardingMutation()
 
   const handleAdd = () => {
     setExperienceList([
@@ -33,11 +36,7 @@ export const Employment = ({ onSubmit }: { onSubmit: (responses: ExperienceRespo
   }
 
   const handleSubmit = () => {
-    onSubmit({
-      experience: {
-        response: experienceList,
-      },
-    })
+    onboarding.mutate({ experience: { response: experienceList } })
   }
 
   const handleCompanyChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {

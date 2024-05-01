@@ -8,6 +8,7 @@ describe('Training Providers', () => {
       cy.wrap(response['trainingProvider']).as('trainingProvider')
       cy.wrap(response['program']).as('program')
     })
+    cy.task('assertNoFailedJobs')
   })
 
   it('should navigate through onboarding', () => {

@@ -24,9 +24,15 @@ describe('Admin', () => {
     cy.get('body').should('not.contain', 'Save')
     cy.get('body').should('contain', 'Test1, Test2')
 
-    cy.get('button[aria-label="delete-attribute"]').last().click()
+    cy.findByRole('table').within(() => {
+      const row = cy.findByText(name).parent().parent()
 
-    cy.get('body').should('not.contain', 'Test1, Test2')
+      row.within(() => {
+        cy.findByLabelText('delete-attribute').click()
+      })
+    })
+
+    cy.get('body').should('not.contain', name)
 
     cy.visit('/admin/jobs')
 

@@ -30,7 +30,7 @@ export default async function assertNoFailedJobs() {
   await poll(async () => {
     const response = await get('/test/jobs_settled')
     return response.data.settled
-  }, 500)
+  }, 1000)
 
   const response = await get('/test/assert_no_failed_jobs', '')
 

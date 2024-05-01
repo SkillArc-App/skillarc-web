@@ -4,4 +4,8 @@ afterEach(() => {
   cy.task('assertNoFailedJobs')
 })
 
+beforeEach(() => {
+  cy.task('clearFailedJobs')
+})
+
 export {}

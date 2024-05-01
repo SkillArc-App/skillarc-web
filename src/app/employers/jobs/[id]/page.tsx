@@ -247,7 +247,6 @@ const Jobs = () => {
     }
   }
 
-  console.log('Re-Render')
   if (!activeEmployerId) return <LoadingPage />
 
   return (

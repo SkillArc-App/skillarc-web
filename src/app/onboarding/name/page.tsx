@@ -1,9 +1,11 @@
-import { NameResponse } from '@/common/types/OnboardingResponse'
+'use client'
+
 import FormInputField from '@/frontend/components/FormInputField'
 import { Button, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
-import { Heading } from '../../../../components/Heading.component'
-import { Text } from '../../../../components/Text.component'
+import { Heading } from '../../../frontend/components/Heading.component'
+import { Text } from '../../../frontend/components/Text.component'
+import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 type NewNameProps = {
   firstName: string
@@ -12,13 +14,15 @@ type NewNameProps = {
   dateOfBirth: string
 }
 
-export const NewName = ({ onSubmit }: { onSubmit: (name: NameResponse) => void }) => {
+export default function NewName() {
   const initialValue: NewNameProps = {
     firstName: '',
     lastName: '',
     phoneNumber: '',
     dateOfBirth: '',
   }
+  const onboarding = useOnboardingMutation()
+
   const handleSubmit = (values: NewNameProps) => {
     const d = new Date(values.dateOfBirth)
     const year = d.getFullYear()
@@ -30,11 +34,7 @@ export const NewName = ({ onSubmit }: { onSubmit: (name: NameResponse) => void }
       dateOfBirth: `${month}/${day}/${year}`,
     }
 
-    onSubmit({
-      name: {
-        response: formatted,
-      },
-    })
+    onboarding.mutate({ name: { response: formatted }})
   }
 
   return (
