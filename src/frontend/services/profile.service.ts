@@ -2,8 +2,9 @@ import { EducationExperience } from '@/common/types/EducationExperience'
 import { Reference, Skill } from '@/common/types/Profile'
 import { SeekerTrainingProvider } from '@/common/types/SeekerTrainingProvider'
 import { TrainingProvider } from '@/common/types/TrainingProvider'
-import axios from 'axios'
+import { PartialRequired } from '@/common/types/partial-required'
 import { Story } from '../../app/profiles/[profileId]/edit/hooks/useUpdateProfile'
+import { destroy, post, put } from '../http-common'
 import { OtherExperience } from './otherExperiences.service'
 import { PersonalExperience } from './personalExperience.service'
 import { ProfileSkill } from './profileSkills.service'
@@ -35,62 +36,25 @@ export type GetOneProfileResponse = {
   })[]
 } & Profile
 
-const addStory = async (profileId: string, story: Partial<Story>, token: string) => {
-  const res = await axios.create({ withCredentials: false }).post(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/stories`,
-    { story },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  )
-  return res.data
+const addStory = async (story: PartialRequired<Story, 'profileId'>, token: string) => {
+  await post(`/profiles/${story.profileId}/stories`, { story }, token)
 }
 
 const updateStory = async (story: Partial<Story>, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .put(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${story.profile_id}/stories/${story.id}`,
-      story,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
-  return res.data
+  await put(`/profiles/${story.profileId}/stories/${story.id}`, story, token)
 }
 
-const deleteStory = async (story: { profile_id: string; id: string }, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .delete(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${story.profile_id}/stories/${story.id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-  return res.data
+const deleteStory = async (story: { profileId: string; id: string }, token: string) => {
+  const res = await destroy(`/profiles/${story.profileId}/stories/${story.id}`, token)
 }
 
-const deleteSkill = async (skill: Skill) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .delete<Skill>(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${skill.profileId}/skills/${skill.id}`,
-    )
-  return res.data
-}
-
-const addSkill = async (profileId: string, skill: Partial<Skill>, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .post<Skill>(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills`, skill, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-
-  return res.data
+const addSkill = async (skill: PartialRequired<Skill, 'profileId'>, token: string) => {
+  const res = post<Skill>(`/profiles/${skill.profileId}/skills`, skill, token)
 }
 
 export const FrontendProfileService = {
   addStory,
   updateStory,
   deleteStory,
-  deleteSkill,
   addSkill,
 }

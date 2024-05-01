@@ -6,7 +6,7 @@ import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 export const useUser = () => {
   const userQuery = useAuthenticatedQuery(['me'], ({ token }) => {
     const getOne = async () => {
-      const res = await get<FullUser>(`${process.env.NEXT_PUBLIC_API_URL}/one_user/`, token)
+      const res = await get<FullUser>(`/one_user/`, token)
       mixpanelInitUser(res.data)
       return res.data
     }

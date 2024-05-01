@@ -16,7 +16,7 @@ export const useSeekerChat = (
       if (!token) return Promise.reject('No user id')
 
       const getChats = async () => {
-        const res = await get<Chat[]>(`${process.env.NEXT_PUBLIC_API_URL}/seekers/chats/`, token, {
+        const res = await get<Chat[]>(`/seekers/chats/`, token, {
           camel: false,
         })
 

@@ -1,35 +1,34 @@
 import { EducationExperience } from '@/common/types/EducationExperience'
+import { PartialRequired } from '@/common/types/partial-required'
 import { destroy, post, put } from '../http-common'
 
 const create = async (
-  educationExperience: Partial<EducationExperience>,
-  profileId: string,
+  educationExperience: PartialRequired<EducationExperience, 'profileId'>,
   token: string,
 ) => {
   await post(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences`,
+    `/profiles/${educationExperience.profileId}/education_experiences`,
     educationExperience,
     token,
   )
 }
 
 const update = async (
-  educationExperience: Partial<EducationExperience>,
-  profileId: string,
+  educationExperience: PartialRequired<EducationExperience, 'profileId'>,
   token: string,
 ) => {
   await put(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences/${educationExperience.id}`,
+    `/profiles/${educationExperience.profileId}/education_experiences/${educationExperience.id}`,
     educationExperience,
     token,
   )
 }
 
-const deleteOne = async (educationExperienceId: string, profileId: string, token: string) => {
-  await destroy(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/education_experiences/${educationExperienceId}`,
-    token,
-  )
+const deleteOne = async (
+  { id, profileId }: PartialRequired<EducationExperience, 'profileId' | 'id'>,
+  token: string,
+) => {
+  await destroy(`/profiles/${profileId}/education_experiences/${id}`, token)
 }
 
 export const FrontendEducationExperiencesService = {

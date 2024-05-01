@@ -55,7 +55,7 @@ const EditAbout = () => {
   const handleDelete = (index: number) => {
     const temp = [...storyList]
     if (storyList[index].id !== '') {
-      deleteStory({ id: storyList[index].id, profile_id: seeker?.id ?? '' })
+      deleteStory({ id: storyList[index].id, profileId: seeker?.id ?? '' })
     }
     setStoryList(temp)
   }
@@ -68,17 +68,15 @@ const EditAbout = () => {
       if (story.id === '') {
         addStory({
           profileId: profileId,
-          story: {
-            prompt: story.prompt,
-            response: story.response,
-          },
+          prompt: story.prompt,
+          response: story.response,
         })
       } else {
         updateStory({
           prompt: story.prompt ?? '',
           response: story.response ?? '',
           id: story.id,
-          profile_id: profileId,
+          profileId: profileId,
         })
       }
     })

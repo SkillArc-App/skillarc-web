@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '../http-common'
 
 type Invite = {
   seekerType: 'TRAINING_PROVIDER' | 'SEEKER'
@@ -7,13 +7,7 @@ type Invite = {
   usedAt: string
 }
 const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<Invite[]>(`${process.env.NEXT_PUBLIC_API_URL}/seeker_invites`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  const res = await get<Invite[]>(`/seeker_invites`, token)
 
   return res.data
 }

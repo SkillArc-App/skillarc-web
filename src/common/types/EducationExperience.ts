@@ -5,4 +5,5 @@ export type EducationExperience = {
   activities?: string
   graduationDate?: string
   gpa?: string
+  profileId: string
 }

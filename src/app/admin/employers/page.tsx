@@ -1,6 +1,8 @@
 'use client'
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { post } from '@/frontend/http-common'
 import {
   Box,
   Button,
@@ -24,10 +26,8 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function Employers() {
   // use employer data
@@ -38,18 +38,7 @@ export default function Employers() {
   const [logoUrl, setLogoUrl] = useState('')
   const [bio, setBio] = useState('')
   const [location, setLocation] = useState('')
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const handleNameChange = (e: any) => {
     setName(e.target.value)
@@ -68,26 +57,23 @@ export default function Employers() {
   }
 
   const handleSubmit = async () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/employers`,
-        {
-          name,
-          logo_url: logoUrl,
-          bio,
-          location,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then(() => {
-        refetch()
-        onClose()
-      })
+    if (!token) {
+      return
+    }
+
+    post(
+      `/employers`,
+      {
+        name,
+        logoUrl: logoUrl,
+        bio,
+        location,
+      },
+      token,
+    ).then(() => {
+      refetch()
+      onClose()
+    })
   }
 
   if (!employers) return <div>Loading...</div>

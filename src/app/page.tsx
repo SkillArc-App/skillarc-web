@@ -5,7 +5,7 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
-import { http } from '@/frontend/http-common'
+import { post } from '@/frontend/http-common'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'
 import { Flex } from '@chakra-ui/react'
 import { useAuth0, withAuthenticationRequired } from 'lib/auth-wrapper'
@@ -38,12 +38,14 @@ const Home = () => {
 
     if (trainingProviderInviteCode) {
       localStorage.removeItem('trainingProviderInviteCode')
-      http.post('/api/invites', { trainingProviderInviteCode }).then((_) => {
+      post('/api/invites', { trainingProviderInviteCode }, token).then((_) => {
         refetchUser()
       })
     } else if (seekerInviteCode) {
       localStorage.removeItem('seekerInviteCode')
-      http.post('/api/invites', { seekerInviteCode })
+      post('/api/invites', { seekerInviteCode }, token).then((_) => {
+        refetchUser()
+      })
     }
 
     if (!user.onboardingSession.completedAt) {
@@ -56,7 +58,7 @@ const Home = () => {
   }, [refetchUser, router, token, user, status])
 
   if (isLoading) return <LoadingPage />
-  if ((user?.trainingProviderProfile ?? user?.recruiter)) return <></>
+  if (user?.trainingProviderProfile ?? user?.recruiter) return <></>
   if (!token) return <LoadingPage />
 
   if (user?.onboardingSession?.completedAt)

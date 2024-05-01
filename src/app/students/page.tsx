@@ -1,8 +1,9 @@
-"use client"
+'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useStudentData } from '@/frontend/hooks/useStudentData'
+import { put } from '@/frontend/http-common'
 import RadioCardGroup from '@/app/students/components/RadioCardGroup'
 import {
   Button,
@@ -22,7 +23,6 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -78,7 +78,7 @@ export default function Students() {
     studentProfileId: string,
     statusValue: string,
   ) => {
-    if (!data) return
+    if (!data || !token) return
 
     const status = statusValue.toLowerCase().replace(' ', '_')
 
@@ -89,22 +89,15 @@ export default function Students() {
     newProgramStudents[studentIndex].status = status
     setProgramStudents(newProgramStudents)
 
-    axios
-      .create({ withCredentials: false })
-      .put(
-        `${process.env.NEXT_PUBLIC_API_URL}/programs/${data[programIndex].programId}/students/${studentProfileId}`,
-        {
-          status: status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((res) => {
-        refetch()
-      })
+    put(
+      `/programs/${data[programIndex].programId}/students/${studentProfileId}`,
+      {
+        status: status,
+      },
+      token,
+    ).then((res) => {
+      refetch()
+    })
   }
 
   if (!data || isLoading) {

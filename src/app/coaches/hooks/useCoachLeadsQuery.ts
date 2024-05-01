@@ -5,10 +5,7 @@ import { get } from '@/frontend/http-common'
 export const useCoachLeadsQuery = () =>
   useAuthenticatedQuery(['coachLeads'], ({ token }) => {
     const getCoachSeekersRequest = async () => {
-      const res = await get<SeekerLead[]>(
-        `${process.env.NEXT_PUBLIC_API_URL}/coaches/leads/`,
-        token,
-      )
+      const res = await get<SeekerLead[]>(`/coaches/leads/`, token)
 
       return res.data
     }

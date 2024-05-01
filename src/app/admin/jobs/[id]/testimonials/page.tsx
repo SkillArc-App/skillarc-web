@@ -43,7 +43,7 @@ const TestimonialsPage = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials`,
+      `/jobs/${job.id}/testimonials`,
       {
         jobId: id,
         name: testimonialName,
@@ -65,10 +65,7 @@ const TestimonialsPage = () => {
     if (!job) return
     if (!token) return
 
-    await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/testimonials/${testimonial.id}`,
-      token,
-    )
+    await destroy(`/jobs/${job.id}/testimonials/${testimonial.id}`, token)
 
     refetchJob()
   }

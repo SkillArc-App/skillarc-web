@@ -1,11 +1,7 @@
-import axios from 'axios'
+import { get } from '../http-common'
 
 const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get(`${process.env.NEXT_PUBLIC_API_URL}/employer_invites`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get(`/employer_invites`, token)
 
   return res.data
 }

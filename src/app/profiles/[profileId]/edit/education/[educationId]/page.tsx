@@ -54,18 +54,14 @@ const EditEducation = () => {
     if (!seeker?.id) return
     if (!experience?.id) {
       addEducationExperience({
+        ...experience,
         profileId: seeker.id,
-        educationExperience: {
-          ...experience,
-        },
       })
     } else {
       updateEducationExperience({
+        ...experience,
+        id: experience.id,
         profileId: seeker.id,
-        educationExperience: {
-          ...experience,
-          id: experience.id,
-        },
       })
     }
   }
@@ -77,7 +73,7 @@ const EditEducation = () => {
     if (!profileId || !educationExperienceId) return
     deleteEducationExperience({
       profileId: profileId,
-      educationExperienceId: educationExperienceId,
+      id: educationExperienceId,
     })
   }
   return (

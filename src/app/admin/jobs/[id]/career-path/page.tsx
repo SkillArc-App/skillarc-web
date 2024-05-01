@@ -39,7 +39,7 @@ const CareerPathPage = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths`,
+      `/jobs/${id}/career_paths`,
       {
         job_id: id,
         title: careerPathTitle,
@@ -58,7 +58,7 @@ const CareerPathPage = () => {
   const movePathUp = async (path: CareerPath) => {
     if (!token) return
 
-    await put(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/up`, {}, token)
+    await put(`/jobs/${id}/career_paths/${path.id}/up`, {}, token)
 
     refetchJob()
   }
@@ -66,11 +66,7 @@ const CareerPathPage = () => {
   const movePathDown = async (path: CareerPath) => {
     if (!token) return
 
-    await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}/down`,
-      {},
-      token,
-    )
+    await put(`/jobs/${id}/career_paths/${path.id}/down`, {}, token)
 
     refetchJob()
   }
@@ -78,7 +74,7 @@ const CareerPathPage = () => {
   const removePath = async (path: CareerPath) => {
     if (!token) return
 
-    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/career_paths/${path.id}`, token)
+    await destroy(`/jobs/${id}/career_paths/${path.id}`, token)
 
     refetchJob()
   }

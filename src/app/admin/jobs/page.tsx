@@ -102,7 +102,7 @@ export default function Jobs() {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs`,
+      `/admin/jobs`,
       {
         category,
         employer_id: employerId,

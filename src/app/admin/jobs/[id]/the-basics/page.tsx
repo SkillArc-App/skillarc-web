@@ -86,7 +86,7 @@ const TheBasicsPage = () => {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
+      `/admin/jobs/${id}`,
       {
         category,
         employer_id: employerId,

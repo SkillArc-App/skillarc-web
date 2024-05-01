@@ -2,6 +2,8 @@
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import { useAllEmployerInviteData } from '@/frontend/hooks/useAllEmployerInviteData'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { post } from '@/frontend/http-common'
 import {
   Box,
   Button,
@@ -24,9 +26,7 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 export default function EmployerInvites() {
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
@@ -36,36 +36,23 @@ export default function EmployerInvites() {
   } = useAllEmployerInviteData()
 
   const { data: employers } = useAllEmployers()
-
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const handleSubmit = () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/employer_invites`,
-        {
-          email: email,
-          first_name: firstName,
-          last_name: lastName,
-          employer_id: employerId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
+    if (!token) {
+      return
+    }
+
+    post(
+      `/employer_invites`,
+      {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        employerId: employerId,
+      },
+      token,
+    )
       .then((res) => {
         refetchInvites()
         onClose()

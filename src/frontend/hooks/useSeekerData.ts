@@ -16,7 +16,7 @@ export type AdminSeekerTrainingProvider = {
 
 export const useSeekerData = () => {
   const getSeekers = useAuthenticatedQuery(['seekers'], async ({ token }) => {
-    const res = await get<AdminSeeker[]>(`${process.env.NEXT_PUBLIC_API_URL}/profiles`, token)
+    const res = await get<AdminSeeker[]>(`/profiles`, token)
 
     return res.data
   })

@@ -47,7 +47,7 @@ const Notes = () => {
     const noteId = crypto.randomUUID()
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes`,
+      `/coaches/contexts/${id}/notes`,
       {
         note: currentNoteDraft,
         noteId,
@@ -63,10 +63,7 @@ const Notes = () => {
     if (!token) return
     if (!seeker) return
 
-    await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
-      token,
-    )
+    await destroy(`/coaches/contexts/${id}/notes/${noteId}`, token)
 
     refetchSeeker()
   }
@@ -76,7 +73,7 @@ const Notes = () => {
     if (!seeker) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/notes/${noteId}`,
+      `/coaches/contexts/${id}/notes/${noteId}`,
       {
         note: updatedNote,
       },

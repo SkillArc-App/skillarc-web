@@ -34,7 +34,7 @@ const PhotosPage = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos`,
+      `/jobs/${id}/job_photos`,
       {
         photoUrl,
       },
@@ -47,7 +47,7 @@ const PhotosPage = () => {
   const removePhoto = async (photoId: string) => {
     if (!token) return
 
-    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_photos/${photoId}`, token)
+    await destroy(`/jobs/${id}/job_photos/${photoId}`, token)
 
     refetchJob()
   }

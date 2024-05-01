@@ -68,7 +68,7 @@ const Attributes = () => {
     if (!token) return
 
     if (window.confirm('Are you sure you want to delete this attribute?') === true) {
-      await destroy(`${process.env.NEXT_PUBLIC_API_URL}/admin/attributes/${id}`, token)
+      await destroy(`/admin/attributes/${id}`, token)
     }
 
     refetch()
@@ -116,7 +116,7 @@ const Attributes = () => {
 
     if (initialValue.id) {
       await put(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/attributes/${initialValue.id}`,
+        `/admin/attributes/${initialValue.id}`,
         {
           name: values.name,
           description: values.description,
@@ -127,7 +127,7 @@ const Attributes = () => {
       )
     } else {
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/attributes`,
+        `/admin/attributes`,
         {
           name: values.name,
           description: values.description,

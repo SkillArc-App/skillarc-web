@@ -5,10 +5,7 @@ import { get } from '@/frontend/http-common'
 export const useAttributes = () =>
   useAuthenticatedQuery(['attributes'], ({ token }) => {
     const getAll = async (token: string) => {
-      const res = await get<Attribute[]>(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/attributes`,
-        token,
-      )
+      const res = await get<Attribute[]>(`/admin/attributes`, token)
 
       return res.data
     }

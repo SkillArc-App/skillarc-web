@@ -1,15 +1,7 @@
-import { MixPanelEvent } from '@/common/static/APPLICATION_EVENTS'
-import { http } from '../http-common'
 import mixpanel from 'mixpanel-browser'
 
 const isProduction = (): boolean => {
   return process.env.NEXT_PUBLIC_ENV === 'prod'
-}
-
-const create = async (event: MixPanelEvent) => {
-  if (!isProduction()) return
-
-  return await http.post(`/api/analytics`, event)
 }
 
 const timeEvent = async (event: string) => {
@@ -23,7 +15,6 @@ const track = async (event: string, properties?: any) => {
 }
 
 export const FrontendAnalyticsService = {
-  create,
   timeEvent,
   track,
 }

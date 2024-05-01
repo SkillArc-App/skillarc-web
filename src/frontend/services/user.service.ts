@@ -1,5 +1,5 @@
 import { TrainingProviderProfile } from '@/common/types/TrainingProviderProfile'
-import { http } from '../http-common'
+import { put } from '../http-common'
 import { Profile } from './profile.service'
 
 export type OnboardingSession = {
@@ -44,8 +44,8 @@ export type FullUser = {
   userRoles: { role: Role }[]
 }
 
-const update = async (user: Partial<User>) => {
-  const res = await http.put<FullUser>(`/api/users/${user.id}`, user)
+const update = async (user: Partial<User>, token: string) => {
+  const res = await put<FullUser>(`/api/users/${user.id}`, user, token)
   return res.data
 }
 

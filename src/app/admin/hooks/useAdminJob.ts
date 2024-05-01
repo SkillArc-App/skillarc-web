@@ -8,10 +8,7 @@ export const useAdminJob = (id: Maybe<string>) =>
     ['job', id],
     ({ token }) => {
       const getOne = async (jobId: string) => {
-        const res = await get<AdminJob>(
-          `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${jobId}`,
-          token,
-        )
+        const res = await get<AdminJob>(`/admin/jobs/${jobId}`, token)
 
         return res.data
       }

@@ -205,7 +205,7 @@ const Jobs = () => {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${currentApplicant.id}`,
+      `/employers/applicants/${currentApplicant.id}`,
       { status: 'pass', reasons: responses },
       token,
     )
@@ -225,12 +225,7 @@ const Jobs = () => {
     } else {
       if (!token) return
 
-      put(
-        `${process.env.NEXT_PUBLIC_API_URL}/employers/applicants/${applicant.id}`,
-        { status },
-        token,
-        { camel: false },
-      ).then(() => {
+      put(`/employers/applicants/${applicant.id}`, { status }, token, { camel: false }).then(() => {
         refetchEmployerJobs()
       })
     }

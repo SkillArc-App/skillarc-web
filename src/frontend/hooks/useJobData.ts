@@ -11,7 +11,7 @@ export const useJob = (id: Maybe<string>) => {
     ['job', id],
     () => {
       const getJob = async (jobId: string) => {
-        const res = await get<Job>(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${jobId}`, token)
+        const res = await get<Job>(`/jobs/${jobId}`, token)
 
         return res.data
       }

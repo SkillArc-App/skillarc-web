@@ -22,7 +22,7 @@ const Page = () => {
       if (allRead) return
 
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/seekers/chats/mark_read`,
+        `/seekers/chats/mark_read`,
         {
           applicantId: id,
         },
@@ -35,7 +35,7 @@ const Page = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/seekers/chats/send_message`,
+      `/seekers/chats/send_message`,
       {
         applicantId: id,
         message: text,

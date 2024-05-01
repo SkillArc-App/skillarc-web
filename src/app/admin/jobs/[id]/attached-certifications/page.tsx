@@ -35,7 +35,7 @@ const AttachedCertificationsPage = () => {
     if (existingDesiredCertification) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications`,
+      `/jobs/${job.id}/desired_certifications`,
       {
         job_id: id,
         master_certification_id: desiredCertification.id,
@@ -57,7 +57,7 @@ const AttachedCertificationsPage = () => {
     if (!existingDesiredCertification) return
 
     await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_certifications/${existingDesiredCertification.id}`,
+      `/jobs/${job.id}/desired_certifications/${existingDesiredCertification.id}`,
       token,
     )
 

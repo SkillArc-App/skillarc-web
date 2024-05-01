@@ -9,10 +9,7 @@ export type Barrier = {
 export const useBarrierData = () =>
   useAuthenticatedQuery(['barriers'], ({ token }) => {
     const getBarriersRequest = async () => {
-      const res = await get<Barrier[]>(
-        `${process.env.NEXT_PUBLIC_API_URL}/coaches/barriers/`,
-        token
-      )
+      const res = await get<Barrier[]>(`/coaches/barriers/`, token)
 
       return res.data
     }

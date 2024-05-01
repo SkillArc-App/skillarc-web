@@ -48,19 +48,15 @@ const EditExperience = () => {
     if (!profileId) return
     if (!experience?.id) {
       addOtherExperience({
+        ...experience,
         profileId: profileId,
-        otherExperience: {
-          ...experience,
-        },
       })
     } else {
       updateOtherExperience({
+        ...experience,
+        organizationId: experience?.organizationId ?? null,
+        id: experience.id,
         profileId: profileId,
-        otherExperience: {
-          ...experience,
-          organizationId: experience?.organizationId ?? null,
-          id: experience.id,
-        },
       })
     }
   }
@@ -72,7 +68,7 @@ const EditExperience = () => {
     if (!profileId || !otherExperienceId) return
     deleteOtherExperience({
       profileId: profileId,
-      otherExperienceId: otherExperienceId,
+      id: otherExperienceId,
     })
   }
 

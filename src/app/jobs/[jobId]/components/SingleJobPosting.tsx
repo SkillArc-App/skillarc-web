@@ -41,7 +41,6 @@ export const SingleJobPosting = ({ job, percentMatch, user }: SingleJobPostingPr
     }
   }, [trackScrollAnalytics])
 
-  // call mixpanel.time_event('Job-viewed') when the user first views the job posting
   useEffect(() => {
     if (!startedView) {
       setStartedViewing(true)

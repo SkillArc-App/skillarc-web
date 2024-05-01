@@ -41,10 +41,7 @@ const AttachedSkillsPage = () => {
 
     if (!existingLearnedSkill) return
 
-    await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills/${learnedSkillId}`,
-      token,
-    )
+    await destroy(`/jobs/${job.id}/learned_skills/${learnedSkillId}`, token)
 
     refetchJob()
   }
@@ -59,10 +56,7 @@ const AttachedSkillsPage = () => {
     if (!existingDesiredSkill) return
     if (!token) return
 
-    await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills/${existingDesiredSkill.id}`,
-      token,
-    )
+    await destroy(`/jobs/${job.id}/desired_skills/${existingDesiredSkill.id}`, token)
 
     refetchJob()
   }
@@ -82,7 +76,7 @@ const AttachedSkillsPage = () => {
     if (existingLearnedSkill) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/learned_skills`,
+      `/jobs/${job.id}/learned_skills`,
       {
         master_skill_id: learnedSkill.id,
       },
@@ -101,7 +95,7 @@ const AttachedSkillsPage = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${job.id}/desired_skills`,
+      `/jobs/${job.id}/desired_skills`,
       {
         master_skill_id: desiredSkill.id,
       },

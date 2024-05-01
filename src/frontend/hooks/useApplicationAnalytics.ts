@@ -14,7 +14,7 @@ export const useApplicationAnalytics = () => {
           status: string
           time: { days: number; hours: number }
         }[]
-      }>(`${process.env.NEXT_PUBLIC_API_URL}/admin/application_analytics/`, token, { camel: false })
+      }>(`/admin/application_analytics/`, token, { camel: false })
 
       return res.data
     }

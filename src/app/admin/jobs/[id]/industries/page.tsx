@@ -21,7 +21,7 @@ const Industries = () => {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
+      `/admin/jobs/${id}`,
       {
         industry: [...job.industry, industry],
       },
@@ -36,7 +36,7 @@ const Industries = () => {
     if (!token) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/jobs/${id}`,
+      `/admin/jobs/${id}`,
       {
         industry: job.industry.filter((i) => i !== industry),
       },

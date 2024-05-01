@@ -69,11 +69,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!token) return
     if (!seeker) return
 
-    await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/skill-levels`,
-      { level },
-      token,
-    )
+    await post(`/coaches/contexts/${id}/skill-levels`, { level }, token)
 
     refetchSeeker()
   }
@@ -82,11 +78,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!token) return
     if (!seeker) return
 
-    await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/assign_coach`,
-      { coachId },
-      token,
-    )
+    await post(`/coaches/contexts/${id}/assign_coach`, { coachId }, token)
 
     refetchSeeker()
   }
@@ -105,11 +97,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         isClosable: true,
       })
     } else {
-      await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/recommend_job`,
-        { jobId },
-        token,
-      )
+      await post(`/coaches/contexts/${id}/recommend_job`, { jobId }, token)
 
       refetchSeeker()
     }
@@ -119,7 +107,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!token) return
     if (!seeker) return
 
-    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/certify`, {}, token)
+    await post(`/coaches/contexts/${id}/certify`, {}, token)
 
     refetchSeeker()
   }
@@ -129,7 +117,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!seeker) return
 
     await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/contexts/${id}/update_barriers`,
+      `/coaches/contexts/${id}/update_barriers`,
       {
         barriers: barriers.map((b) => b.id),
       },
@@ -142,7 +130,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   const handleSubmitReminder = async (reminder: SubmittableCoachTask) => {
     if (!token) return
 
-    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders`, { reminder }, token)
+    await post(`/coaches/tasks/reminders`, { reminder }, token)
     refetchTasks()
 
     setIsModalOpen(false)

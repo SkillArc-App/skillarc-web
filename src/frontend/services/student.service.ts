@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '../http-common'
 
 type ProgramStudents = {
   programName: string
@@ -18,11 +18,7 @@ type ProgramStudents = {
 }[]
 
 const getFor = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<ProgramStudents>(`${process.env.NEXT_PUBLIC_API_URL}/students`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get<ProgramStudents>(`/students`, token)
 
   return res.data
 }

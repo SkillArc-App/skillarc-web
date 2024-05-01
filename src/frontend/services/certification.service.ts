@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '../http-common'
 
 export type MasterCertification = {
   id: string
@@ -6,11 +6,7 @@ export type MasterCertification = {
 }
 
 const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<MasterCertification[]>(`${process.env.NEXT_PUBLIC_API_URL}/master_certifications`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get<MasterCertification[]>(`/master_certifications`, token)
 
   return res.data
 }

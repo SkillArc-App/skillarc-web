@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get, post, put } from '../http-common'
 
 export type Reference = {
   id: string
@@ -11,42 +11,24 @@ export type Reference = {
 }
 
 const addReference = async (seekerProfileId: string, reference: string, token: string) => {
-  const res = await axios.create({ withCredentials: false }).post<Reference>(
-    `${process.env.NEXT_PUBLIC_API_URL}/references`,
+  await post<Reference>(
+    `/references`,
     {
       reference,
       seeker_profile_id: seekerProfileId,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
+    token,
   )
-
-  return res.data
 }
 
 const getOne = async (referenceId: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<Reference>(`${process.env.NEXT_PUBLIC_API_URL}/references/${referenceId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  const res = await get<Reference>(`/references/${referenceId}`, token)
 
   return res.data
 }
 
 const update = async (reference: Partial<Reference>, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .put<Reference>(`${process.env.NEXT_PUBLIC_API_URL}/references/${reference.id}`, reference, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  const res = await put<Reference>(`/references/${reference.id}`, reference, token)
 
   return res.data
 }
