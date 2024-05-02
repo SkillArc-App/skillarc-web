@@ -1,7 +1,9 @@
+import { PartialRequired } from '@/common/types/partial-required'
 import { destroy, post, put } from '../http-common'
 
 export type OtherExperience = {
   id: string
+  profileId: string
   organizationId: string | null
   organizationName: string | null
   startDate: string | null
@@ -12,34 +14,28 @@ export type OtherExperience = {
 }
 
 const create = async (
-  otherExperience: Partial<OtherExperience>,
-  profileId: string,
+  otherExperience: PartialRequired<OtherExperience, 'profileId'>,
   token: string,
 ) => {
-  await post(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/other_experiences`,
-    otherExperience,
-    token,
-  )
+  await post(`/profiles/${otherExperience.profileId}/other_experiences`, otherExperience, token)
 }
 
 const update = async (
-  otherExperience: Partial<OtherExperience>,
-  profileId: string,
+  otherExperience: PartialRequired<OtherExperience, 'profileId'>,
   token: string,
 ) => {
   await put(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/other_experiences/${otherExperience.id}`,
+    `/profiles/${otherExperience.profileId}/other_experiences/${otherExperience.id}`,
     otherExperience,
     token,
   )
 }
 
-const deleteOne = async (otherExperienceId: string, profileId: string, token: string) => {
-  await destroy(
-    `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/other_experiences/${otherExperienceId}`,
-    token,
-  )
+const deleteOne = async (
+  { id, profileId }: PartialRequired<OtherExperience, 'profileId' | 'id'>,
+  token: string,
+) => {
+  await destroy(`/profiles/${profileId}/other_experiences/${id}`, token)
 }
 
 export const FrontendOtherExperiencesService = {

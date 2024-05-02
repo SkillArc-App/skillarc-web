@@ -14,7 +14,7 @@ export const useEmployerChats = (
     ['chats'],
     ({ token }) => {
       const getChats = async () => {
-        const res = await get<Chat[]>(`${process.env.NEXT_PUBLIC_API_URL}/employers/chats/`, token)
+        const res = await get<Chat[]>(`/employers/chats/`, token)
 
         return res.data
       }

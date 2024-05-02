@@ -4,10 +4,7 @@ import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const usePassReasons = () => {
   return useAuthenticatedQuery(['pass_reasons'], async ({ token }) => {
-    const res = await get<PassReason[]>(
-      `${process.env.NEXT_PUBLIC_API_URL}/pass_reasons`,
-      token,
-    )
+    const res = await get<PassReason[]>(`/pass_reasons`, token)
 
     return res.data
   })

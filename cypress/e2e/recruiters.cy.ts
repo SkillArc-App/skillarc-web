@@ -6,7 +6,7 @@ describe('Recruiters', () => {
       cy.wrap(response['recruiter']).as('recruiter')
       cy.wrap(response['applicant']).as('applicant')
       cy.wrap(response['job']).as('job')
-      cy.wrap(response['applicant_status']).as('applicant_status')
+      cy.wrap(response['applicantStatus']).as('applicantStatus')
     })
     cy.task('assertNoFailedJobs')
   })
@@ -27,13 +27,13 @@ describe('Recruiters', () => {
 
     cy.get('@applicant').then((applicant: any) => {
       cy.get('@job').then((job: any) => {
-        cy.get('@applicant_status').then((applicant_status: any) => {
-          cy.findByRole('tab', { name: job['employment_title'] }).click()
+        cy.get('@applicantStatus').then((applicantStatus: any) => {
+          cy.findByRole('tab', { name: job['employmentTitle'] }).click()
 
           cy.get('table')
-            .should('contain', `${applicant['first_name']} ${applicant['last_name']}`)
-            .should('contain', `${job['employment_title']}`)
-            .should('contain', `${applicant_status['status']}`)
+            .should('contain', `${applicant['firstName']} ${applicant['lastName']}`)
+            .should('contain', `${job['employmentTitle']}`)
+            .should('contain', `${applicantStatus['status']}`)
 
           cy.get('table').within(() => {
             cy.findByLabelText('Start conversation with applicant').click()
@@ -41,7 +41,7 @@ describe('Recruiters', () => {
 
           cy.get('body', { timeout: 10000 }).should(
             'contain',
-            `${applicant['first_name']} ${applicant['last_name']} - ${job['employment_title']}`,
+            `${applicant['firstName']} ${applicant['lastName']} - ${job['employmentTitle']}`,
           )
 
           const message =
@@ -55,9 +55,9 @@ describe('Recruiters', () => {
           cy.go('back')
 
           cy.get('table')
-            .should('contain', `${applicant['first_name']} ${applicant['last_name']}`)
-            .should('contain', `${job['employment_title']}`)
-            .should('contain', `${applicant_status['status']}`)
+            .should('contain', `${applicant['firstName']} ${applicant['lastName']}`)
+            .should('contain', `${job['employmentTitle']}`)
+            .should('contain', `${applicantStatus['status']}`)
             .within(() => {
               cy.get('select').should('be.enabled')
               cy.get('select').parent().click()
@@ -74,7 +74,7 @@ describe('Recruiters', () => {
           )
           cy.findByRole('button', { name: 'Submit' }).click()
 
-          cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).should('not.exist')
+          cy.findByText(`${applicant['firstName']} ${applicant['lastName']}`).should('not.exist')
 
           const box = cy.findByRole('checkbox')
           box.should('not.be.checked')
@@ -84,11 +84,11 @@ describe('Recruiters', () => {
           cy.findByRole('checkbox').should('be.checked')
 
           cy.findByText('The role is filled, no longer accepting applications')
-          cy.findByText(`${applicant['first_name']} ${applicant['last_name']}`).click()
+          cy.findByText(`${applicant['firstName']} ${applicant['lastName']}`).click()
 
           cy.url().should('contain', '/profiles/')
-          cy.get('body').should('contain', applicant['first_name'])
-          cy.get('body').should('contain', applicant['last_name'])
+          cy.get('body').should('contain', applicant['firstName'])
+          cy.get('body').should('contain', applicant['lastName'])
         })
       })
     })

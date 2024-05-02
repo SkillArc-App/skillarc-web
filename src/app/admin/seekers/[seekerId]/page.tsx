@@ -1,6 +1,7 @@
 'use client'
 
 import Milestones from '@/frontend/components/Timeline.component'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { useAllProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
@@ -8,7 +9,6 @@ import { useUserEvents } from '@/frontend/hooks/useUserEvents'
 import { post, put } from '@/frontend/http-common'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Button, Divider, Link, Select, Stack } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -31,9 +31,7 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
   const [programId, setProgramId] = useState('')
   const [trainingProviderExisted, setTrainingProviderExisted] = useState(false)
 
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
+  const token = useAuthToken()
 
   const [workingProfile, setWorkingProfile] = useState<GetOneProfileResponse | undefined>()
 
@@ -42,15 +40,6 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
 
     setWorkingProfile(seeker)
   }, [seeker])
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
 
   useEffect(() => {
     if (seeker) {
@@ -78,17 +67,14 @@ export default function Seeker({ params: { seekerId } }: { params: { seekerId: s
 
     if (trainingProviderExisted) {
       await put(
-        `${process.env.NEXT_PUBLIC_API_URL}/seekers/${seekerId}/training_providers/${trainingProviderId}`,
+        `/seekers/${seekerId}/training_providers/${trainingProviderId}`,
         { programId },
         token,
       )
     } else {
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/seekers/${seekerId}/training_providers`,
-        {
-          programId,
-          trainingProviderId,
-        },
+        `/seekers/${seekerId}/training_providers`,
+        { programId, trainingProviderId },
         token,
       )
     }

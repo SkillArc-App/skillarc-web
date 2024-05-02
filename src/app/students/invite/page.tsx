@@ -1,12 +1,12 @@
-"use client"
+'use client'
 
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useProgramDataForTrainingProvider } from '@/frontend/hooks/useProgramData'
+import { post } from '@/frontend/http-common'
 import { Box, Button, Flex, HStack, Input, Link, Select, Stack } from '@chakra-ui/react'
-import axios from 'axios'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -46,21 +46,14 @@ export default function Invite() {
   }
 
   const sendInvites = () => {
-    axios
-      .create({ withCredentials: false })
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/training_providers/invites`,
-        { invitees },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((res) => {
-        setInvitees([{ first_name: '', last_name: '', email: '', program_id: '' }])
-        router.push('/students')
-      })
+    if (!token) {
+      return
+    }
+
+    post(`/training_providers/invites`, { invitees }, token).then((res) => {
+      setInvitees([{ first_name: '', last_name: '', email: '', program_id: '' }])
+      router.push('/students')
+    })
   }
 
   const removeInvitee = (index: number) => {

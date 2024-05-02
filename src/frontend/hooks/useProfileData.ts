@@ -13,10 +13,7 @@ export const useProfileData = (id: Maybe<string>) => {
     async () => {
       if (!id) return
 
-      const res = await get<GetOneProfileResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/profiles/${id}`,
-        token,
-      )
+      const res = await get<GetOneProfileResponse>(`/profiles/${id}`, token)
 
       mixpanelInitProfile(res.data)
 

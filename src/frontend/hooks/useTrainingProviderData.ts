@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '../http-common'
 import { FrontendTrainingProviderService } from '../services/trainingProvider.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
@@ -19,11 +19,7 @@ export const useTrainingProviderData = (id: string) => {
 }
 
 const getAll = async (token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get(`${process.env.NEXT_PUBLIC_API_URL}/training_providers/`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get(`/training_providers/`, token)
 
   return res.data
 }

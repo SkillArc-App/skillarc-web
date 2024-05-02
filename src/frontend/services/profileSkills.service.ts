@@ -1,44 +1,35 @@
 import { Skill } from '@/common/types/Profile'
-import axios from 'axios'
+import { PartialRequired } from '@/common/types/partial-required'
+import { destroy, post, put } from '../http-common'
 
 export type ProfileSkill = {
   id: string
+  profileId: string
+  masterSkillId: string
   description: string | null
 }
 
-const create = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .post<Skill>(`${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills`, profileSkill, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+const create = async (profileSkill: PartialRequired<ProfileSkill, 'profileId'>, token: string) => {
+  const res = await post<Skill>(`/profiles/${profileSkill.profileId}/skills`, profileSkill, token)
 
   return res.data
 }
 
-const update = async (profileSkill: Partial<ProfileSkill>, profileId: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .put<Skill>(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills/${profileSkill.id}`,
-      profileSkill,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+const update = async (profileSkill: PartialRequired<ProfileSkill, 'profileId'>, token: string) => {
+  const res = await put<Skill>(
+    `/profiles/${profileSkill.profileId}/skills/${profileSkill.id}`,
+    profileSkill,
+    token,
+  )
 
   return res.data
 }
 
-const deleteOne = async (profileSkillId: string, profileId: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .delete<Skill>(
-      `${process.env.NEXT_PUBLIC_API_URL}/profiles/${profileId}/skills/${profileSkillId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
+const deleteOne = async (
+  { id, profileId }: PartialRequired<ProfileSkill, 'profileId' | 'id'>,
+  token: string,
+) => {
+  const res = await destroy<Skill>(`/profiles/${profileId}/skills/${id}`, token)
 
   return res.data
 }

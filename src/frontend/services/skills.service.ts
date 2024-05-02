@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { http } from '../http-common'
+import { get } from '../http-common'
 
 export type MasterSkill = {
   id: string
@@ -8,14 +7,12 @@ export type MasterSkill = {
 }
 
 const getOne = async (masterSkillId: string) => {
-  const res = await http.get<MasterSkill>(`/api/masterSkills/${masterSkillId}`)
+  const res = await get<MasterSkill>(`/api/masterSkills/${masterSkillId}`)
   return res.data
 }
 
 const getAll = async () => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get(`${process.env.NEXT_PUBLIC_API_URL}/master_skills`)
+  const res = await get(`/master_skills`)
 
   return res.data
 }

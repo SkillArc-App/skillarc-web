@@ -7,7 +7,7 @@ export const useUserEvents = (userId?: string) => {
     ({ token }) => {
       const events = async () => {
         const res = await get<{ event_message: string; datetime: string }[]>(
-          `${process.env.NEXT_PUBLIC_API_URL}/user_events/${userId}`,
+          `/user_events/${userId}`,
           token,
           { camel: false },
         )

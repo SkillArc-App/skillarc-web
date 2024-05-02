@@ -23,7 +23,7 @@ const ChatUI = () => {
       if (allRead) return
 
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats/mark_read`,
+        `/employers/chats/mark_read`,
         {
           applicantId: id,
         },
@@ -36,7 +36,7 @@ const ChatUI = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/chats/send_message`,
+      `/employers/chats/send_message`,
       {
         applicantId: id,
         message: text,
@@ -54,7 +54,7 @@ const ChatUI = () => {
       if (!token) return
 
       await post(
-        `${process.env.NEXT_PUBLIC_API_URL}/employers/chats`,
+        `/employers/chats`,
         {
           applicantId: applicantId,
         },

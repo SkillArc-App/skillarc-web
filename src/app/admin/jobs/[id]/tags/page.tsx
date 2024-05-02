@@ -17,7 +17,7 @@ const TagsPage = () => {
     if (!token) return
 
     await post(
-      `${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags`,
+      `/jobs/${id}/job_tags`,
       {
         job_id: id,
         tag,
@@ -31,7 +31,7 @@ const TagsPage = () => {
   const removeTag = async (jobTagId: string) => {
     if (!token) return
 
-    await destroy(`${process.env.NEXT_PUBLIC_API_URL}/jobs/${id}/job_tags/${jobTagId}`, token)
+    await destroy(`/jobs/${id}/job_tags/${jobTagId}`, token)
 
     refetchJob()
   }

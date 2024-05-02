@@ -22,7 +22,7 @@ const Tasks = () => {
   const handleSubmitTask = async (reminder: SubmittableCoachTask) => {
     if (!token) return
 
-    await post(`${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders`, { reminder }, token)
+    await post(`/coaches/tasks/reminders`, { reminder }, token)
     refetch()
 
     setIsModalOpen(false)
@@ -32,11 +32,7 @@ const Tasks = () => {
   const handleCompleteTask = async (id: string) => {
     if (!token) return
 
-    await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders/${id}/complete`,
-      {},
-      token,
-    )
+    await put(`/coaches/tasks/reminders/${id}/complete`, {}, token)
     refetch()
   }
 

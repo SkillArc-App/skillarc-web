@@ -8,13 +8,13 @@ export const useApplicationAnalytics = () => {
         averageStatusTimes: { status: string; time: { days: number; hours: number } }[]
         currentStatusTimes: {
           id: string
-          applicant_name: string
-          employment_title: string
-          employer_name: string
+          applicantName: string
+          employmentTitle: string
+          employerName: string
           status: string
           time: { days: number; hours: number }
         }[]
-      }>(`${process.env.NEXT_PUBLIC_API_URL}/admin/application_analytics/`, token, { camel: false })
+      }>(`/admin/application_analytics/`, token, { camel: false })
 
       return res.data
     }

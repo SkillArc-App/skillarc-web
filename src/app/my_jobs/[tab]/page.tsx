@@ -95,9 +95,9 @@ const MyJobs = () => {
     const saved = !job.saved
 
     if (saved) {
-      await post(`seekers/jobs/${job.id}/save`, {}, token, { camel: false })
+      await post(`seekers/jobs/${job.id}/save`, {}, token)
     } else {
-      await post(`seekers/jobs/${job.id}/unsave`, {}, token, { camel: false })
+      await post(`seekers/jobs/${job.id}/unsave`, {}, token)
     }
 
     refetch()

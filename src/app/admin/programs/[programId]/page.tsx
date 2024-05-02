@@ -1,8 +1,9 @@
 'use client'
 
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
-import { http } from '@/frontend/http-common'
+import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -32,6 +33,7 @@ export default function Program({ params: { programId } }: { params: { programId
     getAllTrainingProviders: { data: trainingProviders, isLoading: trainingProvidersIsLoading },
   } = useAllTrainingProviderData()
 
+  const token = useAuthToken()
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -58,13 +60,17 @@ export default function Program({ params: { programId } }: { params: { programId
   }, [program])
 
   const handleSubmit = async () => {
-    if (!program) return
+    if (!program || !token) return
 
-    await http.put(`/api/programs/${program.id}`, {
-      name,
-      description,
-      trainingProviderId,
-    })
+    await put(
+      `/api/programs/${program.id}`,
+      {
+        name,
+        description,
+        trainingProviderId,
+      },
+      token,
+    )
     onClose()
     refetchProgram()
   }

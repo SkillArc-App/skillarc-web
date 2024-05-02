@@ -85,7 +85,7 @@ const EditSkills = () => {
   const handleDelete = (skill: OneProfileSkillResponse) => {
     if (!seeker) return
 
-    deleteProfileSkill({ profileSkillId: skill.id, profileId: seeker.id })
+    deleteProfileSkill({ id: skill.id, profileId: seeker.id })
     setSkillsList((skills) => skills.filter(({ id }) => id !== skill.id))
   }
 
@@ -97,22 +97,16 @@ const EditSkills = () => {
       if (masterSkills && masterSkills.data && skill.masterSkill.skill) {
         if (skill.id === '') {
           addProfileSkill({
+            description: skill.description,
+            masterSkillId: getIdBySkill(masterSkills.data, skill.masterSkill.skill),
             profileId: profileId,
-            profileSkill: {
-              description: skill.description,
-              profile_id: profileId,
-              master_skill_id: getIdBySkill(masterSkills.data, skill.masterSkill.skill),
-            },
           })
         } else {
           updateProfileSkill({
+            id: skill.id,
+            description: skill.description,
+            masterSkillId: getIdBySkill(masterSkills.data, skill.masterSkill.skill),
             profileId: profileId,
-            profileSkill: {
-              id: skill.id,
-              description: skill.description,
-              profile_id: profileId,
-              master_skill_id: getIdBySkill(masterSkills.data, skill.masterSkill.skill),
-            },
           })
         }
       }

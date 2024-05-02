@@ -1,7 +1,9 @@
 'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useEmployerData } from '@/frontend/hooks/useEmployerData'
+import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -18,7 +20,6 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
@@ -32,18 +33,7 @@ export default function Employer({ params: { id } }: { params: { id: string } })
   const [logoUrl, setLogoUrl] = useState<string>()
   const [bio, setBio] = useState<string>()
   const [location, setLocation] = useState<string>()
-  const { getAccessTokenSilently } = useAuth0()
-
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   useEffect(() => {
     if (!employer) return
@@ -71,19 +61,19 @@ export default function Employer({ params: { id } }: { params: { id: string } })
   }
 
   const handleSubmit = async () => {
-    await axios.create({ withCredentials: false }).put(
-      `${process.env.NEXT_PUBLIC_API_URL}/employers/${id}`,
+    if (!token) {
+      return
+    }
+
+    await put(
+      `/employers/${id}`,
       {
         name,
-        logo_url: logoUrl,
+        logoUrl,
         bio,
         location,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      token,
     )
 
     refetch()

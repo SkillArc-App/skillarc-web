@@ -1,9 +1,11 @@
 'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllSeekerInviteData } from '@/frontend/hooks/useSeekerInviteData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
+import { post } from '@/frontend/http-common'
 import {
   Box,
   Button,
@@ -26,9 +28,7 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function Admin() {
   const {
@@ -52,17 +52,7 @@ export default function Admin() {
   const [lastName, setLastName] = useState('')
   const [trainingProviderId, setTrainingProviderId] = useState('')
   const [programId, setProgramId] = useState('')
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const handleEmailChange = (e: any) => {
     setEmail(e.target.value)
@@ -85,20 +75,20 @@ export default function Admin() {
   }
 
   const handleSubmit = async () => {
-    await axios.create({ withCredentials: false }).post(
-      `${process.env.NEXT_PUBLIC_API_URL}/seeker_invites`,
+    if (!token) {
+      return
+    }
+
+    await post(
+      `/seeker_invites`,
       {
         email,
-        first_name: firstName,
-        last_name: lastName,
-        training_provider_id: trainingProviderId,
-        program_id: programId,
+        firstName: firstName,
+        lastName: lastName,
+        trainingProviderId: trainingProviderId,
+        programId: programId,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      token,
     )
 
     refetch()

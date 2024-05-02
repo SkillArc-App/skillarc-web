@@ -19,7 +19,7 @@ const Tasks = () => {
   const token = useAuthToken()
   const { data: tasks, refetch } = useCoachSeekerTasks(id)
 
-  const filteredTasks = tasks?.filter(({state}) => state === 'set')
+  const filteredTasks = tasks?.filter(({ state }) => state === 'set')
 
   const groupedReminders = (filteredTasks ?? [])
     .sort((a, b) => {
@@ -44,11 +44,7 @@ const Tasks = () => {
   const handleCompleteTask = async (id: string) => {
     if (!token) return
 
-    await put(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/tasks/reminders/${id}/complete`,
-      {},
-      token,
-    )
+    await put(`/coaches/tasks/reminders/${id}/complete`, {}, token)
     refetch()
   }
 

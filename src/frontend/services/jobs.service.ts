@@ -113,10 +113,7 @@ export type Job = {
 }
 
 const getJobMatches = async (token: string) => {
-  const res = await get<{ matchedJobs: JobWithSeekerStatus[] }>(
-    `${process.env.NEXT_PUBLIC_API_URL}/job_matches`,
-    token,
-  )
+  const res = await get<{ matchedJobs: JobWithSeekerStatus[] }>(`/job_matches`, token)
 
   return res.data
 }

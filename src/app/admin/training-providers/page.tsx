@@ -1,7 +1,9 @@
 'use client'
 
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
+import { post } from '@/frontend/http-common'
 import {
   Box,
   Button,
@@ -25,7 +27,6 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
@@ -41,17 +42,7 @@ export default function Admin() {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
 
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const handleNameChange = (e: any) => {
     setName(e.target.value)
@@ -62,17 +53,17 @@ export default function Admin() {
   }
 
   const handleSubmit = async () => {
-    await axios.create({ withCredentials: false }).post(
-      `${process.env.NEXT_PUBLIC_API_URL}/training_providers`,
+    if (!token) {
+      return
+    }
+
+    await post(
+      `/training_providers`,
       {
         name,
         description,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+      token,
     )
     refetch()
     onClose()

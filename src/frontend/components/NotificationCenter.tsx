@@ -30,7 +30,7 @@ const NotificationCenter = () => {
     if (!token) return
     if (!unread) return
 
-    post('/notifications/mark_read', {}, token, { camel: false }).then((_) => {
+    post('/notifications/mark_read', {}, token).then((_) => {
       refetch()
     })
   }

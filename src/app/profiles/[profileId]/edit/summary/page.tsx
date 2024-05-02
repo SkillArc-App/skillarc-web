@@ -48,7 +48,7 @@ const EditSummary = () => {
     if (!profile?.user?.id) return
 
     put(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/${profile.user.id}`,
+      `/users/${profile.user.id}`,
       {
         about,
         firstName,

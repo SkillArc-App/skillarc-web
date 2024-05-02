@@ -5,7 +5,7 @@ import { FeedEvent } from '../types'
 export const useCoachFeed = () =>
   useAuthenticatedQuery(['coach_feed'], ({ token }) => {
     const getCoachFeedRequest = async () => {
-      const res = await get<FeedEvent[]>(`${process.env.NEXT_PUBLIC_API_URL}/coaches/feeds`, token)
+      const res = await get<FeedEvent[]>(`/coaches/feeds`, token)
 
       return res.data
     }

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { get } from '../http-common'
 
 type TrainingProvider = {
   id: string
@@ -7,11 +7,7 @@ type TrainingProvider = {
 }
 
 const getOne = async (id: string, token: string) => {
-  const res = await axios
-    .create({ withCredentials: false })
-    .get<TrainingProvider>(`${process.env.NEXT_PUBLIC_API_URL}/training_providers/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+  const res = await get<TrainingProvider>(`/training_providers/${id}`, token)
 
   return res.data
 }

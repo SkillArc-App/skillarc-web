@@ -5,7 +5,7 @@ import { CoachJob } from '../types'
 export const useCoachJobs = () =>
   useAuthenticatedQuery(['coach_jobs'], ({ token }) => {
     const getCoachJobsRequest = async () => {
-      const res = await get<CoachJob[]>(`${process.env.NEXT_PUBLIC_API_URL}/coaches/jobs`, token)
+      const res = await get<CoachJob[]>(`/coaches/jobs`, token)
 
       return res.data
     }

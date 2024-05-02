@@ -1,7 +1,9 @@
 'use client'
 
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { useAllTrainingProviderInviteData } from '@/frontend/hooks/useTrainingProviderInviteData'
+import { post } from '@/frontend/http-common'
 import {
   Box,
   Button,
@@ -24,7 +26,6 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import axios from 'axios'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 
@@ -44,17 +45,7 @@ export default function TrainerInvites() {
   const [lastName, setLastName] = useState('')
   const [trainingProviderId, setTrainingProviderId] = useState('')
   const [roleDescription, setRoleDescription] = useState('')
-  const { getAccessTokenSilently } = useAuth0()
-  const [token, setToken] = useState<string | null>(null)
-
-  useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessTokenSilently()
-      setToken(token)
-    }
-
-    getToken()
-  }, [getAccessTokenSilently])
+  const token = useAuthToken()
 
   const handleEmailChange = (e: any) => {
     setEmail(e.target.value)
@@ -77,6 +68,10 @@ export default function TrainerInvites() {
   }
 
   const handleSubmit = async () => {
+    if (!token) {
+      return
+    }
+
     const invite = {
       email,
       first_name: firstName,
@@ -85,11 +80,7 @@ export default function TrainerInvites() {
       role_description: roleDescription,
     }
 
-    await axios
-      .create({ withCredentials: false })
-      .post(`${process.env.NEXT_PUBLIC_API_URL}/training_provider_invites`, invite, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    await post(`/training_provider_invites`, invite, token)
 
     refetch()
     onClose()
