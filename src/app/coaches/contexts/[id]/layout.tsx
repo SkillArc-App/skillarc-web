@@ -105,9 +105,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const certifySeeker = async () => {
     if (!token) return
-    if (!seeker) return
+    if (!seeker?.seekerId) return
 
-    await post(`/coaches/contexts/${id}/certify`, {}, token)
+    await post(`/coaches/seekers/${seeker.seekerId}/certify`, {}, token)
 
     refetchSeeker()
   }
