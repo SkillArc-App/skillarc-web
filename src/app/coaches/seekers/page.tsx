@@ -8,8 +8,19 @@ import { Checkbox, HStack, Link, Stack, Tag } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 const Coaches = () => {
+  return (
+    <Stack width={'100%'}>
+      <Suspense>
+        <Seekers />
+      </Suspense>
+    </Stack>
+  )
+}
+
+const Seekers = () => {
   const { data } = useCoachSeekersData()
   const { data: user } = useUser()
   const router = useRouter()
