@@ -75,7 +75,7 @@ const Jobs = () => {
 
   let utm_source = searchParams?.get('utm_source')
   if (!!utm_source) {
-    otherUtmParams['utm_source'] = utm_source
+    otherUtmParams['utmSource'] = utm_source
   }
 
   const activeJobId = searchParams?.get('activeJobId')

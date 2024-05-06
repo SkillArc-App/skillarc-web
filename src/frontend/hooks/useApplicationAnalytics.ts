@@ -14,7 +14,7 @@ export const useApplicationAnalytics = () => {
           status: string
           time: { days: number; hours: number }
         }[]
-      }>(`/admin/application_analytics/`, token, { camel: false })
+      }>(`/admin/application_analytics/`, token)
 
       return res.data
     }

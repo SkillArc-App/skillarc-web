@@ -6,10 +6,9 @@ export const useUserEvents = (userId?: string) => {
     ['userEvents', userId],
     ({ token }) => {
       const events = async () => {
-        const res = await get<{ event_message: string; datetime: string }[]>(
+        const res = await get<{ eventMessage: string; datetime: string }[]>(
           `/user_events/${userId}`,
           token,
-          { camel: false },
         )
 
         return res.data

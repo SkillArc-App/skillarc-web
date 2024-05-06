@@ -26,11 +26,11 @@ export type SearchValue = {
 }
 
 export type UtmParams = {
-  utm_source: string
-  utm_term: string
-  utm_medium: string
-  utm_campaign: string
-  utm_content: string
+  utmSource: string
+  utmTerm: string
+  utmMedium: string
+  utmCampaign: string
+  utmContent: string
 }
 
 export type SearchFilter<T = any> = {
