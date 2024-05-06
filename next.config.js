@@ -71,7 +71,7 @@ module.exports = withSentryConfig(
     // Suppresses source map uploading logs during build
     silent: true,
 
-    org: "blocktrain",
+    org: "sentry-cylindrical-51654",
     project: "javascript-nextjs",
   },
   {
