@@ -7,7 +7,7 @@ export const useAllUsers = () => {
       return Promise.reject('No user id')
     }
     const getAll = async () => {
-      const res = await get<{ id: string; email: string; sub: string }[]>('/admin/users', undefined, { camel: false })
+      const res = await get<{ id: string; email: string; sub: string }[]>('/admin/users')
 
       return res.data
     }

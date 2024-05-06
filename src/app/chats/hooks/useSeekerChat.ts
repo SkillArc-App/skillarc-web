@@ -16,9 +16,7 @@ export const useSeekerChat = (
       if (!token) return Promise.reject('No user id')
 
       const getChats = async () => {
-        const res = await get<Chat[]>(`/seekers/chats/`, token, {
-          camel: false,
-        })
+        const res = await get<Chat[]>(`/seekers/chats/`, token)
 
         return res.data
       }
