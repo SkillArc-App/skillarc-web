@@ -2,20 +2,15 @@ import axios, { AxiosResponse } from 'axios'
 import qs from 'qs'
 
 type Headers = {
-  'Key-Inflection'?: 'camel'
   Authorization?: string
-}
-
-type Options = {
-  camel?: boolean
 }
 
 const http = axios.create({
   withCredentials: false,
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'Content-type': 'application/json',
-    'Key-Inflection': 'camel'
+    'Content-Type': 'application/json',
+    'Key-Inflection': 'camel',
   },
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
 })
