@@ -4,7 +4,7 @@ import { FiCheckCircle } from 'react-icons/fi'
 const Milestones = ({
   userEvents,
 }: {
-  userEvents: { event_message: string; datetime: string }[]
+  userEvents: { eventMessage: string; datetime: string }[]
 }) => {
   return (
     <Container maxW="7xl" p={{ base: 2, sm: 10 }}>
@@ -14,7 +14,7 @@ const Milestones = ({
             {userEvents.map((event, index) => {
               return (
                 <MilestoneItem icon={FiCheckCircle} key={index}>
-                  {event.datetime} - {event.event_message}
+                  {event.datetime} - {event.eventMessage}
                 </MilestoneItem>
               )
             })}
