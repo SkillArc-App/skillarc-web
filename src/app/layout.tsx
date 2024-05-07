@@ -52,7 +52,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           >
             <ChakraProvider theme={theme}>
               <SessionWrapper>
-                <Flex flexWrap={'wrap'} flexDir={'column'} height={'100vh'} overscroll={'none'}>
+                <Flex
+                  flexWrap={'wrap'}
+                  bg={'greyscale.100'}
+                  flexDir={'column'}
+                  height={'100vh'}
+                  overscroll={'none'}
+                >
                   <Header />
                   <Flex
                     flexWrap={'wrap'}

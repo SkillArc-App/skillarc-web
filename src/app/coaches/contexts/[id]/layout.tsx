@@ -7,9 +7,8 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { Barrier, useBarrierData } from '@/frontend/hooks/useBarrierData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { post, put } from '@/frontend/http-common'
+import { destroy, post } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -25,10 +24,12 @@ import {
   IconButton,
   Link,
   Select,
+  Spacer,
   Stack,
   Tab,
   TabList,
   Tabs,
+  Tag,
   Tooltip,
   useToast,
 } from '@chakra-ui/react'
@@ -36,10 +37,11 @@ import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
-import { FaPlus, FaRegBell } from 'react-icons/fa6'
+import { FaPlus, FaRegBell, FaTrash } from 'react-icons/fa6'
+import { useCoachAttributes } from '../../hooks/useCoachAttributes'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
 import { useCoachSeekerTasks } from '../../hooks/useCoachTasks'
-import AttributeModal from '../../tasks/components/AttributeModal'
+import AttributeModal, { AttributeForm } from '../../tasks/components/AttributeModal'
 import ReminderModal from '../../tasks/components/ReminderModal'
 
 const tabs: Record<string, number> = {
@@ -51,34 +53,22 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   const { id } = useFixedParams('id')
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
-  const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
   const { refetch: refetchTasks } = useCoachSeekerTasks(id)
+  const { data: attributes } = useCoachAttributes()
   const pathName = usePathname()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAttributeModalOpen, setIsAttributeModalOpen] = useState(false)
 
+  const [workingValue, setWorkingValue] = useState<AttributeForm | undefined>(undefined)
+
   const token = useAuthToken()
   const toast = useToast()
-
-  const barrierOptions = (barriers ?? []).map((b) => ({
-    value: b.id,
-    label: b.name,
-  }))
 
   const jobs = allJobs?.filter((job) => {
     return !seeker?.applications.some((a) => a.jobId === job.id)
   })
-
-  const changeSkillLevel = async (level: string) => {
-    if (!token) return
-    if (!seeker) return
-
-    await post(`/coaches/contexts/${id}/skill-levels`, { level }, token)
-
-    refetchSeeker()
-  }
 
   const assignCoach = async (coachId: string) => {
     if (!token) return
@@ -118,20 +108,17 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     refetchSeeker()
   }
 
-  const addAttribute = async () => {
-    console.log('add attribute')
+  const addAttribute = async (workingValue: AttributeForm | undefined = undefined) => {
+    setWorkingValue(workingValue)
     setIsAttributeModalOpen(true)
   }
 
-  const updateBarriers = async (barriers: Barrier[]) => {
+  const removeAttribute = async (seekerAttributeId: string) => {
     if (!token) return
     if (!seeker) return
 
-    await put(
-      `/coaches/contexts/${id}/update_barriers`,
-      {
-        barriers: barriers.map((b) => b.id),
-      },
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${seeker.seekerId}/attributes/${seekerAttributeId}`,
       token,
     )
 
@@ -175,6 +162,8 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
+  if (!attributes) return <LoadingPage />
+
   return (
     <Box overflow={'clip'}>
       <ReminderModal
@@ -184,8 +173,12 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         onSubmit={handleSubmitReminder}
       />
       <AttributeModal
+        attributes={attributes}
         isOpen={isAttributeModalOpen}
+        seekerId={seeker.seekerId}
         onClose={() => setIsAttributeModalOpen(false)}
+        refetchSeeker={refetchSeeker}
+        workingValue={workingValue}
       />
       <Grid
         templateAreas={`"nav main right"`}
@@ -195,7 +188,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         height={'100%'}
       >
         <GridItem area={'nav'} overflow={'scroll'}>
-          <Stack>
+          <Stack marginBottom={'1rem'}>
             <Stack p={'1rem'} bg={'white'} spacing="1rem">
               <Breadcrumb>
                 <BreadcrumbItem>
@@ -300,16 +293,44 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                 </Heading>
                 <IconButton
                   size={'sm'}
-                  onClick={addAttribute}
-                  aria-label="delete-attribute"
+                  onClick={() => addAttribute()}
+                  aria-label="add-attribute"
                   variant={'ghost'}
                   icon={<FaPlus />}
                 />
               </HStack>
-              {[].map((i) => {
+              {seeker.attributes.map((a, i) => {
                 return (
-                  <Box key={i} bg={'red'}>
-                    YO
+                  <Box key={i} bg={'white'} p={'1rem'}>
+                    <HStack>
+                      <Stack>
+                        <Link
+                          onClick={() =>
+                            addAttribute({
+                              attributeId: attributes.indexOf(
+                                attributes.find((attr) => attr.name === a.name),
+                              ),
+                              values: a.value.map((v) => ({ value: v, label: v })),
+                            })
+                          }
+                        >
+                          <Text variant={'b3'}>{a.name}</Text>
+                        </Link>
+                        <HStack>
+                          {a.value.map((v) => {
+                            return <Tag key={v}>{v}</Tag>
+                          })}
+                        </HStack>
+                      </Stack>
+                      <Spacer />
+                      <IconButton
+                        onClick={() => removeAttribute(a.id)}
+                        size={'sm'}
+                        aria-label="delete-attribute"
+                        variant={'ghost'}
+                        icon={<FaTrash />}
+                      />
+                    </HStack>
                   </Box>
                 )
               })}

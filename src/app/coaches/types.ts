@@ -73,6 +73,12 @@ export type CoachSeeker = {
   kind: ContextKind
   applications: SeekerApplication[]
   assignedCoach: string
+  attributes: {
+    id: string
+    name: string
+    attributeId: string
+    value: string[]
+  }[]
   barriers: Barrier[]
   certifiedBy?: string
   email: string
