@@ -7,9 +7,8 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { Barrier, useBarrierData } from '@/frontend/hooks/useBarrierData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { post, put } from '@/frontend/http-common'
+import { destroy, post } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -21,20 +20,28 @@ import {
   Grid,
   GridItem,
   HStack,
+  Icon,
+  IconButton,
   Link,
   Select,
+  Spacer,
   Stack,
   Tab,
   TabList,
   Tabs,
+  Tag,
+  Tooltip,
   useToast,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import ReactSelect from 'react-select'
+import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
+import { FaPlus, FaRegBell, FaTrash } from 'react-icons/fa6'
+import { useCoachAttributes } from '../../hooks/useCoachAttributes'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
 import { useCoachSeekerTasks } from '../../hooks/useCoachTasks'
+import AttributeModal, { AttributeForm } from '../../tasks/components/AttributeModal'
 import ReminderModal from '../../tasks/components/ReminderModal'
 
 const tabs: Record<string, number> = {
@@ -46,33 +53,22 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   const { id } = useFixedParams('id')
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
-  const { data: barriers } = useBarrierData()
   const { data: allJobs } = useCoachJobs()
   const { refetch: refetchTasks } = useCoachSeekerTasks(id)
+  const { data: attributes } = useCoachAttributes()
   const pathName = usePathname()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isAttributeModalOpen, setIsAttributeModalOpen] = useState(false)
+
+  const [workingValue, setWorkingValue] = useState<AttributeForm | undefined>(undefined)
 
   const token = useAuthToken()
   const toast = useToast()
 
-  const barrierOptions = (barriers ?? []).map((b) => ({
-    value: b.id,
-    label: b.name,
-  }))
-
   const jobs = allJobs?.filter((job) => {
     return !seeker?.applications.some((a) => a.jobId === job.id)
   })
-
-  const changeSkillLevel = async (level: string) => {
-    if (!token) return
-    if (!seeker) return
-
-    await post(`/coaches/contexts/${id}/skill-levels`, { level }, token)
-
-    refetchSeeker()
-  }
 
   const assignCoach = async (coachId: string) => {
     if (!token) return
@@ -112,15 +108,17 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     refetchSeeker()
   }
 
-  const updateBarriers = async (barriers: Barrier[]) => {
+  const addAttribute = async (workingValue: AttributeForm | undefined = undefined) => {
+    setWorkingValue(workingValue)
+    setIsAttributeModalOpen(true)
+  }
+
+  const removeAttribute = async (seekerAttributeId: string) => {
     if (!token) return
     if (!seeker) return
 
-    await put(
-      `/coaches/contexts/${id}/update_barriers`,
-      {
-        barriers: barriers.map((b) => b.id),
-      },
+    await destroy(
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${seeker.seekerId}/attributes/${seekerAttributeId}`,
       token,
     )
 
@@ -148,140 +146,185 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     return <TimeIcon boxSize={3} color={'gray'} />
   }
 
-  if (!seeker) return <LoadingPage />
-
-  const certifySeekerSection = () => {
-    if (seeker.kind === 'lead') {
-      return <Text variant={'b2'}>{`This seeker need to create a profile to be certified`}</Text>
-    }
-
-    return !!seeker.certifiedBy ? (
-      <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
-    ) : (
-      <Button onClick={certifySeeker}>Certify</Button>
-    )
-  }
+  if (!seeker || !attributes) return <LoadingPage />
 
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
   return (
-    <Box width={'100%'} height={'100%'}>
+    <Box overflow={'clip'}>
       <ReminderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         contextId={id}
         onSubmit={handleSubmitReminder}
       />
+      <AttributeModal
+        attributes={attributes}
+        isOpen={isAttributeModalOpen}
+        seekerId={seeker.seekerId}
+        onClose={() => setIsAttributeModalOpen(false)}
+        refetchSeeker={refetchSeeker}
+        workingValue={workingValue}
+      />
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}
-        gridTemplateRows={'100%'}
-        height={'100%'}
         gap="1"
         color="blackAlpha.700"
-        minHeight={0}
+        height={'100%'}
       >
-        <GridItem pl="2" bg="white" area={'nav'}>
-          <Stack p={'1rem'} spacing="1rem">
-            <Breadcrumb>
-              <BreadcrumbItem>
-                {seeker.kind === 'seeker' ? (
-                  <BreadcrumbLink as={NextLink} href="/coaches/seekers">
-                    {'< Back to Seekers'}
-                  </BreadcrumbLink>
+        <GridItem area={'nav'} overflow={'scroll'}>
+          <Stack marginBottom={'1rem'}>
+            <Stack p={'1rem'} bg={'white'} spacing="1rem">
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  {seeker.kind === 'seeker' ? (
+                    <BreadcrumbLink as={NextLink} href="/coaches/seekers">
+                      {'< Back to Seekers'}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbLink as={NextLink} href="/coaches/leads">
+                      {'< Back to Leads'}
+                    </BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+              </Breadcrumb>
+              <HStack gap={0}>
+                <Heading type="h3" color={'black'}>
+                  {seeker.seekerId ? (
+                    <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
+                      {seeker.firstName} {seeker.lastName}
+                    </Link>
+                  ) : (
+                    `${seeker.firstName} ${seeker.lastName}`
+                  )}
+                </Heading>
+                {!!seeker.certifiedBy ? (
+                  <Tooltip label={`certified by ${seeker.certifiedBy}`}>
+                    <Box
+                      px={'0.5rem'}
+                      display={'flex'}
+                      flexDirection={'column'}
+                      alignContent={'center'}
+                    >
+                      <Icon as={FaThumbsUp} color="green" boxSize={4} />
+                    </Box>
+                  </Tooltip>
                 ) : (
-                  <BreadcrumbLink as={NextLink} href="/coaches/leads">
-                    {'< Back to Leads'}
-                  </BreadcrumbLink>
+                  <Tooltip
+                    label={seeker.seekerId ? 'Certify Seeker' : 'Certification Requires Profile'}
+                  >
+                    <IconButton
+                      size={'sm'}
+                      isDisabled={!seeker.seekerId}
+                      onClick={certifySeeker}
+                      aria-label="certify"
+                      variant={'ghost'}
+                      icon={<FaRegThumbsUp />}
+                    />
+                  </Tooltip>
                 )}
-              </BreadcrumbItem>
-            </Breadcrumb>
-            <Heading type="h3" color={'black'}>
-              {seeker.firstName} {seeker.lastName}
-            </Heading>
-            <Divider />
-            {seeker.seekerId && (
+                <Tooltip label="Create Reminder">
+                  <IconButton
+                    size={'sm'}
+                    onClick={() => setIsModalOpen(true)}
+                    aria-label="create-reminder"
+                    variant={'ghost'}
+                    icon={<FaRegBell />}
+                  />
+                </Tooltip>
+              </HStack>
               <Box>
-                <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
-                  Jump to Profile
-                </Link>
+                <Text variant={'b3'}>Assigned Coach</Text>
+                <Select
+                  size={'xs'}
+                  variant={'unstyled'}
+                  color={'black'}
+                  onChange={(e) => assignCoach(e.target.value)}
+                  value={coaches?.find((c) => c.email === seeker.assignedCoach)?.id}
+                >
+                  <option value=""></option>
+                  {coaches?.map((coach, key) => (
+                    <option key={key} value={coach.id}>
+                      {coach.email}
+                    </option>
+                  ))}
+                </Select>
               </Box>
-            )}
-            <Box>
-              <Text variant={'b3'}>Email</Text>
-              <Text variant={'b2'} color={'black'}>
-                {seeker.email}
-              </Text>
-            </Box>
-            <Box>
-              <Text variant={'b3'}>Phone Number</Text>
-              <Text variant={'b2'} color={'black'}>
-                {seeker.phoneNumber}
-              </Text>
-            </Box>
-            <Box>
-              <Text variant={'b3'}>Last On</Text>
-              <Text variant={'b2'} color={'black'}>
-                {seeker.lastActiveOn}
-              </Text>
-            </Box>
-            <Box>
-              <Text variant={'b3'}>Last Contacted</Text>
-              <Text variant={'b2'} color={'black'}>
-                {seeker.lastContacted}
-              </Text>
-            </Box>
-            <Stack>
-              <Text variant={'b3'}>Seeker Certification</Text>
-              {certifySeekerSection()}
+
+              <Divider />
+              <Box>
+                <Text variant={'b3'}>Email</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {seeker.email}
+                </Text>
+              </Box>
+              <Box>
+                <Text variant={'b3'}>Phone Number</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {seeker.phoneNumber}
+                </Text>
+              </Box>
+              <Box>
+                <Text variant={'b3'}>Last On</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {seeker.lastActiveOn}
+                </Text>
+              </Box>
+
+              <Box>
+                <Text variant={'b3'}>Last Contacted</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {seeker.lastContacted}
+                </Text>
+              </Box>
             </Stack>
             <Stack>
-              <Text variant={'b3'}>Seeker Reminder</Text>
-              <Button onClick={() => setIsModalOpen(true)}>Create Reminder</Button>
+              <HStack>
+                <Heading type="h3" color={'black'}>
+                  Attributes
+                </Heading>
+                <IconButton
+                  size={'sm'}
+                  onClick={() => addAttribute()}
+                  aria-label="add-attribute"
+                  variant={'ghost'}
+                  icon={<FaPlus />}
+                />
+              </HStack>
+              {seeker.attributes.map((a, i) => {
+                return (
+                  <Box key={i} bg={'white'} p={'1rem'}>
+                    <HStack>
+                      <Stack>
+                        <Link
+                          onClick={() => addAttribute()} // TODO: add in working value here
+                        >
+                          <Text variant={'b3'}>{a.name}</Text>
+                        </Link>
+                        <HStack>
+                          {a.value.map((v) => {
+                            return <Tag key={v}>{v}</Tag>
+                          })}
+                        </HStack>
+                      </Stack>
+                      <Spacer />
+                      <IconButton
+                        onClick={() => removeAttribute(a.id)}
+                        size={'sm'}
+                        aria-label="delete-attribute"
+                        variant={'ghost'}
+                        icon={<FaTrash />}
+                      />
+                    </HStack>
+                  </Box>
+                )
+              })}
             </Stack>
-            <Box>
-              <Text variant={'b3'} mb={'0.25rem'}>
-                Barriers
-              </Text>
-              <ReactSelect
-                isMulti
-                options={barrierOptions}
-                onChange={(v) => updateBarriers(v.map((b) => ({ id: b.value, name: b.label })))}
-                value={seeker.barriers.map((b) => ({ value: b.id, label: b.name }))}
-              />
-            </Box>
-            <Box>
-              <Text variant={'b3'}>Skill Level</Text>
-              <Select
-                variant={'unstyled'}
-                color={'black'}
-                onChange={(e) => changeSkillLevel(e.target.value)}
-                value={seeker.skillLevel}
-              >
-                <option value="beginner">Beginner</option>
-                <option value="advanced">Advanced</option>
-              </Select>
-            </Box>
-            <Box>
-              <Text variant={'b3'}>Assigned Coach</Text>
-              <Select
-                variant={'unstyled'}
-                color={'black'}
-                onChange={(e) => assignCoach(e.target.value)}
-                value={coaches?.find((c) => c.email === seeker.assignedCoach)?.id}
-              >
-                <option value=""></option>
-                {coaches?.map((coach, key) => (
-                  <option key={key} value={coach.id}>
-                    {coach.email}
-                  </option>
-                ))}
-              </Select>
-            </Box>
           </Stack>
         </GridItem>
-        <GridItem pl="2" pt={'1rem'} bg="gray.50" area={'main'} height={'100%'}>
-          <Tabs my={'1rem'} variant={'enclosed'} index={index}>
+        <GridItem pl="2" pt={'1rem'} area={'main'} overflowY={'scroll'}>
+          <Tabs variant={'enclosed'} index={index}>
             <TabList>
               <Tab as={NextLink} href={'notes'}>
                 Notes
@@ -291,9 +334,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
               </Tab>
             </TabList>
           </Tabs>
-          {children}
+          <Box py={'1rem'}>{children}</Box>
         </GridItem>
-        <GridItem pl="2" bg="gray.50" area={'right'}>
+        <GridItem pl="2" area={'right'} overflowY={'scroll'}>
           <Stack gap={'1rem'} p={'2rem'} overflowY={'scroll'}>
             <Box>
               <Heading type="h3" color={'black'}>

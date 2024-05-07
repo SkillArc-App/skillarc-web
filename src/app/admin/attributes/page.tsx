@@ -26,7 +26,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { FaRegTrashCan } from 'react-icons/fa6'
-import { useAttributes } from '../hooks/useAttributes'
+import { useAdminAttributes } from '../hooks/useAdminAttributes'
 
 type FormInputType = {
   id?: string
@@ -37,7 +37,7 @@ type FormInputType = {
 }
 
 const Attributes = () => {
-  const { data: attributes, refetch } = useAttributes()
+  const { data: attributes, refetch } = useAdminAttributes()
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
