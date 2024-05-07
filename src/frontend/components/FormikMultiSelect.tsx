@@ -1,4 +1,4 @@
-import { FieldProps } from 'formik'
+import { Field, FieldProps } from 'formik'
 import Select from 'react-select'
 import { MultiValue, Options } from 'react-select/dist/declarations/src/types'
 
@@ -14,7 +14,7 @@ interface CustomSelectProps extends FieldProps {
   placeholder?: string
 }
 
-export const FormikMultiSelect = ({
+const MultiSelect = ({
   className,
   placeholder,
   field,
@@ -48,6 +48,28 @@ export const FormikMultiSelect = ({
       placeholder={placeholder}
       options={options}
       isMulti={isMulti}
+    />
+  )
+}
+
+const FormikMultiSelect = ({
+  ariaLabel,
+  name,
+  placeholder,
+  options,
+}: {
+  options: Options<Option>
+  ariaLabel: string
+  name: string
+  placeholder: string
+}) => {
+  return (
+    <Field
+      aria-label={ariaLabel}
+      name={name}
+      placeholder={placeholder}
+      component={MultiSelect}
+      options={options}
     />
   )
 }

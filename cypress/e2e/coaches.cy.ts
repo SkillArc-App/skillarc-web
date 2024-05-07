@@ -29,9 +29,6 @@ describe('Coaches', () => {
     })
     cy.task('createActiveSeeker').then((r: any) => {
       cy.wrap(r).as('seeker')
-
-      // log seeker in cypress session
-      cy.log(r['first_name'] + ' ' + r['last_name'])
     })
     cy.task('createSeekerLead').then((r: any) => {
       cy.wrap(r).as('lead')
@@ -90,10 +87,6 @@ describe('Coaches', () => {
           cy.get('button').contains('Recommend').click()
         })
       cy.get('body').should('contain', 'Cannot recommend job without phone number')
-
-      // cy.get('p').contains('Barriers').next().type('Background{enter}')
-      // cy.get('body').should('contain', 'Background')
-      // cy.get('body').should('not.contain', 'Unable to Drive')
 
       const noteInput = cy.get('textarea').filter('[placeholder="Add a note"]')
       noteInput.type('This is a note').type('{enter}')

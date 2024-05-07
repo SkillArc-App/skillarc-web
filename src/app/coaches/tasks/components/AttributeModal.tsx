@@ -15,8 +15,8 @@ import {
   ModalOverlay,
   Stack,
 } from '@chakra-ui/react'
-import { Field, Form, Formik } from 'formik'
-import { useEffect, useState } from 'react'
+import { Form, Formik } from 'formik'
+import { useState } from 'react'
 
 export type AttributeForm = {
   attributeId: string
@@ -46,29 +46,16 @@ const AttributeModal = ({
 
   const [activeAttribute, setActiveAttribute] = useState(0)
 
-  const [options, setOptions] = useState<{ value: string; label: string }[]>(
+  const options =
     attributes?.at(activeAttribute)?.set.map((a) => {
       return { value: a, label: a }
-    }) ?? [],
-  )
-
-  console.log(workingValue)
-
-  useEffect(() => {
-    setOptions(
-      attributes?.at(activeAttribute)?.set.map((a) => {
-        return { value: a, label: a }
-      }) ?? [],
-    )
-  }, [attributes, activeAttribute])
+    }) ?? []
 
   const handleSubmit = async (value: {
     attributeId: string
     values: { value: string; label: string }[]
   }) => {
     if (!token) return
-
-    console.log(value)
 
     await post(
       `/coaches/seekers/${seekerId}/attributes`,
@@ -108,11 +95,10 @@ const AttributeModal = ({
                     return { key: index.toString(), value: a.name }
                   })}
                 />
-                <Field
-                  aria-label="add a value"
+                <FormikMultiSelect
+                  ariaLabel="add a value"
                   name="values"
                   placeholder={'Add a value'}
-                  component={FormikMultiSelect}
                   options={options}
                 />
               </Stack>

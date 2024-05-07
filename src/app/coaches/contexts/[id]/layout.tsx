@@ -146,11 +146,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     return <TimeIcon boxSize={3} color={'gray'} />
   }
 
-  if (!seeker) return <LoadingPage />
+  if (!seeker || !attributes) return <LoadingPage />
 
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
-
-  if (!attributes) return <LoadingPage />
 
   return (
     <Box overflow={'clip'}>
@@ -300,7 +298,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                     <HStack>
                       <Stack>
                         <Link
-                          onClick={() => addAttribute()} // TODO: fix this
+                          onClick={() => addAttribute()} // TODO: add in working value here
                         >
                           <Text variant={'b3'}>{a.name}</Text>
                         </Link>
