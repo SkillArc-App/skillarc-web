@@ -39,7 +39,7 @@ const AttributeModal = ({
   seekerId: string
 }) => {
   const initialValue: AttributeForm = workingValue ?? {
-    attributeId: '0',
+    attributeId: '',
     values: [],
   }
   const token = useAuthToken()
@@ -74,7 +74,7 @@ const AttributeModal = ({
       `/coaches/seekers/${seekerId}/attributes`,
       {
         attributeId: attributes?.at(parseInt(value.attributeId))?.id,
-        value: value.values,
+        values: value.values,
       },
       token,
     )
@@ -108,7 +108,13 @@ const AttributeModal = ({
                     return { key: index.toString(), value: a.name }
                   })}
                 />
-                <Field name="values" component={FormikMultiSelect} options={options} />
+                <Field
+                  aria-label="add a value"
+                  name="values"
+                  placeholder={'Add a value'}
+                  component={FormikMultiSelect}
+                  options={options}
+                />
               </Stack>
             </ModalBody>
             <ModalFooter>

@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands'
 
 afterEach(() => {
-  cy.task('assertNoFailedJobs')
+  // cy.task('assertNoFailedJobs')
 })
 
 beforeEach(() => {

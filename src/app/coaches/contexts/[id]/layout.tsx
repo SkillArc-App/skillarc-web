@@ -148,18 +148,6 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   if (!seeker) return <LoadingPage />
 
-  const certifySeekerSection = () => {
-    if (seeker.kind === 'lead') {
-      return <Text variant={'b2'}>{`This seeker need to create a profile to be certified`}</Text>
-    }
-
-    return !!seeker.certifiedBy ? (
-      <Text variant={'b2'}>{`By ${seeker.certifiedBy}`}</Text>
-    ) : (
-      <Button onClick={certifySeeker}>Certify</Button>
-    )
-  }
-
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
   if (!attributes) return <LoadingPage />
@@ -205,9 +193,13 @@ const Context = ({ children }: { children: React.ReactNode }) => {
               </Breadcrumb>
               <HStack gap={0}>
                 <Heading type="h3" color={'black'}>
-                  <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
-                    {seeker.firstName} {seeker.lastName}
-                  </Link>
+                  {seeker.seekerId ? (
+                    <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
+                      {seeker.firstName} {seeker.lastName}
+                    </Link>
+                  ) : (
+                    `${seeker.firstName} ${seeker.lastName}`
+                  )}
                 </Heading>
                 {!!seeker.certifiedBy ? (
                   <Tooltip label={`certified by ${seeker.certifiedBy}`}>
@@ -221,11 +213,14 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                     </Box>
                   </Tooltip>
                 ) : (
-                  <Tooltip label="Certify Seeker">
+                  <Tooltip
+                    label={seeker.seekerId ? 'Certify Seeker' : 'Certification Requires Profile'}
+                  >
                     <IconButton
                       size={'sm'}
+                      isDisabled={!seeker.seekerId}
                       onClick={certifySeeker}
-                      aria-label="delete-attribute"
+                      aria-label="certify"
                       variant={'ghost'}
                       icon={<FaRegThumbsUp />}
                     />
@@ -235,7 +230,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                   <IconButton
                     size={'sm'}
                     onClick={() => setIsModalOpen(true)}
-                    aria-label="delete-attribute"
+                    aria-label="create-reminder"
                     variant={'ghost'}
                     icon={<FaRegBell />}
                   />
@@ -305,14 +300,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                     <HStack>
                       <Stack>
                         <Link
-                          onClick={() =>
-                            addAttribute({
-                              attributeId: attributes.indexOf(
-                                attributes.find((attr) => attr.name === a.name),
-                              ),
-                              values: a.value.map((v) => ({ value: v, label: v })),
-                            })
-                          }
+                          onClick={() => addAttribute()} // TODO: fix this
                         >
                           <Text variant={'b3'}>{a.name}</Text>
                         </Link>
