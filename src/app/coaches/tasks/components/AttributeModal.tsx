@@ -1,22 +1,88 @@
+import { Attribute } from '@/common/types/Attribute'
+import FormObserver from '@/frontend/components/FormObserver'
+import FormikMultiSelect from '@/frontend/components/FormikMultiSelect'
 import FormikSelect from '@/frontend/components/FormikSelect'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { post } from '@/frontend/http-common'
 import {
+  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
 } from '@chakra-ui/react'
-import { Form, Formik } from 'formik'
-import { useCoachAttributes } from '../../hooks/useCoachAttributes'
+import { Field, Form, Formik } from 'formik'
+import { useEffect, useState } from 'react'
 
-const AttributeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const initialValue = {}
+export type AttributeForm = {
+  attributeId: string
+  values: { value: string; label: string }[]
+}
 
-  const { data: attributes } = useCoachAttributes()
+const AttributeModal = ({
+  attributes,
+  workingValue,
+  isOpen,
+  onClose,
+  refetchSeeker,
+  seekerId,
+}: {
+  attributes: Attribute[]
+  workingValue?: AttributeForm
+  isOpen: boolean
+  onClose: () => void
+  refetchSeeker: () => void
+  seekerId: string
+}) => {
+  const initialValue: AttributeForm = workingValue ?? {
+    attributeId: '0',
+    values: [],
+  }
+  const token = useAuthToken()
 
-  const handleSubmit = () => {}
+  const [activeAttribute, setActiveAttribute] = useState(0)
+
+  const [options, setOptions] = useState<{ value: string; label: string }[]>(
+    attributes?.at(activeAttribute)?.set.map((a) => {
+      return { value: a, label: a }
+    }) ?? [],
+  )
+
+  console.log(workingValue)
+
+  useEffect(() => {
+    setOptions(
+      attributes?.at(activeAttribute)?.set.map((a) => {
+        return { value: a, label: a }
+      }) ?? [],
+    )
+  }, [attributes, activeAttribute])
+
+  const handleSubmit = async (value: {
+    attributeId: string
+    values: { value: string; label: string }[]
+  }) => {
+    if (!token) return
+
+    console.log(value)
+
+    await post(
+      `/coaches/seekers/${seekerId}/attributes`,
+      {
+        attributeId: attributes?.at(parseInt(value.attributeId))?.id,
+        value: value.values,
+      },
+      token,
+    )
+
+    await refetchSeeker()
+
+    onClose()
+  }
 
   if (!attributes) return <></>
 
@@ -28,24 +94,28 @@ const AttributeModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
         <ModalCloseButton />
         <Formik initialValues={initialValue} onSubmit={handleSubmit}>
           <Form>
+            <FormObserver
+              onChange={(values) =>
+                setActiveAttribute(parseInt((values as AttributeForm).attributeId))
+              }
+            />
             <ModalBody>
               <Stack>
                 <FormikSelect
                   name="attributeId"
                   label="Attribute"
-                  options={attributes?.map((a) => {
-                    return { key: a.id, value: a.name }
+                  options={attributes?.map((a, index) => {
+                    return { key: index.toString(), value: a.name }
                   })}
                 />
-                <FormikSelect
-                  name="attributeId"
-                  label="Attribute"
-                  options={attributes?.map((a) => {
-                    return { key: a.id, value: a.name }
-                  })}
-                />
+                <Field name="values" component={FormikMultiSelect} options={options} />
               </Stack>
             </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="green" mr={3} type="submit">
+                Save
+              </Button>
+            </ModalFooter>
           </Form>
         </Formik>
       </ModalContent>
