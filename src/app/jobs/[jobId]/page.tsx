@@ -46,21 +46,21 @@ export default function JobPosting() {
     onClose: onApplyModalClose,
   } = useDisclosure()
 
-  const handleApplyClick = () => {
+  const handleApplyClick = async () => {
     if (!loadedJob || !token || userState !== UserState.Ready) {
       return
     }
 
     onApplyModalClose()
+    await FrontendJobInteractionsService.apply(job.id, token)
 
     FrontendAnalyticsService.track('Job-applied', {
       job: job,
       jobId: job.id,
     })
 
-    FrontendJobInteractionsService.apply(job.id, token)
-    refetch()
-    onSuccessModalOpen()
+    await onSuccessModalOpen()
+    await refetch()
   }
 
   const { applyCopy, onApply } = useApply({ job, onReadyToApply: onApplyModalOpen })
