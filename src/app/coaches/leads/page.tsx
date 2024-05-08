@@ -10,9 +10,17 @@ import { Box, Button, Checkbox, Link, VStack } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
 import NewLeadModal from './components/NewLeadModal'
+
+const Skeleton = () => {
+  return (
+    <Suspense>
+      <Leads/>
+    </Suspense>
+  )
+}
 
 const Leads = () => {
   const { data: leads, isLoading, refetch } = useCoachLeadsQuery()
@@ -137,4 +145,4 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
   return <DataTable columns={columns} data={data} initialSortState={initialSortState} />
 }
 
-export default Leads
+export default Skeleton
