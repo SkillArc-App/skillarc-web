@@ -1,23 +1,22 @@
 import { AllResponses } from '@/common/types/OnboardingResponse'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { put } from '@/frontend/http-common'
-import { useMutation, useQueryClient } from 'react-query'
-import { OnboardingResponse } from './useOnboardingQuery'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from 'react-query'
+import { OnboardingResponse } from './useOnboardingQuery'
 
 export const useOnboardingMutation = () => {
   const queryClient = useQueryClient()
-  const token = useAuthToken()
   const router = useRouter()
 
-  return useMutation(
-    async (responses: Partial<AllResponses>) => {
+  return useAuthenticatedMutation(
+    async (responses: Partial<AllResponses>, token: string) => {
       const result = await put<OnboardingResponse>(
         `${process.env.NEXT_PUBLIC_API_URL}/onboarding_sessions`,
         {
           responses: responses,
         },
-        token as string,
+        token,
       )
 
       return result.data
