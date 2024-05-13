@@ -11,7 +11,7 @@ export type Recruiter = {
 }
 
 export type Role = {
-  name: 'admin' | 'coach' | 'employer_admin'
+  name: 'admin' | 'coach' | 'employer_admin' | 'job_order_admin'
 }
 
 export type User = {
