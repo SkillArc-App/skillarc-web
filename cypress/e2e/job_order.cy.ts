@@ -33,7 +33,7 @@ describe('Admin', () => {
         cy.findByText(job.employmentTitle).click()
       })
 
-      cy.findByText('1caea190-8810-4091-a593-203ae5990db7')
+      cy.findByText(job.employmentTitle)
       cy.findByText('Needs Order Count')
       cy.findByLabelText('Order Count*').clear().type('12')
       cy.findByRole('button', { name: 'Update' }).click()
