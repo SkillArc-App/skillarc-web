@@ -7,7 +7,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 import * as React from 'react'
 
@@ -17,7 +17,11 @@ export interface DataTableProps<Data extends RowData> {
   initialSortState?: SortingState
 }
 
-export default function DataTable<Data extends RowData>({ data, columns, initialSortState = [] }: DataTableProps<Data>) {
+export default function DataTable<Data extends RowData>({
+  data,
+  columns,
+  initialSortState = [],
+}: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>(initialSortState)
   const table = useReactTable({
     columns,
@@ -31,7 +35,7 @@ export default function DataTable<Data extends RowData>({ data, columns, initial
   })
 
   return (
-    <TableContainer bg="white" width="100%">
+    <TableContainer bg="white" width="100%" overflowY={'scroll'}>
       <Table variant={'simple'} size={'sm'}>
         <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
