@@ -43,6 +43,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
     }),
     columnHelper.accessor('openedAt', {
       header: 'Opened At',
+      id: 'openedAt',
       cell: (row) => {
         const dateOpened = new Date(row.getValue())
 
@@ -54,6 +55,12 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
         const color = timeOpenInHours > FILL_THRESHOLD ? 'red' : ''
 
         return <Text color={color}>{`${dateOpenedString} (${timeOpenInHours} hours) ${icon}`}</Text>
+      },
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId))
+        const date2 = new Date(row2.getValue(columnId))
+
+        return date1.getTime() - date2.getTime()
       },
     }),
   ]
