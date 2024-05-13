@@ -1,0 +1,57 @@
+import { ApplicationStatus } from "@/common/types/ApplicantStatus"
+
+export type JobOrderStatuses = 'needs_order_count' | 'open' | 'waiting_on_employer' | 'filled' | 'not_filled'
+export type CandidateStatuses = 'added' | 'recommended' | 'hired' | 'rescinded'
+
+export type JobOrderStatusMapping<T=string> = {
+  [key in JobOrderStatuses]: T;
+};
+
+export type CandidateStatusesMapping<T=string> = {
+  [key in CandidateStatuses]: T;
+};
+
+export type JobOrderSummary = {
+  id: string
+  employmentTitle: string
+  employerName: string
+  openedAt: string
+  applicantCount: number
+  hireCount: number
+  orderCount: number
+  status: JobOrderStatuses
+}
+
+export type JobOrder = JobOrderSummary & {
+  candidates: Candidate[]
+  applicants: Applicant[]
+  notes: JobOrderNote[]
+}
+
+type Seeker = {
+  firstName?: string
+  lastName?: string
+  phoneNumber?: string
+  email?: string
+  seekerId: string
+}
+
+export type JobOrderNote = {
+  id: string
+  content: string
+  createdAt: string
+  noteTakenBy: string
+}
+
+export type Applicant = Seeker & {
+  id: string
+  recommendedAt?: string
+  status: ApplicationStatus
+}
+
+export type Candidate = Seeker & {
+  id: string
+  appliedAt?: string
+  recommendedAt?: string
+  status: CandidateStatuses
+}
