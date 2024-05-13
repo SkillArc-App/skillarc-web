@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   GridItem,
   HStack,
   Heading,
@@ -24,6 +25,7 @@ import {
   ModalOverlay,
   Select,
   SimpleGrid,
+  Spacer,
   Stack,
   Tag,
   Text,
@@ -90,7 +92,7 @@ const QuantityDisplay = ({ id, orderCount }: { id: string; orderCount?: number }
   } else {
     return (
       <HStack cursor="pointer" _hover={{ '.editIcon': { opacity: 1 } }}>
-        <Text>{`${orderCount} positions`}</Text>
+        <Text>{`Order Count: ${orderCount}`}</Text>
         <Box className="editIcon" opacity={0}>
           <EditIcon onClick={() => setEditing(true)} />
         </Box>
@@ -190,7 +192,11 @@ const Order = () => {
             </Heading>
           </CardHeader>
           <CardBody>
-            <QuantityDisplay orderCount={order.orderCount} id={order.id} />
+            <Flex>
+              <QuantityDisplay orderCount={order.orderCount} id={order.id} />
+              <Spacer />
+              {/* Add CTAs for closed not filled ect. */}
+            </Flex>
           </CardBody>
         </Card>
         <SimpleGrid columns={5} gap={'1rem'}>
