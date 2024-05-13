@@ -17,7 +17,9 @@ const JobOrderLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SimpleGrid pt={'1rem'} columns={12} height={'100%'} overflow={'clip'} width={'100%'}>
       <GridItem colSpan={1} />
-      <GridItem colSpan={10}>{children}</GridItem>
+      <GridItem overflow={'scroll'} colSpan={10}>
+        {children}
+      </GridItem>
       <GridItem colSpan={1} />
     </SimpleGrid>
   )
