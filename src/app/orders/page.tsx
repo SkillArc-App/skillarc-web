@@ -2,9 +2,10 @@
 
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
-import { Link, Stack, Text } from '@chakra-ui/react'
+import { Checkbox, Link, Stack, Text } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { displayMap } from './constants'
 import { useOrdersData } from './hooks/useOrdersData'
 import { JobOrderSummary } from './types'
@@ -86,13 +87,29 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
 }
 
 const Orders = () => {
+  const router = useRouter()
   const { data: orders } = useOrdersData()
+
+  const searchParams = useSearchParams()
+  const showClosed = searchParams?.get('show_closed')
+
+  const filteredOrders =
+    showClosed == 'yes'
+      ? orders ?? []
+      : orders?.filter((order) => order.status !== 'not_filled' && order.status !== 'filled') ?? []
 
   if (!orders) return <LoadingPage />
 
   return (
     <Stack overflow={'scroll'} pb={'2rem'}>
-      <Table data={orders} />
+      <Checkbox
+        onChange={() => {
+          showClosed == 'yes' ? router.push('/orders') : router.push('/orders?show_closed=yes')
+        }}
+      >
+        Show Closed Orders
+      </Checkbox>
+      <Table data={filteredOrders} />
     </Stack>
   )
 }
