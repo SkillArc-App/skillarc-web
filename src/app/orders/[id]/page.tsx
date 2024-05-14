@@ -7,6 +7,9 @@ import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Card,
   CardBody,
@@ -30,34 +33,20 @@ import {
   Tag,
   Text,
   Textarea,
-  VStack,
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
+import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
+import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderData } from '../hooks/useOrderData'
 import { useOrderMutation } from '../hooks/useOrderMutation'
-import { Candidate, CandidateStatusesMapping, JobOrderStatusMapping } from '../types'
+import { Candidate, CandidateStatusesMapping, JobOrder } from '../types'
+import { colorMap, displayMap } from '../constants'
 
-const colorMap: JobOrderStatusMapping = {
-  needs_order_count: 'red',
-  open: 'blue',
-  waiting_on_employer: 'yellow.500',
-  filled: 'green',
-  not_filled: 'red',
-}
-
-const displayMap: JobOrderStatusMapping = {
-  needs_order_count: 'Needs Order Count',
-  open: 'Open',
-  waiting_on_employer: 'Waiting on Employer',
-  filled: 'Closed',
-  not_filled: 'Closed Without Fill',
-}
-
-const QuantityDisplay = ({ id, orderCount }: { id: string; orderCount?: number }) => {
+const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
   const jobOrder = useOrderMutation()
 
@@ -73,7 +62,7 @@ const QuantityDisplay = ({ id, orderCount }: { id: string; orderCount?: number }
       <Formik initialValues={initialValue} onSubmit={handleSubmit}>
         {(props) => (
           <Form>
-            <VStack>
+            <HStack>
               <FormInputField<number>
                 isRequired
                 type="number"
@@ -84,7 +73,7 @@ const QuantityDisplay = ({ id, orderCount }: { id: string; orderCount?: number }
               <Button variant={'primary'} mt={'1rem'} isLoading={props.isSubmitting} type="submit">
                 Update
               </Button>
-            </VStack>
+            </HStack>
           </Form>
         )}
       </Formik>
@@ -99,6 +88,18 @@ const QuantityDisplay = ({ id, orderCount }: { id: string; orderCount?: number }
       </HStack>
     )
   }
+}
+
+const JobOrderCta = ({ id, status }: JobOrder) => {
+  const activate = useOrderActivationMutation()
+  const close = useOrderClosedMutation()
+  const jobClosed = ['filled', 'not_filled'].includes(status ?? '')
+
+  return jobClosed ? (
+    <Button onClick={() => activate.mutate(id)}>Reactivate Job Order</Button>
+  ) : (
+    <Button onClick={() => close.mutate(id)}>Close Job Order Without Filling</Button>
+  )
 }
 
 const CandidateTable = ({
@@ -180,6 +181,13 @@ const Order = () => {
   return (
     <>
       <Stack gap={'1rem'} pb={'2rem'}>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={NextLink} href="/orders">
+              {'< Back to Orders'}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <Card>
           <CardHeader>
             <Heading size={'md'}>
@@ -193,9 +201,9 @@ const Order = () => {
           </CardHeader>
           <CardBody>
             <Flex>
-              <QuantityDisplay orderCount={order.orderCount} id={order.id} />
+              <QuantityDisplay {...order} />
               <Spacer />
-              {/* Add CTAs for closed not filled ect. */}
+              <JobOrderCta {...order} />
             </Flex>
           </CardBody>
         </Card>

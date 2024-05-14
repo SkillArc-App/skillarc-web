@@ -1,21 +1,15 @@
 'use client'
 
 import DataTable from '@/frontend/components/DataTable.component'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { Link, Stack, Text } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useOrdersData } from './hooks/useOrdersData'
-import { JobOrderStatusMapping, JobOrderStatuses, JobOrderSummary } from './types'
+import { JobOrderSummary } from './types'
+import { displayMap } from './constants'
 
 const FILL_THRESHOLD = 72
-
-const statusMappings: JobOrderStatusMapping = {
-  needs_order_count: "Needs Order Count",
-  open: 'Open',
-  waiting_on_employer: 'Waiting on Employer',
-  filled: 'Closed',
-  not_filled: 'Closed Without Fill',
-}
 
 const Table = ({ data }: { data: JobOrderSummary[] }) => {
   const columnHelper = createColumnHelper<JobOrderSummary>()
@@ -35,11 +29,11 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
     }),
     columnHelper.accessor('orderCount', {
       header: 'Order Count',
-      cell: (row) => row.getValue() || "Provide Order Count",
+      cell: (row) => row.getValue() || 'Provide Order Count',
     }),
     columnHelper.accessor('status', {
       header: 'Status',
-      cell: (row) => statusMappings[row.getValue()],
+      cell: (row) => displayMap[row.getValue()],
     }),
     columnHelper.accessor('openedAt', {
       header: 'Opened At',
@@ -78,7 +72,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
 const Orders = () => {
   const { data: orders } = useOrdersData()
 
-  if (!orders) return <></>
+  if (!orders) return <LoadingPage />
 
   return (
     <Stack overflow={'scroll'} pb={'2rem'}>
