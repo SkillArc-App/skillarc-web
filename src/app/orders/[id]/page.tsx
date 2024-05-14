@@ -7,6 +7,9 @@ import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Card,
   CardBody,
@@ -30,34 +33,18 @@ import {
   Tag,
   Text,
   Textarea,
-  VStack,
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
-import { useOrderData } from '../hooks/useOrderData'
-import { useOrderMutation } from '../hooks/useOrderMutation'
-import { Candidate, CandidateStatusesMapping, JobOrder, JobOrderStatusMapping } from '../types'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
-
-const colorMap: JobOrderStatusMapping = {
-  needs_order_count: 'red',
-  open: 'blue',
-  waiting_on_employer: 'yellow.500',
-  filled: 'green',
-  not_filled: 'red',
-}
-
-const displayMap: JobOrderStatusMapping = {
-  needs_order_count: 'Needs Order Count',
-  open: 'Open',
-  waiting_on_employer: 'Waiting on Employer',
-  filled: 'Closed',
-  not_filled: 'Closed Without Fill',
-}
+import { useOrderData } from '../hooks/useOrderData'
+import { useOrderMutation } from '../hooks/useOrderMutation'
+import { Candidate, CandidateStatusesMapping, JobOrder } from '../types'
+import { colorMap, displayMap } from '../constants'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
@@ -103,14 +90,16 @@ const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   }
 }
 
-const JobOrderCta = ({id, status}: JobOrder) => {
+const JobOrderCta = ({ id, status }: JobOrder) => {
   const activate = useOrderActivationMutation()
   const close = useOrderClosedMutation()
   const jobClosed = ['filled', 'not_filled'].includes(status ?? '')
 
-  return jobClosed
-    ? <Button onClick={() => activate.mutate(id)}>Reactivate Job Order</Button>
-    : <Button onClick={() => close.mutate(id)}>Close Job Order without Filling</Button>
+  return jobClosed ? (
+    <Button onClick={() => activate.mutate(id)}>Reactivate Job Order</Button>
+  ) : (
+    <Button onClick={() => close.mutate(id)}>Close Job Order Without Filling</Button>
+  )
 }
 
 const CandidateTable = ({
@@ -192,6 +181,13 @@ const Order = () => {
   return (
     <>
       <Stack gap={'1rem'} pb={'2rem'}>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink as={NextLink} href="/orders">
+              {'< Back to Orders'}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <Card>
           <CardHeader>
             <Heading size={'md'}>
@@ -207,7 +203,7 @@ const Order = () => {
             <Flex>
               <QuantityDisplay {...order} />
               <Spacer />
-              <JobOrderCta {...order}/>
+              <JobOrderCta {...order} />
             </Flex>
           </CardBody>
         </Card>
