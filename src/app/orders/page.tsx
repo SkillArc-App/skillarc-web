@@ -5,9 +5,9 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { Link, Stack, Text } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
+import { displayMap } from './constants'
 import { useOrdersData } from './hooks/useOrdersData'
 import { JobOrderSummary } from './types'
-import { displayMap } from './constants'
 
 const FILL_THRESHOLD = 72
 
@@ -19,13 +19,29 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
       header: 'Title',
       cell: (row) => (
         <Link href={`orders/${row.row.original.id}`} as={NextLink}>
-          {row.getValue()}
+          <div
+            style={{
+              whiteSpace: 'normal',
+              wordBreak: 'break-word',
+            }}
+          >
+            {row.getValue()}
+          </div>
         </Link>
       ),
     }),
     columnHelper.accessor('employerName', {
       header: 'Employer',
-      cell: (row) => row.getValue(),
+      cell: (row) => (
+        <div
+          style={{
+            whiteSpace: 'normal',
+            wordBreak: 'break-word',
+          }}
+        >
+          {row.getValue()}
+        </div>
+      ),
     }),
     columnHelper.accessor('orderCount', {
       header: 'Order Count',
