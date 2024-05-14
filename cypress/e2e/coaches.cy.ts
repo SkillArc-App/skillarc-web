@@ -1,4 +1,4 @@
-export {}
+export { }
 
 const reloadUntilConditionMet = (
   predicate: () => Cypress.Chainable<boolean>,
@@ -71,6 +71,11 @@ describe('Coaches', () => {
         'contain',
         `${seeker['firstName']} ${seeker['lastName']}`,
       )
+
+      cy.findByRole('button', {name: 'recommend-for-job'}).click()
+      cy.findByDisplayValue('Job Order').select('General Contractor - The Superior Group')
+      cy.findByRole('button', { name: 'Recommend' }).click()
+
       cy.findByRole('button', { name: 'add-attribute' }).click()
 
       cy.findByDisplayValue('Attribute').select('Background')

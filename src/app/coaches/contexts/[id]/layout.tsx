@@ -37,11 +37,12 @@ import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
-import { FaPlus, FaRegBell, FaTrash } from 'react-icons/fa6'
+import { FaBullhorn, FaPlus, FaRegBell, FaTrash } from 'react-icons/fa6'
 import { useCoachAttributes } from '../../hooks/useCoachAttributes'
 import { useCoachJobs } from '../../hooks/useCoachJobs'
 import { useCoachSeekerTasks } from '../../hooks/useCoachTasks'
 import AttributeModal, { AttributeForm } from '../../tasks/components/AttributeModal'
+import RecommendForJobModal from '../../tasks/components/RecommendForJobModal'
 import ReminderModal from '../../tasks/components/ReminderModal'
 
 const tabs: Record<string, number> = {
@@ -60,6 +61,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAttributeModalOpen, setIsAttributeModalOpen] = useState(false)
+  const [isRecForJobModalOpen, setIsRecForJobModalOpen] = useState(false)
 
   const [workingValue, setWorkingValue] = useState<AttributeForm | undefined>(undefined)
 
@@ -166,6 +168,11 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         refetchSeeker={refetchSeeker}
         workingValue={workingValue}
       />
+      <RecommendForJobModal
+        seekerId={seeker.seekerId}
+        isOpen={isRecForJobModalOpen}
+        onClose={() => setIsRecForJobModalOpen(false)}
+      />
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}
@@ -231,6 +238,15 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                     aria-label="create-reminder"
                     variant={'ghost'}
                     icon={<FaRegBell />}
+                  />
+                </Tooltip>
+                <Tooltip label="Recommend for Job">
+                  <IconButton
+                    size={'sm'}
+                    onClick={() => setIsRecForJobModalOpen(true)}
+                    aria-label="recommend-for-job"
+                    variant={'ghost'}
+                    icon={<FaBullhorn />}
                   />
                 </Tooltip>
               </HStack>

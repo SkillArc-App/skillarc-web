@@ -39,18 +39,18 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
+import { colorMap, displayMap } from '../constants'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderData } from '../hooks/useOrderData'
 import { useOrderMutation } from '../hooks/useOrderMutation'
 import { Candidate, CandidateStatusesMapping, JobOrder } from '../types'
-import { colorMap, displayMap } from '../constants'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
   const jobOrder = useOrderMutation()
 
-  const initialValue = { orderCount: orderCount ?? 10 }
+  const initialValue = { orderCount: orderCount ?? 1 }
 
   const handleSubmit = ({ orderCount }: { orderCount: number }) => {
     jobOrder.mutate({ id, orderCount })
