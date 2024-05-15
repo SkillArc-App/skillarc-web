@@ -33,6 +33,13 @@ export type JobOrderSummary = {
   status: JobOrderStatuses
 }
 
+export type Job = {
+  id: string
+  employmentTitle: string
+  employerName: string
+  employerId: string
+}
+
 export type JobOrder = JobOrderSummary & {
   candidates: Candidate[]
   applicants: Applicant[]
