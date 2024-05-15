@@ -1,13 +1,33 @@
 'use client'
 
 import DataTable from '@/frontend/components/DataTable.component'
+import FormikSelect from '@/frontend/components/FormikSelect'
 import { LoadingPage } from '@/frontend/components/Loading'
-import { Checkbox, Link, Stack, Text } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  HStack,
+  Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spacer,
+  Stack,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
+import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { displayMap } from './constants'
-import { useOrdersData } from './hooks/useOrdersData'
+import { useAddOrderMutation } from './hooks/useAddOrderMutation'
+import { useJobsQuery } from './hooks/useJobsQuery'
+import { useOrdersQuery } from './hooks/useOrdersQuery'
 import { JobOrderSummary } from './types'
 
 const FILL_THRESHOLD = 72
@@ -86,9 +106,54 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
   return <DataTable columns={columns} data={data} initialSortState={initialSortState} />
 }
 
+const NewJobOrderModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const { data: jobs } = useJobsQuery()
+  const addOder = useAddOrderMutation({ onSuccess: onClose })
+
+  if (!jobs) {
+    return <></>
+  }
+
+  const initialValue = {
+    jobId: jobs[0].id,
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Create A New Job Order</ModalHeader>
+        <ModalCloseButton />
+        <Formik initialValues={initialValue} onSubmit={(form) => addOder.mutate(form)}>
+          <Form>
+            <ModalBody>
+              <Stack spacing={2}>
+                <FormikSelect
+                  name="jobId"
+                  label="Select Job"
+                  options={jobs.map((job) => ({
+                    key: job.id,
+                    value: `${job.employmentTitle}: ${job.employerName}`,
+                  }))}
+                />
+              </Stack>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="green" type="submit" isLoading={addOder.isLoading}>
+                Save
+              </Button>
+            </ModalFooter>
+          </Form>
+        </Formik>
+      </ModalContent>
+    </Modal>
+  )
+}
+
 const Orders = () => {
   const router = useRouter()
-  const { data: orders } = useOrdersData()
+  const { data: orders } = useOrdersQuery()
+  const { isOpen, onClose, onOpen } = useDisclosure()
 
   const searchParams = useSearchParams()
   const showClosed = searchParams?.get('show_closed')
@@ -102,14 +167,21 @@ const Orders = () => {
 
   return (
     <Stack overflow={'scroll'} pb={'2rem'}>
-      <Checkbox
-        onChange={() => {
-          showClosed == 'yes' ? router.push('/orders') : router.push('/orders?show_closed=yes')
-        }}
-      >
-        Show Closed Orders
-      </Checkbox>
+      <HStack>
+        <Checkbox
+          onChange={() => {
+            showClosed == 'yes' ? router.push('/orders') : router.push('/orders?show_closed=yes')
+          }}
+        >
+          Show Closed Orders
+        </Checkbox>
+        <Spacer />
+        <Button colorScheme="green" onClick={onOpen}>
+          Create New Job Order
+        </Button>
+      </HStack>
       <Table data={filteredOrders} />
+      <NewJobOrderModal isOpen={isOpen} onClose={onClose} />
     </Stack>
   )
 }

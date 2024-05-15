@@ -6,7 +6,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
       cy.wrap(r).as('user')
     })
     cy.task('createJob').then((r: any) => {
-      cy.wrap(r).as('job')
+      cy.wrap(r["job"]).as('job')
     })
     cy.task('assertNoFailedJobs')
   })
