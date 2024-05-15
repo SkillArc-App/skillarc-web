@@ -44,8 +44,8 @@ import { useState } from 'react'
 import { colorMap, displayMap } from '../constants'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
-import { useOrderData } from '../hooks/useOrderData'
 import { useOrderMutation } from '../hooks/useOrderMutation'
+import { useOrderQuery } from '../hooks/useOrderQuery'
 import { Candidate, CandidateStatuses, CandidateStatusesMapping, JobOrder } from '../types'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
@@ -160,7 +160,7 @@ const CandidateTable = ({
 
 const Order = () => {
   const { id } = useFixedParams('id')
-  const { data: order, refetch: refetchOrder } = useOrderData(id)
+  const { data: order, refetch: refetchOrder } = useOrderQuery(id)
 
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null)
   const [noteDraft, setNoteDraft] = useState('')

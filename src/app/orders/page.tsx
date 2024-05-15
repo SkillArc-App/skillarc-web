@@ -7,7 +7,7 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { displayMap } from './constants'
-import { useOrdersData } from './hooks/useOrdersData'
+import { useOrdersQuery } from './hooks/useOrdersQuery'
 import { JobOrderSummary } from './types'
 
 const FILL_THRESHOLD = 72
@@ -88,7 +88,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
 
 const Orders = () => {
   const router = useRouter()
-  const { data: orders } = useOrdersData()
+  const { data: orders } = useOrdersQuery()
 
   const searchParams = useSearchParams()
   const showClosed = searchParams?.get('show_closed')
