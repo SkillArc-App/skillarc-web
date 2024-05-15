@@ -1,4 +1,4 @@
-export {}
+export { }
 
 describe('Admin', () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Admin', () => {
       cy.findByRole('table').within(() => {
         cy.findByText('Opened At').click()
 
-        const row = cy.findByText(job.employmentTitle).parent().parent()
+        const row = cy.findByText(job.employmentTitle).parent().parent().parent()
 
         row.within(() => {
           cy.findByText('Provide Order Count')
@@ -45,13 +45,15 @@ describe('Admin', () => {
       // close order
       cy.findByText('Close Job Order Without Filling').click()
       cy.findByText('Closed Without Filling')
+
       cy.findByText('< Back to Orders').click()
 
+      cy.findByText('Show Closed Orders').parent().click()
       // confirm order is closed with order count
       cy.findByRole('table').within(() => {
         cy.findByText('Opened At').click()
 
-        const row = cy.findByText(job.employmentTitle).parent().parent()
+        const row = cy.findByText(job.employmentTitle).parent().parent().parent()
 
         row.within(() => {
           cy.findByText('Closed Without Filling')
