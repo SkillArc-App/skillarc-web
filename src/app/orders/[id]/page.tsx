@@ -2,8 +2,11 @@
 
 import DataTable from '@/frontend/components/DataTable.component'
 import FormInputField from '@/frontend/components/FormInputField'
+import FormikSelect from '@/frontend/components/FormikSelect'
 import { LoadingPage } from '@/frontend/components/Loading'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -26,7 +29,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   SimpleGrid,
   Spacer,
   Stack,
@@ -44,7 +46,7 @@ import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderData } from '../hooks/useOrderData'
 import { useOrderMutation } from '../hooks/useOrderMutation'
-import { Candidate, CandidateStatusesMapping, JobOrder } from '../types'
+import { Candidate, CandidateStatuses, CandidateStatusesMapping, JobOrder } from '../types'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
@@ -164,9 +166,27 @@ const Order = () => {
   const [noteDraft, setNoteDraft] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const token = useAuthToken()
+
   const onCandidateClick = (candidate: Candidate) => {
     setActiveCandidate(candidate)
     onOpen()
+  }
+
+  const onSubmit = async ({ activeCandidateStatus }: { activeCandidateStatus: string }) => {
+    if (!token) return
+    if (!activeCandidate) return
+
+    await put(
+      `/job_orders/orders/${id}/candidates/${activeCandidate?.seekerId}`,
+      {
+        status: activeCandidateStatus,
+      },
+      token,
+    )
+
+    await refetchOrder()
+    onClose()
   }
 
   const onAddNote = () => {
@@ -177,6 +197,10 @@ const Order = () => {
   }
 
   if (!order) return <LoadingPage />
+
+  const initialValue = {
+    activeCandidateStatus: activeCandidate?.status ?? '',
+  }
 
   return (
     <>
@@ -252,22 +276,27 @@ const Order = () => {
             {activeCandidate?.firstName} {activeCandidate?.lastName}
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <HStack>
-              <b>Status</b>
-              <Select>
-                <option value="open">Open</option>
-                <option value="sent_to_employer">Sent to Employer</option>
-                <option value="hired">Hired</option>
-                <option value="rejected">Rejected</option>
-              </Select>
-            </HStack>
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="green" type="submit">
-              Save
-            </Button>
-          </ModalFooter>
+          <Formik initialValues={initialValue} onSubmit={onSubmit}>
+            <Form>
+              <ModalBody>
+                <Stack spacing={2}>
+                  <FormikSelect
+                    name="activeCandidateStatus"
+                    label="Status"
+                    options={Object.values(CandidateStatuses).map((status) => ({
+                      key: status,
+                      value: status,
+                    }))}
+                  />
+                </Stack>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="green" type="submit">
+                  Save
+                </Button>
+              </ModalFooter>
+            </Form>
+          </Formik>
         </ModalContent>
       </Modal>
     </>

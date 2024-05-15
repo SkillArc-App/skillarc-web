@@ -1,15 +1,26 @@
-import { ApplicationStatus } from "@/common/types/ApplicantStatus"
+import { ApplicationStatus } from '@/common/types/ApplicantStatus'
 
-export type JobOrderStatuses = 'needs_order_count' | 'open' | 'waiting_on_employer' | 'filled' | 'not_filled'
-export type CandidateStatuses = 'added' | 'recommended' | 'hired' | 'rescinded'
+export type JobOrderStatuses =
+  | 'needs_order_count'
+  | 'open'
+  | 'waiting_on_employer'
+  | 'filled'
+  | 'not_filled'
 
-export type JobOrderStatusMapping<T=string> = {
-  [key in JobOrderStatuses]: T;
-};
+export enum CandidateStatuses {
+  ADDED = 'added',
+  RECOMMENDED = 'recommended',
+  HIRED = 'hired',
+  RESCINDED = 'rescinded',
+}
 
-export type CandidateStatusesMapping<T=string> = {
-  [key in CandidateStatuses]: T;
-};
+export type JobOrderStatusMapping<T = string> = {
+  [key in JobOrderStatuses]: T
+}
+
+export type CandidateStatusesMapping<T = string> = {
+  [key in CandidateStatuses]: T
+}
 
 export type JobOrderSummary = {
   id: string
@@ -53,5 +64,6 @@ export type Candidate = Seeker & {
   id: string
   appliedAt?: string
   recommendedAt?: string
+  seekerId: string
   status: CandidateStatuses
 }
