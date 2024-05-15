@@ -122,7 +122,7 @@ const CandidateTable = ({
         )
       },
       cell: (row) => (
-        <Link onClick={() => onCandidateClick(row.row.original)} href="" as={NextLink}>
+        <Link onClick={() => onCandidateClick(row.row.original)}>
           {row.row.original.firstName} {row.row.original.lastName}
         </Link>
       ),
