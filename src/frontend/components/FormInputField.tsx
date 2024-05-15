@@ -13,7 +13,7 @@ type InputProps = {
 
 type InputField<T extends InputTypes> = InputProps & FieldHookConfig<T>
 
-type InputTypes = number | string | string | undefined
+type InputTypes = number | string | undefined
 
 export default function FormInputField<T extends InputTypes>({
   label,
