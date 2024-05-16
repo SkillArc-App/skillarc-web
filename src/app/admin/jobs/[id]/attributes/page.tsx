@@ -3,7 +3,8 @@
 import { useAdminAttributes } from '@/app/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import DataTable from '@/frontend/components/DataTable.component'
-import FormTextAreaField from '@/frontend/components/FormTextAreaField'
+import FormObserver from '@/frontend/components/FormObserver'
+import FormikMultiSelect from '@/frontend/components/FormikMultiSelect'
 import FormikSelect from '@/frontend/components/FormikSelect'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
@@ -26,7 +27,7 @@ import {
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaRegTrashCan } from 'react-icons/fa6'
 
 type FormInputType = {
@@ -44,6 +45,18 @@ const AttributesPage = () => {
 
   const { data: attributes } = useAdminAttributes()
 
+  const [activeAttribute, setActiveAttribute] = useState(attributes?.at(0))
+
+  useEffect(() => {
+    if (attributes) {
+      setActiveAttribute(attributes.at(0))
+    }
+  }, [attributes])
+
+  const options = activeAttribute?.set.map((a) => {
+    return { value: a, label: a }
+  })
+
   const [initialValue, setInitialValue] = useState<FormInputType>({
     attributeId: '',
     acceptibleSet: '',
@@ -58,7 +71,7 @@ const AttributesPage = () => {
         `/admin/jobs/${job.id}/job_attributes/${values.id}`,
         {
           attributeId: values.attributeId,
-          acceptibleSet: values.acceptibleSet.split('\n').map((s) => s.trim()),
+          acceptibleSet: values.acceptibleSet,
         },
         token,
       )
@@ -67,7 +80,7 @@ const AttributesPage = () => {
         `/admin/jobs/${job.id}/job_attributes`,
         {
           attributeId: values.attributeId,
-          acceptibleSet: values.acceptibleSet.split('\n').map((s) => s.trim()),
+          acceptibleSet: values.acceptibleSet,
         },
         token,
       )
@@ -133,7 +146,6 @@ const AttributesPage = () => {
             colorScheme="green"
             onClick={() => {
               setInitialValue({
-                id: undefined,
                 attributeId: '',
                 acceptibleSet: '',
               })
@@ -156,6 +168,14 @@ const AttributesPage = () => {
                 <Form>
                   <ModalBody>
                     <Stack spacing={2}>
+                      <FormObserver
+                        onChange={() => {
+                          const attribute = attributes?.filter(
+                            (a) => a.id === props.values.attributeId,
+                          )[0]
+                          setActiveAttribute(attribute)
+                        }}
+                      />
                       <FormikSelect
                         name="attributeId"
                         label="Attribute"
@@ -163,10 +183,11 @@ const AttributesPage = () => {
                           return { key: a.id, value: a.name }
                         })}
                       />
-                      <FormTextAreaField
-                        isRequired
-                        label="Acceptible Set (newline separated)"
+                      <FormikMultiSelect
+                        ariaLabel="add a value"
                         name="acceptibleSet"
+                        placeholder="Acceptible Set"
+                        options={options ?? []}
                       />
                     </Stack>
                   </ModalBody>
