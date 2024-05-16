@@ -1,12 +1,12 @@
-import { SeekerNote } from '@/app/coaches/types'
+import { Note } from '@/common/types/Note'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, HStack, IconButton, Text, Textarea, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
 
 interface NoteProps {
-  note: SeekerNote
-  onDeleteClicked(id: string): void
-  onNoteModified(id: string, note: string): void
+  note: Note
+  onDeleteClicked(id: string): Promise<void>
+  onNoteModified(id: string, note: string): Promise<void>
 }
 
 export const NoteBox = ({
