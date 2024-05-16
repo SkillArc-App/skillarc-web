@@ -1,9 +1,9 @@
-import { JobOrderStatusMapping } from "./types"
+import { JobOrderStatusMapping } from './types'
 
 export const colorMap: JobOrderStatusMapping = {
   needs_order_count: 'red',
   open: 'blue',
-  waiting_on_employer: 'yellow.500',
+  waiting_on_employer: 'yellow',
   filled: 'green',
   not_filled: 'red',
 }

@@ -201,6 +201,13 @@ const Order = () => {
     activeCandidateStatus: activeCandidate?.status ?? '',
   }
 
+  const statusMap = {
+    added: 'Open',
+    recommended: 'Sent to Employer',
+    hired: 'Hired',
+    rescinded: 'Rejected',
+  }
+
   return (
     <>
       <Stack gap={'1rem'} pb={'2rem'}>
@@ -285,7 +292,7 @@ const Order = () => {
                       label="Status"
                       options={Object.values(CandidateStatuses).map((status) => ({
                         key: status,
-                        value: status,
+                        value: statusMap[status],
                       }))}
                     />
                   </Stack>
