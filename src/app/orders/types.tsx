@@ -1,4 +1,5 @@
 import { ApplicationStatus } from '@/common/types/ApplicantStatus'
+import { Note } from '@/common/types/Note'
 
 export type JobOrderStatuses =
   | 'needs_order_count'
@@ -43,7 +44,7 @@ export type Job = {
 export type JobOrder = JobOrderSummary & {
   candidates: Candidate[]
   applicants: Applicant[]
-  notes: JobOrderNote[]
+  notes: Note[]
 }
 
 type Seeker = {
@@ -52,13 +53,6 @@ type Seeker = {
   phoneNumber?: string
   email?: string
   seekerId: string
-}
-
-export type JobOrderNote = {
-  id: string
-  content: string
-  createdAt: string
-  noteTakenBy: string
 }
 
 export type Applicant = Seeker & {
