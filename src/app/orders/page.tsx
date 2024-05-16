@@ -156,12 +156,12 @@ const Orders = () => {
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const searchParams = useSearchParams()
-  const showClosed = searchParams?.get('show_closed')
+  const showClosedParam = searchParams?.get('show_closed')
+  const showClosed = showClosedParam == 'yes'
 
-  const filteredOrders =
-    showClosed == 'yes'
-      ? orders ?? []
-      : orders?.filter((order) => order.status !== 'not_filled' && order.status !== 'filled') ?? []
+  const filteredOrders = showClosed
+    ? orders ?? []
+    : orders?.filter((order) => order.status !== 'not_filled' && order.status !== 'filled') ?? []
 
   if (!orders) return <LoadingPage />
 
@@ -169,8 +169,9 @@ const Orders = () => {
     <Stack overflow={'scroll'} pb={'2rem'}>
       <HStack>
         <Checkbox
+          isChecked={showClosed}
           onChange={() => {
-            showClosed == 'yes' ? router.push('/orders') : router.push('/orders?show_closed=yes')
+            showClosed ? router.push('/orders') : router.push('/orders?show_closed=yes')
           }}
         >
           Show Closed Orders
