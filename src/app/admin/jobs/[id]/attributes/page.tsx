@@ -184,7 +184,7 @@ const AttributesPage = () => {
                         })}
                       />
                       <FormikMultiSelect
-                        ariaLabel="add a value"
+                        label="Acceptable Values"
                         name="acceptibleSet"
                         placeholder="Acceptible Set"
                         options={options ?? []}
