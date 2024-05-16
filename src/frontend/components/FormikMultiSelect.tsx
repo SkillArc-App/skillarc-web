@@ -1,4 +1,5 @@
-import { Field, FieldProps } from 'formik'
+import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
+import { FieldHookConfig, FieldProps, useField } from 'formik'
 import Select from 'react-select'
 import { MultiValue, Options } from 'react-select/dist/declarations/src/types'
 
@@ -7,70 +8,45 @@ interface Option {
   value: string
 }
 
-interface CustomSelectProps extends FieldProps {
+interface MultiSelectProps {
   options: Options<Option>
-  isMulti?: boolean
   className?: string
   placeholder?: string
+  label?: string
+  isRequired?: boolean
 }
 
-const MultiSelect = ({
-  className,
-  placeholder,
-  field,
-  form,
-  options,
-  isMulti = true,
-}: CustomSelectProps) => {
-  const onChange = (option: MultiValue<Option | Option[]>) => {
-    form.setFieldValue(
-      field.name,
-      (option as Option[]).map((item: Option) => item.value),
-    )
-  }
-
-  const getValue = () => {
-    if (options) {
-      return isMulti
-        ? options.filter((option) => field.value.indexOf(option.value) >= 0)
-        : options.find((option) => option.value === field.value)
-    } else {
-      return isMulti ? [] : ('' as any)
-    }
-  }
-
-  return (
-    <Select
-      className={className}
-      name={field.name}
-      value={getValue()}
-      onChange={onChange}
-      placeholder={placeholder}
-      options={options}
-      isMulti={isMulti}
-    />
-  )
-}
+type MultiSelectField = MultiSelectProps & FieldHookConfig<string[]>
 
 const FormikMultiSelect = ({
-  ariaLabel,
-  name,
-  placeholder,
   options,
-}: {
-  options: Options<Option>
-  ariaLabel: string
-  name: string
-  placeholder: string
-}) => {
+  isRequired,
+  label,
+  ...props
+}: MultiSelectField) => {
+  const [field, meta, helpers] = useField<string[]>(props)
+
+  const onChange = (option: MultiValue<Option>) => {
+    helpers.setValue((option).map((item) => item.value))
+  }
+
+  const values = options.filter(({ value }) => field.value.includes(value))
+
   return (
-    <Field
-      aria-label={ariaLabel}
-      name={name}
-      placeholder={placeholder}
-      component={MultiSelect}
-      options={options}
-    />
+    <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>
+      <FormLabel htmlFor={field.name}>{label}</FormLabel>
+      <Select
+        className={props.className}
+        name={field.name}
+        inputId={field.name}
+        value={values}
+        onChange={onChange}
+        placeholder={props.placeholder}
+        options={options}
+        isMulti={true}
+      />
+      <FormErrorMessage>{meta.touched && meta.error}</FormErrorMessage>
+    </FormControl>
   )
 }
 
