@@ -39,7 +39,6 @@ import {
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
-import NextLink from 'next/link'
 import { useState } from 'react'
 import { colorMap, displayMap } from '../constants'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
@@ -207,7 +206,7 @@ const Order = () => {
       <Stack gap={'1rem'} pb={'2rem'}>
         <Breadcrumb>
           <BreadcrumbItem>
-            <BreadcrumbLink as={NextLink} href="/orders">
+            <BreadcrumbLink onClick={() => window.history.back()}>
               {'< Back to Orders'}
             </BreadcrumbLink>
           </BreadcrumbItem>
