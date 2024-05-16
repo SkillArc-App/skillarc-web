@@ -96,7 +96,7 @@ const AttributeModal = ({
                   })}
                 />
                 <FormikMultiSelect
-                  ariaLabel="add a value"
+                  label="add a value"
                   name="values"
                   placeholder={'Add a value'}
                   options={options}

@@ -60,7 +60,7 @@ describe('Admin', () => {
     cy.findByRole('tab', { name: 'Attributes' }).click()
     cy.findByRole('button', { name: '+ New Job Attribute' }).click()
     cy.findByDisplayValue('Attribute').select('Background')
-    cy.findByLabelText('Acceptible Set (newline separated)*').type('Misdemeanor\n')
+    cy.findByLabelText('Acceptable Values').type('Misdemeanor{Enter}')
     cy.findByRole('button', { name: 'Save' }).click()
     cy.findByText('Misdemeanor')
     cy.findByText('Background')
