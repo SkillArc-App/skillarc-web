@@ -277,25 +277,27 @@ const Order = () => {
           </ModalHeader>
           <ModalCloseButton />
           <Formik initialValues={initialValue} onSubmit={onSubmit}>
-            <Form>
-              <ModalBody>
-                <Stack spacing={2}>
-                  <FormikSelect
-                    name="activeCandidateStatus"
-                    label="Status"
-                    options={Object.values(CandidateStatuses).map((status) => ({
-                      key: status,
-                      value: status,
-                    }))}
-                  />
-                </Stack>
-              </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="green" type="submit">
-                  Save
-                </Button>
-              </ModalFooter>
-            </Form>
+            {(props) => (
+              <Form>
+                <ModalBody>
+                  <Stack spacing={2}>
+                    <FormikSelect
+                      name="activeCandidateStatus"
+                      label="Status"
+                      options={Object.values(CandidateStatuses).map((status) => ({
+                        key: status,
+                        value: status,
+                      }))}
+                    />
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="green" isLoading={props.isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
           </Formik>
         </ModalContent>
       </Modal>
