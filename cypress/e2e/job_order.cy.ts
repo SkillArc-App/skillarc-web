@@ -44,6 +44,22 @@ describe('Admin', () => {
         cy.findByText('Order Count: 12')
         cy.findByText('Open')
 
+        // Add and then modify a note
+        const noteInput = cy.findByPlaceholderText('Add a note')
+        noteInput.type('This is a note').type('{enter}')
+        noteInput.should('have.value', '')
+
+        cy.findByText('This is a note')
+        cy.findByLabelText('Modify Note').click()
+
+        cy.findByPlaceholderText('Modify a note')
+          .type('{selectall}{backspace}')
+          .type('This is a new note')
+          .type('{enter}')
+
+        cy.findByText('This is a new note')
+        cy.get('body').should('not.contain', 'This is a note')
+
         // close order
         cy.findByText('Close Job Order Without Filling').click()
         cy.findByText('Closed Without Filling')
@@ -69,7 +85,7 @@ describe('Admin', () => {
         cy.findByText('Create A New Job Order')
 
         cy.findByLabelText('Select Job').select(`${job.employmentTitle}: ${employer.name}`)
-        cy.findByText("Save").click()
+        cy.findByText('Save').click()
 
         cy.findByRole('table').within(() => {
           cy.findByText('Opened At').click()

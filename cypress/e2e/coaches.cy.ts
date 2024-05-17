@@ -93,20 +93,19 @@ describe('Coaches', () => {
         })
       cy.get('body').should('contain', 'Cannot recommend job without phone number')
 
-      const noteInput = cy.get('textarea').filter('[placeholder="Add a note"]')
+      const noteInput = cy.findByPlaceholderText('Add a note')
       noteInput.type('This is a note').type('{enter}')
       noteInput.should('have.value', '')
 
-      cy.get('body').should('contain', 'This is a note')
-      cy.get('button[aria-label="Modify Note"]').click()
+      cy.findByText('This is a note')
+      cy.findByLabelText('Modify Note').click()
 
-      cy.get('textarea')
-        .filter('[placeholder="Modify a note"]')
+      cy.findByPlaceholderText('Modify a note')
         .type('{selectall}{backspace}')
         .type('This is a new note')
         .type('{enter}')
 
-      cy.get('body').should('contain', 'This is a new note')
+      cy.findByText('This is a new note')
       cy.get('body').should('not.contain', 'This is a note')
 
       const coachSelect = cy.contains('p', 'Assigned Coach').parent().find('select')

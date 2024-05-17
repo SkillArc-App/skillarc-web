@@ -1,11 +1,5 @@
+import { Note } from '@/common/types/Note'
 import { Barrier } from '@/frontend/hooks/useBarrierData'
-
-export type SeekerNote = {
-  note: string
-  noteTakenBy: string
-  date: string
-  noteId: string
-}
 
 export type SeekerLead = {
   id: string
@@ -87,7 +81,7 @@ export type CoachSeeker = {
   lastActiveOn: string
   lastContacted: string
   lastName: string
-  notes: SeekerNote[]
+  notes: Note[]
   phoneNumber: string
   seekerId: string
   skillLevel: string

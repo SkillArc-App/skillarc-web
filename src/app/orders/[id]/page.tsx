@@ -1,5 +1,6 @@
 'use client'
 
+import NotesList from '@/app/components/NoteList'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormInputField from '@/frontend/components/FormInputField'
 import FormikSelect from '@/frontend/components/FormikSelect'
@@ -34,13 +35,13 @@ import {
   Stack,
   Tag,
   Text,
-  Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { colorMap, displayMap, statusMap } from '../constants'
+import { useNotes } from '../hooks/useNotes'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderMutation } from '../hooks/useOrderMutation'
@@ -160,6 +161,7 @@ const CandidateTable = ({
 const Order = () => {
   const { id } = useFixedParams('id')
   const { data: order, refetch: refetchOrder } = useOrderQuery(id)
+  const { addNote, modifyNote, removeNote } = useNotes()
 
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null)
   const [noteDraft, setNoteDraft] = useState('')
@@ -232,31 +234,12 @@ const Order = () => {
         </Card>
         <SimpleGrid columns={5} gap={'1rem'}>
           <GridItem colSpan={2}>
-            <Stack>
-              <Textarea
-                background={'white'}
-                value={noteDraft}
-                onChange={(e) => setNoteDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key !== 'Enter') return
-                  onAddNote()
-                }}
-              ></Textarea>
-              {(order.notes ?? []).map((note) => {
-                return (
-                  <Card key={note.id}>
-                    <CardBody>
-                      <Stack>
-                        <Text variant={'b2'}>{note.content}</Text>
-                        <Text color={'gray'} variant={'b3'}>
-                          {note.noteTakenBy} - {new Date(note.createdAt).toDateString()}
-                        </Text>
-                      </Stack>
-                    </CardBody>
-                  </Card>
-                )
-              })}
-            </Stack>
+            <NotesList
+              notes={order.notes}
+              onCreate={(note) => addNote.mutateAsync({ jobId: id, note })}
+              onModify={(noteId, note) => modifyNote.mutateAsync({ jobId: id, note, noteId })}
+              onDelete={(noteId) => removeNote.mutateAsync({ jobId: id, noteId })}
+            />
           </GridItem>
           <GridItem colSpan={3}>
             <Card>
