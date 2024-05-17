@@ -2,7 +2,7 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { SubmittableCoachTask } from '@/app/coaches/types'
+import { ContextKind, SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
@@ -152,6 +152,8 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
+  const recommendId = seeker.kind == ContextKind.SEEKER ? seeker.seekerId : seeker.leadId
+
   return (
     <Box overflow={'clip'}>
       <ReminderModal
@@ -160,19 +162,23 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         contextId={id}
         onSubmit={handleSubmitReminder}
       />
-      <AttributeModal
-        attributes={attributes}
-        isOpen={isAttributeModalOpen}
-        seekerId={seeker.seekerId}
-        onClose={() => setIsAttributeModalOpen(false)}
-        refetchSeeker={refetchSeeker}
-        workingValue={workingValue}
-      />
-      <RecommendForJobModal
-        seekerId={seeker.seekerId}
-        isOpen={isRecForJobModalOpen}
-        onClose={() => setIsRecForJobModalOpen(false)}
-      />
+      {seeker.seekerId && (
+        <AttributeModal
+          attributes={attributes}
+          isOpen={isAttributeModalOpen}
+          seekerId={seeker.seekerId}
+          onClose={() => setIsAttributeModalOpen(false)}
+          refetchSeeker={refetchSeeker}
+          workingValue={workingValue}
+        />
+      )}
+      {recommendId && (
+        <RecommendForJobModal
+          seekerId={recommendId}
+          isOpen={isRecForJobModalOpen}
+          onClose={() => setIsRecForJobModalOpen(false)}
+        />
+      )}
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}
@@ -295,48 +301,50 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                 </Text>
               </Box>
             </Stack>
-            <Stack>
-              <HStack>
-                <Heading type="h3" color={'black'}>
-                  Attributes
-                </Heading>
-                <IconButton
-                  size={'sm'}
-                  onClick={() => addAttribute()}
-                  aria-label="add-attribute"
-                  variant={'ghost'}
-                  icon={<FaPlus />}
-                />
-              </HStack>
-              {seeker.attributes.map((a, i) => {
-                return (
-                  <Box key={i} bg={'white'} p={'1rem'}>
-                    <HStack>
-                      <Stack>
-                        <Link
-                          onClick={() => addAttribute()} // TODO: add in working value here
-                        >
-                          <Text variant={'b3'}>{a.name}</Text>
-                        </Link>
-                        <HStack>
-                          {a.value.map((v) => {
-                            return <Tag key={v}>{v}</Tag>
-                          })}
-                        </HStack>
-                      </Stack>
-                      <Spacer />
-                      <IconButton
-                        onClick={() => removeAttribute(a.id)}
-                        size={'sm'}
-                        aria-label="delete-attribute"
-                        variant={'ghost'}
-                        icon={<FaTrash />}
-                      />
-                    </HStack>
-                  </Box>
-                )
-              })}
-            </Stack>
+            {seeker.seekerId && (
+              <Stack>
+                <HStack>
+                  <Heading type="h3" color={'black'}>
+                    Attributes
+                  </Heading>
+                  <IconButton
+                    size={'sm'}
+                    onClick={() => addAttribute()}
+                    aria-label="add-attribute"
+                    variant={'ghost'}
+                    icon={<FaPlus />}
+                  />
+                </HStack>
+                {seeker.attributes.map((a, i) => {
+                  return (
+                    <Box key={i} bg={'white'} p={'1rem'}>
+                      <HStack>
+                        <Stack>
+                          <Link
+                            onClick={() => addAttribute()} // TODO: add in working value here
+                          >
+                            <Text variant={'b3'}>{a.name}</Text>
+                          </Link>
+                          <HStack>
+                            {a.value.map((v) => {
+                              return <Tag key={v}>{v}</Tag>
+                            })}
+                          </HStack>
+                        </Stack>
+                        <Spacer />
+                        <IconButton
+                          onClick={() => removeAttribute(a.id)}
+                          size={'sm'}
+                          aria-label="delete-attribute"
+                          variant={'ghost'}
+                          icon={<FaTrash />}
+                        />
+                      </HStack>
+                    </Box>
+                  )
+                })}
+              </Stack>
+            )}
           </Stack>
         </GridItem>
         <GridItem pl="2" pt={'1rem'} area={'main'} overflowY={'scroll'}>

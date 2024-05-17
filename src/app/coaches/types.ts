@@ -15,7 +15,10 @@ export type SeekerLead = {
   status: string
 }
 
-type ContextKind = 'lead' | 'seeker'
+export enum ContextKind {
+  LEAD = 'lead',
+  SEEKER = 'seeker'
+}
 
 export type SubmittableSeekerLead = Pick<
   SeekerLead,
@@ -83,7 +86,8 @@ export type CoachSeeker = {
   lastName: string
   notes: Note[]
   phoneNumber: string
-  seekerId: string
+  leadId?: string
+  seekerId?: string
   skillLevel: string
 }
 
