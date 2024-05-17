@@ -1,9 +1,11 @@
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
+import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from 'react-query'
 
 export const useOrderActivationMutation = () => {
   const queryClient = useQueryClient()
+  const toast = useToast()
 
   return useAuthenticatedMutation(
     async (id: string, token: string) => {
@@ -16,6 +18,15 @@ export const useOrderActivationMutation = () => {
         queryClient.invalidateQueries(['jobOrder', id])
         queryClient.invalidateQueries(['jobOrders'])
       },
+      onError: () => {
+        toast({
+          title: 'Unable to Activate Job Order Check for Existing Active Orders',
+          status: 'error',
+          position: 'top',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
     },
   )
 }
