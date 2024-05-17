@@ -40,7 +40,7 @@ import {
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
-import { colorMap, displayMap } from '../constants'
+import { colorMap, displayMap, statusMap } from '../constants'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderMutation } from '../hooks/useOrderMutation'
@@ -199,13 +199,6 @@ const Order = () => {
 
   const initialValue = {
     activeCandidateStatus: activeCandidate?.status ?? '',
-  }
-
-  const statusMap = {
-    added: 'Open',
-    recommended: 'Sent to Employer',
-    hired: 'Hired',
-    rescinded: 'Rejected',
   }
 
   return (
