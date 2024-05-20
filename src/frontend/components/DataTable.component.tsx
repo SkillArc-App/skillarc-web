@@ -36,10 +36,11 @@ function Filter<TData extends RowData>({ column }: { column: Column<TData, unkno
 
   return (
     <Input
-      className="w-36 border shadow rounded"
       onChange={(value) => column.setFilterValue(value.target.value)}
       placeholder={`Search...`}
       type="text"
+      size='xs'
+      variant='flushed'
       value={(columnFilterValue ?? '') as string}
     />
   )
