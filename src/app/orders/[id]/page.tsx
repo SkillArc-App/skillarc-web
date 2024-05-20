@@ -121,6 +121,10 @@ const CandidateTable = ({
           `${b.original.firstName} ${b.original.lastName}`,
         )
       },
+      filterFn: (row, _, filterValue) => {
+        const fullName = `${row.original.firstName} ${row.original.lastName}`.toLowerCase()
+        return fullName.includes(filterValue.toLowerCase())
+      },
       cell: (row) => (
         <Link onClick={() => onCandidateClick(row.row.original)}>
           {row.row.original.firstName} {row.row.original.lastName}
