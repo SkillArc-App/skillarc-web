@@ -148,6 +148,7 @@ export default function Jobs() {
   const columns = [
     columnHelper.accessor('title', {
       header: 'Title',
+      filterFn: 'includesString',
       cell: (row) => (
         <Link href={`/admin/jobs/${row.row.original.id}`} as={NextLink}>
           {row.row.original.hidden ? (
@@ -173,6 +174,7 @@ export default function Jobs() {
     }),
     columnHelper.accessor('employer', {
       header: 'Employer',
+      filterFn: 'includesString',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('applicantCount', {

@@ -38,6 +38,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
   const columns = [
     columnHelper.accessor('employmentTitle', {
       header: 'Title',
+      filterFn: 'includesString',
       cell: (row) => (
         <Link href={`orders/${row.row.original.id}`} as={NextLink}>
           <div
@@ -53,6 +54,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
     }),
     columnHelper.accessor('employerName', {
       header: 'Employer',
+      filterFn: 'includesString',
       cell: (row) => (
         <div
           style={{
@@ -67,6 +69,10 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
     columnHelper.accessor('orderCount', {
       header: 'Order Count',
       cell: (row) => row.getValue() || 'Provide Order Count',
+    }),
+    columnHelper.accessor('hireCount', {
+      header: 'Hires',
+      cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('status', {
       header: 'Status',

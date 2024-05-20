@@ -28,7 +28,7 @@ export type JobOrderSummary = {
   employmentTitle: string
   employerName: string
   openedAt: string
-  applicantCount: number
+  recommendedCount: number
   hireCount: number
   orderCount: number
   status: JobOrderStatuses

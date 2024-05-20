@@ -55,6 +55,10 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
   const columns = [
     columnHelper.accessor('firstName', {
       header: 'Name',
+      filterFn: (row, _, filterValue) => {
+        const fullName = `${row.original.firstName} ${row.original.lastName}`.toLowerCase()
+        return fullName.includes(filterValue.toLowerCase())
+      },
       cell: (row) => {
         const name = !!row.getValue()
           ? `${row.getValue()} ${row.row.original.lastName}`
@@ -82,6 +86,7 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
     }),
     columnHelper.accessor('assignedCoach', {
       header: 'Coach',
+      filterFn: 'includesString',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('certifiedBy', {

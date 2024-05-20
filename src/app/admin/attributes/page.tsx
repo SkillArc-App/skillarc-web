@@ -79,6 +79,7 @@ const Attributes = () => {
   const columns = [
     columnHelper.accessor('name', {
       header: 'Name',
+      filterFn: 'includesString',
       cell: (row) => <Link onClick={() => handleEdit(row.row.original.id)}>{row.getValue()}</Link>,
     }),
     columnHelper.accessor('description', {

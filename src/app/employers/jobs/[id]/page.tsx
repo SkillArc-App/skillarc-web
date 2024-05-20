@@ -128,6 +128,7 @@ const Jobs = () => {
     }),
     columnHelper.accessor('jobName', {
       cell: (info) => info.getValue(),
+      filterFn: 'includesString',
       header: 'Job',
     }),
     columnHelper.accessor('certifiedBy', {

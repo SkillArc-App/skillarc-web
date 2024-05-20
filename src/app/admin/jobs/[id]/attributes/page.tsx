@@ -114,6 +114,7 @@ const AttributesPage = () => {
   const columns = [
     columnHelper.accessor('attributeName', {
       header: 'Name',
+      filterFn: 'includesString',
       cell: (row) => <Link onClick={() => handleEdit(row.row.original)}>{row.getValue()}</Link>,
     }),
     columnHelper.accessor('acceptibleSet', {

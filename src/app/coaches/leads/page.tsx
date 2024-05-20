@@ -89,6 +89,10 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
           {`${row.getValue()} ${row.row.original.lastName}`}
         </Link>
       ),
+      filterFn: (row, _, filterValue) => {
+        const fullName = `${row.original.firstName} ${row.original.lastName}`.toLowerCase()
+        return fullName.includes(filterValue.toLowerCase())
+      },
     }),
     columnHelper.accessor('id', {
       header: 'Navigation',
@@ -100,6 +104,7 @@ const Table = ({ data }: { data: SeekerLead[] }) => {
     }),
     columnHelper.accessor('assignedCoach', {
       header: 'Coach',
+      filterFn: 'includesString',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('email', {
