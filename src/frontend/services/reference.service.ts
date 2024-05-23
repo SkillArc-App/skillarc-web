@@ -4,7 +4,7 @@ export type Reference = {
   id: string
   authorProfileId: string
   referenceText: string
-  seekerProfileId: string
+  seekerId: string
   trainingProviderId: string
 }
 
