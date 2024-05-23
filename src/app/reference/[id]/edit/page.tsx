@@ -25,7 +25,7 @@ export default function EditReferences() {
 
     onUpdateReference(
       {
-        seekerProfileId: data.seekerProfileId,
+        seekerProfileId: data.seekerId,
         referenceText: reference,
         id,
       },
@@ -38,7 +38,7 @@ export default function EditReferences() {
     return (
       <Reference
         onSubmit={handleSubmit}
-        seekerProfileId={data.seekerProfileId}
+        seekerProfileId={data.seekerId}
         startingReferenceText={data.referenceText}
       />
     )
