@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'
 
 export default function CompleteLoading() {
-  const { data, refetch } = useOnboardingQuery()
+  const { data, refetch } = useOnboardingQuery({ refetchInterval: 500 })
   const [readyToRoute, setReadyToRoute] = useState(false)
 
   const router = useRouter()
@@ -21,9 +21,7 @@ export default function CompleteLoading() {
     if (data?.nextStep == 'complete') {
       setReadyToRoute(true)
     }
-
-    setTimeout(refetch, 500)
-  }, [data?.nextStep, readyToRoute, refetch, router])
+  }, [data, readyToRoute, refetch, router])
 
   // Once we have a complete flag navigate wherever is appropriate
   useEffect(() => {

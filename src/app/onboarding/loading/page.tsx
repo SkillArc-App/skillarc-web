@@ -7,14 +7,14 @@ import { useEffect } from 'react'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'
 
 const Loading = () => {
-  const { data, refetch } = useOnboardingQuery()
+  const { data } = useOnboardingQuery()
   const router = useRouter()
 
   useEffect(() => {
     if (data) {
       router.push(`/onboarding/${data.nextStep}`)
     }
-  }, [data, refetch, router])
+  }, [data, router])
 
   return <LoadingPage />
 }

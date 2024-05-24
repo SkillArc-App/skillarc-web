@@ -6,7 +6,6 @@ import { post } from '@/frontend/http-common'
 import { Button, Stack, useToast } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
 import { useQueryClient } from 'react-query'
 import { Heading } from '../../../frontend/components/Heading.component'
 import { Text } from '../../../frontend/components/Text.component'
@@ -21,7 +20,6 @@ type NewNameProps = {
 
 export default function Start() {
   const queryClient = useQueryClient()
-  const { data, refetch, isLoading: isOnboardingLoading } = useOnboardingQuery()
   const toast = useToast()
   const router = useRouter()
 
@@ -50,7 +48,17 @@ export default function Start() {
     },
   )
 
-  const isLoading = createOnboarding.isLoading || isOnboardingLoading
+  useOnboardingQuery({
+    enabled: createOnboarding.isSuccess,
+    refetchInterval: 500,
+    onSuccess(data) {
+      if (data.nextStep != 'start') {
+        router.push(`/onboarding/${data.nextStep}`)
+      }
+    },
+  })
+
+  const isLoading = createOnboarding.isLoading || createOnboarding.isSuccess
 
   const initialValue: NewNameProps = {
     firstName: '',
@@ -72,16 +80,6 @@ export default function Start() {
 
     createOnboarding.mutate(formatted)
   }
-
-  useEffect(() => {
-    if (createOnboarding.isSuccess && data) {
-      if (data.nextStep != 'start') {
-        router.push(`/onboarding/${data.nextStep}`)
-      } else {
-        setTimeout(refetch, 500)
-      }
-    }
-  }, [createOnboarding.isSuccess, data, refetch, router])
 
   return (
     <>
