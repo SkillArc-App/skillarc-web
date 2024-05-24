@@ -28,7 +28,7 @@ const nextConfig = {
       },
       {
         source: '/onboarding',
-        destination: '/onboarding/start',
+        destination: '/onboarding/loading',
         permanent: false
       },
       {
