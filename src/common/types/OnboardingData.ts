@@ -52,11 +52,12 @@ export type OnboardingData = {
 }
 
 export type OnboardingNextStep =
+  'loading' |
   'start' |
-  'name' |
   'reliability' |
   'employment' |
   "education" |
   'training' |
   'opportunities' |
+  'complete_loading' |
   'complete'
