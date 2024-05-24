@@ -1,6 +1,6 @@
 export {}
 
-describe('Admin', () => {
+describe('Job Orders', () => {
   beforeEach(() => {
     cy.task('createJob').then((r: any) => {
       cy.wrap(r['job']).as('job')
