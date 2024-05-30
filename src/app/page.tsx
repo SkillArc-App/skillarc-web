@@ -24,10 +24,6 @@ const Home = () => {
     if (!user) return
     if (!token) return
 
-    if (user.trainingProviderProfile) {
-      router.push('/students')
-      return
-    }
     if (user.recruiter) {
       router.push('/employers/jobs')
       return
