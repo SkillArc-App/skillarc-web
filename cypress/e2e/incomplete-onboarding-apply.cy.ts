@@ -6,17 +6,32 @@ describe('Incomplete Onboarding applying to jobs', () => {
       cy.wrap(r).as('user')
     })
     cy.task('createJob').then((r: any) => {
-      cy.wrap(r["job"]).as('job')
+      cy.wrap(r['job']).as('job')
     })
     cy.task('assertNoFailedJobs')
   })
+
+  function getNumbers(length: number) {
+    let str = ""
+
+    for (let i = 0; i < length; i++) {
+      str += getRandomNumber()
+    }
+
+    return str
+  }
+
+  function getRandomNumber() {
+    return Math.floor(Math.random() * 10)
+  }
 
   const minimalOnboardingAndJobApply = (job: any) => {
     cy.url().should('contain', 'onboarding')
 
     cy.get('label').contains('First Name').next().type('John')
     cy.get('label').contains('Last Name').next().type('Brauns')
-    cy.get('label').contains('Phone Number').next().type('570-555-5555')
+    const phoneNumber = `${getNumbers(3)}-${getNumbers(3)}-${getNumbers(4)}`
+    cy.get('label').contains('Phone Number').next().type(phoneNumber)
     cy.get('label').contains('Date of Birth').next().type('1970-01-20')
     cy.findByRole('button', { name: 'Next' }).click()
 

@@ -9,6 +9,20 @@ describe('Onboarding', () => {
     cy.task('assertNoFailedJobs')
   })
 
+  function getNumbers(length: number) {
+    let str = ""
+
+    for (let i = 0; i < length; i++) {
+      str += getRandomNumber()
+    }
+
+    return str
+  }
+
+  function getRandomNumber() {
+    return Math.floor(Math.random() * 10)
+  }
+
   it('should navigate through onboarding', () => {
     // output debug in cypress
     cy.get('@response').then((r: any) => {
@@ -29,7 +43,9 @@ describe('Onboarding', () => {
     cy.visit('/onboarding/start')
     cy.findByLabelText('First Name*').type('Dwight')
     cy.findByLabelText('Last Name*').type('Schrute')
-    cy.findByLabelText('Phone Number*').type('570-555-5555')
+    const phoneNumber = `${getNumbers(3)}-${getNumbers(3)}-${getNumbers(4)}`
+
+    cy.findByLabelText('Phone Number*').type(phoneNumber)
     cy.findByLabelText('Date of Birth*').type('1970-01-20')
     cy.get('button').contains('Next').click()
 
@@ -102,7 +118,7 @@ describe('Onboarding', () => {
     zipCodeInput.should('have.value', '')
 
     const phoneInput = cy.get('p').contains('Phone number').next()
-    phoneInput.should('have.value', '570-555-5555')
+    phoneInput.should('have.value', phoneNumber)
 
     firstNameInput.clear().type('Michael')
     lastNameInput.clear().type('Scott')
@@ -113,7 +129,7 @@ describe('Onboarding', () => {
 
     cy.get('body').should('not.contain', 'Dwight Schrute')
     cy.get('body').should('contain', 'Michael Scott')
-    cy.get('body').should('not.contain', '570-555-5555')
+    cy.get('body').should('not.contain', phoneNumber)
     cy.get('body').should('contain', '570-444-4444')
     cy.get('body').should('contain', '18503')
 
