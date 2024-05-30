@@ -131,7 +131,6 @@ export default function Jobs() {
         hidden: job.hideJob,
         title: job.employmentTitle,
         employer: job.employer.name,
-        applicantCount: job.numberOfApplicants,
         createdAt: new Date(job.createdAt).toDateString(),
       }
     })
@@ -141,7 +140,6 @@ export default function Jobs() {
     hidden: boolean
     title: string
     employer: string
-    applicantCount: number
     createdAt: string
   }>()
 
@@ -175,10 +173,6 @@ export default function Jobs() {
     columnHelper.accessor('employer', {
       header: 'Employer',
       filterFn: 'includesString',
-      cell: (row) => row.getValue(),
-    }),
-    columnHelper.accessor('applicantCount', {
-      header: '# of Applicants',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('createdAt', {
