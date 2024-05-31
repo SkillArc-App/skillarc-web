@@ -52,7 +52,9 @@ export default function Start() {
     enabled: createOnboarding.isSuccess,
     refetchInterval: 500,
     onSuccess(data) {
-      if (data.nextStep != 'start') {
+      if (data.nextStep == 'complete') {
+        router.push(`/onboarding/complete_loading`)
+      } else if (data.nextStep != 'start') {
         router.push(`/onboarding/${data.nextStep}`)
       }
     },
