@@ -2,7 +2,7 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { ContextKind, SubmittableCoachTask } from '@/app/coaches/types'
+import { SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
@@ -86,19 +86,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!seeker) return
     if (!jobs) return
 
-    if (!seeker.phoneNumber) {
-      toast({
-        title: 'Cannot recommend job without phone number',
-        status: 'error',
-        position: 'top',
-        duration: 3000,
-        isClosable: true,
-      })
-    } else {
-      await post(`/coaches/contexts/${id}/recommend_job`, { jobId }, token)
+    await post(`/coaches/contexts/${id}/recommend_job`, { jobId }, token)
 
-      refetchSeeker()
-    }
+    refetchSeeker()
   }
 
   const certifySeeker = async () => {
@@ -152,8 +142,6 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const index = tabs[pathName.split('/').slice(-1)[0]] || 0
 
-  const recommendId = seeker.kind == ContextKind.SEEKER ? seeker.seekerId : seeker.leadId
-
   return (
     <Box overflow={'clip'}>
       <ReminderModal
@@ -172,13 +160,13 @@ const Context = ({ children }: { children: React.ReactNode }) => {
           workingValue={workingValue}
         />
       )}
-      {recommendId && (
+      {
         <RecommendForJobModal
-          seekerId={recommendId}
+          seekerId={seeker.seekerId}
           isOpen={isRecForJobModalOpen}
           onClose={() => setIsRecForJobModalOpen(false)}
         />
-      )}
+      }
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}

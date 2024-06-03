@@ -87,7 +87,7 @@ export type CoachSeeker = {
   notes: Note[]
   phoneNumber: string
   leadId?: string
-  seekerId?: string
+  seekerId: string
   skillLevel: string
 }
 

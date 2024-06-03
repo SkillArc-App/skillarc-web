@@ -1,4 +1,4 @@
-export { }
+export {}
 
 const reloadUntilConditionMet = (
   predicate: () => Cypress.Chainable<boolean>,
@@ -72,7 +72,7 @@ describe('Coaches', () => {
         `${seeker['firstName']} ${seeker['lastName']}`,
       )
 
-      cy.findByRole('button', {name: 'recommend-for-job'}).click()
+      cy.findByRole('button', { name: 'recommend-for-job' }).click()
       cy.findByDisplayValue('Job Order').select('General Contractor - The Superior Group')
       cy.findByRole('button', { name: 'Recommend' }).click()
 
@@ -90,8 +90,8 @@ describe('Coaches', () => {
         .next()
         .within(() => {
           cy.get('button').contains('Recommend').click()
+          cy.get('div').should('contain', 'Recommended')
         })
-      cy.get('body').should('contain', 'Cannot recommend job without phone number')
 
       const noteInput = cy.findByPlaceholderText('Add a note')
       noteInput.type('This is a note').type('{enter}')
@@ -132,15 +132,6 @@ describe('Coaches', () => {
         },
         { retryCount: 8 },
       )
-
-      cy.get('body')
-        .contains('Other Jobs')
-        .next()
-        .next()
-        .within(() => {
-          cy.get('button').contains('Recommend').click()
-          cy.get('div').should('contain', 'Recommended')
-        })
 
       cy.findByRole('button', { name: 'certify' }).click()
       cy.findByRole('button', { name: 'certify' }).should('not.exist')
@@ -262,6 +253,15 @@ describe('Coaches', () => {
       cy.findByLabelText('Phone Number*').type(newLead.phoneNumber)
       cy.findByRole('button', { name: 'Save' }).click()
 
+      reloadUntilConditionMet(
+        () => {
+          return cy
+            .get('table')
+            .then((el) => el.text().includes(newLead.phoneNumber))
+        },
+        { retryCount: 8 },
+      )
+
       cy.get('table').should('contain', newLead.firstName)
       cy.get('table').should('contain', newLead.lastName)
       cy.get('table').should('contain', newLead.phoneNumber)
@@ -276,7 +276,7 @@ describe('Coaches', () => {
 
       cy.findByText('< Back to Leads')
 
-      cy.findByRole('button', { name: 'certify' }).should('be.disabled')
+      cy.findByRole('button', { name: 'certify' }).should('be.enabled')
 
       cy.findByPlaceholderText('Add a note').type('This is a note').type('{enter}')
       cy.findByPlaceholderText('Add a note').should('have.value', '')
