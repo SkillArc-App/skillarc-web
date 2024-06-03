@@ -22,7 +22,12 @@ import {
   GridItem,
   HStack,
   Heading,
+  IconButton,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -39,7 +44,9 @@ import {
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
+import NextLink from 'next/link'
 import { useState } from 'react'
+import { FaEllipsis } from 'react-icons/fa6'
 import { colorMap, displayMap, statusMap } from '../constants'
 import { useNotes } from '../hooks/useNotes'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
@@ -155,6 +162,32 @@ const CandidateTable = ({
         }
 
         return <Text color={colorMap[status]}>{displayMap[status]}</Text>
+      },
+    }),
+    columnHelper.accessor(() => {}, {
+      header: 'Actions',
+      cell: (row) => {
+        return (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<FaEllipsis />}
+              size={'sm'}
+              variant="ghost"
+            />
+            <MenuList>
+              <MenuItem>
+                <NextLink href={`/coaches/contexts/${row.row.original.seekerId}`}>
+                  Coach Profile
+                </NextLink>
+              </MenuItem>
+              <MenuItem>
+                <NextLink href={`/profiles/${row.row.original.seekerId}`}>Seeker Profile</NextLink>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )
       },
     }),
   ]
