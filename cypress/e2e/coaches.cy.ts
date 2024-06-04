@@ -28,7 +28,7 @@ describe('Coaches', () => {
       cy.wrap(r).as('coach')
     })
     cy.task('createActiveSeeker').then((r: any) => {
-      cy.wrap(r).as('seeker')
+      cy.wrap(r['person']).as('person')
     })
     cy.task('createSeekerLead').then((r: any) => {
       cy.wrap(r).as('lead')
@@ -53,14 +53,14 @@ describe('Coaches', () => {
         .select(coachEmail)
     })
 
-    cy.get('@seeker').then((seeker: any) => {
+    cy.get('@person').then((person: any) => {
       // We can't assume this to be the case due to round robin assignment
-      // cy.get('tbody').should('not.contain', seeker['firstName'])
+      // cy.get('tbody').should('not.contain', person['firstName'])
 
       cy.get('label').contains('Owned by Me').parent().click()
 
       cy.findByRole('table').within(() => {
-        const row = cy.findByText(`${seeker['firstName']} ${seeker['lastName']}`).parent().parent()
+        const row = cy.findByText(`${person['firstName']} ${person['lastName']}`).parent().parent()
 
         row.within(() => {
           cy.findByRole('link', { name: 'Dash' }).click()
@@ -69,7 +69,7 @@ describe('Coaches', () => {
 
       cy.get('body', { timeout: 10000 }).should(
         'contain',
-        `${seeker['firstName']} ${seeker['lastName']}`,
+        `${person['firstName']} ${person['lastName']}`,
       )
 
       cy.findByRole('button', { name: 'recommend-for-job' }).click()
@@ -82,7 +82,7 @@ describe('Coaches', () => {
       cy.get('body').contains('Add a value').next().type('Misdemeanor{enter}')
       cy.findByRole('button', { name: 'Save' }).click()
 
-      cy.get('body').should('contain', seeker['email'])
+      cy.get('body').should('contain', person['email'])
 
       cy.get('body')
         .contains('Other Jobs')
@@ -114,7 +114,7 @@ describe('Coaches', () => {
 
       // save current route
       cy.url().then((url) => {
-        cy.findByRole('link', { name: `${seeker['firstName']} ${seeker['lastName']}` }).click()
+        cy.findByRole('link', { name: `${person['firstName']} ${person['lastName']}` }).click()
         cy.findByLabelText('Edit Profile').click()
 
         cy.get('p').contains('Phone number').next().clear().type('570-555-5555')
@@ -187,7 +187,7 @@ describe('Coaches', () => {
 
       const table = cy.findByRole('table')
       table.within(() => {
-        const row = cy.findByText(`${seeker['firstName']} ${seeker['lastName']}`).parent().parent()
+        const row = cy.findByText(`${person['firstName']} ${person['lastName']}`).parent().parent()
 
         row.within(() => {
           cy.findAllByText(coachEmail).should((elements) => expect(elements).to.have.length(2))
@@ -210,7 +210,7 @@ describe('Coaches', () => {
       cy.url().should('contain', '/jobs/')
       cy.go('back')
 
-      cy.findByRole('link', { name: `${seeker['firstName']} ${seeker['lastName']}` }).click()
+      cy.findByRole('link', { name: `${person['firstName']} ${person['lastName']}` }).click()
       cy.findByLabelText('Edit Profile').click()
 
       cy.get('p').contains('First name').next().clear().type('Dwight')
