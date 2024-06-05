@@ -2,7 +2,7 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { SubmittableCoachTask } from '@/app/coaches/types'
+import { ContextKind, SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
@@ -58,7 +58,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   const { data: attributes } = useCoachAttributes()
   const pathName = usePathname()
 
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isReminderModalOpen, setIsReminderModalOpen] = useState(false)
   const [isAttributeModalOpen, setIsAttributeModalOpen] = useState(false)
   const [isRecForJobModalOpen, setIsRecForJobModalOpen] = useState(false)
 
@@ -91,9 +91,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
 
   const certifySeeker = async () => {
     if (!token) return
-    if (!seeker?.seekerId) return
+    if (!seeker) return
 
-    await post(`/coaches/seekers/${seeker.seekerId}/certify`, {}, token)
+    await post(`/coaches/seekers/${seeker.id}/certify`, {}, token)
 
     refetchSeeker()
   }
@@ -108,7 +108,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     if (!seeker) return
 
     await destroy(
-      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${seeker.seekerId}/attributes/${seekerAttributeId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/coaches/seekers/${id}/attributes/${seekerAttributeId}`,
       token,
     )
 
@@ -121,7 +121,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
     await post(`/coaches/tasks/reminders`, { reminder }, token)
     refetchTasks()
 
-    setIsModalOpen(false)
+    setIsReminderModalOpen(false)
   }
 
   const applicationIcon = (applicationStatus: string) => {
@@ -143,21 +143,21 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box overflow={'clip'}>
       <ReminderModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isReminderModalOpen}
+        onClose={() => setIsReminderModalOpen(false)}
         contextId={id}
         onSubmit={handleSubmitReminder}
       />
       <AttributeModal
         attributes={attributes}
         isOpen={isAttributeModalOpen}
-        seekerId={seeker.seekerId}
+        seekerId={id}
         onClose={() => setIsAttributeModalOpen(false)}
         refetchSeeker={refetchSeeker}
         workingValue={workingValue}
       />
       <RecommendForJobModal
-        seekerId={seeker.seekerId}
+        seekerId={id}
         isOpen={isRecForJobModalOpen}
         onClose={() => setIsRecForJobModalOpen(false)}
       />
@@ -186,8 +186,8 @@ const Context = ({ children }: { children: React.ReactNode }) => {
               </Breadcrumb>
               <HStack gap={0}>
                 <Heading type="h3" color={'black'}>
-                  {seeker.seekerId ? (
-                    <Link as={NextLink} href={`/profiles/${seeker.seekerId}`}>
+                  {seeker.kind === ContextKind.SEEKER  ? (
+                    <Link as={NextLink} href={`/profiles/${seeker.id}`}>
                       {seeker.firstName} {seeker.lastName}
                     </Link>
                   ) : (
@@ -207,11 +207,10 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                   </Tooltip>
                 ) : (
                   <Tooltip
-                    label={seeker.seekerId ? 'Certify Seeker' : 'Certification Requires Profile'}
+                    label={'Certify Seeker'}
                   >
                     <IconButton
                       size={'sm'}
-                      isDisabled={!seeker.seekerId}
                       onClick={certifySeeker}
                       aria-label="certify"
                       variant={'ghost'}
@@ -222,7 +221,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                 <Tooltip label="Create Reminder">
                   <IconButton
                     size={'sm'}
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => setIsReminderModalOpen(true)}
                     aria-label="create-reminder"
                     variant={'ghost'}
                     icon={<FaRegBell />}
@@ -283,8 +282,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                 </Text>
               </Box>
             </Stack>
-            {seeker.seekerId && (
-              <Stack>
+            <Stack>
                 <HStack>
                   <Heading type="h3" color={'black'}>
                     Attributes
@@ -326,7 +324,6 @@ const Context = ({ children }: { children: React.ReactNode }) => {
                   )
                 })}
               </Stack>
-            )}
           </Stack>
         </GridItem>
         <GridItem pl="2" pt={'1rem'} area={'main'} overflowY={'scroll'}>
