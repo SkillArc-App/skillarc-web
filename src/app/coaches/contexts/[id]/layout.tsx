@@ -31,7 +31,6 @@ import {
   Tabs,
   Tag,
   Tooltip,
-  useToast,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -66,7 +65,6 @@ const Context = ({ children }: { children: React.ReactNode }) => {
   const [workingValue, setWorkingValue] = useState<AttributeForm | undefined>(undefined)
 
   const token = useAuthToken()
-  const toast = useToast()
 
   const jobs = allJobs?.filter((job) => {
     return !seeker?.applications.some((a) => a.jobId === job.id)
@@ -150,23 +148,19 @@ const Context = ({ children }: { children: React.ReactNode }) => {
         contextId={id}
         onSubmit={handleSubmitReminder}
       />
-      {seeker.seekerId && (
-        <AttributeModal
-          attributes={attributes}
-          isOpen={isAttributeModalOpen}
-          seekerId={seeker.seekerId}
-          onClose={() => setIsAttributeModalOpen(false)}
-          refetchSeeker={refetchSeeker}
-          workingValue={workingValue}
-        />
-      )}
-      {
-        <RecommendForJobModal
-          seekerId={seeker.seekerId}
-          isOpen={isRecForJobModalOpen}
-          onClose={() => setIsRecForJobModalOpen(false)}
-        />
-      }
+      <AttributeModal
+        attributes={attributes}
+        isOpen={isAttributeModalOpen}
+        seekerId={seeker.seekerId}
+        onClose={() => setIsAttributeModalOpen(false)}
+        refetchSeeker={refetchSeeker}
+        workingValue={workingValue}
+      />
+      <RecommendForJobModal
+        seekerId={seeker.seekerId}
+        isOpen={isRecForJobModalOpen}
+        onClose={() => setIsRecForJobModalOpen(false)}
+      />
       <Grid
         templateAreas={`"nav main right"`}
         gridTemplateColumns={'20rem 1fr 20rem'}
