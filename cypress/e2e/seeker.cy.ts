@@ -3,7 +3,7 @@ export {}
 describe('Seeker', () => {
   beforeEach(() => {
     cy.task('createSeeker').then((seeker: any) => {
-      cy.wrap(seeker['seeker']).as('seeker')
+      cy.wrap(seeker['person']).as('person')
       cy.wrap(seeker['user']).as('user')
     })
     cy.task('assertNoFailedJobs')
@@ -12,7 +12,7 @@ describe('Seeker', () => {
   it('should navigate through onboarding', () => {
     // output debug in cypress
     cy.get('@user').then((user: any) => {
-      cy.get('@seeker').then((seeker: any) => {
+      cy.get('@person').then((person: any) => {
         cy.log(user)
         cy.log(user['email'])
 
@@ -26,7 +26,7 @@ describe('Seeker', () => {
         emailSelect.should('be.enabled')
         emailSelect.select(user['email'], { timeout: 10000 })
 
-        cy.visit(`/profiles/${seeker['id']}`)
+        cy.visit(`/profiles/${person['id']}`)
 
         // profile page
         cy.get('body').should('contain', user['firstName'])

@@ -43,28 +43,20 @@ export type Job = {
 
 export type JobOrder = JobOrderSummary & {
   candidates: Candidate[]
-  applicants: Applicant[]
   notes: Note[]
 }
 
-type Seeker = {
+type Person = {
   firstName?: string
   lastName?: string
   phoneNumber?: string
   email?: string
-  seekerId: string
+  personId: string
 }
 
-export type Applicant = Seeker & {
-  id: string
-  recommendedAt?: string
-  status: ApplicationStatus
-}
-
-export type Candidate = Seeker & {
+export type Candidate = Person & {
   id: string
   appliedAt?: string
   recommendedAt?: string
-  seekerId: string
   status: CandidateStatuses
 }

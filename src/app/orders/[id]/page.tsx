@@ -178,12 +178,12 @@ const CandidateTable = ({
             />
             <MenuList>
               <MenuItem>
-                <NextLink href={`/coaches/contexts/${row.row.original.seekerId}`}>
+                <NextLink href={`/coaches/contexts/${row.row.original.personId}`}>
                   Coach Profile
                 </NextLink>
               </MenuItem>
               <MenuItem>
-                <NextLink href={`/profiles/${row.row.original.seekerId}`}>Seeker Profile</NextLink>
+                <NextLink href={`/profiles/${row.row.original.personId}`}>Seeker Profile</NextLink>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -216,7 +216,7 @@ const Order = () => {
     if (!activeCandidate) return
 
     await put(
-      `/job_orders/orders/${id}/candidates/${activeCandidate?.seekerId}`,
+      `/job_orders/orders/${id}/candidates/${activeCandidate?.personId}`,
       {
         status: activeCandidateStatus,
       },
@@ -250,16 +250,14 @@ const Order = () => {
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Card>
+        <Card role="region">
           <CardHeader>
-            <Heading size={'md'}>
-              <HStack gap={'0.5rem'}>
-                <Box>
-                  {order.employmentTitle} - {order.employerName}
-                </Box>
-                <Tag colorScheme={colorMap[order.status]}>{displayMap[order.status]}</Tag>
-              </HStack>
-            </Heading>
+            <HStack>
+              <Heading size={'md'}>
+                {order.employmentTitle} - {order.employerName}
+              </Heading>
+              <Tag colorScheme={colorMap[order.status]}>{displayMap[order.status]}</Tag>
+            </HStack>
           </CardHeader>
           <CardBody>
             <Flex>
