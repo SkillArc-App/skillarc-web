@@ -245,7 +245,7 @@ const Order = () => {
       <Stack gap={'1rem'} pb={'2rem'}>
         <Breadcrumb>
           <BreadcrumbItem>
-            <BreadcrumbLink onClick={() => window.history.back()}>
+            <BreadcrumbLink as={NextLink} href="/orders">
               {'< Back to Orders'}
             </BreadcrumbLink>
           </BreadcrumbItem>
