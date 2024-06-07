@@ -2,6 +2,7 @@
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { put } from '@/frontend/http-common'
@@ -10,31 +11,32 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const SeekerInvite = () => {
-  const router = useRouter()
   const employerInviteId = useFixedParams('id')?.['id']
-
+  const router = useRouter()
   const token = useAuthToken()
-  const { data: user, refetch: refetchUser } = useUser()
+
+  const useInvite = useAuthenticatedMutation(async (employerInviteId: string, token: string) => {
+    await put(`/employer_invites/${employerInviteId}/used`, {}, token)
+  })
+
+  console.log(useInvite.status)
+
+  useUser({
+    enabled: useInvite.isSuccess,
+    refetchInterval: 1000,
+    onSuccess(data) {
+      if (data.recruiter) {
+        router.push('/employers/jobs')
+        return
+      }
+    },
+  })
 
   useEffect(() => {
-    if (!user) return
-
-    if (user.recruiter) {
-      router.push('/employers/jobs')
-      return
+    if (token && useInvite.isIdle && employerInviteId) {
+      useInvite.mutate(employerInviteId)
     }
-
-    const invite = async () => {
-      if (!token) return
-      if (!employerInviteId) return
-
-      await put(`/employer_invites/${employerInviteId}/used`, {}, token)
-
-      refetchUser()
-    }
-
-    invite()
-  }, [employerInviteId, refetchUser, router, token, user])
+  }, [employerInviteId, token, useInvite, useInvite.mutate])
 
   return <LoadingPage />
 }
