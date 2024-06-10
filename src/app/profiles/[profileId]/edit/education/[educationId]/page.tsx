@@ -4,11 +4,11 @@ import { EducationExperience } from '@/common/types/EducationExperience'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Flex, Input } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateProfile } from '../../hooks/useUpdateProfile'
+import { useProfileData } from '../../../hooks/useProfileData'
 
 const EditEducation = () => {
   const router = useRouter()

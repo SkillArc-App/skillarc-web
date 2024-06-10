@@ -1,5 +1,5 @@
-import { FrontendEmployerInviteService } from '../services/employerInvite.service'
-import { useAuthenticatedQuery } from './useAuthenticatedQuery'
+import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
+import { FrontendEmployerInviteService } from '../../../frontend/services/employerInvite.service'
 
 export const useAllEmployerInviteData = () => {
   const getEmployerInvites = useAuthenticatedQuery(['employerInvites'], ({ token }) => {

@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query'
-import { get } from '../http-common'
+import { get } from '../../../frontend/http-common'
 
 export const useAllUsers = () => {
   const allUsersQuery = useQuery(['allUsers'], () => {

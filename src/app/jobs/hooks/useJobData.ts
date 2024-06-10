@@ -1,8 +1,8 @@
 import { Maybe } from '@/common/types/maybe'
 import { useQuery } from 'react-query'
-import { get } from '../http-common'
-import { Job } from '../services/jobs.service'
-import { useAuthToken } from './useAuthToken'
+import { get } from '../../../frontend/http-common'
+import { Job } from '../../../frontend/services/jobs.service'
+import { useAuthToken } from '../../../frontend/hooks/useAuthToken'
 
 export const useJob = (id: Maybe<string>) => {
   const token = useAuthToken()

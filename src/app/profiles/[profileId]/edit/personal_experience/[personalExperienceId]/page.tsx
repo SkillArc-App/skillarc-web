@@ -3,12 +3,12 @@
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { PersonalExperience } from '@/frontend/services/personalExperience.service'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateProfile } from '../../hooks/useUpdateProfile'
+import { useProfileData } from '../../../hooks/useProfileData'
 
 const EditPersonalExperience = () => {
   const router = useRouter()

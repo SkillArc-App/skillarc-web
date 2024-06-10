@@ -2,7 +2,7 @@
 
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
+import { useProfileData } from '../hooks/useProfileData'
 import { useRouter } from 'next/navigation'
 
 export default function EditProfileLayout({ children }: { children: React.ReactNode }) {

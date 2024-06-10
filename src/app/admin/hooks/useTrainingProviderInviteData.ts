@@ -1,5 +1,5 @@
-import { FrontendTrainingProviderInviteService } from '../services/trainingProviderInvite.service'
-import { useAuthenticatedQuery } from './useAuthenticatedQuery'
+import { useAuthenticatedQuery } from "@/frontend/hooks/useAuthenticatedQuery"
+import { FrontendTrainingProviderInviteService } from "@/frontend/services/trainingProviderInvite.service"
 
 export const useAllTrainingProviderInviteData = () => {
   const getAllTrainingProviderInvites = useAuthenticatedQuery(['invite'], ({ token }) => {

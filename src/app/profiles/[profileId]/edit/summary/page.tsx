@@ -4,12 +4,12 @@ import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { put } from '@/frontend/http-common'
 import { Button, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
+import { useProfileData } from '../../hooks/useProfileData'
 
 const EditSummary = () => {
   const router = useRouter()

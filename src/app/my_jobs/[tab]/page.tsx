@@ -6,7 +6,6 @@ import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useJobMatchData } from '@/frontend/hooks/useJobMatchData'
 import { post } from '@/frontend/http-common'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
@@ -37,6 +36,7 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useJobMatchData } from '../hooks/useJobMatchData'
 
 const MyJobs = () => {
   const router = useRouter()

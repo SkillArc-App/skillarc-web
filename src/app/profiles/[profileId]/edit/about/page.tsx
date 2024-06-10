@@ -4,10 +4,10 @@ import { Story } from '@/common/types/Profile'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { useProfileData } from '../../hooks/useProfileData'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 const EditAbout = () => {

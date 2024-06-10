@@ -9,9 +9,9 @@ import { ProfileSkills } from '@/app/profiles/[profileId]/components/skills'
 import { ProfileSummary } from '@/app/profiles/[profileId]/components/summary'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { Box, Stack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useProfileData } from './hooks/useProfileData'
 
 function ProfileId() {
   const { profileId } = useFixedParams('profileId')

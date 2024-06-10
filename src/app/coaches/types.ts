@@ -1,5 +1,8 @@
 import { Note } from '@/common/types/Note'
-import { Barrier } from '@/frontend/hooks/useBarrierData'
+
+type Barrier = {
+
+}
 
 export type SeekerLead = {
   id: string
