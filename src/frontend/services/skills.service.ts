@@ -6,11 +6,6 @@ export type MasterSkill = {
   type: 'PERSONAL' | 'TECHNICAL'
 }
 
-const getOne = async (masterSkillId: string) => {
-  const res = await get<MasterSkill>(`/api/masterSkills/${masterSkillId}`)
-  return res.data
-}
-
 const getAll = async () => {
   const res = await get(`/master_skills`)
 
@@ -18,6 +13,5 @@ const getAll = async () => {
 }
 
 export const FrontendMasterSkillsService = {
-  getOne,
   getAll,
 }
