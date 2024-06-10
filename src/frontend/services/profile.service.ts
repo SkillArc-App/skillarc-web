@@ -24,11 +24,8 @@ export type Story = {
 }
 
 export type GetOneProfileResponse = {
-  industryInterests: string[]
   isProfileEditor: boolean
-  user: User & {
-    SeekerTrainingProvider: (SeekerTrainingProvider & { trainingProvider: TrainingProvider })[]
-  }
+  user: User
   stories: Story[]
   otherExperiences: OtherExperience[]
   personalExperience: PersonalExperience[]
