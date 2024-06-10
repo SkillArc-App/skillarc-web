@@ -1,7 +1,8 @@
 import { Note } from '@/common/types/Note'
 
 type Barrier = {
-
+  id: string
+  name: string
 }
 
 export type SeekerLead = {
