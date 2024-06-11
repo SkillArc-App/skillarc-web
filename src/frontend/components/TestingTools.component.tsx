@@ -3,7 +3,7 @@
 import { Maybe } from '@/common/types/maybe'
 import { Box, Code, HStack, Select } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { useAllUsers } from '../hooks/useAllUsers'
+import { useAllUsers } from '../../app/admin/hooks/useAllUsers'
 import { Text } from './Text.component'
 
 const DevTools = () => {

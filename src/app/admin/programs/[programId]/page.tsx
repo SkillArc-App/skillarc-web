@@ -1,7 +1,6 @@
 'use client'
 
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useProgramData } from '@/frontend/hooks/useProgramData'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
@@ -22,6 +21,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useProgramData } from '../../hooks/useProgramData'
 
 export default function Program({ params: { programId } }: { params: { programId: string } }) {
   const {

@@ -1,9 +1,9 @@
 import { Maybe } from '@/common/types/maybe'
 import { useQuery } from 'react-query'
-import { get } from '../http-common'
-import { GetOneProfileResponse } from '../services/profile.service'
-import { mixpanelInitProfile } from '../utils/mixpanel'
-import { useAuthToken } from './useAuthToken'
+import { useAuthToken } from '../../../../frontend/hooks/useAuthToken'
+import { get } from '../../../../frontend/http-common'
+import { GetOneProfileResponse } from '../../../../frontend/services/profile.service'
+import { mixpanelInitProfile } from '../../../../frontend/utils/mixpanel'
 
 export const useProfileData = (id: Maybe<string>) => {
   const token = useAuthToken()

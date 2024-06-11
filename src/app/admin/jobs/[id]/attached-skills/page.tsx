@@ -1,10 +1,10 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {

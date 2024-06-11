@@ -4,9 +4,7 @@ import { ReasonResponse } from '@/common/types/ApplicantStatus'
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useEmployerJobData } from '@/frontend/hooks/useEmployerJobData'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { usePassReasons } from '@/frontend/hooks/usePassReasons'
 import { put } from '@/frontend/http-common'
 import { Applicant, EmployerJob } from '@/frontend/services/employerJobs.service'
 import {
@@ -41,6 +39,8 @@ import { useState } from 'react'
 import { FaUserCheck } from 'react-icons/fa'
 import { FaRegComment } from 'react-icons/fa6'
 import { PassFeedback } from './components/PassFeedback'
+import { useEmployerJobData } from '../../hooks/useEmployerJobData'
+import { usePassReasons } from '../../hooks/usePassReasons'
 
 type ApplicantStatusChanges = {
   [key: string]: ApplicantStatusChange

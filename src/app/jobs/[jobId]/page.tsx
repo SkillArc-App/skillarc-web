@@ -8,7 +8,6 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useJob } from '@/frontend/hooks/useJobData'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Success } from '@/frontend/icons/Success.icon'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
@@ -23,7 +22,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useJob } from '../hooks/useJobData'
 
 export default function JobPosting() {
   const jobId = useFixedParams('jobId')?.['jobId']

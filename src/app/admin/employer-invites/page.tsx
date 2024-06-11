@@ -1,7 +1,6 @@
 'use client'
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
-import { useAllEmployerInviteData } from '@/frontend/hooks/useAllEmployerInviteData'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
@@ -27,6 +26,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useAllEmployerInviteData } from '../hooks/useAllEmployerInviteData'
 export default function EmployerInvites() {
   const { isOpen, onOpen, onClose } = useDisclosure({})
 

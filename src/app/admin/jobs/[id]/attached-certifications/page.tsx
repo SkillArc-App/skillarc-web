@@ -1,9 +1,9 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { useMasterCertificationData } from '@/app/admin/hooks/useMasterCertificationData'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useMasterCertificationData } from '@/frontend/hooks/useMasterCertificationData'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'

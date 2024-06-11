@@ -2,7 +2,6 @@
 
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
-import { useAllTrainingProviderInviteData } from '@/frontend/hooks/useTrainingProviderInviteData'
 import { post } from '@/frontend/http-common'
 import {
   Box,
@@ -26,8 +25,8 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useAllTrainingProviderInviteData } from '../hooks/useTrainingProviderInviteData'
 
 export default function TrainerInvites() {
   const {

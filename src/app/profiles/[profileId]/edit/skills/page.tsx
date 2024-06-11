@@ -1,14 +1,14 @@
 'use client'
 
+import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
-import { useMasterSkillData } from '@/frontend/hooks/useMasterSkillData'
-import { useProfileData } from '@/frontend/hooks/useProfileData'
 import { MasterSkill } from '@/frontend/services/skills.service'
 import { Badge, Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { useProfileData } from '../../hooks/useProfileData'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
 type OneProfileSkillResponse = {
