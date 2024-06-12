@@ -10,7 +10,7 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-const SeekerInvite = () => {
+const EmployerInvite = () => {
   const employerInviteId = useFixedParams('id')?.['id']
   const router = useRouter()
   const token = useAuthToken()
@@ -18,8 +18,6 @@ const SeekerInvite = () => {
   const useInvite = useAuthenticatedMutation(async (employerInviteId: string, token: string) => {
     await put(`/employer_invites/${employerInviteId}/used`, {}, token)
   })
-
-  console.log(useInvite.status)
 
   useUser({
     enabled: useInvite.isSuccess,
@@ -41,4 +39,4 @@ const SeekerInvite = () => {
   return <LoadingPage />
 }
 
-export default withAuthenticationRequired(SeekerInvite)
+export default withAuthenticationRequired(EmployerInvite)
