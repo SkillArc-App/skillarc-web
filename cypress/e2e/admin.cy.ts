@@ -1,4 +1,4 @@
-export {}
+export { }
 
 describe('Admin', () => {
   it('should navigate through admin tasks', () => {
@@ -12,18 +12,19 @@ describe('Admin', () => {
     cy.reload()
 
     cy.get('body').should('contain', 'Operations')
+
+    // Add an attribute
     cy.findByRole('link', { name: 'Attributes' }).click()
 
     const name = crypto.randomUUID()
-
     cy.findByRole('button', { name: '+ New Attribute' }).click()
     cy.findByLabelText('Name*').type(name)
     cy.findByLabelText('Set (newline separated)*').type('Test1\nTest2')
     cy.findByLabelText('Default (newline separated)').type('Test1')
     cy.findByRole('button', { name: 'Save' }).click()
 
+    // Confirm status in table
     cy.findByText('Test1, Test2')
-
     cy.findByRole('table').within(() => {
       const row = cy.findByText(name).parent().parent()
 
@@ -34,6 +35,7 @@ describe('Admin', () => {
 
     cy.get('body').should('not.contain', name)
 
+    // Add a job
     cy.findByRole('link', { name: 'Jobs' }).click()
     cy.findByRole('button', { name: '+ New Job' }).click()
 
@@ -122,5 +124,41 @@ describe('Admin', () => {
     cy.findByRole('tab', { name: 'Tags' }).click()
     cy.findByLabelText('Add A New Tag').select('Part time only')
     cy.findByText('Part time only')
+
+    // Add training provider
+    cy.findByRole('link', { name: 'Training Providers' }).click()
+    cy.findByRole('button', { name: '+ New Training Provider' }).click()
+
+    const tpName = crypto.randomUUID()
+    cy.findByText('New Training Provider')
+    cy.findByLabelText('Name*').type(tpName)
+    cy.findByLabelText('Description*').type('We do great work')
+    cy.findByRole('button', { name: 'Save'}).click()
+
+    cy.findByRole('table').within(() => {
+      cy.findByText(tpName).click()
+    })
+
+    // Add a program
+    cy.findByRole('button', { name: '+ New Program' }).click()
+    cy.findByLabelText('Name*').type("Best Program")
+    cy.findByLabelText('Description*').type('We do great work')
+    cy.findByRole('button', { name: 'Save'}).click()
+
+    cy.findByRole('table').within(() => {
+      cy.findByText("Best Program").click()
+    })
+
+    cy.findByText('Name: Best Program')
+    cy.findByText('Description: We do great work')
+    cy.findByText(`Training Provider: ${tpName}`)
+
+    cy.findByRole('button', { name: "Edit"}).click()
+    cy.findByLabelText('Description*').type('{selectall}{backspace}').type('We do ok work')
+    cy.findByRole('button', { name: 'Save'}).click()
+
+    cy.findByText('Name: Best Program')
+    cy.findByText('Description: We do ok work')
+    cy.findByText(`Training Provider: ${tpName}`)
   })
 })

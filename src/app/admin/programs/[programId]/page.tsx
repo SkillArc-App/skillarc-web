@@ -51,17 +51,17 @@ export default function Page({ params: { programId } }: { params: { programId: s
     <>
       <Stack spacing={2}>
         <span>
-          <b>Name:</b> {program.name}
+          Name: {program.name}
         </span>
         <span>
-          <b>Description:</b> {program.description}
+          Description: {program.description}
         </span>
         <span>
-          <b>Training Provider:</b> {program.trainingProviderName}
+          Training Provider: {program.trainingProviderName}
         </span>
         <Flex gap={2}>
           <Button onClick={onOpen} leftIcon={<EditIcon />} size="sm">
-            edit
+            Edit
           </Button>
         </Flex>
       </Stack>
