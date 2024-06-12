@@ -2,27 +2,27 @@ export {}
 
 describe('Admin', () => {
   it('should navigate through admin tasks', () => {
-    cy.visit('/admin/attributes')
+    cy.visit('/admin')
 
     const emailSelect = cy.get('select').filter((_, element) => {
       return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
     })
     emailSelect.should('be.enabled')
-    emailSelect.select('admin@blocktrainapp.com', { timeout: 10000 })
+    emailSelect.select('admin@skillarc.com', { timeout: 10000 })
     cy.reload()
+
     cy.get('body').should('contain', 'Operations')
-    cy.get('body').should('contain', 'Analytics')
+    cy.findByRole('link', { name: 'Attributes' }).click()
 
     const name = crypto.randomUUID()
 
-    cy.get('button').contains('+ New Attribute').click()
-    cy.get('label').contains('Name').next().type(name)
-    cy.get('label').contains('Set (newline separated)').next().type('Test1\nTest2')
-    cy.get('label').contains('Default (newline separated)').next().type('Test1')
-    cy.get('button').contains('Save').click()
+    cy.findByRole('button', { name: '+ New Attribute' }).click()
+    cy.findByLabelText('Name*').type(name)
+    cy.findByLabelText('Set (newline separated)*').type('Test1\nTest2')
+    cy.findByLabelText('Default (newline separated)').type('Test1')
+    cy.findByRole('button', { name: 'Save' }).click()
 
-    cy.get('body').should('not.contain', 'Save')
-    cy.get('body').should('contain', 'Test1, Test2')
+    cy.findByText('Test1, Test2')
 
     cy.findByRole('table').within(() => {
       const row = cy.findByText(name).parent().parent()
@@ -34,13 +34,12 @@ describe('Admin', () => {
 
     cy.get('body').should('not.contain', name)
 
-    cy.visit('/admin/jobs')
+    cy.findByRole('link', { name: 'Jobs' }).click()
+    cy.findByRole('button', { name: '+ New Job' }).click()
 
-    cy.get('button').contains('+ New Job').click()
+    cy.findByText('New Job')
 
-    cy.get('body').contains('New Job').should('be.visible')
-
-    cy.get('div').contains('Staffing').click()
+    cy.findByRole('radio', { name: 'Staffing' }).check({ force: true })
     cy.findByDisplayValue('Employer').select('Turner Construction Company')
     const title = crypto.randomUUID()
 
