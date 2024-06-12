@@ -1,8 +1,19 @@
-import { FrontendProgramService } from '@/frontend/services/program.service'
-import { useQuery } from 'react-query'
+import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
+import { get } from '@/frontend/http-common'
 
-export const useProgramData = (id: string) => {
-  const getProgram = useQuery(['program', id], () => FrontendProgramService.getOne(id))
-
-  return { getProgram }
+export type Program = {
+  name: string
+  description: string
+  trainingProviderName: string
+  trainingProviderId: string
 }
+
+export const useProgramData = (id: string) =>
+  useAuthenticatedQuery(
+    ['program', id],
+    async ({ token }) => {
+      const res = await get<Program>(`/programs/${id}`, token)
+      return res.data
+    },
+    { enabled: !!id },
+  )
