@@ -15,7 +15,7 @@ type InputField<T extends InputTypes> = InputProps & FieldHookConfig<T>
 
 type InputTypes = number | string | undefined
 
-export default function FormInputField<T extends InputTypes>({
+export default function FormikInput<T extends InputTypes>({
   label,
   placeholder,
   type,

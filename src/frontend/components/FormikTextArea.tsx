@@ -1,4 +1,4 @@
-import { FormControl, FormErrorMessage, FormLabel, Input, Textarea } from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react'
 import { FieldHookConfig, useField } from 'formik'
 
 type TextAreaProps = {
@@ -9,7 +9,7 @@ type TextAreaProps = {
 
 type TextAreaField = TextAreaProps & FieldHookConfig<string>
 
-export default function FormTextAreaField({
+export default function FormikTextArea({
   label,
   placeholder,
   isRequired,
@@ -20,7 +20,7 @@ export default function FormTextAreaField({
   return (
     <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>
       <FormLabel>{label}</FormLabel>
-      <Textarea bg={'white'} {...field} placeholder={placeholder}/>
+      <Textarea bg={'white'} {...field} placeholder={placeholder} />
       <FormErrorMessage>{meta.touched && meta.error}</FormErrorMessage>
     </FormControl>
   )
