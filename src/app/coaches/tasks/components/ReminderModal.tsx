@@ -1,6 +1,6 @@
 import { PartialRequired } from '@/common/types/partial-required'
-import FormInputField from '@/frontend/components/FormInputField'
-import FormTextAreaField from '@/frontend/components/FormTextAreaField'
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikTextArea from '@/frontend/components/FormikTextArea'
 import {
   Button,
   Modal,
@@ -27,7 +27,7 @@ interface ReminderProps {
 // the datetime-local does handle timezones so we have
 // to add the back in later
 const formatDateTimeAsIso = (date = new Date()) => {
-  const pad = (x :number) => x.toString().padStart(2, '0');
+  const pad = (x: number) => x.toString().padStart(2, '0')
 
   const year = date.getFullYear()
   const month = pad(date.getMonth() + 1) // getMonth() is zero-indexed
@@ -84,14 +84,14 @@ const ReminderModal = ({ isOpen, onClose, onSubmit, contextId = null }: Reminder
             <Form>
               <ModalBody>
                 <VStack spacing={2}>
-                  <FormInputField<string>
+                  <FormikInput<string>
                     isRequired
                     type="datetime-local"
                     min={formatDateTimeAsIso()}
                     label="Reminder Time"
                     name="reminderAt"
                   />
-                  <FormTextAreaField isRequired type="textarea" label="Reminder Note" name="note" />
+                  <FormikTextArea isRequired type="textarea" label="Reminder Note" name="note" />
                 </VStack>
               </ModalBody>
 

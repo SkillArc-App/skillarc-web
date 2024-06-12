@@ -1,12 +1,16 @@
 'use client'
 
+import DataTable from '@/frontend/components/DataTable.component'
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikSelect from '@/frontend/components/FormikSelect'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { post } from '@/frontend/http-common'
+import { delay } from '@/frontend/utils/delay'
 import {
   Box,
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,148 +18,142 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useState } from 'react'
-import { useAllTrainingProviderInviteData } from '../hooks/useTrainingProviderInviteData'
+import { createColumnHelper } from '@tanstack/react-table'
+import { Form, Formik } from 'formik'
+import {
+  TrainingProviderInvite,
+  useAllTrainingProviderInviteData,
+} from '../hooks/useTrainingProviderInviteData'
+
+type PartialTrainingProviderInvite = Partial<
+  Pick<
+    TrainingProviderInvite,
+    'email' | 'firstName' | 'lastName' | 'trainingProviderId' | 'roleDescription'
+  >
+>
+
+const columnHelper = createColumnHelper<TrainingProviderInvite>()
+
+const columns = [
+  columnHelper.accessor('email', {
+    header: 'Email',
+    filterFn: 'includesString',
+  }),
+  columnHelper.accessor('firstName', {
+    header: 'First name',
+    filterFn: 'includesString',
+  }),
+  columnHelper.accessor('lastName', {
+    header: 'Last name',
+    filterFn: 'includesString',
+  }),
+  columnHelper.accessor('trainingProviderName', {
+    header: 'Training Provider',
+    filterFn: 'includesString',
+  }),
+  columnHelper.accessor('usedAt', {
+    header: 'Used',
+  }),
+  columnHelper.accessor('link', {
+    header: 'Link',
+    cell: (row) => (
+      <Button
+        onClick={() => {
+          navigator.clipboard.writeText(row.getValue())
+        }}
+      >
+        copy
+      </Button>
+    ),
+  }),
+]
 
 export default function TrainerInvites() {
-  const {
-    getAllTrainingProviderInvites: { data: invites, refetch },
-  } = useAllTrainingProviderInviteData()
-
-  // use training provider data
-  const {
-    getAllTrainingProviders: { data: trainingProviders, isLoading: trainingProvidersIsLoading },
-  } = useAllTrainingProviderData()
+  const { data: invites, refetch } = useAllTrainingProviderInviteData()
+  const { data: trainingProviders } = useAllTrainingProviderData()
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
-  const [email, setEmail] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [trainingProviderId, setTrainingProviderId] = useState('')
-  const [roleDescription, setRoleDescription] = useState('')
   const token = useAuthToken()
 
-  const handleEmailChange = (e: any) => {
-    setEmail(e.target.value)
-  }
-
-  const handleFirstNameChange = (e: any) => {
-    setFirstName(e.target.value)
-  }
-
-  const handleLastNameChange = (e: any) => {
-    setLastName(e.target.value)
-  }
-
-  const handleRoleDescriptionChange = (e: any) => {
-    setRoleDescription(e.target.value)
-  }
-
-  const handleTrainingProviderChange = (e: any) => {
-    setTrainingProviderId(e.target.value)
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (invite: PartialTrainingProviderInvite) => {
     if (!token) {
       return
     }
 
-    const invite = {
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      training_provider_id: trainingProviderId,
-      role_description: roleDescription,
-    }
-
     await post(`/training_provider_invites`, invite, token)
+    await delay(3000)
+    await refetch()
 
-    refetch()
     onClose()
   }
 
-  if (!invites) return <div>Loading...</div>
+  if (!invites || !trainingProviders) return <LoadingPage />
 
   return (
     <Box mt={'1rem'}>
       <Button size={'xs'} variant={'solid'} colorScheme="green" onClick={onOpen}>
         + New Invite
       </Button>
-      <TableContainer>
-        <Table size={'sm'} variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Email</Th>
-              <Th>First Name</Th>
-              <Th>Last Name</Th>
-              <Th>Training Provider</Th>
-              <Th>Used At</Th>
-              <Th>Link</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {invites?.map((invite: any, index: number) => {
-              return (
-                <Tr key={index}>
-                  <Td>{invite.email}</Td>
-                  <Td>{invite.first_name}</Td>
-                  <Td>{invite.last_name}</Td>
-                  <Td>{invite.training_provider_name}</Td>
-                  <Td>{invite.used_at}</Td>
-                  <Td>
-                    <Button
-                      onClick={(e) => {
-                        navigator.clipboard.writeText(invite.link)
-                      }}
-                    >
-                      copy
-                    </Button>
-                  </Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <DataTable data={invites} columns={columns} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>New Seeker Invite</ModalHeader>
+          <ModalHeader>New Trainer Invite</ModalHeader>
           <ModalCloseButton />
+          <Formik initialValues={{}} onSubmit={handleSubmit}>
+            {({ isSubmitting }) => (
+              <Form>
+                <ModalBody>
+                  <Stack spacing={3}>
+                    <FormikInput<string>
+                      isRequired
+                      type="text"
+                      label="Trainer Email"
+                      name="email"
+                    />
+                    <FormikInput<string>
+                      isRequired
+                      type="text"
+                      label="Trainer First Name"
+                      name="firstName"
+                    />
+                    <FormikInput<string>
+                      isRequired
+                      type="text"
+                      label="Trainer Last Name"
+                      name="lastName"
+                    />
+                    <FormikInput<string>
+                      isRequired
+                      type="text"
+                      label="Role Description"
+                      name="roleDescription"
+                    />
+                    <FormikSelect
+                      name="trainingProviderId"
+                      label="Training Provider"
+                      isRequired
+                      options={trainingProviders?.map((trainingProvider, index) => ({
+                        key: trainingProvider.id,
+                        value: trainingProvider.name,
+                      }))}
+                    />
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="green" mr={3} isLoading={isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
           <ModalBody>
-            <Stack spacing={3}>
-              <Input placeholder="Seeker Email" onChange={handleEmailChange} />
-              <Input placeholder="Seeker First Name" onChange={handleFirstNameChange} />
-              <Input placeholder="Seeker Last Name" onChange={handleLastNameChange} />
-              <Input placeholder="Role Description" onChange={handleRoleDescriptionChange} />
-              <Select placeholder="Training Provider" onChange={handleTrainingProviderChange}>
-                {trainingProviders?.map((trainingProvider: any, index: number) => {
-                  return (
-                    <option key={index} value={trainingProvider.id}>
-                      {trainingProvider.name}
-                    </option>
-                  )
-                })}
-              </Select>
-            </Stack>
+            <Stack spacing={3}></Stack>
           </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

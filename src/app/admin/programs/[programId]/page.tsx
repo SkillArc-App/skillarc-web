@@ -1,13 +1,17 @@
 'use client'
 
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikSelect from '@/frontend/components/FormikSelect'
+import FormikTextArea from '@/frontend/components/FormikTextArea'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { put } from '@/frontend/http-common'
+import { delay } from '@/frontend/utils/delay'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Button,
   Flex,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,84 +19,49 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
-  Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { useProgramData } from '../../hooks/useProgramData'
+import { Form, Formik } from 'formik'
+import { Program, useProgramData } from '../../hooks/useProgramData'
 
-export default function Program({ params: { programId } }: { params: { programId: string } }) {
-  const {
-    getProgram: { data: program, isLoading: programIsLoading, refetch: refetchProgram },
-  } = useProgramData(programId)
+type PartialProgram = Pick<Program, 'name' | 'description' | 'trainingProviderId'>
 
-  // use all training provider data
-  const {
-    getAllTrainingProviders: { data: trainingProviders, isLoading: trainingProvidersIsLoading },
-  } = useAllTrainingProviderData()
+export default function Page({ params: { programId } }: { params: { programId: string } }) {
+  const { data: program, refetch: refetchProgram } = useProgramData(programId)
+
+  const { data: trainingProviders } = useAllTrainingProviderData()
 
   const token = useAuthToken()
   const { isOpen, onOpen, onClose } = useDisclosure({})
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [trainingProviderId, setTrainingProviderId] = useState('')
 
-  const handleNameChange = (e: any) => {
-    setName(e.target.value)
-  }
+  const handleSubmit = async (updatedProgram: PartialProgram) => {
+    if (!updatedProgram || !program || !token) return
 
-  const handleDescriptionChange = (e: any) => {
-    setDescription(e.target.value)
-  }
+    await put(`/programs/${programId}`, { ...updatedProgram, trainingProviderId: program.trainingProviderId }, token)
+    await delay(3000)
+    await refetchProgram()
 
-  const handleTrainingProviderIdChange = (e: any) => {
-    setTrainingProviderId(e.target.value)
-  }
-
-  useEffect(() => {
-    if (!program) return
-
-    setName(program?.name)
-    setDescription(program?.description)
-    setTrainingProviderId(program?.trainingProviderId)
-  }, [program])
-
-  const handleSubmit = async () => {
-    if (!program || !token) return
-
-    await put(
-      `/api/programs/${program.id}`,
-      {
-        name,
-        description,
-        trainingProviderId,
-      },
-      token,
-    )
     onClose()
-    refetchProgram()
   }
 
-  if (!trainingProviders) return <div>Loading...</div>
-  if (!program) return <div>Loading...</div>
+  if (!trainingProviders || !program) return <LoadingPage />
 
   return (
     <>
       <Stack spacing={2}>
         <span>
-          <b>Name:</b> {program.name}
+          Name: {program.name}
         </span>
         <span>
-          <b>Description:</b> {program.description}
+          Description: {program.description}
         </span>
         <span>
-          <b>Training Provider:</b> {program.trainingProvider?.name}
+          Training Provider: {program.trainingProviderName}
         </span>
         <Flex gap={2}>
           <Button onClick={onOpen} leftIcon={<EditIcon />} size="sm">
-            edit
+            Edit
           </Button>
         </Flex>
       </Stack>
@@ -101,32 +70,23 @@ export default function Program({ params: { programId } }: { params: { programId
         <ModalContent>
           <ModalHeader>New Program</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={3}>
-              <Input value={name} placeholder="Name" onChange={handleNameChange} />
-              <Textarea
-                value={description}
-                placeholder="Description"
-                onChange={handleDescriptionChange}
-              />
-              {/* Select for training provider */}
-              <Select value={trainingProviderId} onChange={handleTrainingProviderIdChange}>
-                {trainingProviders.map((trainingProvider: any, index: number) => {
-                  return (
-                    <option key={index} value={trainingProvider.id}>
-                      {trainingProvider.name}
-                    </option>
-                  )
-                })}
-              </Select>
-            </Stack>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
-          </ModalFooter>
+          <Formik initialValues={program} onSubmit={handleSubmit}>
+            {({ isSubmitting }) => (
+              <Form>
+                <ModalBody>
+                  <Stack spacing={3}>
+                    <FormikInput<string> type="text" label="Name" name="name" />
+                    <FormikTextArea isRequired label="Description" name="description" />
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="green" mr={3} isLoading={isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
         </ModalContent>
       </Modal>
     </>

@@ -1,13 +1,16 @@
 'use client'
 
+import DataTable from '@/frontend/components/DataTable.component'
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikTextArea from '@/frontend/components/FormikTextArea'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
+import { Program, useTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { post } from '@/frontend/http-common'
+import { delay } from '@/frontend/utils/delay'
 import {
   Box,
   Button,
-  Input,
   Link,
   Modal,
   ModalBody,
@@ -17,57 +20,48 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Textarea,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAuth0 } from 'lib/auth-wrapper'
+import { createColumnHelper } from '@tanstack/react-table'
+import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
+
+type PartialProgram = Partial<Pick<Program, 'name' | 'description'>>
+const columnHelper = createColumnHelper<Program>()
+
+const columns = [
+  columnHelper.accessor('name', {
+    header: 'Name',
+    filterFn: 'includesString',
+    cell: (cell) => (
+      <Link as={NextLink} href={`/admin/programs/${cell.row.original.id}`}>
+        {cell.getValue()}
+      </Link>
+    ),
+  }),
+  columnHelper.accessor('description', {
+    header: 'Description',
+    filterFn: 'includesString',
+  }),
+]
 
 export default function TrainingProvider({
   params: { trainingProviderId },
 }: {
   params: { trainingProviderId: string }
 }) {
-  const {
-    getTrainingProvider: { data: trainingProvider, refetch },
-  } = useTrainingProviderData(trainingProviderId)
-
+  const { data: trainingProvider, refetch } = useTrainingProviderData(trainingProviderId)
   const { isOpen, onOpen, onClose } = useDisclosure({})
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
 
   const token = useAuthToken()
 
-  const handleNameChange = (e: any) => {
-    setName(e.target.value)
-  }
-
-  const handleDescriptionChange = (e: any) => {
-    setDescription(e.target.value)
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (program: PartialProgram) => {
     if (!trainingProvider || !token) return
 
-    await post(
-      `/training_providers/${trainingProvider.id}/programs`,
-      {
-        name,
-        description,
-        trainingProviderId,
-      },
-      token,
-    )
+    await post(`/training_providers/${trainingProviderId}/programs`, program, token)
+    await delay(3000)
+    await refetch()
 
-    refetch()
     onClose()
   }
 
@@ -78,47 +72,30 @@ export default function TrainingProvider({
       <Button size={'xs'} variant={'solid'} colorScheme="green" onClick={onOpen}>
         + New Program
       </Button>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Description</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {trainingProvider.program?.map((program: any, index: number) => {
-              return (
-                <Tr key={index}>
-                  <Td>
-                    <Link as={NextLink} href={`/admin/programs/${program.id}`}>
-                      {program.name}
-                    </Link>
-                  </Td>
-                  <Td whiteSpace={'normal'}>{program.description}</Td>
-                </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <DataTable data={trainingProvider.programs} columns={columns} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>New Program</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={3}>
-              <Input placeholder="Name" onChange={handleNameChange} />
-              <Textarea placeholder="Description" onChange={handleDescriptionChange} />
-            </Stack>
-          </ModalBody>
+          <Formik initialValues={{}} onSubmit={handleSubmit}>
+            {({ isSubmitting }) => (
+              <Form>
+                <ModalBody>
+                  <Stack spacing={3}>
+                    <FormikInput<string> isRequired type="text" label="Name" name="name" />
+                    <FormikTextArea isRequired label="Description" name="description" />
+                  </Stack>
+                </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
-          </ModalFooter>
+                <ModalFooter>
+                  <Button colorScheme="green" mr={3} type="submit" isLoading={isSubmitting}>
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
         </ModalContent>
       </Modal>
     </Box>

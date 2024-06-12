@@ -6,11 +6,10 @@ import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Text } from '../../../frontend/components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import { LoadingPage } from '@/frontend/components/Loading'
 
 export default function Training() {
-  const {
-    getAllTrainingProviders: { data: allTrainingProviders, isLoading },
-  } = useAllTrainingProviderData()
+  const { data: allTrainingProviders } = useAllTrainingProviderData()
   const onboarding = useOnboardingMutation()
 
   const [selectedTrainingProviders, setSelectedTrainingProviders] = useState<string[]>([])
@@ -19,7 +18,7 @@ export default function Training() {
     onboarding.mutate({ trainingProvider: { response: selectedTrainingProviders } })
   }
 
-  if (!allTrainingProviders) return null
+  if (!allTrainingProviders) return <LoadingPage />
 
   return (
     <>

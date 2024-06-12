@@ -10,33 +10,33 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-const EmployerInvite = () => {
-  const employerInviteId = useFixedParams('id')?.['id']
+const TrainingProviderInvite = () => {
+  const trainingProviderInviteId = useFixedParams('id').id
   const router = useRouter()
   const token = useAuthToken()
 
-  const useInvite = useAuthenticatedMutation(async (employerInviteId: string, token: string) => {
-    await put(`/employer_invites/${employerInviteId}/used`, {}, token)
+  const useInvite = useAuthenticatedMutation(async (trainingProviderInviteId: string, token: string) => {
+    await put(`/training_provider_invites/${trainingProviderInviteId}/used`, {}, token)
   })
 
   useUser({
     enabled: useInvite.isSuccess,
     refetchInterval: 1000,
     onSuccess(data) {
-      if (data.recruiter) {
-        router.push('/employers/jobs')
+      if (data.trainingProviderProfile) {
+        router.push('/jobs')
         return
       }
     },
   })
 
   useEffect(() => {
-    if (token && useInvite.isIdle && employerInviteId) {
-      useInvite.mutate(employerInviteId)
+    if (token && useInvite.isIdle && trainingProviderInviteId) {
+      useInvite.mutate(trainingProviderInviteId)
     }
-  }, [employerInviteId, token, useInvite, useInvite.mutate])
+  }, [trainingProviderInviteId, token, useInvite, useInvite.mutate])
 
   return <LoadingPage />
 }
 
-export default withAuthenticationRequired(EmployerInvite)
+export default withAuthenticationRequired(TrainingProviderInvite)

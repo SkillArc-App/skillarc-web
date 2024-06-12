@@ -1,5 +1,5 @@
 import { PartialRequired } from '@/common/types/partial-required'
-import FormInputField from '@/frontend/components/FormInputField'
+import FormikInput from '@/frontend/components/FormikInput'
 import {
   Button,
   Modal,
@@ -57,25 +57,15 @@ const NewLeadModal = ({ isOpen, onClose, onSubmit }: NewLeadModalProps) => {
             <Form>
               <ModalBody>
                 <VStack spacing={2}>
-                  <FormInputField<string>
-                    isRequired
-                    type="text"
-                    label="First Name"
-                    name="firstName"
-                  />
-                  <FormInputField<string>
-                    isRequired
-                    type="text"
-                    label="Last Name"
-                    name="lastName"
-                  />
-                  <FormInputField<string>
+                  <FormikInput<string> isRequired type="text" label="First Name" name="firstName" />
+                  <FormikInput<string> isRequired type="text" label="Last Name" name="lastName" />
+                  <FormikInput<string>
                     isRequired
                     type="tel"
                     label="Phone Number"
                     name="phoneNumber"
                   />
-                  <FormInputField<string> type="email" label="Email" name="email" />
+                  <FormikInput<string> type="email" label="Email" name="email" />
                 </VStack>
               </ModalBody>
 

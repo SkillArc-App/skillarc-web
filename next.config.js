@@ -27,6 +27,11 @@ const nextConfig = {
         permanent: false
       },
       {
+        source: '/invites/seekers/:id',
+        destination: '/jobs',
+        permanent: false
+      },
+      {
         source: '/onboarding',
         destination: '/onboarding/loading',
         permanent: false

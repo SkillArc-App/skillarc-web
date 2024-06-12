@@ -1,6 +1,6 @@
 'use client'
 
-import FormInputField from '@/frontend/components/FormInputField'
+import FormikInput from '@/frontend/components/FormikInput'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
 import { Button, Stack, useToast } from '@chakra-ui/react'
@@ -93,16 +93,11 @@ export default function Start() {
         {(props) => (
           <Form>
             <Stack>
-              <FormInputField<string> isRequired type="text" label="First Name" name="firstName" />
-              <FormInputField<string> isRequired type="text" label="Last Name" name="lastName" />
-              <FormInputField<string>
-                label="Phone Number"
-                name="phoneNumber"
-                type="tel"
-                isRequired
-              />
+              <FormikInput<string> isRequired type="text" label="First Name" name="firstName" />
+              <FormikInput<string> isRequired type="text" label="Last Name" name="lastName" />
+              <FormikInput<string> label="Phone Number" name="phoneNumber" type="tel" isRequired />
               {/* format as month/day/year */}
-              <FormInputField<string>
+              <FormikInput<string>
                 label="Date of Birth"
                 name="dateOfBirth"
                 type="date"

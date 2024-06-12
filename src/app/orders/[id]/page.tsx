@@ -2,7 +2,7 @@
 
 import NotesList from '@/app/components/NoteList'
 import DataTable from '@/frontend/components/DataTable.component'
-import FormInputField from '@/frontend/components/FormInputField'
+import FormikInput from '@/frontend/components/FormikInput'
 import FormikSelect from '@/frontend/components/FormikSelect'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
@@ -72,7 +72,7 @@ const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
         {(props) => (
           <Form>
             <HStack>
-              <FormInputField<number>
+              <FormikInput<number>
                 isRequired
                 type="number"
                 min={1}

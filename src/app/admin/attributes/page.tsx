@@ -2,8 +2,8 @@
 
 import { Attribute } from '@/common/types/Attribute'
 import DataTable from '@/frontend/components/DataTable.component'
-import FormInputField from '@/frontend/components/FormInputField'
-import FormTextAreaField from '@/frontend/components/FormTextAreaField'
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikTextArea from '@/frontend/components/FormikTextArea'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 import {
@@ -175,10 +175,10 @@ const Attributes = () => {
               <Form>
                 <ModalBody>
                   <VStack spacing={2}>
-                    <FormInputField<string> isRequired type="text" label="Name" name="name" />
-                    <FormInputField<string> type="text" label="Description" name="description" />
-                    <FormTextAreaField isRequired label="Set (newline separated)" name="set" />
-                    <FormTextAreaField label="Default (newline separated)" name="default" />
+                    <FormikInput<string> isRequired type="text" label="Name" name="name" />
+                    <FormikInput<string> type="text" label="Description" name="description" />
+                    <FormikTextArea isRequired label="Set (newline separated)" name="set" />
+                    <FormikTextArea label="Default (newline separated)" name="default" />
                   </VStack>
                 </ModalBody>
 

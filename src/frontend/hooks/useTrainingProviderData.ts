@@ -1,25 +1,29 @@
 import { get } from '../http-common'
-import { FrontendTrainingProviderService } from '../services/trainingProvider.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
-export const useAllTrainingProviderData = () => {
-  const getAllTrainingProviders = useAuthenticatedQuery(['trainingProviders'], ({ token }) => {
-    return getAll(token)
+export type TrainingProvider = {
+  id: string
+  name: string
+  description: string
+  programs: Program[]
+}
+
+export type Program = {
+  id: string
+  name: string
+  description: string
+}
+
+export const useAllTrainingProviderData = () =>
+  useAuthenticatedQuery(['trainingProviders'], async ({ token }) => {
+    const res = await get<TrainingProvider[]>(`/training_providers/`, token)
+
+    return res.data
   })
 
-  return { getAllTrainingProviders }
-}
+export const useTrainingProviderData = (id: string) =>
+  useAuthenticatedQuery(['trainingProvider'], async ({ token }) => {
+    const res = await get<TrainingProvider>(`/training_providers/${id}`, token)
 
-export const useTrainingProviderData = (id: string) => {
-  const getTrainingProvider = useAuthenticatedQuery(['trainingProvider'], ({ token }) => {
-    return FrontendTrainingProviderService.getOne(id, token)
+    return res.data
   })
-
-  return { getTrainingProvider }
-}
-
-const getAll = async (token: string) => {
-  const res = await get(`/training_providers/`, token)
-
-  return res.data
-}
