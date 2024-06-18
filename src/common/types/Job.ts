@@ -1,8 +1,6 @@
-import { JobWithSeekerStatus } from '@/app/components/JobCard'
-import { get } from '../http-common'
-import { MasterCertification } from './certification.service'
-import { Employer } from './employer.service'
-import { MasterSkill } from './skills.service'
+import { MasterCertification } from '../../frontend/services/certification.service'
+import { Employer } from '../../frontend/services/employer.service'
+import { MasterSkill } from '../../frontend/services/skills.service'
 
 export type CareerPath = {
   id: string
@@ -110,14 +108,4 @@ export type Job = {
     }
   }[]
   testimonials: Testimonial[]
-}
-
-const getJobMatches = async (token: string) => {
-  const res = await get<{ matchedJobs: JobWithSeekerStatus[] }>(`/job_matches`, token)
-
-  return res.data
-}
-
-export const FrontendJobService = {
-  getJobMatches,
 }
