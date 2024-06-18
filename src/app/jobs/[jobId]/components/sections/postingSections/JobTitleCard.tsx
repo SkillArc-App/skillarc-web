@@ -9,6 +9,13 @@ interface DesiredSkillsProps {
 }
 
 export const JobTitleCard = ({ job }: DesiredSkillsProps) => {
+  const technicalSkills = job.desiredSkills.filter(
+    ({ masterSkill }) => masterSkill.type === 'TECHNICAL',
+  )
+  const personalSkills = job.desiredSkills.filter(
+    ({ masterSkill }) => masterSkill.type === 'PERSONAL',
+  )
+
   return (
     <Flex
       bg="white"
@@ -44,37 +51,38 @@ export const JobTitleCard = ({ job }: DesiredSkillsProps) => {
           !
         </Heading>
       </Flex>
-      <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
-        <Text type="overline" color="greyscale.700" w="100%">
-          TECHNICAL COMPETENCIES
-        </Text>
-        {/* Map over technical skills here */}
-        {job.desiredSkills
-          .filter(({ masterSkill }) => masterSkill.type === 'TECHNICAL')
-          .map((skill: any, index: number) => (
+      {technicalSkills.length > 0 && (
+        <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
+          <Text type="overline" color="greyscale.700" w="100%">
+            TECHNICAL COMPETENCIES
+          </Text>
+          {technicalSkills.map((skill: any, index: number) => (
             <SkillTag key={index} skill={skill.masterSkill.skill} skillType="technical" />
           ))}
-      </Flex>
-      <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
-        <Text type="overline" color="greyscale.700" w="100%">
-          SOFT SKILLS
-        </Text>
-        {/* Map over personal skills here */}
-        {job.desiredSkills
-          .filter(({ masterSkill }) => masterSkill.type == 'PERSONAL')
-          .map((skill: any, index: number) => (
+        </Flex>
+      )}
+      {personalSkills.length > 0 && (
+        <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
+          <Text type="overline" color="greyscale.700" w="100%">
+            SOFT SKILLS
+          </Text>
+          {/* Map over personal skills here */}
+          {personalSkills.map((skill: any, index: number) => (
             <SkillTag key={index} skill={skill.masterSkill.skill} skillType="personal" />
           ))}
-      </Flex>
-      <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
-        <Text type="overline" color="greyscale.700" w="100%">
-          CERTIFICATIONS
-        </Text>
-        {/* Map over certifications here */}
-        {job.desiredCertifications.map((cert: any, index: number) => (
-          <CertTag cert={cert.masterCertification.certification} key={index} />
-        ))}
-      </Flex>
+        </Flex>
+      )}
+      {job.desiredCertifications.length > 0 && (
+        <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
+          <Text type="overline" color="greyscale.700" w="100%">
+            CERTIFICATIONS
+          </Text>
+          {/* Map over certifications here */}
+          {job.desiredCertifications.map((cert: any, index: number) => (
+            <CertTag cert={cert.masterCertification.certification} key={index} />
+          ))}
+        </Flex>
+      )}
     </Flex>
   )
 }
