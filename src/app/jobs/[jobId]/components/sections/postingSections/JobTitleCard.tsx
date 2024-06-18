@@ -27,12 +27,11 @@ export const JobTitleCard = ({ job }: DesiredSkillsProps) => {
     >
       <Flex flexDir="row" alignItems="center" gap=".5rem" w="100%">
         {job.employer.logoUrl && (
-          <Image boxSize="32px" objectFit="cover" src={job.employer.logoUrl} alt="logo" />
+          <Image boxSize="60px" fit="contain" src={job.employer.logoUrl} alt="logo" />
         )}
-
-        <Text type="b2" color="greyscale.900">
+        <Heading type="h3" color="greyscale.900" marginRight=".25rem">
           {job.employer.name}
-        </Text>
+        </Heading>
       </Flex>
       <Flex flexWrap="wrap" marginTop=".5rem">
         <Heading type="h3" color="greyscale.600" marginRight=".25rem">
