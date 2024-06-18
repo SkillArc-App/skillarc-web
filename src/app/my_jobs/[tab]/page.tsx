@@ -1,7 +1,9 @@
 'use client'
 
-import { JobCard, JobWithSeekerStatus } from '@/app/components/JobCard'
+import { SearchJobCard } from '@/app/components/SearchJobCard'
 import useApply from '@/app/jobs/hooks/useApply'
+import { useJobSearch } from '@/app/jobs/hooks/useJobSearch'
+import { SearchJob } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
@@ -36,14 +38,17 @@ import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useJobMatchData } from '../hooks/useJobMatchData'
 
 const MyJobs = () => {
   const router = useRouter()
   const params = useFixedParams('tab')
   const tab = params?.['tab']
 
-  const { data, refetch } = useJobMatchData()
+  const { data: jobs, refetch } = useJobSearch({
+    searchTerms: '',
+    filters: {},
+    otherUtmParams: {},
+  })
 
   const token = useAuthToken()
   const {
@@ -63,8 +68,8 @@ const MyJobs = () => {
     onClose: onElevatorPitchModalClose,
   } = useDisclosure()
 
-  const [activeJob, setActiveJob] = useState<Maybe<JobWithSeekerStatus>>(undefined)
-  const [elevatorPitch, setElevatorPitch] = useState<Maybe<string>>(undefined)
+  const [activeJob, setActiveJob] = useState<Maybe<SearchJob>>()
+  const [elevatorPitch, setElevatorPitch] = useState<Maybe<string>>()
   const { applyCopy, onApply } = useApply({
     job: activeJob,
     async onReadyToApply(job, token) {
@@ -79,15 +84,15 @@ const MyJobs = () => {
     },
   })
 
-  const jobMatches = data?.matchedJobs ?? []
+  const jobMatches = jobs ?? []
   const savedJobMatches = jobMatches.filter((jobMatch) => jobMatch.saved)
-  const appliedJobMatches = jobMatches.filter((jobMatch) => jobMatch.applied)
+  const appliedJobMatches = jobMatches.filter((jobMatch) => jobMatch.applicationStatus)
 
   useEffect(() => {
     setElevatorPitch(activeJob?.elevatorPitch)
   }, [activeJob])
 
-  const onSaveClick = async (job: JobWithSeekerStatus) => {
+  const onSaveClick = async (job: SearchJob) => {
     if (!token) {
       return
     }
@@ -122,19 +127,19 @@ const MyJobs = () => {
     return 0
   }
 
-  const onElevatorPitchOpen = (job: JobWithSeekerStatus) => {
+  const onElevatorPitchOpen = (job: SearchJob) => {
     setActiveJob(job)
     onElevatorPitchModalOpen()
   }
 
-  const onApplyOpen = (job: JobWithSeekerStatus) => {
+  const onApplyOpen = (job: SearchJob) => {
     setActiveJob(job)
     onApplyModalOpen()
   }
 
-  const jobElement = (job: JobWithSeekerStatus) => {
+  const jobElement = (job: SearchJob) => {
     return (
-      <JobCard
+      <SearchJobCard
         key={job.id}
         job={job}
         onAddElevatorPitchClick={() => onElevatorPitchOpen(job)}

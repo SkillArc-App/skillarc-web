@@ -1,11 +1,11 @@
+import { Job } from '@/common/types/Job'
 import { ProfileCertification, ProfileSkill } from '@/common/types/Profile'
-import { SkillTag } from '@/common/types/SkillTag'
+import type { SkillTag } from '@/common/types/SkillTag'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
-import { Job } from '@/frontend/services/jobs.service'
 import { CheckIcon } from '@chakra-ui/icons'
 import { Flex, Image, Tag, TagLeftIcon } from '@chakra-ui/react'
 

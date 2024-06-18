@@ -1,7 +1,7 @@
 import { Maybe } from '@/common/types/maybe'
 import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { get } from '../../../frontend/http-common'
-import { AdminJob } from '../../../frontend/services/jobs.service'
+import { AdminJob } from '@/common/types/Job'
 
 export const useAdminJob = (id: Maybe<string>) =>
   useAuthenticatedQuery(
