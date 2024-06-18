@@ -2,7 +2,7 @@ import { Chat } from '@/common/types/Chat'
 import { Maybe } from '@/common/types/maybe'
 import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
 import { get } from '@/frontend/http-common'
-import { UseQueryOptions } from 'react-query'
+import { UseQueryOptions } from '@tanstack/react-query'
 
 export const useEmployerChats = (
   options: Omit<

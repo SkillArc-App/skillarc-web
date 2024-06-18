@@ -1,4 +1,10 @@
-import { MutationFunction, QueryFunctionContext, QueryKey, UseMutationOptions, useMutation } from 'react-query'
+import {
+  MutationFunction,
+  QueryFunctionContext,
+  QueryKey,
+  UseMutationOptions,
+  useMutation,
+} from '@tanstack/react-query'
 import { useAuthToken } from './useAuthToken'
 
 export type AuthenticatedMutationFunction<TData = unknown, TVariables = unknown> = (

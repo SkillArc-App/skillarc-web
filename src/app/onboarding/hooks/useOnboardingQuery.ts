@@ -2,7 +2,7 @@
 
 import { OnboardingNextStep } from '@/common/types/OnboardingData'
 import { Maybe } from '@/common/types/maybe'
-import { UseQueryOptions } from 'react-query'
+import { UseQueryOptions } from '@tanstack/react-query'
 import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { get } from '../../../frontend/http-common'
 

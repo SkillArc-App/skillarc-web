@@ -1,5 +1,5 @@
 import { Maybe } from '@/common/types/maybe'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useAuthToken } from '../../../../frontend/hooks/useAuthToken'
 import { get } from '../../../../frontend/http-common'
 import { GetOneProfileResponse } from '../../../../frontend/services/profile.service'
