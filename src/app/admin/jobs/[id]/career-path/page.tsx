@@ -1,10 +1,10 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { CareerPath } from '@/common/types/Job'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
-import { CareerPath } from '@/frontend/services/jobs.service'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,

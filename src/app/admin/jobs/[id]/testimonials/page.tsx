@@ -1,10 +1,10 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { Testimonial } from '@/common/types/Job'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
-import { Testimonial } from '@/frontend/services/jobs.service'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,

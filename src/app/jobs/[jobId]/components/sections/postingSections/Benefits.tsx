@@ -1,7 +1,7 @@
+import { Job } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
-import { Job } from '@/frontend/services/jobs.service'
 import {
   Accordion,
   AccordionButton,

@@ -1,6 +1,6 @@
+import { Job } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { Job } from '@/frontend/services/jobs.service'
 import { Avatar, Divider, Flex } from '@chakra-ui/react'
 
 export const Testimonials = ({ job }: { job: Job }) => {

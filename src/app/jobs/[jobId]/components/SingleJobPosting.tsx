@@ -1,6 +1,5 @@
 import { User } from '@/common/types/User'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
-import { Job } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useState } from 'react'
@@ -14,6 +13,7 @@ import { Requirements } from './sections/postingSections/Requirements'
 import { Responsibilities } from './sections/postingSections/Responsibilities'
 import { Testimonials } from './sections/postingSections/Testimonials'
 import { WhatToExpect } from './sections/postingSections/WhatToExpect'
+import { Job } from '@/common/types/Job'
 
 interface SingleJobPostingProps {
   job: Job

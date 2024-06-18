@@ -1,8 +1,8 @@
+import { Job } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { formatCurrency } from '@/frontend/helpers/formatCurrency.helper'
 import { NeonCircleIcon } from '@/frontend/icons/NeonCircle.icon'
-import { Job } from '@/frontend/services/jobs.service'
 import { Flex } from '@chakra-ui/react'
 
 export const CareerJourney = ({ job }: { job: Job }) => {

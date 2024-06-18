@@ -2,6 +2,7 @@
 
 import { useAdminAttributes } from '@/app/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { AdminJobAttribute } from '@/common/types/Job'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormObserver from '@/frontend/components/FormObserver'
 import FormikMultiSelect from '@/frontend/components/FormikMultiSelect'
@@ -9,7 +10,6 @@ import FormikSelect from '@/frontend/components/FormikSelect'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
-import { AdminJobAttribute } from '@/frontend/services/jobs.service'
 import {
   Box,
   Button,
