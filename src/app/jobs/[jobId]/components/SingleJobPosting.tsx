@@ -1,27 +1,24 @@
-import { User } from '@/common/types/User'
+import { Job } from '@/common/types/Job'
 import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { Flex } from '@chakra-ui/react'
 import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useState } from 'react'
 import { Benefits } from './sections/postingSections/Benefits'
 import { CareerJourney } from './sections/postingSections/CareerJourney'
-import { DesiredSkills } from './sections/postingSections/DesiredSkills'
 import { EmployerSummary } from './sections/postingSections/EmployerSummary'
 import { JobPhotos } from './sections/postingSections/JobPhotos'
+import { JobTitleCard } from './sections/postingSections/JobTitleCard'
 import { LearnedSkills } from './sections/postingSections/LearnedSkills'
 import { Requirements } from './sections/postingSections/Requirements'
 import { Responsibilities } from './sections/postingSections/Responsibilities'
 import { Testimonials } from './sections/postingSections/Testimonials'
 import { WhatToExpect } from './sections/postingSections/WhatToExpect'
-import { Job } from '@/common/types/Job'
 
 interface SingleJobPostingProps {
   job: Job
-  percentMatch?: number
-  user?: User
 }
 
-export const SingleJobPosting = ({ job, percentMatch, user }: SingleJobPostingProps) => {
+export const SingleJobPosting = ({ job }: SingleJobPostingProps) => {
   const [startedView, setStartedViewing] = useState(false)
   const [hitBottom, setHitBottom] = useState(false)
 
@@ -52,14 +49,7 @@ export const SingleJobPosting = ({ job, percentMatch, user }: SingleJobPostingPr
     <Flex flexWrap="wrap" w="100%" bg="#F8F9FA">
       <JobPhotos job={job} />
       <Flex flexWrap="wrap" w="100%" p="1rem" pb={'6rem'} marginTop="-3.5rem" gap="1rem" zIndex="1">
-        {job.employer && job.desiredSkills.length > 0 && (
-          <DesiredSkills
-            job={job}
-            profileSkills={user?.profile?.profileSkills}
-            percentMatch={percentMatch}
-            profileCertifications={user?.profile?.profileCertifications}
-          />
-        )}
+        <JobTitleCard job={job} />
         {job.employmentTitle && job.location && <EmployerSummary job={job} />}
         {job.requirementsDescription && <Requirements job={job} />}
         {job.employmentType && <WhatToExpect job={job} />}
