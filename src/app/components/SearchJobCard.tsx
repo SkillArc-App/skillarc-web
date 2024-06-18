@@ -79,7 +79,7 @@ export const SearchJobCard = ({
     >
       <Flex gap={'1rem'}>
         {job.employer?.logoUrl && (
-          <Image src={job.employer.logoUrl} alt="employer logo" boxSize={'4rem'} />
+          <Image src={job.employer.logoUrl} fit={'contain'} alt="employer logo" boxSize={'4rem'} />
         )}
 
         <Box textAlign={'left'}>
