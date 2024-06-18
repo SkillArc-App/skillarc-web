@@ -31,36 +31,38 @@ export const JobPhotos = ({ job }: { job: Job }) => {
   return (
     <>
       <Image
-        h="208px"
+        h="300px"
         w="100%"
-        objectFit="cover"
+        fit="cover"
         alt="photo"
         src={job?.jobPhotos[currentIndex].photoUrl}
         zIndex={0}
         position="initial"
       />
-      <Flex justifyContent="space-between" m="1rem" w="100%" zIndex={1} marginTop="-108px">
-        <Box
-          boxSize="26px"
-          bg="white"
-          borderRadius="900px"
-          textAlign="center"
-          cursor="pointer"
-          onClick={handleLeftClick}
-        >
-          <ChevronLeftIcon boxSize="22px" verticalAlign="middle" />
-        </Box>
-        <Box
-          boxSize="26px"
-          bg="white"
-          borderRadius="900px"
-          textAlign="center"
-          cursor="pointer"
-          onClick={handleRightClick}
-        >
-          <ChevronRightIcon boxSize="22px" verticalAlign="middle" />
-        </Box>
-      </Flex>
+      {job.jobPhotos.length > 1 && (
+        <Flex justifyContent="space-between" m="1rem" w="100%" zIndex={1} marginTop="-108px">
+          <Box
+            boxSize="26px"
+            bg="white"
+            borderRadius="900px"
+            textAlign="center"
+            cursor="pointer"
+            onClick={handleLeftClick}
+          >
+            <ChevronLeftIcon boxSize="22px" verticalAlign="middle" />
+          </Box>
+          <Box
+            boxSize="26px"
+            bg="white"
+            borderRadius="900px"
+            textAlign="center"
+            cursor="pointer"
+            onClick={handleRightClick}
+          >
+            <ChevronRightIcon boxSize="22px" verticalAlign="middle" />
+          </Box>
+        </Flex>
+      )}
     </>
   )
 }
