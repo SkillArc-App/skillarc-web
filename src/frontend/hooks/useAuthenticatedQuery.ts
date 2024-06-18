@@ -1,5 +1,5 @@
 import { Maybe } from '@/common/types/maybe'
-import { QueryFunctionContext, QueryKey, UseQueryOptions, useQuery } from 'react-query'
+import { QueryFunctionContext, QueryKey, UseQueryOptions, useQuery } from '@tanstack/react-query'
 import { useAuthToken } from './useAuthToken'
 
 export type QueryAuthenticatedFunction<T = unknown, TQueryKey extends QueryKey = QueryKey> = (

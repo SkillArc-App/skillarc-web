@@ -1,8 +1,8 @@
 import { AllResponses } from '@/common/types/OnboardingResponse'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { put } from '@/frontend/http-common'
+import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useQueryClient } from 'react-query'
 import { OnboardingResponse } from './useOnboardingQuery'
 
 export const useOnboardingMutation = () => {
@@ -23,8 +23,8 @@ export const useOnboardingMutation = () => {
     },
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries('onboarding_data')
-        queryClient.invalidateQueries('me')
+        queryClient.invalidateQueries(['onboarding_data'])
+        queryClient.invalidateQueries(['me'])
         router.push(`/onboarding/${data.nextStep}`)
       },
     },

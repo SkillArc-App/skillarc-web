@@ -5,14 +5,14 @@ import { FrontendPersonalExperiencesService } from '@/frontend/services/personal
 import { FrontendProfileService } from '@/frontend/services/profile.service'
 import { FrontendProfileSkillsService } from '@/frontend/services/profileSkills.service'
 import { FrontendUserService } from '@/frontend/services/user.service'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient()
 
   const updateSummary = useAuthenticatedMutation(FrontendUserService.update, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries('me')
+      queryClient.invalidateQueries(['me'])
       queryClient.invalidateQueries(['profile', data?.profile?.id])
     },
   })
@@ -20,7 +20,7 @@ export const useUpdateProfile = () => {
   const updateStory = useAuthenticatedMutation(FrontendProfileService.updateStory, {
     onSuccess: (_, { profileId }) => {
       queryClient.invalidateQueries(['profile', profileId])
-      queryClient.invalidateQueries('me')
+      queryClient.invalidateQueries(['me'])
     },
   })
 
@@ -33,14 +33,14 @@ export const useUpdateProfile = () => {
   const deleteStory = useAuthenticatedMutation(FrontendProfileService.deleteStory, {
     onSuccess: (_, { profileId }) => {
       queryClient.invalidateQueries(['profile', profileId])
-      queryClient.invalidateQueries('me')
+      queryClient.invalidateQueries(['me'])
     },
   })
 
   const addSkill = useAuthenticatedMutation(FrontendProfileService.addSkill, {
     onSuccess: (_, { profileId }) => {
       queryClient.invalidateQueries(['profile', profileId])
-      queryClient.invalidateQueries('me')
+      queryClient.invalidateQueries(['me'])
     },
   })
 

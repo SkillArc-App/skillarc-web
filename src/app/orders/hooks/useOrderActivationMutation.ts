@@ -1,7 +1,7 @@
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
 import { useToast } from '@chakra-ui/react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const useOrderActivationMutation = () => {
   const queryClient = useQueryClient()
@@ -26,7 +26,7 @@ export const useOrderActivationMutation = () => {
           duration: 3000,
           isClosable: true,
         })
-      }
+      },
     },
   )
 }
