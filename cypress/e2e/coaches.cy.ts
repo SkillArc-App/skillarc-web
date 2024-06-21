@@ -219,6 +219,20 @@ describe('Coaches', () => {
       cy.url().should('contain', '/jobs/')
       cy.go('back')
 
+      cy.findByRole('tab', { name: 'Resumes' }).click()
+
+      cy.findByRole('button', { name: 'Create New Resume' }).click()
+      cy.get('div').contains('Anonymize Resume?').click()
+      cy.findByLabelText('Page Limit*').type('2')
+      cy.findByRole('button', { name: 'Save' }).click()
+      cy.findByText('succeeded')
+      cy.findByRole('button', { name: 'Download' }).click()
+
+      jobsTable = cy.findByRole('table')
+      jobsTable.within(() => {
+        cy.findByText("Level 2 Mechanic").click()
+      })
+
       cy.findByRole('link', { name: `${person['firstName']} ${person['lastName']}` }).click()
       cy.findByLabelText('Edit Profile').click()
 
@@ -264,9 +278,7 @@ describe('Coaches', () => {
 
       reloadUntilConditionMet(
         () => {
-          return cy
-            .get('table')
-            .then((el) => el.text().includes(newLead.phoneNumber))
+          return cy.get('table').then((el) => el.text().includes(newLead.phoneNumber))
         },
         { retryCount: 8 },
       )
