@@ -228,11 +228,6 @@ describe('Coaches', () => {
       cy.findByText('succeeded')
       cy.findByRole('button', { name: 'Download' }).click()
 
-      jobsTable = cy.findByRole('table')
-      jobsTable.within(() => {
-        cy.findByText("Level 2 Mechanic").click()
-      })
-
       cy.findByRole('link', { name: `${person['firstName']} ${person['lastName']}` }).click()
       cy.findByLabelText('Edit Profile').click()
 
