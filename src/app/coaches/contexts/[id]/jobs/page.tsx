@@ -103,7 +103,7 @@ const JobsTable = () => {
       },
     }),
     columnHelper.accessor('id', {
-      header: 'Recommendations',
+      header: 'Recommendations to Seeker',
       cell: (row) => {
         return (
           <Box>

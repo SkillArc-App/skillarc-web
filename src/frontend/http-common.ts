@@ -5,7 +5,7 @@ type Headers = {
   Authorization?: string
 }
 
-const http = axios.create({
+export const http = axios.create({
   withCredentials: false,
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {

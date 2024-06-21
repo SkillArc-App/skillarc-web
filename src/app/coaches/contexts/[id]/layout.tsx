@@ -45,6 +45,7 @@ const tabs: Record<string, number> = {
   notes: 0,
   tasks: 1,
   jobs: 2,
+  resumes: 3
 }
 
 const Context = ({ children }: { children: React.ReactNode }) => {
@@ -306,6 +307,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
               </Tab>
               <Tab as={NextLink} href={'jobs'}>
                 Job Statuses
+              </Tab>
+              <Tab as={NextLink} href={'resumes'}>
+                Resumes
               </Tab>
             </TabList>
           </Tabs>
