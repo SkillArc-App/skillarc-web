@@ -1,6 +1,6 @@
-import { get } from "@/frontend/http-common"
-import { Resume } from "../types"
-import { useAuthenticatedQuery } from "@/frontend/hooks/useAuthenticatedQuery"
+import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
+import { get } from '@/frontend/http-common'
+import { Resume } from '../types'
 
 export const useResumesQuery = (personId?: string) =>
   useAuthenticatedQuery(
@@ -14,5 +14,5 @@ export const useResumesQuery = (personId?: string) =>
 
       return getResumes()
     },
-    { enabled: !!personId }, // , refetchInterval: 2000
+    { enabled: !!personId, refetchInterval: 2000 },
   )
