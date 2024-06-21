@@ -84,14 +84,22 @@ describe('Coaches', () => {
 
       cy.get('body').should('contain', person['email'])
 
-      cy.get('body')
-        .contains('Other Jobs')
-        .next()
-        .next()
-        .within(() => {
-          cy.get('button').contains('Recommend').click()
-          cy.get('div').should('contain', 'Recommended')
+      cy.findByRole('tab', { name: 'Job Statuses' }).click()
+
+      let jobsTable = cy.findByRole('table')
+      jobsTable.within(() => {
+        const row = cy
+          .findByText("Level 2 Mechanic")
+          .parent()
+          .parent()
+
+        row.within(() => {
+          cy.findByText('Recommend').click()
+          cy.findByText('Recommended')
         })
+      })
+
+      cy.findByRole('tab', { name: 'Notes' }).click()
 
       const noteInput = cy.findByPlaceholderText('Add a note')
       noteInput.type('This is a note').type('{enter}')
@@ -201,11 +209,12 @@ describe('Coaches', () => {
       cy.get('button[aria-label="Delete Note"]').click()
       cy.get('body').should('not.contain', 'This is a new note')
 
-      cy.contains('p', 'Job Title')
-        .parent()
-        .within(() => {
-          cy.get('a').click()
-        })
+      cy.findByRole('tab', { name: 'Job Statuses' }).click()
+
+      jobsTable = cy.findByRole('table')
+      jobsTable.within(() => {
+        cy.findByText("Level 2 Mechanic").click()
+      })
 
       cy.url().should('contain', '/jobs/')
       cy.go('back')

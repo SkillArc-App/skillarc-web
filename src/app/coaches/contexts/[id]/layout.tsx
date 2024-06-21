@@ -134,7 +134,7 @@ const Context = ({ children }: { children: React.ReactNode }) => {
       />
       <Grid
         templateAreas={`"nav main right"`}
-        gridTemplateColumns={'25rem 1fr'}
+        gridTemplateColumns={'20rem 1fr'}
         gap="1"
         color="blackAlpha.700"
         height={'100%'}
