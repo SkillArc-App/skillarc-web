@@ -1,14 +1,36 @@
 'use client'
 
-import { useCoachSeekersData } from '@/app/coaches/hooks/useCoachSeekersData'
 import { CoachSeekerTable } from '@/app/coaches/types'
+import { usePersonSearch } from '@/app/jobs/hooks/usePersonSearch'
+import { Attribute } from '@/common/types/Attribute'
+import { PersonSearchValue } from '@/common/types/PersonSearch'
 import DataTable from '@/frontend/components/DataTable.component'
+import { useDebounce } from '@/frontend/hooks/useDebounce'
 import { useUser } from '@/frontend/hooks/useUser'
-import { Checkbox, HStack, Link, Stack, Tag } from '@chakra-ui/react'
+import { SearchIcon } from '@chakra-ui/icons'
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Link,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverTrigger,
+  Stack,
+} from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
+import { FaChevronDown } from 'react-icons/fa6'
+import { useCoachAttributes } from '../hooks/useCoachAttributes'
 
 const Coaches = () => {
   return (
@@ -21,30 +43,128 @@ const Coaches = () => {
 }
 
 const Seekers = () => {
-  const { data } = useCoachSeekersData()
   const { data: user } = useUser()
+  const { data: attributes } = useCoachAttributes()
+
   const router = useRouter()
 
   const searchParams = useSearchParams()
+  const searchTerms = searchParams?.get('utm_term') ?? searchParams?.get('searchTerm') ?? ''
   const filter = searchParams.get('filter')
+
+  const [searchValue, setSearchValue] = useState<PersonSearchValue>({
+    searchTerms,
+    attributeFilters: {},
+  })
+
+  const debouncedSearchValue = useDebounce(searchValue, 500)
+
+  const { data } = usePersonSearch(debouncedSearchValue)
 
   const filteredData =
     filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
+
+  const onAttributeChange = (attributeName: string, values: string[]) => {
+    const newSelectedAttributes = { ...searchValue.attributeFilters, [attributeName]: values }
+    onSearchChange({ ...searchValue, attributeFilters: newSelectedAttributes })
+  }
+
+  const onSearchChange = (value: PersonSearchValue) => {
+    const filterString = filter !== 'no' ? 'filter=yes' : 'filter=no'
+    const attrString = Object.entries(value.attributeFilters)
+      .map(([name, values]) => {
+        const attrName = `attr_${name}`
+
+        return values.map((value) => `${attrName}=${value}`)
+      })
+      .flat()
+      .join('&')
+
+    router.replace(`/coaches/seekers?utm_term=${value.searchTerms}&${filterString}&${attrString}`)
+    setSearchValue(value)
+  }
 
   return (
     <Stack width={'100%'}>
       <Checkbox
         isChecked={filter !== 'no'}
-        onChange={() =>
-          filter !== 'no'
-            ? router.push('/coaches/seekers?filter=no')
-            : router.push('/coaches/seekers?filter=yes')
-        }
+        onChange={() => {
+          const filterString = filter !== 'no' ? 'filter=no' : 'filter=yes'
+          router.replace(`/coaches/seekers?utm_term=${searchValue.searchTerms}&${filterString}`)
+        }}
       >
         Owned by Me
       </Checkbox>
+      <InputGroup>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.300" />
+        </InputLeftElement>
+        <Input
+          type="search"
+          role="search"
+          value={searchValue.searchTerms}
+          onChange={(sv) => onSearchChange({ ...searchValue, searchTerms: sv.target.value })}
+        />
+      </InputGroup>
+      <HStack>
+        {attributes?.map((attribute) => (
+          <AttributePopover
+            key={attribute.id}
+            isDifferent={searchValue.attributeFilters[attribute.name]?.length > 0}
+            selectedValue={searchValue.attributeFilters[attribute.name] ?? []}
+            baseAttribute={attribute}
+            onChange={(e) => onAttributeChange(attribute.name, e)}
+            reset={() => onAttributeChange(attribute.name, [])}
+          />
+        ))}
+      </HStack>
       {filteredData && <Table data={filteredData} />}
     </Stack>
+  )
+}
+
+const AttributePopover = ({
+  baseAttribute,
+  isDifferent,
+  selectedValue,
+  onChange,
+  reset,
+}: {
+  baseAttribute: Attribute
+  isDifferent: boolean
+  selectedValue: string[]
+  onChange: (value: string[]) => void
+  reset: () => void
+}) => {
+  const colorScheme = isDifferent ? 'blue' : 'gray'
+
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <Button colorScheme={colorScheme} size={'xs'} rightIcon={<FaChevronDown />}>
+          {baseAttribute.name}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverBody>
+          <CheckboxGroup onChange={onChange} value={selectedValue}>
+            <Stack>
+              {baseAttribute.set.map((value) => (
+                <Checkbox value={value} key={value}>
+                  {value}
+                </Checkbox>
+              ))}
+
+              <Button size={'xs'} onClick={reset}>
+                Reset
+              </Button>
+            </Stack>
+          </CheckboxGroup>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -92,16 +212,6 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
     columnHelper.accessor('certifiedBy', {
       header: 'Certified By',
       cell: (row) => row.getValue(),
-    }),
-    columnHelper.accessor('barriers', {
-      header: 'Barriers',
-      cell: (row) => (
-        <HStack>
-          {row.getValue().map((barrier, key) => (
-            <Tag key={key}>{barrier.name}</Tag>
-          ))}
-        </HStack>
-      ),
     }),
     columnHelper.accessor('lastActiveOn', {
       header: 'Last Active On',

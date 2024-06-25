@@ -1,11 +1,8 @@
 import { SearchJob, SearchValue } from '@/common/types/Search'
+import { camelToSnake } from '@/common/utils/functions'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { get } from '@/frontend/http-common'
 import { useQuery } from '@tanstack/react-query'
-
-function camelToSnake(str: string) {
-  return str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase()
-}
 
 export const useJobSearch = ({ searchTerms, filters, otherUtmParams }: SearchValue) => {
   const token = useAuthToken()
