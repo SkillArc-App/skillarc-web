@@ -1,19 +1,21 @@
 'use client'
 
 import { CoachSeekerTable } from '@/app/coaches/types'
-import SearchBar from '@/app/jobs/components/SearchBar'
 import { usePersonSearch } from '@/app/jobs/hooks/usePersonSearch'
 import { Attribute } from '@/common/types/Attribute'
 import { PersonSearchValue } from '@/common/types/PersonSearch'
-import { SearchValue } from '@/common/types/Search'
 import DataTable from '@/frontend/components/DataTable.component'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
 import { useUser } from '@/frontend/hooks/useUser'
+import { SearchIcon } from '@chakra-ui/icons'
 import {
   Button,
   Checkbox,
   CheckboxGroup,
   HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Link,
   Popover,
   PopoverArrow,
@@ -59,10 +61,13 @@ const Seekers = () => {
 
   const { data } = usePersonSearch(debouncedSearchValue)
 
-  const [selectedAttributes, setSelectedAttributes] = useState<{ [name: string]: string[] }>({})
-
   const filteredData =
     filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
+
+  const onAttributeChange = (attributeName: string, values: string[]) => {
+    const newSelectedAttributes = { ...searchValue.attributeFilters, [attributeName]: values }
+    onSearchChange({ ...searchValue, attributeFilters: newSelectedAttributes })
+  }
 
   const onSearchChange = (value: PersonSearchValue) => {
     const filterString = filter !== 'no' ? 'filter=yes' : 'filter=no'
@@ -79,28 +84,6 @@ const Seekers = () => {
     setSearchValue(value)
   }
 
-  const onAttributeChange = (attributeName: string, values: string[]) => {
-    const filterString = filter !== 'no' ? 'filter=yes' : 'filter=no'
-
-    const newSelectedAttributes = { ...selectedAttributes, [attributeName]: values }
-    setSelectedAttributes(newSelectedAttributes)
-
-    const attrString = Object.entries(newSelectedAttributes)
-      .map(([name, values]) => {
-        const attrName = `attr_${name}`
-
-        return values.map((value) => `${attrName}=${value}`)
-      })
-      .flat()
-      .join('&')
-
-    router.replace(
-      `/coaches/seekers?utm_term=${searchValue.searchTerms}&${filterString}&${attrString}`,
-    )
-
-    setSearchValue({ ...searchValue, attributeFilters: newSelectedAttributes })
-  }
-
   return (
     <Stack width={'100%'}>
       <Checkbox
@@ -112,18 +95,23 @@ const Seekers = () => {
       >
         Owned by Me
       </Checkbox>
-      <SearchBar
-        value={{ searchTerms: searchValue.searchTerms, filters: {}, otherUtmParams: {} }}
-        onChange={(sv: SearchValue) =>
-          onSearchChange({ searchTerms: sv.searchTerms, attributeFilters: selectedAttributes })
-        }
-      />
+      <InputGroup>
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.300" />
+        </InputLeftElement>
+        <Input
+          type="search"
+          role="search"
+          value={searchValue.searchTerms}
+          onChange={(sv) => onSearchChange({ ...searchValue, searchTerms: sv.target.value })}
+        />
+      </InputGroup>
       <HStack>
         {attributes?.map((attribute) => (
           <AttributePopover
             key={attribute.id}
-            isDifferent={selectedAttributes[attribute.name]?.length > 0}
-            selectedValue={selectedAttributes[attribute.name] ?? []}
+            isDifferent={searchValue.attributeFilters[attribute.name]?.length > 0}
+            selectedValue={searchValue.attributeFilters[attribute.name] ?? []}
             baseAttribute={attribute}
             onChange={(e) => onAttributeChange(attribute.name, e)}
             reset={() => onAttributeChange(attribute.name, [])}
