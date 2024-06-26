@@ -2,7 +2,7 @@
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
-import { ContextKind, SubmittableCoachTask } from '@/app/coaches/types'
+import { SubmittableCoachTask } from '@/app/coaches/types'
 import { Heading } from '@/frontend/components/Heading.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
@@ -45,7 +45,7 @@ const tabs: Record<string, number> = {
   notes: 0,
   tasks: 1,
   jobs: 2,
-  resumes: 3
+  resumes: 3,
 }
 
 const Context = ({ children }: { children: React.ReactNode }) => {
@@ -158,13 +158,9 @@ const Context = ({ children }: { children: React.ReactNode }) => {
               </Breadcrumb>
               <HStack gap={0}>
                 <Heading type="h3" color={'black'}>
-                  {seeker.kind === ContextKind.SEEKER ? (
-                    <Link as={NextLink} href={`/profiles/${seeker.id}`}>
-                      {seeker.firstName} {seeker.lastName}
-                    </Link>
-                  ) : (
-                    `${seeker.firstName} ${seeker.lastName}`
-                  )}
+                  <Link as={NextLink} href={`/profiles/${seeker.id}`}>
+                    {seeker.firstName} {seeker.lastName}
+                  </Link>
                 </Heading>
                 {!!seeker.certifiedBy ? (
                   <Tooltip label={`certified by ${seeker.certifiedBy}`}>
