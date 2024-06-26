@@ -227,6 +227,7 @@ describe('Coaches', () => {
       cy.findByRole('button', { name: 'Save' }).click()
       cy.findByText('succeeded')
       cy.findByRole('button', { name: 'Download' }).click()
+      cy.readFile('cypress/downloads/resume.pdf')
 
       cy.findByRole('link', { name: `${person['firstName']} ${person['lastName']}` }).click()
       cy.findByLabelText('Edit Profile').click()
