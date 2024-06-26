@@ -108,6 +108,13 @@ jobs:
           POSTGRES_DB: dev
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+      puppeteer:
+        image: ghcr.io/skillarc-app/puppeteer:latest
+        ports:
+          - 3002:3002
+        credentials:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       resque:
         image: ghcr.io/skillarc-app/resque:latest
         env:
@@ -118,6 +125,9 @@ jobs:
           POSTGRES_PASSWORD: 'postgres'
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
+          PUPPETEER_BASE_URL: "http://puppeteer:3002"
+          PUPPETEER_AUTH: "efa0adda-3d57-4924-bba0-d00903b18404"
+          DOCUMENT_GENERATION_STRATEGY: real
           DOCUMENT_STORAGE_STRATEGY: db_only
           DOCUMENT_STORAGE_KIND: postgres
           SMS_GATEWAY_STRATEGY: fake
@@ -138,6 +148,9 @@ jobs:
           POSTGRES_PASSWORD: 'postgres'
           POSTGRES_PORT: 5432
           REDIS_URL: 'redis://redis:6379'
+          PUPPETEER_BASE_URL: "http://puppeteer:3002"
+          PUPPETEER_AUTH: "efa0adda-3d57-4924-bba0-d00903b18404"
+          DOCUMENT_GENERATION_STRATEGY: real
           DOCUMENT_STORAGE_STRATEGY: db_only
           DOCUMENT_STORAGE_KIND: postgres
           SMS_GATEWAY_STRATEGY: fake
@@ -160,7 +173,8 @@ jobs:
         with:
           comment_on_pr: false
       - uses: actions/checkout@v4
-      - run: |
+      - name: Run database migration
+        run: |
           docker ps
           container_name=$(docker ps --filter "ancestor=ghcr.io/skillarc-app/server:latest" --format "{{.Names}}" | head -n 1)
           echo "Container name: $container_name"
