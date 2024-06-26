@@ -9,7 +9,7 @@ import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Button, Stack, VStack, useDisclosure } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import { Suspense } from 'react'
 import NewResumeModal from './components/NewResumeModal'
 
@@ -61,11 +61,25 @@ const ResumesTable = () => {
     columnHelper.accessor('generatedAt', {
       header: 'Resume Generated At',
       cell: (row) => new Date(row.getValue()).toLocaleString(),
+      id: 'generatedAt',
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId))
+        const date2 = new Date(row2.getValue(columnId))
+
+        return date1.getTime() - date2.getTime()
+      },
     }),
     columnHelper.accessor('id', {
       header: 'Download',
       cell: (row) => <Button onClick={() => onClick(row.getValue())}>Download</Button>,
     }),
+  ]
+
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: 'generatedAt',
+    },
   ]
 
   if (!resumes) {
@@ -78,7 +92,7 @@ const ResumesTable = () => {
       <Button variant={'solid'} colorScheme="green" onClick={onOpen}>
         Create New Resume
       </Button>
-      <DataTable columns={columns} data={resumes} />
+      <DataTable columns={columns} data={resumes} initialSortState={initialSortState} />
     </VStack>
   )
 }
