@@ -100,6 +100,7 @@ export default function Start() {
               <FormikInput<string>
                 label="Date of Birth"
                 name="dateOfBirth"
+                min={'1900-01-01'}
                 type="date"
                 isRequired
               />
