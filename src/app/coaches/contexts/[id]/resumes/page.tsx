@@ -3,7 +3,7 @@
 import { downloadResume } from '@/app/documents/downloadResume'
 import { useResumeMutation } from '@/app/documents/hooks/useResumeMutation'
 import { useResumesQuery } from '@/app/documents/hooks/useResumesQuery'
-import { Resume, ResumeRequest } from '@/app/documents/types'
+import { Checks, Resume } from '@/app/documents/types'
 import DataTable from '@/frontend/components/DataTable.component'
 import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
@@ -11,7 +11,7 @@ import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Button, Stack, VStack, useDisclosure } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import { Suspense } from 'react'
-import NewResumeModal from './components/NewResumeModal'
+import NewResumeModal, { ResumeForm } from './components/NewResumeModal'
 
 const Resumes = () => {
   return (
@@ -32,8 +32,20 @@ const ResumesTable = () => {
 
   const columnHelper = createColumnHelper<Resume>()
 
-  const onSubmit = (request: ResumeRequest) => {
-    resume.mutate(request)
+  const onSubmit = (request: ResumeForm) => {
+    const checks = []
+    if (request.drug) {
+      checks.push(Checks.DRUG)
+    }
+
+    if (request.background) {
+      checks.push(Checks.BACKGROUND)
+    }
+
+    resume.mutate({
+      ...request,
+      checks,
+    })
     onClose()
   }
 

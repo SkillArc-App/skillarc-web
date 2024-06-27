@@ -9,6 +9,7 @@ const FormikCheckBox = ({ name, label }: { name: string; label: string }) => {
           <Checkbox
             variant={'box'}
             isChecked={field.checked}
+            width={'100%'}
             size={'lg'}
             colorScheme="green"
             {...field}
