@@ -223,7 +223,7 @@ describe('Coaches', () => {
 
       cy.findByRole('button', { name: 'Create New Resume' }).click()
       cy.get('div').contains('Anonymize Resume?').click()
-      cy.findByLabelText('Page Limit*').type('2')
+      cy.get('div').contains('Background Check Cleared?').click()
       cy.findByRole('button', { name: 'Save' }).click()
       cy.findByText('succeeded')
       cy.findByRole('button', { name: 'Download' }).click()
