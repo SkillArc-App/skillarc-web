@@ -41,7 +41,7 @@ const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
                     {otherExperiences.position}
                   </Text>
 
-                  <Text type="b2" color="greyscale.600">
+                  <Text type="b2" whiteSpace={'pre-line'} color="greyscale.600">
                     {otherExperiences.description}
                   </Text>
                 </Flex>

@@ -31,7 +31,7 @@ export const ProfileEducation = ({ seeker }: { seeker: GetOneProfileResponse }) 
                   <Text type="b2" color="greyscale.600">
                     GPA: {educationExperiences.gpa}
                   </Text>
-                  <Text type="b2" color="greyscale.600">
+                  <Text type="b2" whiteSpace={'pre-line'} color="greyscale.600">
                     {educationExperiences.activities}
                   </Text>
                 </Flex>
