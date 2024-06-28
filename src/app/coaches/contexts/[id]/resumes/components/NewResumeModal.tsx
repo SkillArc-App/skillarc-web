@@ -1,6 +1,5 @@
 import { DocumentKind, ResumeRequest } from '@/app/documents/types'
 import FormikCheckBox from '@/frontend/components/FormikCheckbox'
-import FormikInput from '@/frontend/components/FormikInput'
 import {
   Button,
   Modal,
@@ -18,15 +17,24 @@ interface NewLeadModalProps {
   personId: string
   isOpen: boolean
   onClose: () => void
-  onSubmit: (request: ResumeRequest) => void
+  onSubmit: (request: ResumeForm) => void
+}
+
+export type ResumeForm = {
+  personId: string
+  anonymized: boolean
+  documentKind: DocumentKind
+  drug: boolean
+  background: boolean
 }
 
 const NewResumeModal = ({ personId, isOpen, onClose, onSubmit }: NewLeadModalProps) => {
-  const initialValue: ResumeRequest = {
+  const initialValue: ResumeForm = {
     personId,
     anonymized: false,
     documentKind: DocumentKind.PDF,
-    pageLimit: 1,
+    drug: true,
+    background: true,
   }
 
   return (
@@ -41,13 +49,8 @@ const NewResumeModal = ({ personId, isOpen, onClose, onSubmit }: NewLeadModalPro
               <ModalBody>
                 <VStack spacing={2}>
                   <FormikCheckBox name="anonymized" label="Anonymize Resume?" />
-                  <FormikInput<number>
-                    isRequired
-                    type="number"
-                    name="pageLimit"
-                    min={1}
-                    label="Page Limit"
-                  />
+                  <FormikCheckBox name="drug" label="Drug Screen Passed?" />
+                  <FormikCheckBox name="background" label="Background Check Cleared?" />
                 </VStack>
               </ModalBody>
 

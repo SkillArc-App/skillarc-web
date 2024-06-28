@@ -1,7 +1,7 @@
 export type Resume = {
   id: string
-  anonymized: boolean,
-  documentStatus: string,
+  anonymized: boolean
+  documentStatus: string
   generatedAt: string
   documentKind: DocumentKind
   personId: string
@@ -9,13 +9,18 @@ export type Resume = {
 
 export type ResumeRequest = {
   personId: string
-  anonymized: boolean,
+  anonymized: boolean
   documentKind: DocumentKind
-  pageLimit: number
+  checks: Checks[]
 }
 
 export enum DocumentKind {
-  PDF = 'pdf'
+  PDF = 'pdf',
+}
+
+export enum Checks {
+  BACKGROUND = 'background',
+  DRUG = 'drug',
 }
 
 export enum DocumentStatus {

@@ -115,8 +115,8 @@ jobs:
         credentials:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      resque:
-        image: ghcr.io/skillarc-app/resque:latest
+      sidekiq:
+        image: ghcr.io/skillarc-app/sidekiq:latest
         env:
           SLACK_GATEWAY_STRATEGY: 'fake'
           MOCK_AUTH: 'true'
