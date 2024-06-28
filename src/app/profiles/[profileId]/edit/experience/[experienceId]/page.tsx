@@ -15,8 +15,7 @@ const EditExperience = () => {
   const { profileId, experienceId } = useFixedParams('profileId', 'experienceId')
 
   const { data: seeker } = useProfileData(profileId)
-  const [currentlyWorking, setCurrentlyWorking] = useState<boolean>(false)
-  const [experience, setExperience] = useState<Partial<OtherExperience>>()
+  const [experience, setExperience] = useState<Partial<OtherExperience>>({ isCurrent: false })
   const {
     addOtherExperience: { mutate: addOtherExperience, status: addOtherExperienceStatus },
     updateOtherExperience: { mutate: updateOtherExperience, status: updateOtherExperienceStatus },
@@ -24,14 +23,8 @@ const EditExperience = () => {
   } = useUpdateProfile()
 
   useEffect(() => {
-    setExperience(seeker?.otherExperiences?.find(({ id }) => id === experienceId))
+    setExperience(seeker?.otherExperiences?.find(({ id }) => id === experienceId) ?? { isCurrent: false })
   }, [experienceId, seeker])
-
-  useEffect(() => {
-    if (currentlyWorking) {
-      setExperience((e) => ({ ...e, endDate: '' }))
-    }
-  }, [currentlyWorking])
 
   useEffect(() => {
     if (
@@ -87,7 +80,7 @@ const EditExperience = () => {
           <Text type="b2">Company/Organization</Text>
           <Input
             value={experience?.organizationName ?? ''}
-            onChange={(e) => setExperience({ ...experience, organizationName: e.target.value })}
+            onChange={(e) => setExperience((experience) => ({ ...experience, organizationName: e.target.value }))}
             placeholder="i.e. Dunder Mifflin"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -96,7 +89,7 @@ const EditExperience = () => {
           <Text type="b2">Position</Text>
           <Input
             value={experience?.position ?? ''}
-            onChange={(e) => setExperience({ ...experience, position: e.target.value })}
+            onChange={(e) => setExperience((experience) => ({ ...experience, position: e.target.value }))}
             placeholder="i.e. Assistant"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -105,25 +98,33 @@ const EditExperience = () => {
           <Text type="b2">Start Date</Text>
           <Input
             value={experience?.startDate ?? ''}
-            onChange={(e) => setExperience({ ...experience, startDate: e.target.value })}
+            onChange={(e) => setExperience((experience) => ({ ...experience, startDate: e.target.value }))}
             placeholder="2021"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
         </Flex>
-        {!currentlyWorking && (
+        {!experience.isCurrent && (
           <Flex flexDir="column" gap="0.5rem">
             <Text type="b2">End Date</Text>
             <Input
               value={experience?.endDate ?? ''}
-              onChange={(e) => setExperience({ ...experience, endDate: e.target.value })}
+              onChange={(e) => setExperience((experience) => ({ ...experience, endDate: e.target.value }))}
               placeholder="2022"
               _placeholder={{ color: 'greyscale.400' }}
             ></Input>
           </Flex>
         )}
         <Checkbox
-          isChecked={currentlyWorking}
-          onChange={() => setCurrentlyWorking((prev) => !prev)}
+          isChecked={!!experience.isCurrent}
+          onChange={() => {
+            setExperience((experience) => {
+              if (!!experience.isCurrent) {
+                return { ...experience, isCurrent: false }
+              } else {
+                return { ...experience, isCurrent: true, endDate: '' }
+              }
+            })
+          }}
         >
           I currently work here
         </Checkbox>
@@ -131,7 +132,7 @@ const EditExperience = () => {
           <Text type="b2">Tell us about your role</Text>
           <Textarea
             value={experience?.description ?? ''}
-            onChange={(e) => setExperience({ ...experience, description: e.target.value })}
+            onChange={(e) => setExperience((experience) => ({ ...experience, description: e.target.value }))}
           />
         </Flex>
       </Flex>
