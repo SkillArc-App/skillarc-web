@@ -1,16 +1,17 @@
-import { ApplicationStatus } from '@/common/types/ApplicantStatus'
 import { Note } from '@/common/types/Note'
 
-export type JobOrderStatuses =
-  | 'needs_order_count'
-  | 'open'
-  | 'waiting_on_employer'
-  | 'filled'
-  | 'not_filled'
+export enum JobOrderStatuses {
+  NEEDS_ORDER_COUNT = 'needs_order_count',
+  OPEN = 'open',
+  WAITING_ON_EMPLOYER = 'waiting_on_employer',
+  FILLED = 'filled',
+  NOT_FILLED = 'not_filled',
+}
 
 export enum CandidateStatuses {
   ADDED = 'added',
   RECOMMENDED = 'recommended',
+  SCREENED = 'screened',
   HIRED = 'hired',
   RESCINDED = 'rescinded',
 }

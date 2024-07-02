@@ -47,13 +47,13 @@ import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { FaEllipsis } from 'react-icons/fa6'
-import { colorMap, displayMap, statusMap } from '../constants'
+import { candidateColorMap, candidateDisplayMap, orderColorMap, orderDisplayMap } from '../constants'
 import { useNotes } from '../hooks/useNotes'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderMutation } from '../hooks/useOrderMutation'
 import { useOrderQuery } from '../hooks/useOrderQuery'
-import { Candidate, CandidateStatuses, CandidateStatusesMapping, JobOrder } from '../types'
+import { Candidate, CandidateStatuses, JobOrder } from '../types'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
@@ -147,21 +147,7 @@ const CandidateTable = ({
       cell: (row) => {
         const status = row.getValue()
 
-        const colorMap: CandidateStatusesMapping = {
-          added: 'blue',
-          recommended: 'yellow.500',
-          hired: 'green',
-          rescinded: 'red',
-        }
-
-        const displayMap: CandidateStatusesMapping = {
-          added: 'Open',
-          recommended: 'Sent to Employer',
-          hired: 'Hired',
-          rescinded: 'Rejected',
-        }
-
-        return <Text color={colorMap[status]}>{displayMap[status]}</Text>
+        return <Text color={candidateColorMap[status]}>{candidateDisplayMap[status]}</Text>
       },
     }),
     columnHelper.accessor(() => {}, {
@@ -256,7 +242,7 @@ const Order = () => {
               <Heading size={'md'}>
                 {order.employmentTitle} - {order.employerName}
               </Heading>
-              <Tag colorScheme={colorMap[order.status]}>{displayMap[order.status]}</Tag>
+              <Tag colorScheme={orderColorMap[order.status]}>{orderDisplayMap[order.status]}</Tag>
             </HStack>
           </CardHeader>
           <CardBody>
@@ -303,7 +289,7 @@ const Order = () => {
                       label="Status"
                       options={Object.values(CandidateStatuses).map((status) => ({
                         key: status,
-                        value: statusMap[status],
+                        value: candidateDisplayMap[status],
                       }))}
                     />
                   </Stack>
