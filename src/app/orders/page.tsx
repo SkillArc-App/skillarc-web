@@ -24,7 +24,7 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { displayMap } from './constants'
+import { orderDisplayMap } from './constants'
 import { useAddOrderMutation } from './hooks/useAddOrderMutation'
 import { useJobsQuery } from './hooks/useJobsQuery'
 import { useOrdersQuery } from './hooks/useOrdersQuery'
@@ -76,7 +76,7 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
     }),
     columnHelper.accessor('status', {
       header: 'Status',
-      cell: (row) => displayMap[row.getValue()],
+      cell: (row) => orderDisplayMap[row.getValue()],
     }),
     columnHelper.accessor('openedAt', {
       header: 'Opened At',
