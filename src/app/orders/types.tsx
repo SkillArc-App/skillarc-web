@@ -11,8 +11,8 @@ export enum JobOrderStatuses {
 
 export enum CandidateStatuses {
   ADDED = 'added',
-  RECOMMENDED = 'recommended',
   SCREENED = 'screened',
+  RECOMMENDED = 'recommended',
   HIRED = 'hired',
   RESCINDED = 'rescinded',
 }
