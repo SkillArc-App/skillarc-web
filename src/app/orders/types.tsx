@@ -60,5 +60,6 @@ export type Candidate = Person & {
   id: string
   appliedAt?: string
   recommendedAt?: string
+  recommendedBy?: string
   status: CandidateStatuses
 }

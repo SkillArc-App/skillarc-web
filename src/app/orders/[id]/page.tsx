@@ -132,11 +132,22 @@ const CandidateTable = ({
         const fullName = `${row.original.firstName} ${row.original.lastName}`.toLowerCase()
         return fullName.includes(filterValue.toLowerCase())
       },
-      cell: (row) => (
-        <Link onClick={() => onCandidateClick(row.row.original)}>
-          {row.row.original.firstName} {row.row.original.lastName}
-        </Link>
-      ),
+      cell: (row) => {
+        const candidate = row.row.original
+        return (
+          <Stack>
+            <Link onClick={() => onCandidateClick(candidate)}>
+              {candidate.firstName} {candidate.lastName}
+            </Link>
+            {candidate.recommendedAt && (
+              <Text color={'gray'} fontSize={'xs'}>
+                Recommended by {candidate.recommendedBy} -{' '}
+                {new Date(candidate.recommendedAt).toDateString()}
+              </Text>
+            )}
+          </Stack>
+        )
+      },
     }),
     columnHelper.accessor('appliedAt', {
       header: 'Applied At',
