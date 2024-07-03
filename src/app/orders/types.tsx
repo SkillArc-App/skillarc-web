@@ -3,6 +3,7 @@ import { Note } from '@/common/types/Note'
 export enum JobOrderStatuses {
   NEEDS_ORDER_COUNT = 'needs_order_count',
   OPEN = 'open',
+  CANDIDATES_SCREENED = 'candidates_screened',
   WAITING_ON_EMPLOYER = 'waiting_on_employer',
   FILLED = 'filled',
   NOT_FILLED = 'not_filled',
