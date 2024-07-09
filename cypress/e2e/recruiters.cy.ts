@@ -12,15 +12,10 @@ describe('Recruiters', () => {
   })
 
   it('should navigate through employers dashboard', () => {
-    cy.get('@recruiter').then((recruiter: any) => {
-      cy.visit('/')
-      cy.get('div').contains('mock auth')
-      const emailSelect = cy.get('select').filter((_, element) => {
-        return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-      })
+    cy.visit('/')
 
-      emailSelect.should('be.enabled')
-      emailSelect.select(recruiter['email'], { timeout: 10000 })
+    cy.get('@recruiter').then((recruiter: any) => {
+      cy.findByLabelText('Mock Auth Enabled').select(recruiter['email'], { timeout: 10000 })
     })
 
     cy.visit('/employers/jobs')

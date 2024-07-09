@@ -84,12 +84,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
 
         cy.visit('/jobs')
 
-        // get select and filter on the one with an email regex
-        const emailSelect = cy.get('select').filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        emailSelect.should('be.enabled')
-        emailSelect.select(user['email'], { timeout: 10000 })
+        cy.findByLabelText('Mock Auth Enabled').select(user['email'], { timeout: 10000 })
 
         const card = cy.findByRole('listitem', { name: job['employmentTitle'] })
         card.within(() => {
@@ -112,12 +107,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
 
         cy.visit('/jobs')
 
-        // get select and filter on the one with an email regex
-        const emailSelect = cy.get('select').filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        emailSelect.should('be.enabled')
-        emailSelect.select(user['email'], { timeout: 10000 })
+        cy.findByLabelText('Mock Auth Enabled').select(user['email'], { timeout: 10000 })
 
         cy.visit(`/my_jobs`)
 

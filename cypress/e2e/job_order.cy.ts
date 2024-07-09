@@ -13,11 +13,7 @@ describe('Job Orders', () => {
   it('should navigate through job orders', () => {
     cy.visit('/')
 
-    const emailSelect = cy.get('select').filter((_, element) => {
-      return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-    })
-    emailSelect.should('be.enabled')
-    emailSelect.select('job_order@skillarc.com', { timeout: 10000 })
+    cy.findByLabelText('Mock Auth Enabled').select('job_order@skillarc.com', { timeout: 10000 })
 
     cy.get('@person').then((person: any) => {
       cy.get('@job').then((job: any) => {
