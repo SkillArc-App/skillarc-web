@@ -1,10 +1,9 @@
 'use client'
 
 import { Maybe } from '@/common/types/maybe'
-import { Box, Code, HStack, Select } from '@chakra-ui/react'
+import { FormControl, FormLabel, HStack, Select } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useAllUsers } from '../../app/admin/hooks/useAllUsers'
-import { Text } from './Text.component'
 
 const DevTools = () => {
   const mockAuth = process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true'
@@ -38,23 +37,20 @@ const DevTools = () => {
   }
 
   return (
-    <HStack>
-      <Box>
-        <HStack>
-          <Text type={'b2'} whiteSpace={'nowrap'}>
-            mock auth:
-          </Text>
-          <Code color={'red'}>{'true'}</Code>
-        </HStack>
-      </Box>
-      <Select onChange={(e) => setUserSub(e.target.value)} value={sub}>
-        {(users ?? []).map((user) => (
-          <option key={user.id} value={user.sub}>
-            {user.email}
-          </option>
-        ))}
-      </Select>
-    </HStack>
+    <FormControl width={'400px'}>
+      <HStack alignItems={'center'}>
+        <FormLabel marginBottom={'0px'} whiteSpace={'nowrap'}>
+          Mock Auth Enabled
+        </FormLabel>
+        <Select onChange={(e) => setUserSub(e.target.value)} value={sub}>
+          {(users ?? []).map((user) => (
+            <option key={user.id} value={user.sub}>
+              {user.email}
+            </option>
+          ))}
+        </Select>
+      </HStack>
+    </FormControl>
   )
 }
 

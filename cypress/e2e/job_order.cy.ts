@@ -1,5 +1,27 @@
 export {}
 
+const reloadUntilConditionMet = (
+  predicate: () => Cypress.Chainable<boolean>,
+  { retryCount = 5, delay = 1000 } = {},
+) => {
+  const retrier = (count = retryCount) => {
+    predicate().then((result) => {
+      if (count === 0) {
+        predicate().should('be.true')
+      }
+      if (result) {
+        return
+      } else {
+        cy.wait(delay)
+        cy.reload()
+        retrier(count - 1)
+      }
+    })
+  }
+
+  retrier()
+}
+
 describe('Job Orders', () => {
   beforeEach(() => {
     cy.task('createActiveSeeker').then((r: any) => {
@@ -13,11 +35,7 @@ describe('Job Orders', () => {
   it('should navigate through job orders', () => {
     cy.visit('/')
 
-    const emailSelect = cy.get('select').filter((_, element) => {
-      return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-    })
-    emailSelect.should('be.enabled')
-    emailSelect.select('job_order@skillarc.com', { timeout: 10000 })
+    cy.findByLabelText('Mock Auth Enabled').select('job_order@skillarc.com', { timeout: 10000 })
 
     cy.get('@person').then((person: any) => {
       cy.get('@job').then((job: any) => {
@@ -39,7 +57,7 @@ describe('Job Orders', () => {
           })
 
           // Set order count
-          const headingCard = cy
+          let headingCard = cy
             .findByRole('heading', { name: `${job.employmentTitle} - ${employer.name}` })
             .parent()
             .parent()
@@ -50,8 +68,57 @@ describe('Job Orders', () => {
             cy.findByLabelText('Order Count*').clear().type('1')
             cy.findByRole('button', { name: 'Update' }).click()
             cy.findByText('Order Count: 1')
-            cy.findByText('Open')
+            cy.findByText('Needs Job Criteria Set')
           })
+
+          // Switch to admin role and set attributes for our job
+          cy.visit('/')
+          cy.findByLabelText('Mock Auth Enabled').select('admin@skillarc.com', {
+            timeout: 10000,
+          })
+
+          cy.visit('/admin')
+          cy.findByRole('link', { name: 'Jobs' }).click()
+          cy.findByText(job.employmentTitle).click()
+
+          cy.findByRole('tab', { name: 'The Basics' }).click()
+          cy.findByRole('button', { name: 'edit' }).click()
+
+          // assign "the basics"
+          cy.findByRole('radio', { name: 'Staffing' }).check({ force: true })
+          cy.findByPlaceholderText('Benefits Description').type('Great benefits')
+          cy.findByPlaceholderText('Responsibilities Description').type('Great responsibilities')
+          cy.findByPlaceholderText('Requirements Description').type('Great requirements')
+          cy.findByText('Save').click()
+
+          // assign job attributes
+          cy.findByRole('tab', { name: 'Attributes' }).click()
+          cy.findByRole('button', { name: '+ New Job Attribute' }).click()
+          cy.findByDisplayValue('Attribute').select('Background')
+          cy.findByLabelText('Acceptable Values').type('Misdemeanor{Enter}')
+          cy.findByRole('button', { name: 'Save' }).click()
+
+          // switch back to job order admin
+          cy.visit('/')
+
+          cy.findByLabelText('Mock Auth Enabled').select('job_order@skillarc.com', {
+            timeout: 10000,
+          })
+          cy.visit('/orders')
+
+          // Find job order again in table
+          cy.findByRole('table').within(() => {
+            cy.findByText('Opened At').click()
+
+            cy.findByText(job.employmentTitle).click()
+          })
+
+          reloadUntilConditionMet(
+            () => {
+              return cy.get('body').then((el) => el.text().includes('Open'))
+            },
+            { retryCount: 8 },
+          )
 
           cy.findByRole('table').within(() => {
             cy.findByText(`${person['firstName']} ${person['lastName']}`).click()
@@ -59,6 +126,12 @@ describe('Job Orders', () => {
 
           cy.findByLabelText('Status').select(`Sent to Employer`)
           cy.findByRole('button', { name: 'Save' }).click()
+
+          headingCard = cy
+            .findByRole('heading', { name: `${job.employmentTitle} - ${employer.name}` })
+            .parent()
+            .parent()
+            .parent()
 
           headingCard.within(() => {
             cy.findByText('Waiting on Employer')

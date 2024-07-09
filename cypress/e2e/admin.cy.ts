@@ -2,14 +2,10 @@ export { }
 
 describe('Admin', () => {
   it('should navigate through admin tasks', () => {
-    cy.visit('/admin')
+    cy.visit('/')
 
-    const emailSelect = cy.get('select').filter((_, element) => {
-      return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-    })
-    emailSelect.should('be.enabled')
-    emailSelect.select('admin@skillarc.com', { timeout: 10000 })
-    cy.reload()
+    cy.findByLabelText('Mock Auth Enabled').select('admin@skillarc.com', { timeout: 10000 })
+    cy.visit('/admin')
 
     cy.get('body').should('contain', 'Operations')
 

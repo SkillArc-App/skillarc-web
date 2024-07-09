@@ -4,7 +4,7 @@ describe('Onboarding', () => {
   beforeEach(() => {
     cy.task('createUser').then((r: any) => {
       cy.log(r['email'])
-      cy.wrap(r).as('response')
+      cy.wrap(r).as('user')
     })
     cy.task('assertNoFailedJobs')
   })
@@ -25,19 +25,12 @@ describe('Onboarding', () => {
 
   it('should navigate through onboarding', () => {
     // output debug in cypress
-    cy.get('@response').then((r: any) => {
-      cy.log(r)
-      cy.log(r['email'])
+    cy.get('@user').then((user: any) => {
+      cy.log(user)
+      cy.log(user['email'])
 
       cy.visit('/')
-      cy.get('div').contains('mock auth')
-
-      // get select and filter on the one with an email regex
-      const emailSelect = cy.get('select').filter((_, element) => {
-        return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-      })
-      emailSelect.should('be.enabled')
-      emailSelect.select(r['email'], { timeout: 10000 })
+      cy.findByLabelText('Mock Auth Enabled').select(user['email'], { timeout: 10000 })
     })
 
     cy.visit('/onboarding/start')

@@ -44,13 +44,9 @@ describe('Coaches', () => {
     let coachEmail = ''
 
     cy.get('@coach').then((coach: any) => {
-      cy.get('div').contains('mock auth')
       coachEmail = coach['email']
-      cy.get('select')
-        .filter((_, element) => {
-          return !!element.innerText.match(/.*@[a-zA-z].[a-z]/)
-        })
-        .select(coachEmail)
+
+      cy.findByLabelText('Mock Auth Enabled').select(coachEmail, { timeout: 10000 })
     })
 
     cy.get('@person').then((person: any) => {
@@ -88,10 +84,7 @@ describe('Coaches', () => {
 
       let jobsTable = cy.findByRole('table')
       jobsTable.within(() => {
-        const row = cy
-          .findByText("Level 2 Mechanic")
-          .parent()
-          .parent()
+        const row = cy.findByText('Level 2 Mechanic').parent().parent()
 
         row.within(() => {
           cy.findByText('Recommend').click()
@@ -213,7 +206,7 @@ describe('Coaches', () => {
 
       jobsTable = cy.findByRole('table')
       jobsTable.within(() => {
-        cy.findByText("Level 2 Mechanic").click()
+        cy.findByText('Level 2 Mechanic').click()
       })
 
       cy.url().should('contain', '/jobs/')

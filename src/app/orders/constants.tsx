@@ -2,6 +2,7 @@ import { CandidateStatusesMapping, JobOrderStatusMapping } from './types'
 
 export const orderColorMap: JobOrderStatusMapping = {
   needs_order_count: 'red',
+  needs_criteria: 'red',
   open: 'blue',
   candidates_screened: 'purple',
   waiting_on_employer: 'yellow',
@@ -11,6 +12,7 @@ export const orderColorMap: JobOrderStatusMapping = {
 
 export const orderDisplayMap: JobOrderStatusMapping = {
   needs_order_count: 'Needs Order Count',
+  needs_criteria: 'Needs Job Criteria Set',
   open: 'Open',
   candidates_screened: 'Candidates Screened by Coaching',
   waiting_on_employer: 'Waiting on Employer',
