@@ -32,6 +32,7 @@ export type JobOrderSummary = {
   employerName: string
   openedAt: string
   recommendedCount: number
+  teamId: string
   hireCount: number
   orderCount: number
   status: JobOrderStatuses
@@ -45,6 +46,9 @@ export type Job = {
 }
 
 export type JobOrder = JobOrderSummary & {
+  benefitsDescription?: string
+  requirementsDescription?: string
+  responsibilitiesDescription?: string
   candidates: Candidate[]
   notes: Note[]
 }
