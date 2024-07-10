@@ -28,6 +28,7 @@ export type CandidateStatusesMapping<T = string> = {
 
 export type JobOrderSummary = {
   id: string
+  jobId: string
   employmentTitle: string
   employerName: string
   openedAt: string

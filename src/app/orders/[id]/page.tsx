@@ -235,7 +235,7 @@ const Order = () => {
   const initialValue = {
     activeCandidateStatus: activeCandidate?.status ?? '',
   }
-  const team = teams?.find(team => team.id == order.teamId)
+  const team = teams?.find((team) => team.id == order.teamId)
 
   return (
     <>
@@ -252,7 +252,9 @@ const Order = () => {
             <HStack>
               <VStack align={'start'}>
                 <Heading size={'md'}>
-                  {order.employmentTitle} - {order.employerName}
+                  <Link as={NextLink} href={`/jobs/${order.jobId}`}>
+                    {order.employmentTitle} - {order.employerName}
+                  </Link>
                 </Heading>
                 <HStack>
                   <Tag colorScheme={orderColorMap[order.status]}>
