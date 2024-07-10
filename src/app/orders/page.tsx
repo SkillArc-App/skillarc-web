@@ -29,10 +29,12 @@ import { useAddOrderMutation } from './hooks/useAddOrderMutation'
 import { useJobsQuery } from './hooks/useJobsQuery'
 import { useOrdersQuery } from './hooks/useOrdersQuery'
 import { JobOrderSummary } from './types'
+import { useTeamsQuery } from '../teams/hooks/useTeamsQuery'
+import { Team } from '../teams/types'
 
 const FILL_THRESHOLD = 72
 
-const Table = ({ data }: { data: JobOrderSummary[] }) => {
+const Table = ({ data, teams }: { data: JobOrderSummary[], teams: Team[] }) => {
   const columnHelper = createColumnHelper<JobOrderSummary>()
 
   const columns = [
@@ -66,9 +68,13 @@ const Table = ({ data }: { data: JobOrderSummary[] }) => {
         </div>
       ),
     }),
+    columnHelper.accessor('teamId', {
+      header: 'Team',
+      cell: (row) => teams.find((team) => team.id == row.getValue())?.name
+    }),
     columnHelper.accessor('orderCount', {
-      header: 'Order Count',
-      cell: (row) => row.getValue() || 'Provide Order Count',
+      header: 'Order',
+      cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('hireCount', {
       header: 'Hires',
@@ -159,6 +165,7 @@ const NewJobOrderModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
 const Orders = () => {
   const router = useRouter()
   const { data: orders } = useOrdersQuery()
+  const { data: teams } = useTeamsQuery()
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const searchParams = useSearchParams()
@@ -187,7 +194,7 @@ const Orders = () => {
           Create New Job Order
         </Button>
       </HStack>
-      <Table data={filteredOrders} />
+      <Table data={filteredOrders} teams={teams ?? []} />
       <NewJobOrderModal isOpen={isOpen} onClose={onClose} />
     </Stack>
   )

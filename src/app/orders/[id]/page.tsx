@@ -1,6 +1,7 @@
 'use client'
 
 import NotesList from '@/app/components/NoteList'
+import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikInput from '@/frontend/components/FormikInput'
 import FormikSelect from '@/frontend/components/FormikSelect'
@@ -18,7 +19,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Flex,
   GridItem,
   HStack,
   Heading,
@@ -40,6 +40,7 @@ import {
   Stack,
   Tag,
   Text,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -47,7 +48,12 @@ import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { FaEllipsis } from 'react-icons/fa6'
-import { candidateColorMap, candidateDisplayMap, orderColorMap, orderDisplayMap } from '../constants'
+import {
+  candidateColorMap,
+  candidateDisplayMap,
+  orderColorMap,
+  orderDisplayMap,
+} from '../constants'
 import { useNotes } from '../hooks/useNotes'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
@@ -105,9 +111,9 @@ const JobOrderCta = ({ id, status }: JobOrder) => {
   const jobClosed = ['filled', 'not_filled'].includes(status ?? '')
 
   return jobClosed ? (
-    <Button onClick={() => activate.mutate(id)}>Reactivate Job Order</Button>
+    <Button onClick={() => activate.mutate(id)}>Reactivate</Button>
   ) : (
-    <Button onClick={() => close.mutate(id)}>Close Job Order Without Filling</Button>
+    <Button onClick={() => close.mutate(id)}>Close Without Filling</Button>
   )
 }
 
@@ -195,10 +201,10 @@ const CandidateTable = ({
 const Order = () => {
   const { id } = useFixedParams('id')
   const { data: order, refetch: refetchOrder } = useOrderQuery(id)
+  const { data: teams } = useTeamsQuery()
   const { addNote, modifyNote, removeNote } = useNotes()
 
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null)
-  const [noteDraft, setNoteDraft] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const token = useAuthToken()
@@ -224,18 +230,12 @@ const Order = () => {
     onClose()
   }
 
-  const onAddNote = () => {
-    console.log('Adding note', noteDraft)
-
-    refetchOrder()
-    setNoteDraft('')
-  }
-
   if (!order) return <LoadingPage />
 
   const initialValue = {
     activeCandidateStatus: activeCandidate?.status ?? '',
   }
+  const team = teams?.find((team) => team.id == order.teamId)
 
   return (
     <>
@@ -250,18 +250,31 @@ const Order = () => {
         <Card role="region">
           <CardHeader>
             <HStack>
-              <Heading size={'md'}>
-                {order.employmentTitle} - {order.employerName}
-              </Heading>
-              <Tag colorScheme={orderColorMap[order.status]}>{orderDisplayMap[order.status]}</Tag>
+              <VStack align={'start'}>
+                <Heading size={'md'}>
+                  <Link as={NextLink} href={`/jobs/${order.jobId}`}>
+                    {order.employmentTitle} - {order.employerName}
+                  </Link>
+                </Heading>
+                <HStack>
+                  <Tag colorScheme={orderColorMap[order.status]}>
+                    {orderDisplayMap[order.status]}
+                  </Tag>
+                  {team && <Tag>{team.name}</Tag>}
+                </HStack>
+              </VStack>
+              <Spacer />
+              <QuantityDisplay {...order} />
+              <JobOrderCta {...order} />
             </HStack>
           </CardHeader>
           <CardBody>
-            <Flex>
-              <QuantityDisplay {...order} />
-              <Spacer />
-              <JobOrderCta {...order} />
-            </Flex>
+            <VStack align={'start'}>
+              <Heading size={'sm'}>Candidate Requirements</Heading>
+              <Text>{order.requirementsDescription}</Text>
+              <Heading size={'sm'}>Candidate Responsibilities</Heading>
+              <Text>{order.responsibilitiesDescription}</Text>
+            </VStack>
           </CardBody>
         </Card>
         <SimpleGrid columns={5} gap={'1rem'}>
