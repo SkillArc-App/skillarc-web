@@ -49,7 +49,6 @@ describe('Job Orders', () => {
             const row = cy.findByText(job.employmentTitle).parent().parent().parent()
 
             row.within(() => {
-              cy.findByText('Provide Order Count')
               cy.findByText('Needs Order Count')
             })
 
@@ -154,7 +153,7 @@ describe('Job Orders', () => {
           cy.get('body').should('not.contain', 'This is a note')
 
           // close order
-          cy.findByText('Close Job Order Without Filling').click()
+          cy.findByText('Close Without Filling').click()
           cy.findByText('Closed Without Filling')
 
           cy.findByText('< Back to Orders').click()
@@ -186,7 +185,6 @@ describe('Job Orders', () => {
             const row = cy.findByText(job.employmentTitle).parent().parent().parent()
 
             row.within(() => {
-              cy.findByText('Provide Order Count')
               cy.findByText('Needs Order Count')
             })
 
