@@ -56,6 +56,11 @@ const nextConfig = {
         destination: '/coaches/contexts/:id/notes',
         permanent: false
       },
+      {
+        source: '/orders',
+        destination: '/orders/orders',
+        permanent: false
+      },
     ]
   }
 }

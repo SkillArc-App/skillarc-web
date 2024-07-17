@@ -6,20 +6,18 @@ import { useCallback, useEffect, useState } from 'react'
 import { useAllUsers } from '../../app/admin/hooks/useAllUsers'
 
 const DevTools = () => {
-  const mockAuth = process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true'
-
   const { data: users } = useAllUsers()
   const [sub, setSub] = useState<Maybe<string>>(undefined)
 
-  const setUserSub = useCallback((sub: string) => {
-    setSub(sub)
-    localStorage.setItem('mockNextAuth', sub)
-  }, [])
+  const setUserSub = useCallback(
+    (sub: string) => {
+      setSub(sub)
+      localStorage.setItem('mockNextAuth', sub)
+    },
+    [setSub],
+  )
 
   useEffect(() => {
-    if (!mockAuth) {
-      return
-    }
     if (!users) {
       return
     }
@@ -30,11 +28,7 @@ const DevTools = () => {
     } else {
       setUserSub(users[0].sub)
     }
-  }, [mockAuth, setUserSub, users])
-
-  if (!mockAuth) {
-    return <></>
-  }
+  }, [setUserSub, users])
 
   return (
     <FormControl width={'400px'}>
@@ -55,6 +49,11 @@ const DevTools = () => {
 }
 
 const NoopTools = () => <></>
-const TestingTools = process.env.NODE_ENV === 'development' ? DevTools : NoopTools
+const TestingTools =
+  process.env.NODE_ENV === 'development'
+    ? process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true'
+      ? DevTools
+      : NoopTools
+    : NoopTools
 
 export default TestingTools
