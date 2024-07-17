@@ -190,6 +190,20 @@ describe('Job Orders', () => {
 
             cy.findByText(job.employmentTitle).click()
           })
+
+          cy.findByRole('tab', { name: 'Screener Questions' }).click()
+          cy.findByRole('button', { name: 'New Screener Questions' }).click()
+
+          cy.findByLabelText('Screener Title*').type('New And Improved Screener')
+          cy.findByLabelText('Question 1*').type('What is your favorite Candy?')
+
+          cy.findByRole('button', { name: 'Add a Question' }).click()
+          cy.findByLabelText('Question 2*').type('How is your personal hero?')
+
+          cy.findByLabelText('Question 1*').parent().next().click()
+          cy.findByRole('button', { name: 'Save'}).click()
+
+          cy.findByText('New And Improved Screener')
         })
       })
     })
