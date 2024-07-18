@@ -37,18 +37,18 @@ describe('Admin', () => {
 
     cy.findByText('New Job')
 
-    cy.findByRole('radio', { name: 'Staffing' }).check({ force: true })
-    cy.findByDisplayValue('Employer').select('Turner Construction Company')
+    cy.findByLabelText('Category*').select('Staffing')
+    cy.findByLabelText('Employer*').select('Turner Construction Company')
     const title = crypto.randomUUID()
 
-    cy.findByPlaceholderText('Employment Title').type(title)
-    cy.findByPlaceholderText('Location').type('Columbus, OH')
-    cy.findByDisplayValue('Employment Type').select('FULLTIME')
-    cy.findByPlaceholderText('Benefits Description').type('Great benefits')
-    cy.findByPlaceholderText('Responsibilities Description').type('Great responsibilities')
-    cy.findByPlaceholderText('Requirements Description').type('Great requirements')
-    cy.findByPlaceholderText('Work days').type('Monday - Friday')
-    cy.findByPlaceholderText('Schedule').type('9am - 5pm')
+    cy.findByLabelText('Employment Title*').type(title)
+    cy.findByLabelText('Location*').type('Columbus, OH')
+    cy.findByLabelText('Employment Type*').select('FULLTIME')
+    cy.findByLabelText('Benefits Description*').type('Great benefits')
+    cy.findByLabelText('Responsibilities Description*').type('Great responsibilities')
+    cy.findByLabelText('Requirements Description*').type('Great requirements')
+    cy.findByLabelText('Work days*').type('Monday - Friday')
+    cy.findByLabelText('Schedule*').type('9am - 5pm')
     cy.findByText('Save').click()
 
     cy.findByRole('link', { name: title }).click()

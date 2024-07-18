@@ -2,6 +2,10 @@
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import DataTable from '@/frontend/components/DataTable.component'
+import FormikInput from '@/frontend/components/FormikInput'
+import FormikSelect from '@/frontend/components/FormikSelect'
+import FormikTextArea from '@/frontend/components/FormikTextArea'
+import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
@@ -9,8 +13,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Divider,
-  Input,
   Link,
   Modal,
   ModalBody,
@@ -19,17 +21,28 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Radio,
-  RadioGroup,
-  Select,
   Stack,
-  Textarea,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
+import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
 import { useAllAdminJobs } from '../hooks/useAllAdminJobs'
+
+type NewJob = {
+  category: string
+  employerId: string
+  employmentTitle: string
+  location: string
+  employmentType: string
+  benefitsDescription: string
+  responsibilitiesDescription: string
+  requirementsDescription: string
+  workDays: string
+  schedule: string
+}
 
 export default function Jobs() {
   const { data: jobs, refetch: refetchJobs } = useAllAdminJobs()
@@ -47,76 +60,14 @@ export default function Jobs() {
   ]
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
-
-  const [category, setCategory] = useState(categoryOptions[0].value)
-  const [employerId, setEmployerId] = useState('')
-  const [employmentTitle, setEmploymentTitle] = useState('')
-  const [location, setLocation] = useState('')
-  const [employmentType, setEmploymentType] = useState('')
-  const [benefitsDescription, setBenefitsDescription] = useState('')
-  const [responsibilitiesDescription, setResponsibilitiesDescription] = useState('')
-  const [requirementsDescription, setRequirementsDescription] = useState('')
-  const [workDays, setWorkDays] = useState('')
-  const [schedule, setSchedule] = useState('')
   const [showHiddenJobs, setShowHiddenJobs] = useState(false)
 
   const token = useAuthToken()
 
-  const handleEmployerIdChange = (e: any) => {
-    setEmployerId(e.target.value)
-  }
-
-  const handleEmploymentTitleChange = (e: any) => {
-    setEmploymentTitle(e.target.value)
-  }
-
-  const handleLocationChange = (e: any) => {
-    setLocation(e.target.value)
-  }
-
-  const handleEmploymentTypeChange = (e: any) => {
-    setEmploymentType(e.target.value)
-  }
-
-  const handleBenefitsDescriptionChange = (e: any) => {
-    setBenefitsDescription(e.target.value)
-  }
-
-  const handleResponsibilitiesDescriptionChange = (e: any) => {
-    setResponsibilitiesDescription(e.target.value)
-  }
-
-  const handleRequirementsDescriptionChange = (e: any) => {
-    setRequirementsDescription(e.target.value)
-  }
-
-  const handleWorkDaysChange = (e: any) => {
-    setWorkDays(e.target.value)
-  }
-
-  const handleScheduleChange = (e: any) => {
-    setSchedule(e.target.value)
-  }
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (job: Partial<NewJob>) => {
     if (!token) return
 
-    await post(
-      `/admin/jobs`,
-      {
-        category,
-        employer_id: employerId,
-        employment_title: employmentTitle,
-        location,
-        employment_type: employmentType,
-        benefits_description: benefitsDescription,
-        responsibilities_description: responsibilitiesDescription,
-        requirements_description: requirementsDescription,
-        work_days: workDays,
-        schedule,
-      },
-      token,
-    )
+    await post(`/admin/jobs`, job, token)
 
     await refetchJobs()
 
@@ -142,6 +93,8 @@ export default function Jobs() {
     employer: string
     createdAt: string
   }>()
+
+  const initialValue: Partial<NewJob> = {}
 
   const columns = [
     columnHelper.accessor('title', {
@@ -181,7 +134,7 @@ export default function Jobs() {
     }),
   ]
 
-  if (!jobs) return <div>Loading...</div>
+  if (!jobs) return <LoadingPage />
 
   return (
     <Box mt={'1rem'}>
@@ -202,57 +155,69 @@ export default function Jobs() {
         <ModalContent>
           <ModalHeader>New Job</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={3} aria-label="job-category">
-              <RadioGroup value={category} onChange={(e) => setCategory(e)}>
-                <Stack>
-                  {categoryOptions.map((category, index) => {
-                    return (
-                      <Radio key={index} value={category.value}>
-                        {category.label}
-                      </Radio>
-                    )
-                  })}
-                </Stack>
-              </RadioGroup>
-              <Divider />
-              <Select placeholder="Employer" onChange={handleEmployerIdChange}>
-                {employers?.map((employer: { name: string; id: string }, index: number) => {
-                  return (
-                    <option key={index} value={employer.id}>
-                      {employer.name}
-                    </option>
-                  )
-                })}
-              </Select>
-              <Input placeholder="Employment Title" onChange={handleEmploymentTitleChange} />
-              <Input placeholder="Location" onChange={handleLocationChange} />
-              <Select placeholder="Employment Type" onChange={handleEmploymentTypeChange}>
-                <option>FULLTIME</option>
-                <option>PARTTIME</option>
-              </Select>
-              <Textarea
-                placeholder="Benefits Description"
-                onChange={handleBenefitsDescriptionChange}
-              />
-              <Textarea
-                placeholder="Responsibilities Description"
-                onChange={handleResponsibilitiesDescriptionChange}
-              />
-              <Textarea
-                placeholder="Requirements Description"
-                onChange={handleRequirementsDescriptionChange}
-              />
-              <Textarea placeholder="Work days" onChange={handleWorkDaysChange} />
-              <Textarea placeholder="Schedule" onChange={handleScheduleChange} />
-            </Stack>
-          </ModalBody>
+          <Formik initialValues={initialValue} onSubmit={handleSubmit}>
+            {(props) => (
+              <Form>
+                <ModalBody>
+                  <VStack spacing={2}>
+                    <FormikSelect
+                      label="Category"
+                      name="category"
+                      isRequired
+                      options={
+                        categoryOptions?.map((category) => ({
+                          key: category.value,
+                          value: category.label,
+                        })) ?? []
+                      }
+                    />
+                    <FormikSelect
+                      label="Employer"
+                      name="employerId"
+                      isRequired
+                      options={
+                        employers?.map((employer) => ({
+                          key: employer.id,
+                          value: employer.name,
+                        })) ?? []
+                      }
+                    />
+                    <FormikInput<string>
+                      isRequired
+                      type="text"
+                      label="Employment Title"
+                      name="employmentTitle"
+                    />
+                    <FormikInput<string> isRequired type="text" label="Location" name="location" />
+                    <FormikSelect
+                      label="Employment Type"
+                      name="employmentType"
+                      isRequired
+                      options={[
+                        { key: 'FULLTIME', value: 'FULLTIME' },
+                        { key: 'PARTTIME', value: 'PARTTIME' },
+                      ]}
+                    />
+                    <FormikTextArea isRequired label="Benefits Description" name="benefitsDescription" />
+                    <FormikTextArea
+                      isRequired
+                      label="Responsibilities Description"
+                      name="responsibilitiesDescription"
+                    />
+                    <FormikTextArea isRequired label="Requirements Description" name="requirementsDescription" />
+                    <FormikTextArea isRequired label="Work days" name="workDays" />
+                    <FormikTextArea isRequired label="Schedule" name="schedule" />
+                  </VStack>
+                </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
-          </ModalFooter>
+                <ModalFooter>
+                  <Button colorScheme="green" mr={3} isLoading={props.isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
         </ModalContent>
       </Modal>
     </Box>
