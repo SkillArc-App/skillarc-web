@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuthToken } from '../../../../frontend/hooks/useAuthToken'
 import { get } from '../../../../frontend/http-common'
 import { GetOneProfileResponse } from '../../../../frontend/services/profile.service'
-import { mixpanelInitProfile } from '../../../../frontend/utils/mixpanel'
 
 export const useProfileData = (id: Maybe<string>) => {
   const token = useAuthToken()
@@ -14,8 +13,6 @@ export const useProfileData = (id: Maybe<string>) => {
       if (!id) return
 
       const res = await get<GetOneProfileResponse>(`/profiles/${id}`, token)
-
-      mixpanelInitProfile(res.data)
 
       return res.data
     },

@@ -10,7 +10,6 @@ import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Success } from '@/frontend/icons/Success.icon'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
   Button,
@@ -52,11 +51,6 @@ export default function JobPosting() {
 
     onApplyModalClose()
     await FrontendJobInteractionsService.apply(job.id, token)
-
-    FrontendAnalyticsService.track('Job-applied', {
-      job: job,
-      jobId: job.id,
-    })
 
     await onSuccessModalOpen()
     await refetch()

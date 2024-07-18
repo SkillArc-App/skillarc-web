@@ -1,5 +1,4 @@
 import { Job } from '@/common/types/Job'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { Flex } from '@chakra-ui/react'
 import throttle from 'lodash.throttle'
 import { useCallback, useEffect, useState } from 'react'
@@ -27,7 +26,6 @@ export const SingleJobPosting = ({ job }: SingleJobPostingProps) => {
       const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight
       if (window.scrollY >= scrollableHeight && !hitBottom) {
         setHitBottom(true)
-        FrontendAnalyticsService.track('Job-bottom-reached', { jobId: job.id, job })
       }
     }
   }, [hitBottom, job])
@@ -41,7 +39,6 @@ export const SingleJobPosting = ({ job }: SingleJobPostingProps) => {
   useEffect(() => {
     if (!startedView) {
       setStartedViewing(true)
-      FrontendAnalyticsService.timeEvent('Job-viewed')
     }
   }, [startedView])
 
