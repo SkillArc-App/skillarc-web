@@ -2,7 +2,7 @@
 
 import { LoadingPage } from '@/app/components/Loading'
 import { useUser } from '@/app/hooks/useUser'
-import { GridItem, SimpleGrid, Tab, TabList, TabPanels, Tabs } from '@chakra-ui/react'
+import { Box, GridItem, SimpleGrid, Tab, TabList, TabPanels, Tabs } from '@chakra-ui/react'
 import Link from 'next/link'
 import { redirect, usePathname } from 'next/navigation'
 
@@ -36,7 +36,9 @@ const JobOrderLayout = ({ children }: { children: React.ReactNode }) => {
               Screener Questions
             </Tab>
           </TabList>
-          <TabPanels>{children}</TabPanels>
+          <TabPanels>
+            <Box pt={'2rem'}>{children}</Box>
+          </TabPanels>
         </Tabs>
       </GridItem>
       <GridItem colSpan={1} />

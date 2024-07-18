@@ -135,7 +135,7 @@ export default function Page() {
   if (!questions) return <LoadingPage />
 
   return (
-    <Stack overflow={'scroll'} pt={'2rem'}>
+    <Stack overflow={'scroll'}>
       <HStack align={'end'}>
         <Button colorScheme="green" onClick={newQuestions}>
           New Screener Questions

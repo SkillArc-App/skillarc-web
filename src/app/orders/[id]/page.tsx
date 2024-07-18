@@ -238,7 +238,7 @@ const Order = ({ params: { id } }: IdParams) => {
 
   return (
     <>
-      <Stack gap={'1rem'} pb={'2rem'}>
+      <Stack gap={'1rem'}>
         <Breadcrumb>
           <BreadcrumbItem>
             <BreadcrumbLink as={NextLink} href="/orders">
