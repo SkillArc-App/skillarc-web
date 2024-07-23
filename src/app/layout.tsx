@@ -1,7 +1,6 @@
 'use client'
 
 import { Header } from '@/frontend/components/Header.component'
-import { initializeMixpanel } from '@/frontend/utils/mixpanel'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -9,8 +8,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { theme } from '../frontend/theme/theme'
 import SessionWrapper from './components/SessionWrapper'
-
-initializeMixpanel()
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(

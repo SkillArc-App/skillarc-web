@@ -9,7 +9,6 @@ import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
   Box,
@@ -75,10 +74,6 @@ const MyJobs = () => {
     async onReadyToApply(job, token) {
       await FrontendJobInteractionsService.apply(job.id, token)
 
-      FrontendAnalyticsService.track('Job-applied', {
-        job: job,
-        jobId: job.id,
-      })
       await refetch()
       onSharingModalOpen()
     },

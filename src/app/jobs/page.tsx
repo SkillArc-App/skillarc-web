@@ -11,7 +11,6 @@ import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
   Box,
@@ -108,10 +107,6 @@ const Jobs = () => {
     onReadyToApply: async (job, token) => {
       await FrontendJobInteractionsService.apply(job.id, token)
 
-      FrontendAnalyticsService.track('Job-applied', {
-        job: job,
-        jobId: job.id,
-      })
       setActiveJobIdAndRoute(job.id, 'share')
 
       refetch()
@@ -139,10 +134,8 @@ const Jobs = () => {
     if (!token) return
 
     if (!job.saved) {
-      FrontendAnalyticsService.track('Job-saved', { job })
       await post(`seekers/jobs/${job.id}/save`, {}, token)
     } else {
-      FrontendAnalyticsService.track('Job-unsave', { job })
       await post(`seekers/jobs/${job.id}/unsave`, {}, token)
     }
 

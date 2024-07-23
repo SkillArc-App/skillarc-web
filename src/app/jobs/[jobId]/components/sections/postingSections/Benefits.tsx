@@ -1,7 +1,6 @@
 import { Job } from '@/common/types/Job'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { FrontendAnalyticsService } from '@/frontend/services/analytics.service'
 import {
   Accordion,
   AccordionButton,
@@ -14,14 +13,6 @@ import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'
 
 export const Benefits = ({ job }: { job: Job }) => {
-  function trackToggleAnalytics(): void {
-    FrontendAnalyticsService.track('Job-dropdown-toggled', {
-      job,
-      jobId: job.id,
-      dropdown: 'Benefits',
-    })
-  }
-
   const newTheme = {
     p: (props: any) => {
       const { children } = props
@@ -79,7 +70,7 @@ export const Benefits = ({ job }: { job: Job }) => {
       boxShadow="0px 4px 4px rgba(0, 0, 0, 0.1)"
     >
       <AccordionItem>
-        <AccordionButton alignItems="top" p="0" onClick={() => trackToggleAnalytics()}>
+        <AccordionButton alignItems="top" p="0">
           <Heading variant="h4" color="greyscale.700" w="100%" textAlign="left">
             🎉 Benefits
           </Heading>
