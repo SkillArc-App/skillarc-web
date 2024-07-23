@@ -1,12 +1,12 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Text } from '../../../frontend/components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
-import { LoadingPage } from '@/frontend/components/Loading'
 
 export default function Training() {
   const { data: allTrainingProviders } = useAllTrainingProviderData()

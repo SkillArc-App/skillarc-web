@@ -1,8 +1,8 @@
 'use client'
 
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
+import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'

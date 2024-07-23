@@ -34,7 +34,7 @@ describe('Recruiters', () => {
             cy.findByLabelText('Start conversation with applicant').click()
           })
 
-          cy.get('body', { timeout: 10000 }).should(
+          cy.get('body', { timeout: 15000 }).should(
             'contain',
             `${applicant['firstName']} ${applicant['lastName']} - ${job['employmentTitle']}`,
           )

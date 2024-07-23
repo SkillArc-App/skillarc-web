@@ -1,11 +1,11 @@
 'use client'
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
+import { LoadingPage } from '@/app/components/Loading'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikInput from '@/frontend/components/FormikInput'
 import FormikSelect from '@/frontend/components/FormikSelect'
 import FormikTextArea from '@/frontend/components/FormikTextArea'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
@@ -198,13 +198,21 @@ export default function Jobs() {
                         { key: 'PARTTIME', value: 'PARTTIME' },
                       ]}
                     />
-                    <FormikTextArea isRequired label="Benefits Description" name="benefitsDescription" />
+                    <FormikTextArea
+                      isRequired
+                      label="Benefits Description"
+                      name="benefitsDescription"
+                    />
                     <FormikTextArea
                       isRequired
                       label="Responsibilities Description"
                       name="responsibilitiesDescription"
                     />
-                    <FormikTextArea isRequired label="Requirements Description" name="requirementsDescription" />
+                    <FormikTextArea
+                      isRequired
+                      label="Requirements Description"
+                      name="requirementsDescription"
+                    />
                     <FormikTextArea isRequired label="Work days" name="workDays" />
                     <FormikTextArea isRequired label="Schedule" name="schedule" />
                   </VStack>

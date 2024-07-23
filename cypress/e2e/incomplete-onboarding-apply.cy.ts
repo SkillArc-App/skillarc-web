@@ -98,7 +98,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
     })
   })
 
-  it('When applying from /my_jobs', () => {
+  it('When applying from /my-jobs', () => {
     cy.get('@user').then((user: any) => {
       cy.log(user)
 
@@ -109,7 +109,7 @@ describe('Incomplete Onboarding applying to jobs', () => {
 
         cy.findByLabelText('Mock Auth Enabled').select(user['email'], { timeout: 10000 })
 
-        cy.visit(`/my_jobs`)
+        cy.visit(`/my-jobs`)
 
         const card = cy.findByRole('listitem', { name: job['employmentTitle'] })
         card.within(() => {

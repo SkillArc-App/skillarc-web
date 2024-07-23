@@ -1,11 +1,11 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
 import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikInput from '@/frontend/components/FormikInput'
 import FormikSelect from '@/frontend/components/FormikSelect'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'

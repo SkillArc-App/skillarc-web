@@ -1,4 +1,4 @@
-import { CircularProgress, Flex, Heading, VStack } from '@chakra-ui/react'
+import { CircularProgress, Flex, Heading } from '@chakra-ui/react'
 
 export const LoadingPage = () => {
   return (

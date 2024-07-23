@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import { Header } from './Header.component'
+import { Header } from '../../app/components/Header'
 
 type MainLayoutProps = {
   children: React.ReactNode

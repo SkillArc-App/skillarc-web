@@ -1,5 +1,6 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { ProfileAbout } from '@/app/profiles/[profileId]/components/about'
 import { ProfileEducation } from '@/app/profiles/[profileId]/components/education'
 import { ProfileExperience } from '@/app/profiles/[profileId]/components/experience'
@@ -7,7 +8,6 @@ import ProfileCompleteness from '@/app/profiles/[profileId]/components/profileCo
 import { ProfileReferences } from '@/app/profiles/[profileId]/components/reference'
 import { ProfileSkills } from '@/app/profiles/[profileId]/components/skills'
 import { ProfileSummary } from '@/app/profiles/[profileId]/components/summary'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Box, Stack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'

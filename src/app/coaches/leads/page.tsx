@@ -1,8 +1,8 @@
 'use client'
 
 import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
+import { LoadingPage } from '@/app/components/Loading'
 import DataTable from '@/frontend/components/DataTable.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'
@@ -17,7 +17,7 @@ import NewLeadModal from './components/NewLeadModal'
 const Skeleton = () => {
   return (
     <Suspense>
-      <Leads/>
+      <Leads />
     </Suspense>
   )
 }

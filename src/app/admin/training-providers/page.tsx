@@ -1,9 +1,9 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikInput from '@/frontend/components/FormikInput'
 import FormikTextArea from '@/frontend/components/FormikTextArea'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import {
   TrainingProvider,

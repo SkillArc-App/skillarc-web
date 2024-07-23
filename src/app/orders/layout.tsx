@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from '@/frontend/components/Loading'
+import { LoadingPage } from '@/app/components/Loading'
 import { useUser } from '@/frontend/hooks/useUser'
 import { GridItem, SimpleGrid, Tab, TabList, TabPanels, Tabs } from '@chakra-ui/react'
 import Link from 'next/link'

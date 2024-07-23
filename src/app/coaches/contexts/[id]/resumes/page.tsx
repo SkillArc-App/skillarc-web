@@ -1,11 +1,11 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { downloadResume } from '@/app/documents/downloadResume'
 import { useResumeMutation } from '@/app/documents/hooks/useResumeMutation'
 import { useResumesQuery } from '@/app/documents/hooks/useResumesQuery'
 import { Checks, Resume } from '@/app/documents/types'
 import DataTable from '@/frontend/components/DataTable.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Button, Stack, VStack, useDisclosure } from '@chakra-ui/react'
