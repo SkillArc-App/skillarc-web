@@ -40,7 +40,7 @@ jobs:
         with:
           alert_threshold: 120
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACTION_PAT_TOKEN }}
       - name: Next Cache
         uses: actions/cache@v4
         with:
@@ -113,8 +113,8 @@ jobs:
         ports:
           - '127.0.0.1:3002:3002'
         credentials:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_ACTION_PAT_TOKEN }}
       sidekiq:
         image: ghcr.io/skillarc-app/sidekiq:latest
         env:
@@ -134,8 +134,8 @@ jobs:
           KLAVIYO_GATEWAY_STRATEGY: fake
           KLAVIYO_API_KEY: 'fake'
         credentials:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_ACTION_PAT_TOKEN }}
       server:
         image: ghcr.io/skillarc-app/server:latest
         ports:
@@ -158,8 +158,8 @@ jobs:
           KLAVIYO_API_KEY: 'fake'
           CI: true
         credentials:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_ACTION_PAT_TOKEN }}
     env:
       MOCK_AUTH: 'true'
       RAILS_ENV: test
@@ -191,7 +191,7 @@ jobs:
         with:
           alert_threshold: 300
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACTION_PAT_TOKEN }}
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
