@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from '@/frontend/components/Loading'
+import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'

@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from '@/frontend/components/Loading'
+import { LoadingPage } from '@/app/components/Loading'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'

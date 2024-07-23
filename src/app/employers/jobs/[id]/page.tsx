@@ -1,8 +1,8 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { ReasonResponse } from '@/common/types/ApplicantStatus'
 import DataTable from '@/frontend/components/DataTable.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
@@ -38,9 +38,9 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { FaUserCheck } from 'react-icons/fa'
 import { FaRegComment } from 'react-icons/fa6'
-import { PassFeedback } from './components/PassFeedback'
 import { useEmployerJobData } from '../../hooks/useEmployerJobData'
 import { usePassReasons } from '../../hooks/usePassReasons'
+import { PassFeedback } from './components/PassFeedback'
 
 type ApplicantStatusChanges = {
   [key: string]: ApplicantStatusChange

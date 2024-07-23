@@ -1,9 +1,8 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import FormikInput from '@/frontend/components/FormikInput'
-import FormikSelect from '@/frontend/components/FormikSelect'
 import FormikTextArea from '@/frontend/components/FormikTextArea'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { put } from '@/frontend/http-common'
@@ -38,7 +37,11 @@ export default function Page({ params: { programId } }: { params: { programId: s
   const handleSubmit = async (updatedProgram: PartialProgram) => {
     if (!updatedProgram || !program || !token) return
 
-    await put(`/programs/${programId}`, { ...updatedProgram, trainingProviderId: program.trainingProviderId }, token)
+    await put(
+      `/programs/${programId}`,
+      { ...updatedProgram, trainingProviderId: program.trainingProviderId },
+      token,
+    )
     await delay(3000)
     await refetchProgram()
 
@@ -50,15 +53,9 @@ export default function Page({ params: { programId } }: { params: { programId: s
   return (
     <>
       <Stack spacing={2}>
-        <span>
-          Name: {program.name}
-        </span>
-        <span>
-          Description: {program.description}
-        </span>
-        <span>
-          Training Provider: {program.trainingProviderName}
-        </span>
+        <span>Name: {program.name}</span>
+        <span>Description: {program.description}</span>
+        <span>Training Provider: {program.trainingProviderName}</span>
         <Flex gap={2}>
           <Button onClick={onOpen} leftIcon={<EditIcon />} size="sm">
             Edit

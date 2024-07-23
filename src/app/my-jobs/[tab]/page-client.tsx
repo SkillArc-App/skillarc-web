@@ -10,6 +10,7 @@ import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -33,12 +34,11 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-const MyJobs = () => {
+function MyJobsClient() {
   const router = useRouter()
   const params = useFixedParams('tab')
   const tab = params?.['tab']
@@ -146,46 +146,37 @@ const MyJobs = () => {
   }
 
   return (
-    <Box height={'100%'} width={'100%'} overflow={'scroll'}>
-      <Box m={'1rem'}>
-        <Stack>
-          <Flex alignItems={'center'} justifyContent={'center'}>
-            <Heading mt={'0.25rem'} color={'greyscale.900'} variant={'h2'}>
-              My Jobs
-            </Heading>
-          </Flex>
-          <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
-            <TabList>
-              <Tab as={NextLink} href="/my_jobs/recently-viewed">
-                Viewed
-              </Tab>
-              <Tab as={NextLink} href="/my_jobs/saved">
-                Saved
-              </Tab>
-              <Tab as={NextLink} href="/my_jobs/applied">
-                Applied
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel px={0}>
-                <Stack gap={'1rem'} overflow={'scroll'}>
-                  {jobMatches.map((jobMatch) => jobElement(jobMatch))}
-                </Stack>
-              </TabPanel>
-              <TabPanel px={0}>
-                <Stack gap={'1rem'} overflow={'scroll'}>
-                  {savedJobMatches.map((jobMatch) => jobElement(jobMatch))}
-                </Stack>
-              </TabPanel>
-              <TabPanel px={0}>
-                <Stack gap={'1rem'} overflow={'scroll'}>
-                  {appliedJobMatches.map((jobMatch) => jobElement(jobMatch))}
-                </Stack>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Stack>
-      </Box>
+    <Stack>
+      <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
+        <TabList>
+          <Tab as={NextLink} href="/my-jobs/recently-viewed">
+            Viewed
+          </Tab>
+          <Tab as={NextLink} href="/my-jobs/saved">
+            Saved
+          </Tab>
+          <Tab as={NextLink} href="/my-jobs/applied">
+            Applied
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel px={0}>
+            <Stack gap={'1rem'} overflow={'scroll'}>
+              {jobMatches.map((jobMatch) => jobElement(jobMatch))}
+            </Stack>
+          </TabPanel>
+          <TabPanel px={0}>
+            <Stack gap={'1rem'} overflow={'scroll'}>
+              {savedJobMatches.map((jobMatch) => jobElement(jobMatch))}
+            </Stack>
+          </TabPanel>
+          <TabPanel px={0}>
+            <Stack gap={'1rem'} overflow={'scroll'}>
+              {appliedJobMatches.map((jobMatch) => jobElement(jobMatch))}
+            </Stack>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
       <Modal isOpen={isSharingModalOpen} onClose={onSharingModalClose}>
         <ModalOverlay />
         <ModalContent m={'1rem'}>
@@ -263,8 +254,8 @@ const MyJobs = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Box>
+    </Stack>
   )
 }
 
-export default withAuthenticationRequired(MyJobs)
+export default withAuthenticationRequired(MyJobsClient)

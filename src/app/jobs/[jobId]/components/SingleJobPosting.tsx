@@ -1,7 +1,5 @@
 import { Job } from '@/common/types/Job'
 import { Flex } from '@chakra-ui/react'
-import throttle from 'lodash.throttle'
-import { useCallback, useEffect, useState } from 'react'
 import { Benefits } from './sections/postingSections/Benefits'
 import { CareerJourney } from './sections/postingSections/CareerJourney'
 import { EmployerSummary } from './sections/postingSections/EmployerSummary'
@@ -18,30 +16,6 @@ interface SingleJobPostingProps {
 }
 
 export const SingleJobPosting = ({ job }: SingleJobPostingProps) => {
-  const [startedView, setStartedViewing] = useState(false)
-  const [hitBottom, setHitBottom] = useState(false)
-
-  const trackScrollAnalytics = useCallback(() => {
-    if (typeof window !== 'undefined' && document) {
-      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (window.scrollY >= scrollableHeight && !hitBottom) {
-        setHitBottom(true)
-      }
-    }
-  }, [hitBottom, job])
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && document) {
-      document.addEventListener('scroll', throttle(trackScrollAnalytics, 250))
-    }
-  }, [trackScrollAnalytics])
-
-  useEffect(() => {
-    if (!startedView) {
-      setStartedViewing(true)
-    }
-  }, [startedView])
-
   return (
     <Flex flexWrap="wrap" w="100%" bg="#F8F9FA">
       <JobPhotos job={job} />

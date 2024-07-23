@@ -1,11 +1,11 @@
-import { SkillArc } from '@/frontend/icons/SkillArc.icon'
+'use client'
+
 import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Box,
   Button,
-  Flex,
   HStack,
   IconButton,
   Menu,
@@ -20,20 +20,18 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spacer,
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useUser } from '../hooks/useUser'
-import { Logo } from '../icons/Logo.icon'
-import MessageCenter from './MessageCenter.component'
-import NotificationCenter from './NotificationCenter'
-import TestingTools from './TestingTools.component'
-import { Text } from './Text.component'
+import MessageCenter from '../../frontend/components/MessageCenter.component'
+import NotificationCenter from '../../frontend/components/NotificationCenter'
+import TestingTools from '../../frontend/components/TestingTools.component'
+import { Text } from '../../frontend/components/Text.component'
+import { useUser } from '../../frontend/hooks/useUser'
 
-export const Header = () => {
+export const HeaderClient = () => {
   const { isLoading, isAuthenticated, logout, loginWithRedirect } = useAuth0()
   const { data: user } = useUser()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -41,24 +39,7 @@ export const Header = () => {
   const isAuthenticatedWithProfile = isAuthenticated && !!user?.profile?.id
 
   return (
-    <Flex
-      p="1rem"
-      alignItems={'center'}
-      h="64px"
-      borderBottom="1px solid #E9ECEF"
-      width={'100%'}
-      bg={'white'}
-      zIndex={'100'}
-      boxShadow={'sm'}
-      position={'fixed'}
-      justifyContent={'space-between'}
-    >
-      <Flex as={NextLink} alignItems="center" gap="0.75rem" href={'/'} cursor="pointer">
-        <Logo w="1.75rem" h="2rem" />
-        <SkillArc w="6.75rem" h="1rem" />
-      </Flex>
-
-      <Spacer />
+    <>
       <TestingTools />
       {!isLoading && !isAuthenticated && (
         <Button
@@ -88,11 +69,11 @@ export const Header = () => {
               My Profile
             </MenuItem>
           )}
-          <MenuDivider />
+          {isAuthenticatedWithProfile && <MenuDivider /> }
           <MenuItem as={NextLink} href={`/jobs`}>
             View Jobs
           </MenuItem>
-          <MenuItem as={NextLink} href={'/my_jobs/recently-viewed'}>
+          <MenuItem as={NextLink} href={'/my-jobs/recently-viewed'}>
             Manage My Jobs
           </MenuItem>
           <MenuDivider />
@@ -120,7 +101,7 @@ export const Header = () => {
               </Box>
             </Stack>
           </MenuItem>
-          <MenuDivider />
+          {isAuthenticated && <MenuDivider /> }
           {isAuthenticated && (
             <MenuItem
               onClick={() =>
@@ -154,6 +135,6 @@ export const Header = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    </>
   )
 }

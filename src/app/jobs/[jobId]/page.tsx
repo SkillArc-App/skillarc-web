@@ -1,10 +1,10 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { SingleJobPosting } from '@/app/jobs/[jobId]/components/SingleJobPosting'
 import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
 import { Heading } from '@/frontend/components/Heading.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'

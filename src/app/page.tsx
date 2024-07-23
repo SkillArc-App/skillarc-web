@@ -1,7 +1,7 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import { Heading } from '@/frontend/components/Heading.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'

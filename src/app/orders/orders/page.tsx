@@ -1,8 +1,8 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikSelect from '@/frontend/components/FormikSelect'
-import { LoadingPage } from '@/frontend/components/Loading'
 import {
   Button,
   Checkbox,
@@ -24,17 +24,17 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTeamsQuery } from '../../teams/hooks/useTeamsQuery'
+import { Team } from '../../teams/types'
 import { orderDisplayMap } from '../constants'
 import { useAddOrderMutation } from '../hooks/useAddOrderMutation'
 import { useJobsQuery } from '../hooks/useJobsQuery'
 import { useOrdersQuery } from '../hooks/useOrdersQuery'
 import { JobOrderSummary } from '../types'
-import { useTeamsQuery } from '../../teams/hooks/useTeamsQuery'
-import { Team } from '../../teams/types'
 
 const FILL_THRESHOLD = 72
 
-const Table = ({ data, teams }: { data: JobOrderSummary[], teams: Team[] }) => {
+const Table = ({ data, teams }: { data: JobOrderSummary[]; teams: Team[] }) => {
   const columnHelper = createColumnHelper<JobOrderSummary>()
 
   const columns = [
@@ -70,7 +70,7 @@ const Table = ({ data, teams }: { data: JobOrderSummary[], teams: Team[] }) => {
     }),
     columnHelper.accessor('teamId', {
       header: 'Team',
-      cell: (row) => teams.find((team) => team.id == row.getValue())?.name
+      cell: (row) => teams.find((team) => team.id == row.getValue())?.name,
     }),
     columnHelper.accessor('orderCount', {
       header: 'Order',

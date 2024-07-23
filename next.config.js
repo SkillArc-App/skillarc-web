@@ -42,8 +42,8 @@ const nextConfig = {
         permanent: false
       },
       {
-        source: '/my_jobs',
-        destination: '/my_jobs/recently-viewed',
+        source: '/my-jobs',
+        destination: '/my-jobs/recently-viewed',
         permanent: false
       },
       {

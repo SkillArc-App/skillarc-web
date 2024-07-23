@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from '@/frontend/components/Loading'
+import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'

@@ -1,7 +1,7 @@
 'use client'
 
+import { LoadingPage } from '@/app/components/Loading'
 import DataTable from '@/frontend/components/DataTable.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post, put } from '@/frontend/http-common'
 import { Box, Button, HStack, IconButton, Link, VStack } from '@chakra-ui/react'

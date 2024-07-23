@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from '@/frontend/components/Loading'
+import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
@@ -15,9 +15,11 @@ const TrainingProviderInvite = () => {
   const router = useRouter()
   const token = useAuthToken()
 
-  const useInvite = useAuthenticatedMutation(async (trainingProviderInviteId: string, token: string) => {
-    await put(`/training_provider_invites/${trainingProviderInviteId}/used`, {}, token)
-  })
+  const useInvite = useAuthenticatedMutation(
+    async (trainingProviderInviteId: string, token: string) => {
+      await put(`/training_provider_invites/${trainingProviderInviteId}/used`, {}, token)
+    },
+  )
 
   useUser({
     enabled: useInvite.isSuccess,

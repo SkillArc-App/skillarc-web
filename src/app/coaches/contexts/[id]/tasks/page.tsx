@@ -2,8 +2,8 @@
 
 import { useCoachSeekerTasks } from '@/app/coaches/hooks/useCoachTasks'
 import { CoachTask } from '@/app/coaches/types'
+import { LoadingPage } from '@/app/components/Loading'
 import { Heading } from '@/frontend/components/Heading.component'
-import { LoadingPage } from '@/frontend/components/Loading'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
