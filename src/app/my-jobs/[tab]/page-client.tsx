@@ -10,7 +10,6 @@ import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
-import { withAuthenticationRequired } from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -34,6 +33,7 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
