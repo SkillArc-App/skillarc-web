@@ -1,7 +1,7 @@
 'use client'
 
-import { withAuthenticationRequired } from '@auth0/auth0-react'
 import { Tab, TabList, TabPanels, Tabs } from '@chakra-ui/react'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
