@@ -1,4 +1,4 @@
-import BadgeIcon from '@/frontend/components/BadgeIcon.component';
+import BadgeIcon from '@/app/components/BadgeIcon';
 import { renderWithTheme } from '@/test-utils/render-with-theme';
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';

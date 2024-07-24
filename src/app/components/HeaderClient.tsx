@@ -25,16 +25,36 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import MessageCenter from '../../frontend/components/MessageCenter.component'
-import NotificationCenter from '../../frontend/components/NotificationCenter'
 import TestingTools from '../../frontend/components/TestingTools.component'
 import { Text } from '../../frontend/components/Text.component'
 import { useUser } from '../../frontend/hooks/useUser'
+import { useSeekerChat } from '../chats/hooks/useSeekerChat'
+import MessageCenter from './MessageCenter'
+import NotificationCenter from './NotificationCenter'
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { post } from '@/frontend/http-common'
 
 export const HeaderClient = () => {
   const { isLoading, isAuthenticated, logout, loginWithRedirect } = useAuth0()
-  const { data: user } = useUser()
+  const { data: user, refetch } = useUser()
+  const { data: chat } = useSeekerChat()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const token = useAuthToken()
+
+  const notifications = user?.notifications ?? []
+  const unread = notifications.filter(({ read }) => !read)
+
+  const markNotificationsAsRead = () => {
+    if (!token) return
+    if (!unread) return
+
+    post('/notifications/mark_read', {}, token).then((_) => {
+      refetch()
+    })
+  }
+
+  const unreadCount =
+    chat?.filter((chat) => !chat.messages.every((message) => message.isRead)).length ?? 0
 
   const isAuthenticatedWithProfile = isAuthenticated && !!user?.profile?.id
 
@@ -54,8 +74,8 @@ export const HeaderClient = () => {
           Log In
         </Button>
       )}
-      {isAuthenticated && <NotificationCenter />}
-      {isAuthenticated && <MessageCenter />}
+      <NotificationCenter notifications={notifications} onClose={markNotificationsAsRead} />
+      <MessageCenter unreadCount={unreadCount} />
       <Menu>
         <MenuButton
           as={IconButton}
@@ -69,7 +89,7 @@ export const HeaderClient = () => {
               My Profile
             </MenuItem>
           )}
-          {isAuthenticatedWithProfile && <MenuDivider /> }
+          {isAuthenticatedWithProfile && <MenuDivider />}
           <MenuItem as={NextLink} href={`/jobs`}>
             View Jobs
           </MenuItem>
@@ -101,7 +121,7 @@ export const HeaderClient = () => {
               </Box>
             </Stack>
           </MenuItem>
-          {isAuthenticated && <MenuDivider /> }
+          {isAuthenticated && <MenuDivider />}
           {isAuthenticated && (
             <MenuItem
               onClick={() =>
