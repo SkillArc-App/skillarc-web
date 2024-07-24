@@ -1,9 +1,10 @@
 import { LoadingPage } from '@/app/components/Loading'
 import { Box, Flex, Heading, Stack, Tab, TabList, Tabs } from '@chakra-ui/react'
+import { Metadata } from 'next'
 import NextLink from 'next/link'
 import { Suspense } from 'react'
-import MyJobsClient from './page-client'
-import { Metadata } from 'next'
+import LayoutClient from './layout-client'
+import { withAuthenticationRequired } from 'lib/auth-wrapper'
 
 export const metadata: Metadata = {
   title: 'SkillArc: Your Jobs',
@@ -29,7 +30,7 @@ function FallbackPage() {
   )
 }
 
-function MyJobs() {
+function MyJobs({ children }: { children: React.ReactNode }) {
   return (
     <Box height={'100%'} width={'100%'} overflow={'scroll'}>
       <Box m={'1rem'}>
@@ -40,7 +41,7 @@ function MyJobs() {
             </Heading>
           </Flex>
           <Suspense fallback={<FallbackPage />}>
-            <MyJobsClient />
+            <LayoutClient>{children}</LayoutClient>
           </Suspense>
         </Stack>
       </Box>

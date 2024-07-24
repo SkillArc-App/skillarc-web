@@ -1,19 +1,18 @@
 'use client'
 
+import { IdParams } from '@/common/types/PageParams'
 import { Story } from '@/common/types/Profile'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useProfileData } from '../../hooks/useProfileData'
 import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
-const EditAbout = () => {
+const EditAbout = ({ params: { id } }: IdParams) => {
   const router = useRouter()
-  const { profileId } = useFixedParams('profileId')
-  const { data: seeker } = useProfileData(profileId)
+  const { data: seeker } = useProfileData(id)
   const {
     updateStory: { mutate: updateStory },
     addStory: { mutate: addStory },

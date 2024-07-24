@@ -1,8 +1,8 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
@@ -21,9 +21,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-const PhotosPage = () => {
-  const { id } = useFixedParams('id')
-
+const PhotosPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
 
   const token = useAuthToken()

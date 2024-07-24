@@ -2,15 +2,13 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { useMasterCertificationData } from '@/app/admin/hooks/useMasterCertificationData'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
 
-const AttachedCertificationsPage = () => {
-  const { id } = useFixedParams('id')
-
+const AttachedCertificationsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch } = useAdminJob(id)
   const {
     masterCertificationQuery: { data: masterCertifications },

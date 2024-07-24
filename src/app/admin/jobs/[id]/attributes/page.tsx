@@ -3,12 +3,12 @@
 import { useAdminAttributes } from '@/app/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { AdminJobAttribute } from '@/common/types/Job'
+import { IdParams } from '@/common/types/PageParams'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormObserver from '@/frontend/components/FormObserver'
 import FormikMultiSelect from '@/frontend/components/FormikMultiSelect'
 import FormikSelect from '@/frontend/components/FormikSelect'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,
@@ -36,8 +36,7 @@ type FormInputType = {
   acceptibleSet: string
 }
 
-const AttributesPage = () => {
-  const { id } = useFixedParams('id')
+const AttributesPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
   const token = useAuthToken()
 

@@ -2,13 +2,12 @@
 
 import ChatWindow from '@/app/chats/[id]/components/ChatWindow'
 import { useEmployerChats } from '@/app/employers/chats/hooks/useEmployerChats'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { useEffect } from 'react'
 
-const ChatUI = () => {
-  const { id } = useFixedParams('id')
+const ChatUI = ({ params: { id } }: IdParams) => {
   const token = useAuthToken()
 
   const { data: chats = [], refetch: refetchChats } = useEmployerChats({

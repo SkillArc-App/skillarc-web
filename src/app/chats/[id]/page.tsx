@@ -1,13 +1,12 @@
 'use client'
 
 import { useSeekerChat } from '@/app/chats/hooks/useSeekerChat'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import ChatWindow from './components/ChatWindow'
 
-const Page = () => {
-  const { id } = useFixedParams('id')
+const Page = ({ params: { id } }: IdParams) => {
   const token = useAuthToken()
 
   const { data: chats = [], refetch } = useSeekerChat({

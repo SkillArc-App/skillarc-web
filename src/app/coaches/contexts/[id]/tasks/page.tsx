@@ -3,9 +3,9 @@
 import { useCoachSeekerTasks } from '@/app/coaches/hooks/useCoachTasks'
 import { CoachTask } from '@/app/coaches/types'
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
 import { Stack } from '@chakra-ui/react'
 import { TaskBox } from './components/TaskBox'
@@ -14,8 +14,7 @@ interface GroupedReminders {
   [key: string]: CoachTask[]
 }
 
-const Tasks = () => {
-  const { id } = useFixedParams('id')
+const Tasks = ({ params: { id } }: IdParams) => {
   const token = useAuthToken()
   const { data: tasks, refetch } = useCoachSeekerTasks(id)
 

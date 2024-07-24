@@ -1,13 +1,9 @@
-'use client'
-
 import { SearchJobCard } from '@/app/components/SearchJobCard'
 import useApply from '@/app/jobs/hooks/useApply'
-import { useJobSearch } from '@/app/jobs/hooks/useJobSearch'
 import { SearchJob } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
@@ -25,29 +21,21 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-function MyJobsClient() {
+export default function MyJobList({
+  jobs,
+  refetch,
+}: {
+  jobs: SearchJob[]
+  refetch: () => Promise<any>
+}) {
   const router = useRouter()
-  const params = useFixedParams('tab')
-  const tab = params?.['tab']
-
-  const { data: jobs, refetch } = useJobSearch({
-    searchTerms: '',
-    filters: {},
-    otherUtmParams: {},
-  })
 
   const token = useAuthToken()
   const {
@@ -78,10 +66,6 @@ function MyJobsClient() {
       onSharingModalOpen()
     },
   })
-
-  const jobMatches = jobs ?? []
-  const savedJobMatches = jobMatches.filter((jobMatch) => jobMatch.saved)
-  const appliedJobMatches = jobMatches.filter((jobMatch) => jobMatch.applicationStatus)
 
   useEffect(() => {
     setElevatorPitch(activeJob?.elevatorPitch)
@@ -146,37 +130,8 @@ function MyJobsClient() {
   }
 
   return (
-    <Stack>
-      <Tabs align={'center'} index={index(tab)} variant="soft-rounded" colorScheme="green">
-        <TabList>
-          <Tab as={NextLink} href="/my-jobs/recently-viewed">
-            Viewed
-          </Tab>
-          <Tab as={NextLink} href="/my-jobs/saved">
-            Saved
-          </Tab>
-          <Tab as={NextLink} href="/my-jobs/applied">
-            Applied
-          </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel px={0}>
-            <Stack gap={'1rem'} overflow={'scroll'}>
-              {jobMatches.map((jobMatch) => jobElement(jobMatch))}
-            </Stack>
-          </TabPanel>
-          <TabPanel px={0}>
-            <Stack gap={'1rem'} overflow={'scroll'}>
-              {savedJobMatches.map((jobMatch) => jobElement(jobMatch))}
-            </Stack>
-          </TabPanel>
-          <TabPanel px={0}>
-            <Stack gap={'1rem'} overflow={'scroll'}>
-              {appliedJobMatches.map((jobMatch) => jobElement(jobMatch))}
-            </Stack>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+    <Stack gap={'1rem'} overflow={'scroll'}>
+      {jobs.map((job) => jobElement(job))}
       <Modal isOpen={isSharingModalOpen} onClose={onSharingModalClose}>
         <ModalOverlay />
         <ModalContent m={'1rem'}>
@@ -257,5 +212,3 @@ function MyJobsClient() {
     </Stack>
   )
 }
-
-export default withAuthenticationRequired(MyJobsClient)

@@ -1,17 +1,16 @@
 'use client'
 
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { put } from '@/frontend/http-common'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-const TrainingProviderInvite = () => {
-  const trainingProviderInviteId = useFixedParams('id').id
+const TrainingProviderInvite = ({ params: { id } }: IdParams) => {
   const router = useRouter()
   const token = useAuthToken()
 
@@ -33,10 +32,10 @@ const TrainingProviderInvite = () => {
   })
 
   useEffect(() => {
-    if (token && useInvite.isIdle && trainingProviderInviteId) {
-      useInvite.mutate(trainingProviderInviteId)
+    if (token && useInvite.isIdle && id) {
+      useInvite.mutate(id)
     }
-  }, [trainingProviderInviteId, token, useInvite, useInvite.mutate])
+  }, [id, token, useInvite, useInvite.mutate])
 
   return <LoadingPage />
 }

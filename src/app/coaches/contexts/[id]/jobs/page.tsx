@@ -4,10 +4,10 @@ import { useCoachJobs } from '@/app/coaches/hooks/useCoachJobs'
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { CoachJob } from '@/app/coaches/types'
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import DataTable from '@/frontend/components/DataTable.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { CheckIcon, CloseIcon, TimeIcon } from '@chakra-ui/icons'
 import { Box, Button, HStack, Link, Stack } from '@chakra-ui/react'
@@ -15,18 +15,17 @@ import { createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { Suspense } from 'react'
 
-const Jobs = () => {
+const Jobs = (params: IdParams) => {
   return (
     <Stack width={'100%'}>
       <Suspense>
-        <JobsTable />
+        <JobsTable {...params} />
       </Suspense>
     </Stack>
   )
 }
 
-const JobsTable = () => {
-  const { id } = useFixedParams('id')
+const JobsTable = ({ params: { id } }: IdParams) => {
   const { data: jobs } = useCoachJobs()
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const token = useAuthToken()

@@ -2,9 +2,9 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
+import { IdParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
@@ -20,9 +20,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 
-const AttachedSkillsPage = () => {
-  const { id } = useFixedParams('id')
-
+const AttachedSkillsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
 
   const token = useAuthToken()
