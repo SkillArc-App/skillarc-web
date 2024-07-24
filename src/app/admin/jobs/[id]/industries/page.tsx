@@ -21,6 +21,7 @@ const Industries = ({ params: { id } }: IdParams) => {
     await put(
       `/admin/jobs/${id}`,
       {
+        ...job,
         industry: [...job.industry, industry],
       },
       token,
@@ -36,6 +37,7 @@ const Industries = ({ params: { id } }: IdParams) => {
     await put(
       `/admin/jobs/${id}`,
       {
+        ...job,
         industry: job.industry.filter((i) => i !== industry),
       },
       token,

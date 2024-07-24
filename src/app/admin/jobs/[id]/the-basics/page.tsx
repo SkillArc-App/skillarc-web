@@ -10,6 +10,7 @@ import { Box, Button, Flex, Link, Stack, useDisclosure } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { JobBasics, JobBasicsModal } from '../../components/JobModal'
+import { industries } from '@/common/static/industries'
 
 const TheBasicsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
@@ -17,23 +18,24 @@ const TheBasicsPage = ({ params: { id } }: IdParams) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
-  const onSubmit = async (job: Partial<JobBasics>) => {
-    if (!token) return
+  const onSubmit = async (updatedJob: Partial<JobBasics>) => {
+    if (!token || !job) return
 
     await put(
       `/admin/jobs/${id}`,
       {
-        category: job.category,
-        employerId: job.employerId,
-        employmentTitle: job.employmentTitle,
-        location: job.location,
-        employmentType: job.employmentType,
-        benefits_description: job.benefitsDescription,
-        responsibilitiesDescription: job.responsibilitiesDescription,
-        requirementsDescription: job.requirementsDescription,
-        workDays: job.workDays,
-        schedule: job.schedule,
-        hideJob: job.hideJob,
+        category: updatedJob.category,
+        employerId: updatedJob.employerId,
+        employmentTitle: updatedJob.employmentTitle,
+        location: updatedJob.location,
+        employmentType: updatedJob.employmentType,
+        benefits_description: updatedJob.benefitsDescription,
+        responsibilitiesDescription: updatedJob.responsibilitiesDescription,
+        requirementsDescription: updatedJob.requirementsDescription,
+        workDays: updatedJob.workDays,
+        schedule: updatedJob.schedule,
+        hideJob: updatedJob.hideJob,
+        industry: job.industry
       },
       token,
     )
