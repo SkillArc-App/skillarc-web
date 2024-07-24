@@ -6,8 +6,8 @@ import { LoadingPage } from '../components/Loading'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'SkillArc: Job Search',
-  description: 'Find your next job on SkillArc',
+  title: 'SkillArc: Columbus Ohio Job Search',
+  description: 'Find your next job in Columbus Ohio on SkillArc',
 }
 
 function LoadingFallBack() {
