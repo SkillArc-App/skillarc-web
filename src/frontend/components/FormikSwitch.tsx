@@ -15,7 +15,7 @@ export default function FormikSwitch({ label, ...props }: SwitchField) {
   return (
     <FormControl isInvalid={meta.touched && !!meta.error}>
       <FormLabel>{label}</FormLabel>
-      <Switch {...field} />
+      <Switch {...field} isChecked={!!field.value} />
       <FormErrorMessage>{meta.touched && meta.error}</FormErrorMessage>
     </FormControl>
   )
