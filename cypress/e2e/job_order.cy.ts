@@ -84,10 +84,12 @@ describe('Job Orders', () => {
           cy.findByRole('button', { name: 'edit' }).click()
 
           // assign "the basics"
-          cy.findByRole('radio', { name: 'Staffing' }).check({ force: true })
-          cy.findByPlaceholderText('Benefits Description').type('Great benefits')
-          cy.findByPlaceholderText('Responsibilities Description').type('Great responsibilities')
-          cy.findByPlaceholderText('Requirements Description').type('Great requirements')
+          cy.findByLabelText('Category*').select('Staffing')
+          cy.findByLabelText('Benefits Description*').type('Great benefits')
+          cy.findByLabelText('Responsibilities Description*').type('Great responsibilities')
+          cy.findByLabelText('Requirements Description*').type('Great requirements')
+          cy.findByLabelText('Work days*').type('M-F')
+          cy.findByLabelText('Schedule*').type('24/7')
           cy.findByText('Save').click()
 
           // assign job attributes
