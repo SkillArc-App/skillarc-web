@@ -3,7 +3,7 @@
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { CareerPath } from '@/app/common/types/Job'
 import { IdParams } from '@/app/common/types/PageParams'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import {

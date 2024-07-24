@@ -1,7 +1,7 @@
 import { Job } from '@/app/common/types/Job'
 import { SearchJob } from '@/app/common/types/Search'
 import { Maybe } from '@/app/common/types/maybe'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import useUserState, { UserState } from './useUserState'

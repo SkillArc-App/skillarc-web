@@ -7,7 +7,7 @@ import { IdParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
 import { Text } from '@/app/components/Text.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post } from '@/frontend/http-common'
 import {
   Box,

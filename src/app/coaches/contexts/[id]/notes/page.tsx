@@ -4,7 +4,7 @@ import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 
 const Notes = ({ params: { id } }: IdParams) => {

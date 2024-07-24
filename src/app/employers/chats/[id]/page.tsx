@@ -3,7 +3,7 @@
 import ChatWindow from '@/app/chats/[id]/components/ChatWindow'
 import { IdParams } from '@/app/common/types/PageParams'
 import { useEmployerChats } from '@/app/employers/chats/hooks/useEmployerChats'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { useEffect } from 'react'
 

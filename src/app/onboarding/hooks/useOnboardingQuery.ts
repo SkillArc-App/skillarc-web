@@ -3,8 +3,8 @@
 import { OnboardingNextStep } from '@/app/common/types/OnboardingData'
 import { Maybe } from '@/app/common/types/maybe'
 import { UseQueryOptions } from '@tanstack/react-query'
-import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { get } from '../../../frontend/http-common'
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 
 export type OnboardingResponse = {
   nextStep: OnboardingNextStep

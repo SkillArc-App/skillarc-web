@@ -2,9 +2,9 @@
 
 import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
+import { useUser } from '@/app/hooks/useUser'
 import { put } from '@/frontend/http-common'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'

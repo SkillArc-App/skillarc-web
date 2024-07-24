@@ -4,11 +4,8 @@ import DataTable from '@/app/components/DataTable'
 import FormikInput from '@/app/components/FormikInput'
 import FormikTextArea from '@/app/components/FormikTextArea'
 import { LoadingPage } from '@/app/components/Loading'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import {
-  TrainingProvider,
-  useAllTrainingProviderData,
-} from '@/frontend/hooks/useTrainingProviderData'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { TrainingProvider, useAllTrainingProviderData } from '@/app/hooks/useTrainingProviderData'
 import { post } from '@/frontend/http-common'
 import { delay } from '@/frontend/utils/delay'
 import {

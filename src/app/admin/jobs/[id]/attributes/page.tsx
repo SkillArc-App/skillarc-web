@@ -8,7 +8,7 @@ import DataTable from '@/app/components/DataTable'
 import FormObserver from '@/app/components/FormObserver'
 import FormikMultiSelect from '@/app/components/FormikMultiSelect'
 import FormikSelect from '@/app/components/FormikSelect'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,

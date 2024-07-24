@@ -1,7 +1,7 @@
 'use client'
 
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
   Box,

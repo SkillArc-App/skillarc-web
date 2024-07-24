@@ -1,6 +1,6 @@
 import { PassReason } from '@/app/common/types/ApplicantStatus'
-import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { get } from '../../../frontend/http-common'
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 
 export const usePassReasons = () => {
   return useAuthenticatedQuery(['pass_reasons'], async ({ token }) => {

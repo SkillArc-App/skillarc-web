@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
@@ -27,8 +27,8 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import { useUser } from '../../frontend/hooks/useUser'
 import { useSeekerChat } from '../chats/hooks/useSeekerChat'
+import { useUser } from '../hooks/useUser'
 import MessageCenter from './MessageCenter'
 import NotificationCenter from './NotificationCenter'
 import TestingTools from './TestingTools'

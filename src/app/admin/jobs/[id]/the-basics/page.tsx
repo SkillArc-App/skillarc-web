@@ -3,7 +3,7 @@
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import { Box, Button, Flex, Link, Stack, useDisclosure } from '@chakra-ui/react'

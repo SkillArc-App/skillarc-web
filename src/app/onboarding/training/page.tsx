@@ -2,7 +2,7 @@
 
 import { TrainingProvider } from '@/app/common/types/TrainingProvider'
 import { LoadingPage } from '@/app/components/Loading'
-import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
+import { useAllTrainingProviderData } from '@/app/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Text } from '../../components/Text.component'

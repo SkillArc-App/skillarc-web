@@ -1,7 +1,7 @@
 import { Maybe } from '@/app/common/types/maybe'
 import { UseQueryOptions } from '@tanstack/react-query'
-import { get } from '../http-common'
-import { FullUser } from '../services/user.service'
+import { get } from '../../frontend/http-common'
+import { FullUser } from '../../frontend/services/user.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export const useUser = (
