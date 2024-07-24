@@ -1,8 +1,8 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
@@ -10,7 +10,6 @@ import { Box, Button, Flex, Link, Stack, useDisclosure } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { JobBasics, JobBasicsModal } from '../../components/JobModal'
-import { industries } from '@/common/static/industries'
 
 const TheBasicsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
@@ -35,7 +34,7 @@ const TheBasicsPage = ({ params: { id } }: IdParams) => {
         workDays: updatedJob.workDays,
         schedule: updatedJob.schedule,
         hideJob: updatedJob.hideJob,
-        industry: job.industry
+        industry: job.industry,
       },
       token,
     )

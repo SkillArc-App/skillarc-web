@@ -1,7 +1,7 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'

@@ -1,8 +1,8 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { Button, Flex, Input, Textarea } from '@chakra-ui/react'

@@ -1,4 +1,4 @@
-import { Note } from '@/common/types/Note'
+import { Note } from '@/app/common/types/Note'
 
 type Barrier = {
   id: string
@@ -21,7 +21,7 @@ export type SeekerLead = {
 
 export enum ContextKind {
   LEAD = 'lead',
-  SEEKER = 'seeker'
+  SEEKER = 'seeker',
 }
 
 export type SubmittableSeekerLead = Pick<

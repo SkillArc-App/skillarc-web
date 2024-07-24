@@ -1,10 +1,10 @@
-import { SearchJob } from '@/common/types/Search'
-import { Maybe } from '@/common/types/maybe'
+import { Job } from '@/app/common/types/Job'
+import { SearchJob } from '@/app/common/types/Search'
+import { Maybe } from '@/app/common/types/maybe'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import useUserState, { UserState } from './useUserState'
-import { Job } from '@/common/types/Job'
 
 export const applyCopyOptions = {
   [UserState.UnAuthenticated]: 'Apply by Login',
@@ -17,10 +17,7 @@ type UseApplyProps<T> = {
   onReadyToApply: (job: T, token: string) => void
 }
 
-function useApply<T extends SearchJob | Job>({
-  job,
-  onReadyToApply,
-}: UseApplyProps<T>) {
+function useApply<T extends SearchJob | Job>({ job, onReadyToApply }: UseApplyProps<T>) {
   const userState = useUserState()
   const { loginWithRedirect } = useAuth0()
   const router = useRouter()

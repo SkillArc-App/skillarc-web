@@ -1,7 +1,7 @@
+import { Attribute } from '@/app/common/types/Attribute'
 import FormObserver from '@/app/components/FormObserver'
 import FormikMultiSelect from '@/app/components/FormikMultiSelect'
 import FormikSelect from '@/app/components/FormikSelect'
-import { Attribute } from '@/common/types/Attribute'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {

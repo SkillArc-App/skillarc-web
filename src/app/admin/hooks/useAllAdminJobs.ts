@@ -1,4 +1,4 @@
-import { AdminJob } from '@/common/types/Job'
+import { AdminJob } from '@/app/common/types/Job'
 import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
 import { get } from '@/frontend/http-common'
 

@@ -1,12 +1,12 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
 import { Text } from '@/app/components/Text.component'
 import { SingleJobPosting } from '@/app/jobs/[id]/components/SingleJobPosting'
 import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Success } from '@/frontend/icons/Success.icon'

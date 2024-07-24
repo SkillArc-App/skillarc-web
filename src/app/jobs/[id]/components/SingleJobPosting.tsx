@@ -1,4 +1,4 @@
-import { Job } from '@/common/types/Job'
+import { Job } from '@/app/common/types/Job'
 import { Flex } from '@chakra-ui/react'
 import { Benefits } from './sections/postingSections/Benefits'
 import { CareerJourney } from './sections/postingSections/CareerJourney'

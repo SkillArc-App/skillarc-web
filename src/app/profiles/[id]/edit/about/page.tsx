@@ -1,9 +1,9 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
+import { Story } from '@/app/common/types/Profile'
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { IdParams } from '@/common/types/PageParams'
-import { Story } from '@/common/types/Profile'
 import { Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'

@@ -1,10 +1,10 @@
 'use client'
 
 import { CoachSeekerTable } from '@/app/coaches/types'
+import { Attribute } from '@/app/common/types/Attribute'
+import { PersonSearchValue } from '@/app/common/types/PersonSearch'
 import DataTable from '@/app/components/DataTable'
 import { usePersonSearch } from '@/app/jobs/hooks/usePersonSearch'
-import { Attribute } from '@/common/types/Attribute'
-import { PersonSearchValue } from '@/common/types/PersonSearch'
 import { useDebounce } from '@/frontend/hooks/useDebounce'
 import { useUser } from '@/frontend/hooks/useUser'
 import { SearchIcon } from '@chakra-ui/icons'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Maybe } from '@/common/types/maybe'
+import { Maybe } from '@/app/common/types/maybe'
 import { FormControl, FormLabel, HStack, Select } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useAllUsers } from '../admin/hooks/useAllUsers'

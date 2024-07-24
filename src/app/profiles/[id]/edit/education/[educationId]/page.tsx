@@ -1,9 +1,9 @@
 'use client'
 
+import { EducationExperience } from '@/app/common/types/EducationExperience'
+import { FixedParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { EducationExperience } from '@/common/types/EducationExperience'
-import { FixedParams } from '@/common/types/PageParams'
 import { Button, Flex, Input } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

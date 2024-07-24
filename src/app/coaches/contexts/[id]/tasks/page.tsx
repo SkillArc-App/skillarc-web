@@ -2,9 +2,9 @@
 
 import { useCoachSeekerTasks } from '@/app/coaches/hooks/useCoachTasks'
 import { CoachTask } from '@/app/coaches/types'
+import { IdParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { Stack } from '@chakra-ui/react'

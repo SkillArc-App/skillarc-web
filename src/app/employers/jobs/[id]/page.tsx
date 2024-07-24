@@ -1,9 +1,9 @@
 'use client'
 
+import { ReasonResponse } from '@/app/common/types/ApplicantStatus'
+import { IdParams } from '@/app/common/types/PageParams'
 import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
-import { ReasonResponse } from '@/common/types/ApplicantStatus'
-import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { Applicant, EmployerJob } from '@/frontend/services/employerJobs.service'

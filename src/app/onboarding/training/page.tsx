@@ -1,7 +1,7 @@
 'use client'
 
+import { TrainingProvider } from '@/app/common/types/TrainingProvider'
 import { LoadingPage } from '@/app/components/Loading'
-import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'

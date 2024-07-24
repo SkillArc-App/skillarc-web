@@ -1,5 +1,5 @@
+import { PartialRequired } from '@/app/common/types/partial-required'
 import FormikInput from '@/app/components/FormikInput'
-import { PartialRequired } from '@/common/types/partial-required'
 import {
   Button,
   Modal,

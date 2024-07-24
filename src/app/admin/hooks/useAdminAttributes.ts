@@ -1,4 +1,4 @@
-import { Attribute } from '@/common/types/Attribute'
+import { Attribute } from '@/app/common/types/Attribute'
 import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
 import { get } from '@/frontend/http-common'
 

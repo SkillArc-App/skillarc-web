@@ -1,7 +1,7 @@
 'use client'
 
+import { industries } from '@/app/common/static/industries'
 import { Heading } from '@/app/components/Heading'
-import { industries } from '@/common/static/industries'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Text } from '../../components/Text.component'

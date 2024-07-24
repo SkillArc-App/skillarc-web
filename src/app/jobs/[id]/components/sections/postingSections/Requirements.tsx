@@ -1,6 +1,6 @@
+import { Job } from '@/app/common/types/Job'
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { Job } from '@/common/types/Job'
 import { Flex, ListItem } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import ReactMarkdown from 'react-markdown'

@@ -1,4 +1,4 @@
-import { TrainingProviderProfile } from '@/common/types/TrainingProviderProfile'
+import { TrainingProviderProfile } from '@/app/common/types/TrainingProviderProfile'
 import { put } from '../http-common'
 import { Profile } from './profile.service'
 
