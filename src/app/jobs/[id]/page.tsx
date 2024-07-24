@@ -9,7 +9,7 @@ import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
-import { Success } from '@/frontend/icons/Success.icon'
+import { Success } from '@/frontend/icons/Success'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
   Button,

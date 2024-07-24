@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { Suspense } from 'react'
-import { Logo } from '../../frontend/icons/Logo.icon'
+import { Logo } from '../../frontend/icons/Logo'
 import { HeaderClient } from './HeaderClient'
 import MessageCenter from './MessageCenter'
 import NotificationCenter from './NotificationCenter'

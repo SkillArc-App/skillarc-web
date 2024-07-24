@@ -1,8 +1,8 @@
 import { Job } from '@/app/common/types/Job'
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { Logo } from '@/frontend/icons/Logo.icon'
-import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
+import { Logo } from '@/frontend/icons/Logo'
+import { TriangleLeft } from '@/frontend/icons/TriangleLeft'
 import { Flex, Tag } from '@chakra-ui/react'
 
 export const LearnedSkills = ({ job }: { job: Job }) => {

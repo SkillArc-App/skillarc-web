@@ -1,5 +1,5 @@
 import { Heading } from '@/app/components/Heading'
-import { Briefcase } from '@/frontend/icons/Briefcase.icon'
+import { Briefcase } from '@/frontend/icons/Briefcase'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { copyTextToClipboard } from '@/frontend/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
