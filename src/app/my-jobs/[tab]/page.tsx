@@ -7,7 +7,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'SkillArc: Your Jobs',
-  description: 'Look at your saved and viewed jobs',
+  description: 'Look at your saved and viewed jobs in Columbus Ohio',
 }
 
 function FallbackPage() {
