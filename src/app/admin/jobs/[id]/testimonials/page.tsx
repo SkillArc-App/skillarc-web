@@ -2,8 +2,8 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { Testimonial } from '@/common/types/Job'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
@@ -26,9 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-const TestimonialsPage = () => {
-  const { id } = useFixedParams('id')
-
+const TestimonialsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
 
   const token = useAuthToken()

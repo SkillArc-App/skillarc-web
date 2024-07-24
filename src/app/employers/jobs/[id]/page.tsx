@@ -2,9 +2,9 @@
 
 import { LoadingPage } from '@/app/components/Loading'
 import { ReasonResponse } from '@/common/types/ApplicantStatus'
+import { IdParams } from '@/common/types/PageParams'
 import DataTable from '@/frontend/components/DataTable.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
 import { Applicant, EmployerJob } from '@/frontend/services/employerJobs.service'
 import {
@@ -51,9 +51,8 @@ type ApplicantStatusChange = {
   reasons?: ReasonResponse[]
 }
 
-const Jobs = () => {
+const Jobs = ({ params: { id } }: IdParams) => {
   const router = useRouter()
-  const jobId = useFixedParams('id')?.['id']
 
   const searchParams = useSearchParams()
   const employerId = searchParams?.get('employer_id')
@@ -106,7 +105,7 @@ const Jobs = () => {
     employerJobs?.applicants.filter((applicant) => {
       if (!showPasses && (applicant.status === 'pass' || applicant.status === 'hire')) return false
 
-      return applicant.jobId === jobId || (jobId === 'all' && jobIds?.includes(applicant.jobId))
+      return applicant.jobId === id || (id === 'all' && jobIds?.includes(applicant.jobId))
     }) ?? []
 
   const columnHelper = createColumnHelper<Applicant>()
@@ -236,7 +235,7 @@ const Jobs = () => {
 
   let tabIndex = 0
   if (jobs) {
-    const matchJob = jobs.find((job) => job.id === jobId)
+    const matchJob = jobs.find((job) => job.id === id)
 
     if (matchJob) {
       tabIndex = jobs.indexOf(matchJob) + 1

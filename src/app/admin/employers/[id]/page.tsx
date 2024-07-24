@@ -1,28 +1,15 @@
 'use client'
 
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
-import {
-  Button,
-  Flex,
-  Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Stack,
-  Textarea,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react'
 import { useEmployerData } from '../../hooks/useEmployerData'
 import { EmployerBasics, EmployerModal } from '../components/EmployerModal'
 
-export default function Employer({ params: { id } }: { params: { id: string } }) {
+export default function Employer({ params: { id } }: IdParams) {
   const { data: employer, refetch } = useEmployerData(id)
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const token = useAuthToken()

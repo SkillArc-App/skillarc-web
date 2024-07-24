@@ -2,15 +2,13 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { industries } from '@/common/static/industries'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
 
-const Industries = () => {
-  const { id } = useFixedParams('id')
-
+const Industries = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
 
   const token = useAuthToken()

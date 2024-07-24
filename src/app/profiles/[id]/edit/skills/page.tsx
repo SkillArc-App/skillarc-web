@@ -1,9 +1,9 @@
 'use client'
 
 import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
+import { IdParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { MasterSkill } from '@/frontend/services/skills.service'
 import { Badge, Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
@@ -23,11 +23,10 @@ type OneProfileSkillResponse = {
   }
 }
 
-const EditSkills = () => {
+const EditSkills = ({ params: { id } }: IdParams) => {
   const router = useRouter()
-  const { profileId } = useFixedParams('profileId')
   const { masterSkillQuery: masterSkills } = useMasterSkillData()
-  const { data: seeker } = useProfileData(profileId)
+  const { data: seeker } = useProfileData(id)
   const {
     addProfileSkill: { mutate: addProfileSkill },
     updateProfileSkill: { mutate: updateProfileSkill },

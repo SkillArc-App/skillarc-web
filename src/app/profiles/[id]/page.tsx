@@ -1,21 +1,20 @@
 'use client'
 
 import { LoadingPage } from '@/app/components/Loading'
-import { ProfileAbout } from '@/app/profiles/[profileId]/components/about'
-import { ProfileEducation } from '@/app/profiles/[profileId]/components/education'
-import { ProfileExperience } from '@/app/profiles/[profileId]/components/experience'
-import ProfileCompleteness from '@/app/profiles/[profileId]/components/profileCompleteness'
-import { ProfileReferences } from '@/app/profiles/[profileId]/components/reference'
-import { ProfileSkills } from '@/app/profiles/[profileId]/components/skills'
-import { ProfileSummary } from '@/app/profiles/[profileId]/components/summary'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
+import { ProfileAbout } from '@/app/profiles/[id]/components/about'
+import { ProfileEducation } from '@/app/profiles/[id]/components/education'
+import { ProfileExperience } from '@/app/profiles/[id]/components/experience'
+import ProfileCompleteness from '@/app/profiles/[id]/components/profileCompleteness'
+import { ProfileReferences } from '@/app/profiles/[id]/components/reference'
+import { ProfileSkills } from '@/app/profiles/[id]/components/skills'
+import { ProfileSummary } from '@/app/profiles/[id]/components/summary'
+import { IdParams } from '@/common/types/PageParams'
 import { Box, Stack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useProfileData } from './hooks/useProfileData'
 
-function ProfileId() {
-  const { profileId } = useFixedParams('profileId')
-  const { data: seeker } = useProfileData(profileId)
+function ProfileId({ params: { id } }: IdParams) {
+  const { data: seeker } = useProfileData(id)
 
   const [isMobile, setIsMobile] = useState(false) // Assuming 768px as the breakpoint
 

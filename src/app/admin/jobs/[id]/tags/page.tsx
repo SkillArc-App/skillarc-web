@@ -2,14 +2,13 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { tags } from '@/common/static/tags'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
 
-const TagsPage = () => {
-  const { id } = useFixedParams('id')
+const TagsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
   const token = useAuthToken()
 

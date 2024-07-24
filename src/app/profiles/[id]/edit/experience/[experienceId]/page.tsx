@@ -1,20 +1,19 @@
 'use client'
 
+import { FixedParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 import { useProfileData } from '../../../hooks/useProfileData'
+import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 
-const EditExperience = () => {
+const EditExperience = ({ params: { id, experienceId } }: FixedParams<'id' | 'experienceId'>) => {
   const router = useRouter()
-  const { profileId, experienceId } = useFixedParams('profileId', 'experienceId')
 
-  const { data: seeker } = useProfileData(profileId)
+  const { data: seeker } = useProfileData(id)
   const [experience, setExperience] = useState<Partial<OtherExperience>>({ isCurrent: false })
   const {
     addOtherExperience: { mutate: addOtherExperience, status: addOtherExperienceStatus },
@@ -23,7 +22,9 @@ const EditExperience = () => {
   } = useUpdateProfile()
 
   useEffect(() => {
-    setExperience(seeker?.otherExperiences?.find(({ id }) => id === experienceId) ?? { isCurrent: false })
+    setExperience(
+      seeker?.otherExperiences?.find(({ id }) => id === experienceId) ?? { isCurrent: false },
+    )
   }, [experienceId, seeker])
 
   useEffect(() => {
@@ -80,7 +81,9 @@ const EditExperience = () => {
           <Text type="b2">Company/Organization</Text>
           <Input
             value={experience?.organizationName ?? ''}
-            onChange={(e) => setExperience((experience) => ({ ...experience, organizationName: e.target.value }))}
+            onChange={(e) =>
+              setExperience((experience) => ({ ...experience, organizationName: e.target.value }))
+            }
             placeholder="i.e. Dunder Mifflin"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -89,7 +92,9 @@ const EditExperience = () => {
           <Text type="b2">Position</Text>
           <Input
             value={experience?.position ?? ''}
-            onChange={(e) => setExperience((experience) => ({ ...experience, position: e.target.value }))}
+            onChange={(e) =>
+              setExperience((experience) => ({ ...experience, position: e.target.value }))
+            }
             placeholder="i.e. Assistant"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -98,7 +103,9 @@ const EditExperience = () => {
           <Text type="b2">Start Date</Text>
           <Input
             value={experience?.startDate ?? ''}
-            onChange={(e) => setExperience((experience) => ({ ...experience, startDate: e.target.value }))}
+            onChange={(e) =>
+              setExperience((experience) => ({ ...experience, startDate: e.target.value }))
+            }
             placeholder="2021"
             _placeholder={{ color: 'greyscale.400' }}
           ></Input>
@@ -108,7 +115,9 @@ const EditExperience = () => {
             <Text type="b2">End Date</Text>
             <Input
               value={experience?.endDate ?? ''}
-              onChange={(e) => setExperience((experience) => ({ ...experience, endDate: e.target.value }))}
+              onChange={(e) =>
+                setExperience((experience) => ({ ...experience, endDate: e.target.value }))
+              }
               placeholder="2022"
               _placeholder={{ color: 'greyscale.400' }}
             ></Input>
@@ -132,7 +141,9 @@ const EditExperience = () => {
           <Text type="b2">Tell us about your role</Text>
           <Textarea
             value={experience?.description ?? ''}
-            onChange={(e) => setExperience((experience) => ({ ...experience, description: e.target.value }))}
+            onChange={(e) =>
+              setExperience((experience) => ({ ...experience, description: e.target.value }))
+            }
           />
         </Flex>
       </Flex>

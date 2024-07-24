@@ -2,8 +2,8 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { CareerPath } from '@/common/types/Job'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
@@ -24,9 +24,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-const CareerPathPage = () => {
-  const { id } = useFixedParams('id')
-
+const CareerPathPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
 
   const token = useAuthToken()

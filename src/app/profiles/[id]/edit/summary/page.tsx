@@ -1,20 +1,19 @@
 'use client'
 
+import { IdParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
 import { Button, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../hooks/useUpdateProfile'
 import { useProfileData } from '../../hooks/useProfileData'
+import { useUpdateProfile } from '../hooks/useUpdateProfile'
 
-const EditSummary = () => {
+const EditSummary = ({ params: { id } }: IdParams) => {
   const router = useRouter()
-  const { profileId } = useFixedParams('profileId')
-  const { data: profile } = useProfileData(profileId)
+  const { data: profile } = useProfileData(id)
   const {
     updateSummary: { status: updateSummaryStatus },
   } = useUpdateProfile()

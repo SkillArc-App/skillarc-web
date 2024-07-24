@@ -3,11 +3,11 @@
 import { SearchJobCard } from '@/app/components/SearchJobCard'
 import useApply from '@/app/jobs/hooks/useApply'
 import { useJobSearch } from '@/app/jobs/hooks/useJobSearch'
+import { FixedParams } from '@/common/types/PageParams'
 import { SearchJob } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { post } from '@/frontend/http-common'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
@@ -38,10 +38,8 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-function MyJobsClient() {
+function MyJobsClient({ params: { tab } }: FixedParams<'tab'>) {
   const router = useRouter()
-  const params = useFixedParams('tab')
-  const tab = params?.['tab']
 
   const { data: jobs, refetch } = useJobSearch({
     searchTerms: '',

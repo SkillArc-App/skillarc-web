@@ -4,10 +4,10 @@ import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
 import { SubmittableCoachTask } from '@/app/coaches/types'
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post } from '@/frontend/http-common'
 import {
   Box,
@@ -48,8 +48,7 @@ const tabs: Record<string, number> = {
   resumes: 3,
 }
 
-const Context = ({ children }: { children: React.ReactNode }) => {
-  const { id } = useFixedParams('id')
+const Context = ({ children, params: { id } }: { children: React.ReactNode } & IdParams) => {
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { refetch: refetchTasks } = useCoachSeekerTasks(id)

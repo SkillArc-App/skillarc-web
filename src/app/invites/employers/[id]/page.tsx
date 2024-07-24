@@ -1,17 +1,16 @@
 'use client'
 
 import { LoadingPage } from '@/app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { useUser } from '@/frontend/hooks/useUser'
 import { put } from '@/frontend/http-common'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-const EmployerInvite = () => {
-  const employerInviteId = useFixedParams('id')?.['id']
+const EmployerInvite = ({ params: { id } }: IdParams) => {
   const router = useRouter()
   const token = useAuthToken()
 
@@ -31,10 +30,10 @@ const EmployerInvite = () => {
   })
 
   useEffect(() => {
-    if (token && useInvite.isIdle && employerInviteId) {
-      useInvite.mutate(employerInviteId)
+    if (token && useInvite.isIdle && id) {
+      useInvite.mutate(id)
     }
-  }, [employerInviteId, token, useInvite, useInvite.mutate])
+  }, [id, token, useInvite, useInvite.mutate])
 
   return <LoadingPage />
 }

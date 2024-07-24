@@ -3,12 +3,11 @@
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
+import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { destroy, post, put } from '@/frontend/http-common'
 
-const Notes = () => {
-  const { id } = useFixedParams('id')
+const Notes = ({ params: { id } }: IdParams) => {
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
 
   const token = useAuthToken()

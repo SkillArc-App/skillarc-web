@@ -1,20 +1,19 @@
-"use client"
+'use client'
 
 import { EducationExperience } from '@/common/types/EducationExperience'
+import { FixedParams } from '@/common/types/PageParams'
 import { Heading } from '@/frontend/components/Heading.component'
 import { Text } from '@/frontend/components/Text.component'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { Button, Flex, Input } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 import { useProfileData } from '../../../hooks/useProfileData'
+import { useUpdateProfile } from '../../hooks/useUpdateProfile'
 
-const EditEducation = () => {
+const EditEducation = ({ params: { id, educationId } }: FixedParams<'id' | 'educationId'>) => {
   const router = useRouter()
-  const { educationId, profileId } = useFixedParams('profileId', 'educationId')
 
-  const { data: seeker } = useProfileData(profileId)
+  const { data: seeker } = useProfileData(id)
   const [experience, setExperience] = useState<Partial<EducationExperience>>()
   const {
     addEducationExperience: {

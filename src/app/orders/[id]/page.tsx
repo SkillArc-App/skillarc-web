@@ -3,11 +3,11 @@
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
 import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
+import { IdParams } from '@/common/types/PageParams'
 import DataTable from '@/frontend/components/DataTable.component'
 import FormikInput from '@/frontend/components/FormikInput'
 import FormikSelect from '@/frontend/components/FormikSelect'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useFixedParams } from '@/frontend/hooks/useFixParams'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {
@@ -198,8 +198,7 @@ const CandidateTable = ({
   return <DataTable columns={columns} data={candidates} />
 }
 
-const Order = () => {
-  const { id } = useFixedParams('id')
+const Order = ({ params: { id } }: IdParams) => {
   const { data: order, refetch: refetchOrder } = useOrderQuery(id)
   const { data: teams } = useTeamsQuery()
   const { addNote, modifyNote, removeNote } = useNotes()
