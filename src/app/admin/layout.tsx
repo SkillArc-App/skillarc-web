@@ -1,7 +1,7 @@
 'use client'
 
 import { LoadingPage } from '@/app/components/Loading'
-import { Text } from '@/frontend/components/Text.component'
+import { Text } from '@/app/components/Text.component'
 import { useUser } from '@/frontend/hooks/useUser'
 import { Box, Grid, GridItem, Heading } from '@chakra-ui/react'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'

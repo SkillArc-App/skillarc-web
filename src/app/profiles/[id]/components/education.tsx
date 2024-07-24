@@ -3,7 +3,7 @@ import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaGraduationCap } from 'react-icons/fa6'
-import { Text } from '../../../../frontend/components/Text.component'
+import { Text } from '../../../components/Text.component'
 import { ProfileBox } from './profileBox'
 
 export const ProfileEducation = ({ seeker }: { seeker: GetOneProfileResponse }) => {

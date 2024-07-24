@@ -1,8 +1,8 @@
 'use client'
 
+import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
+import { Text } from '@/app/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { AllSetIcon } from '@/frontend/icons/AllSet.icon'

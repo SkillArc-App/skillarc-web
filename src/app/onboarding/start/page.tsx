@@ -1,14 +1,14 @@
 'use client'
 
-import FormikInput from '@/frontend/components/FormikInput'
+import FormikInput from '@/app/components/FormikInput'
 import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
 import { Button, Stack, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { Heading } from '../../../frontend/components/Heading.component'
-import { Text } from '../../../frontend/components/Text.component'
+import { Heading } from '../../components/Heading'
+import { Text } from '../../components/Text.component'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'
 
 type NewNameProps = {

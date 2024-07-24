@@ -1,6 +1,6 @@
 'use client'
 
-import FormikCheckBox from '@/frontend/components/FormikCheckbox'
+import FormikCheckBox from '@/app/components/FormikCheckbox'
 import { Button, Heading, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'

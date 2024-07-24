@@ -2,12 +2,12 @@
 
 import { useAdminAttributes } from '@/app/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
+import DataTable from '@/app/components/DataTable'
+import FormObserver from '@/app/components/FormObserver'
+import FormikMultiSelect from '@/app/components/FormikMultiSelect'
+import FormikSelect from '@/app/components/FormikSelect'
 import { AdminJobAttribute } from '@/common/types/Job'
 import { IdParams } from '@/common/types/PageParams'
-import DataTable from '@/frontend/components/DataTable.component'
-import FormObserver from '@/frontend/components/FormObserver'
-import FormikMultiSelect from '@/frontend/components/FormikMultiSelect'
-import FormikSelect from '@/frontend/components/FormikSelect'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 import {

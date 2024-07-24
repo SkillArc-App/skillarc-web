@@ -1,5 +1,5 @@
-import { DocumentKind, ResumeRequest } from '@/app/documents/types'
-import FormikCheckBox from '@/frontend/components/FormikCheckbox'
+import FormikCheckBox from '@/app/components/FormikCheckbox'
+import { DocumentKind } from '@/app/documents/types'
 import {
   Button,
   Modal,

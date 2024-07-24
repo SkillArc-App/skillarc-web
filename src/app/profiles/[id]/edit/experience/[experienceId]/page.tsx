@@ -1,8 +1,8 @@
 'use client'
 
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
 import { FixedParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
 import { OtherExperience } from '@/frontend/services/otherExperiences.service'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'

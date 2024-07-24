@@ -2,7 +2,7 @@
 
 import { Button, Flex, Heading, Input } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Text } from '../../../frontend/components/Text.component'
+import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export type EducationResponseProps = {

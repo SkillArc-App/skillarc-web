@@ -3,10 +3,10 @@
 import { useCoachSeekerData } from '@/app/coaches/hooks/useCoachSeekerData'
 import { useCoachesData } from '@/app/coaches/hooks/useCoachesData'
 import { SubmittableCoachTask } from '@/app/coaches/types'
+import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
+import { Text } from '@/app/components/Text.component'
 import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { destroy, post } from '@/frontend/http-common'
 import {

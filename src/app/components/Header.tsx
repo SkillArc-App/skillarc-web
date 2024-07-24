@@ -16,16 +16,16 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { Suspense } from 'react'
-import { Text } from '../../frontend/components/Text.component'
 import { Logo } from '../../frontend/icons/Logo.icon'
 import { HeaderClient } from './HeaderClient'
 import MessageCenter from './MessageCenter'
 import NotificationCenter from './NotificationCenter'
+import { Text } from './Text.component'
 
 function FallBackHeader() {
   return (
     <>
-      <NotificationCenter notifications={[]} onClose={() => {}}/>
+      <NotificationCenter notifications={[]} onClose={() => {}} />
       <MessageCenter unreadCount={0} />
       <Menu>
         <MenuButton

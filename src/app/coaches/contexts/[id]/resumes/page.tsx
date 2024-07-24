@@ -1,12 +1,12 @@
 'use client'
 
+import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
 import { downloadResume } from '@/app/documents/downloadResume'
 import { useResumeMutation } from '@/app/documents/hooks/useResumeMutation'
 import { useResumesQuery } from '@/app/documents/hooks/useResumesQuery'
 import { Checks, Resume } from '@/app/documents/types'
 import { IdParams } from '@/common/types/PageParams'
-import DataTable from '@/frontend/components/DataTable.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { Button, Stack, VStack, useDisclosure } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
@@ -17,7 +17,7 @@ const Resumes = (params: IdParams) => {
   return (
     <Stack width={'100%'}>
       <Suspense>
-        <ResumesTable {...params}/>
+        <ResumesTable {...params} />
       </Suspense>
     </Stack>
   )

@@ -1,11 +1,11 @@
-import { Heading } from '@/frontend/components/Heading.component'
+import { Heading } from '@/app/components/Heading'
 import { Briefcase } from '@/frontend/icons/Briefcase.icon'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { copyTextToClipboard } from '@/frontend/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
 import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
-import { Text } from '../../../../frontend/components/Text.component'
+import { Text } from '../../../components/Text.component'
 
 export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   const toast = useToast()

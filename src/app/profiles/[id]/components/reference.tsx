@@ -1,6 +1,6 @@
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
-import { Text } from '../../../../frontend/components/Text.component'
+import { Text } from '../../../components/Text.component'
 
 export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   if (seeker.reference.length === 0 && !seeker.isProfileEditor) return <></>
@@ -25,8 +25,8 @@ export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse })
             <VStack align="left" gap={2}>
               <Flex direction="column" gap={2}>
                 <Heading variant="h4" color={'greyscale.900'}>
-                  {reference.authorUser.firstName} {reference.authorUser.lastName}
-                  , {reference.trainingProvider.name}
+                  {reference.authorUser.firstName} {reference.authorUser.lastName},{' '}
+                  {reference.trainingProvider.name}
                 </Heading>
                 <Text type="b2" color="greyscale.600">
                   {reference.referenceText}

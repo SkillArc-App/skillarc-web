@@ -1,6 +1,6 @@
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
 import { Job } from '@/common/types/Job'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
 import { pluralizeJobTitle } from '@/frontend/helpers/pluralizeJobTitle'
 import { Flex, Image, Tag } from '@chakra-ui/react'
 

@@ -1,5 +1,5 @@
+import { Heading } from '@/app/components/Heading'
 import { GroupedNotes, Note } from '@/common/types/Note'
-import { Heading } from '@/frontend/components/Heading.component'
 import { Stack, Textarea } from '@chakra-ui/react'
 import { useState } from 'react'
 import { NoteBox } from './NoteBox'

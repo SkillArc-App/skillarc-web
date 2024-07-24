@@ -1,9 +1,9 @@
 'use client'
 
-import { Heading } from '@/frontend/components/Heading.component'
+import { Heading } from '@/app/components/Heading'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
 import { ChangeEvent, useState } from 'react'
-import { Text } from '../../../frontend/components/Text.component'
+import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export type ExperienceResponseProps = {

@@ -10,7 +10,7 @@ import {
   Heading,
 } from '@chakra-ui/react'
 import { FaUser } from 'react-icons/fa6'
-import { Text } from '../../../../frontend/components/Text.component'
+import { Text } from '../../../components/Text.component'
 import { ProfileBox } from './profileBox'
 
 export const ProfileAbout = ({ seeker }: { seeker: GetOneProfileResponse }) => {

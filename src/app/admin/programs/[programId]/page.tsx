@@ -1,8 +1,8 @@
 'use client'
 
+import FormikInput from '@/app/components/FormikInput'
+import FormikTextArea from '@/app/components/FormikTextArea'
 import { LoadingPage } from '@/app/components/Loading'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { put } from '@/frontend/http-common'

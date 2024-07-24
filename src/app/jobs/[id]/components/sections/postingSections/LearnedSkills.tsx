@@ -1,6 +1,6 @@
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
 import { Job } from '@/common/types/Job'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
 import { Logo } from '@/frontend/icons/Logo.icon'
 import { TriangleLeft } from '@/frontend/icons/TriangleLeft.icon'
 import { Flex, Tag } from '@chakra-ui/react'

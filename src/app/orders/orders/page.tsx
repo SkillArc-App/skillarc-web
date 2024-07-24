@@ -1,8 +1,8 @@
 'use client'
 
+import DataTable from '@/app/components/DataTable'
+import FormikSelect from '@/app/components/FormikSelect'
 import { LoadingPage } from '@/app/components/Loading'
-import DataTable from '@/frontend/components/DataTable.component'
-import FormikSelect from '@/frontend/components/FormikSelect'
 import {
   Button,
   Checkbox,

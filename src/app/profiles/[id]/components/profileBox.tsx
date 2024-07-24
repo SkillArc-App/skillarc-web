@@ -1,5 +1,5 @@
+import { Heading } from '@/app/components/Heading'
 import { Maybe } from '@/common/types/maybe'
-import { Heading } from '@/frontend/components/Heading.component'
 import { Box, Button, Flex } from '@chakra-ui/react'
 import Link from 'next/link'
 import { ReactNode } from 'react'

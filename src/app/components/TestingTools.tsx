@@ -3,7 +3,7 @@
 import { Maybe } from '@/common/types/maybe'
 import { FormControl, FormLabel, HStack, Select } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { useAllUsers } from '../../app/admin/hooks/useAllUsers'
+import { useAllUsers } from '../admin/hooks/useAllUsers'
 
 const DevTools = () => {
   const { data: users } = useAllUsers()

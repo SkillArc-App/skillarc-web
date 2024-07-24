@@ -1,8 +1,8 @@
 'use client'
 
 import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
+import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
-import DataTable from '@/frontend/components/DataTable.component'
 import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { useUser } from '@/frontend/hooks/useUser'
 import { post } from '@/frontend/http-common'

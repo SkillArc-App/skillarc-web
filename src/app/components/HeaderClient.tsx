@@ -1,5 +1,7 @@
 'use client'
 
+import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { post } from '@/frontend/http-common'
 import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
@@ -25,14 +27,12 @@ import {
 } from '@chakra-ui/react'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
-import TestingTools from '../../frontend/components/TestingTools.component'
-import { Text } from '../../frontend/components/Text.component'
 import { useUser } from '../../frontend/hooks/useUser'
 import { useSeekerChat } from '../chats/hooks/useSeekerChat'
 import MessageCenter from './MessageCenter'
 import NotificationCenter from './NotificationCenter'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import TestingTools from './TestingTools'
+import { Text } from './Text.component'
 
 export const HeaderClient = () => {
   const { isLoading, isAuthenticated, logout, loginWithRedirect } = useAuth0()

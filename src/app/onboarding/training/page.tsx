@@ -5,7 +5,7 @@ import { TrainingProvider } from '@/common/types/TrainingProvider'
 import { useAllTrainingProviderData } from '@/frontend/hooks/useTrainingProviderData'
 import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Text } from '../../../frontend/components/Text.component'
+import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export default function Training() {

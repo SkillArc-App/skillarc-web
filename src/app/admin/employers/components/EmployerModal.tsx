@@ -1,5 +1,5 @@
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
+import FormikInput from '@/app/components/FormikInput'
+import FormikTextArea from '@/app/components/FormikTextArea'
 import { Employer } from '@/frontend/services/employer.service'
 import {
   Button,
