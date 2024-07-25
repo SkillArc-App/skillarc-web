@@ -1,5 +1,8 @@
 import { Form, Formik } from 'formik'
 
+import FormikSelect from '@/components/FormikSelect'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import {
   Button,
   Modal,
@@ -12,9 +15,6 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react'
-import FormikSelect from 'app/components/FormikSelect'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
 import { useCoachJobOrders } from '../../hooks/useCoachJobOrders'
 
 const RecommendForJobModal = ({

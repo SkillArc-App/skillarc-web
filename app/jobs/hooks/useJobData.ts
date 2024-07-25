@@ -1,6 +1,6 @@
+import { Job } from '@/common/types/Job'
+import { Maybe } from '@/common/types/maybe'
 import { useQuery } from '@tanstack/react-query'
-import { Job } from 'app/common/types/Job'
-import { Maybe } from 'app/common/types/maybe'
 import { useAuthToken } from '../../hooks/useAuthToken'
 import { get } from '../../http-common'
 

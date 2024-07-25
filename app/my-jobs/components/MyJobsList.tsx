@@ -1,3 +1,11 @@
+import { SearchJob } from '@/common/types/Search'
+import { Maybe } from '@/common/types/maybe'
+import { SearchJobCard } from '@/components/SearchJobCard'
+import { Text } from '@/components/Text.component'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
+import useApply from '@/jobs/hooks/useApply'
+import { FrontendJobInteractionsService } from '@/services/jobInteractions.service'
 import {
   Box,
   Button,
@@ -16,14 +24,6 @@ import {
   Textarea,
   useDisclosure,
 } from '@chakra-ui/react'
-import { SearchJob } from 'app/common/types/Search'
-import { Maybe } from 'app/common/types/maybe'
-import { SearchJobCard } from 'app/components/SearchJobCard'
-import { Text } from 'app/components/Text.component'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
-import useApply from 'app/jobs/hooks/useApply'
-import { FrontendJobInteractionsService } from 'app/services/jobInteractions.service'
 import NextLink from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'

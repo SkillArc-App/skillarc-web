@@ -1,4 +1,4 @@
-import { PassReason } from 'app/common/types/ApplicantStatus'
+import { PassReason } from '@/common/types/ApplicantStatus'
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 import { get } from '../../http-common'
 

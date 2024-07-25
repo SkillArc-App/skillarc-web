@@ -1,7 +1,7 @@
 'use client'
 
+import { Heading } from '@/components/Heading'
 import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { Heading } from 'app/components/Heading'
 import { ChangeEvent, useState } from 'react'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'

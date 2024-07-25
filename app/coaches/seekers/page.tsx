@@ -1,5 +1,12 @@
 'use client'
 
+import { CoachSeekerTable } from '@/coaches/types'
+import { Attribute } from '@/common/types/Attribute'
+import { PersonSearchValue } from '@/common/types/PersonSearch'
+import DataTable from '@/components/DataTable'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useUser } from '@/hooks/useUser'
+import { usePersonSearch } from '@/jobs/hooks/usePersonSearch'
 import { SearchIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -19,13 +26,6 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import { CoachSeekerTable } from 'app/coaches/types'
-import { Attribute } from 'app/common/types/Attribute'
-import { PersonSearchValue } from 'app/common/types/PersonSearch'
-import DataTable from 'app/components/DataTable'
-import { useDebounce } from 'app/hooks/useDebounce'
-import { useUser } from 'app/hooks/useUser'
-import { usePersonSearch } from 'app/jobs/hooks/usePersonSearch'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'

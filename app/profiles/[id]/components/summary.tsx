@@ -1,9 +1,9 @@
+import { Heading } from '@/components/Heading'
+import { Briefcase } from '@/icons/Briefcase'
+import { GetOneProfileResponse } from '@/services/profile.service'
+import { copyTextToClipboard } from '@/utils/clipboard.util'
 import { EditIcon, LinkIcon } from '@chakra-ui/icons'
 import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react'
-import { Heading } from 'app/components/Heading'
-import { Briefcase } from 'app/icons/Briefcase'
-import { GetOneProfileResponse } from 'app/services/profile.service'
-import { copyTextToClipboard } from 'app/utils/clipboard.util'
 import Link from 'next/link'
 import { Text } from '../../../components/Text.component'
 

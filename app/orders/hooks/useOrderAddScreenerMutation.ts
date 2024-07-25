@@ -1,6 +1,6 @@
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { put } from '@/http-common'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { put } from 'app/http-common'
 
 type OrderParams = {
   id: string

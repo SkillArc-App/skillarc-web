@@ -1,7 +1,7 @@
+import { Heading } from '@/components/Heading'
+import { Text } from '@/components/Text.component'
+import { GetOneProfileResponse } from '@/services/profile.service'
 import { Box, Button, Progress, Stack } from '@chakra-ui/react'
-import { Heading } from 'app/components/Heading'
-import { Text } from 'app/components/Text.component'
-import { GetOneProfileResponse } from 'app/services/profile.service'
 import { useRouter } from 'next/navigation'
 
 const ProfileCompleteness = ({ seeker }: { seeker: GetOneProfileResponse }) => {

@@ -1,5 +1,11 @@
 'use client'
 
+import { Attribute } from '@/common/types/Attribute'
+import DataTable from '@/components/DataTable'
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { destroy, post, put } from '@/http-common'
 import {
   Box,
   Button,
@@ -17,12 +23,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import { Attribute } from 'app/common/types/Attribute'
-import DataTable from 'app/components/DataTable'
-import FormikInput from 'app/components/FormikInput'
-import FormikTextArea from 'app/components/FormikTextArea'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { destroy, post, put } from 'app/http-common'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { FaRegTrashCan } from 'react-icons/fa6'

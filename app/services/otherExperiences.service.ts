@@ -1,4 +1,4 @@
-import { PartialRequired } from 'app/common/types/partial-required'
+import { PartialRequired } from '@/common/types/partial-required'
 import { destroy, post, put } from '../http-common'
 
 export type OtherExperience = {

@@ -1,5 +1,13 @@
 'use client'
 
+import DataTable from '@/components/DataTable'
+import FormikInput from '@/components/FormikInput'
+import FormikSelect from '@/components/FormikSelect'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { useAllTrainingProviderData } from '@/hooks/useTrainingProviderData'
+import { post } from '@/http-common'
+import { delay } from '@/utils/delay'
 import {
   Box,
   Button,
@@ -14,14 +22,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import DataTable from 'app/components/DataTable'
-import FormikInput from 'app/components/FormikInput'
-import FormikSelect from 'app/components/FormikSelect'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { useAllTrainingProviderData } from 'app/hooks/useTrainingProviderData'
-import { post } from 'app/http-common'
-import { delay } from 'app/utils/delay'
 import { Form, Formik } from 'formik'
 import {
   TrainingProviderInvite,

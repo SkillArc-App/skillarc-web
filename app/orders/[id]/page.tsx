@@ -1,5 +1,15 @@
 'use client'
 
+import { IdParams } from '@/common/types/PageParams'
+import DataTable from '@/components/DataTable'
+import FormikInput from '@/components/FormikInput'
+import FormikSelect from '@/components/FormikSelect'
+import { LoadingPage } from '@/components/Loading'
+import NotesList from '@/components/NoteList'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { put } from '@/http-common'
+import { useQuestionsQuery } from '@/screeners/hooks/useQuestionsQuery'
+import { useTeamsQuery } from '@/teams/hooks/useTeamsQuery'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -35,16 +45,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import { IdParams } from 'app/common/types/PageParams'
-import DataTable from 'app/components/DataTable'
-import FormikInput from 'app/components/FormikInput'
-import FormikSelect from 'app/components/FormikSelect'
-import { LoadingPage } from 'app/components/Loading'
-import NotesList from 'app/components/NoteList'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { put } from 'app/http-common'
-import { useQuestionsQuery } from 'app/screeners/hooks/useQuestionsQuery'
-import { useTeamsQuery } from 'app/teams/hooks/useTeamsQuery'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'

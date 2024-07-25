@@ -1,5 +1,5 @@
-import { AdminJob } from 'app/common/types/Job'
-import { Maybe } from 'app/common/types/maybe'
+import { AdminJob } from '@/common/types/Job'
+import { Maybe } from '@/common/types/maybe'
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 import { get } from '../../http-common'
 

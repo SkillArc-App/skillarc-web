@@ -1,8 +1,8 @@
 'use client'
 
+import { OnboardingNextStep } from '@/common/types/OnboardingData'
+import { Maybe } from '@/common/types/maybe'
 import { UseQueryOptions } from '@tanstack/react-query'
-import { OnboardingNextStep } from 'app/common/types/OnboardingData'
-import { Maybe } from 'app/common/types/maybe'
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 import { get } from '../../http-common'
 

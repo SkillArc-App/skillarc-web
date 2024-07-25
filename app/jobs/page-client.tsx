@@ -1,5 +1,16 @@
 'use client'
 
+import { industries } from '@/common/static/industries'
+import { tags } from '@/common/static/tags'
+import { SearchFilter, SearchJob, SearchValue, UtmParams } from '@/common/types/Search'
+import { Maybe } from '@/common/types/maybe'
+import { Text } from '@/components/Text.component'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { useDebounce } from '@/hooks/useDebounce'
+import { useUser } from '@/hooks/useUser'
+import { post } from '@/http-common'
+import useUserState, { UserState } from '@/jobs/hooks/useUserState'
+import { FrontendJobInteractionsService } from '@/services/jobInteractions.service'
 import {
   Box,
   Button,
@@ -19,17 +30,6 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react'
-import { industries } from 'app/common/static/industries'
-import { tags } from 'app/common/static/tags'
-import { SearchFilter, SearchJob, SearchValue, UtmParams } from 'app/common/types/Search'
-import { Maybe } from 'app/common/types/maybe'
-import { Text } from 'app/components/Text.component'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { useDebounce } from 'app/hooks/useDebounce'
-import { useUser } from 'app/hooks/useUser'
-import { post } from 'app/http-common'
-import useUserState, { UserState } from 'app/jobs/hooks/useUserState'
-import { FrontendJobInteractionsService } from 'app/services/jobInteractions.service'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'

@@ -1,7 +1,7 @@
 'use client'
 
-import { IdParams } from 'app/common/types/PageParams'
-import { LoadingPage } from 'app/components/Loading'
+import { IdParams } from '@/common/types/PageParams'
+import { LoadingPage } from '@/components/Loading'
 import { useProfileData } from '../hooks/useProfileData'
 
 export default function EditProfileLayout({

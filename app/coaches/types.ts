@@ -1,4 +1,4 @@
-import { Note } from 'app/common/types/Note'
+import { Note } from '@/common/types/Note'
 
 type Barrier = {
   id: string

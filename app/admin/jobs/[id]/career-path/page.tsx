@@ -1,5 +1,10 @@
 'use client'
 
+import { useAdminJob } from '@/admin/hooks/useAdminJob'
+import { CareerPath } from '@/common/types/Job'
+import { IdParams } from '@/common/types/PageParams'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { destroy, post, put } from '@/http-common'
 import { ArrowDownIcon, ArrowUpIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -17,11 +22,6 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { useAdminJob } from 'app/admin/hooks/useAdminJob'
-import { CareerPath } from 'app/common/types/Job'
-import { IdParams } from 'app/common/types/PageParams'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { destroy, post, put } from 'app/http-common'
 import { useState } from 'react'
 
 const CareerPathPage = ({ params: { id } }: IdParams) => {

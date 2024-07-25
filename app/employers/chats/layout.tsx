@@ -1,8 +1,8 @@
 'use client'
 
+import ChatList from '@/chats/[id]/components/ChatList'
+import { useEmployerChats } from '@/employers/chats/hooks/useEmployerChats'
 import { HStack } from '@chakra-ui/react'
-import ChatList from 'app/chats/[id]/components/ChatList'
-import { useEmployerChats } from 'app/employers/chats/hooks/useEmployerChats'
 import { useParams } from 'next/navigation'
 
 const Chat = ({ children }: { children: React.ReactNode }) => {

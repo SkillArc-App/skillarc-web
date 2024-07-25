@@ -1,3 +1,9 @@
+import { Attribute } from '@/common/types/Attribute'
+import FormObserver from '@/components/FormObserver'
+import FormikMultiSelect from '@/components/FormikMultiSelect'
+import FormikSelect from '@/components/FormikSelect'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import {
   Button,
   Modal,
@@ -9,12 +15,6 @@ import {
   ModalOverlay,
   Stack,
 } from '@chakra-ui/react'
-import { Attribute } from 'app/common/types/Attribute'
-import FormObserver from 'app/components/FormObserver'
-import FormikMultiSelect from 'app/components/FormikMultiSelect'
-import FormikSelect from 'app/components/FormikSelect'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 

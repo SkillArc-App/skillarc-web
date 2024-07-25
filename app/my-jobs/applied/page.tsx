@@ -1,6 +1,6 @@
 'use client'
 
-import { useJobSearch } from 'app/jobs/hooks/useJobSearch'
+import { useJobSearch } from '@/jobs/hooks/useJobSearch'
 import MyJobList from '../components/MyJobsList'
 
 export default function Page() {

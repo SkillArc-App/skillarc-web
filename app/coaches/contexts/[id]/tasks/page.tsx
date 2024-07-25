@@ -1,13 +1,13 @@
 'use client'
 
+import { useCoachSeekerTasks } from '@/coaches/hooks/useCoachTasks'
+import { CoachTask } from '@/coaches/types'
+import { IdParams } from '@/common/types/PageParams'
+import { Heading } from '@/components/Heading'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { put } from '@/http-common'
 import { Stack } from '@chakra-ui/react'
-import { useCoachSeekerTasks } from 'app/coaches/hooks/useCoachTasks'
-import { CoachTask } from 'app/coaches/types'
-import { IdParams } from 'app/common/types/PageParams'
-import { Heading } from 'app/components/Heading'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { put } from 'app/http-common'
 import { TaskBox } from './components/TaskBox'
 
 interface GroupedReminders {

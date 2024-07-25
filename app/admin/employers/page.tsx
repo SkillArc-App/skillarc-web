@@ -1,5 +1,9 @@
 'use client'
 
+import { useAllEmployers } from '@/admin/hooks/useAllEmployerData'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import {
   Box,
   Button,
@@ -13,10 +17,6 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAllEmployers } from 'app/admin/hooks/useAllEmployerData'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
 import NextLink from 'next/link'
 import { EmployerBasics, EmployerModal } from './components/EmployerModal'
 

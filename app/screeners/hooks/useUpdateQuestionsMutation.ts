@@ -1,7 +1,7 @@
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { put } from '@/http-common'
+import { Questions } from '@/screeners/types'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { put } from 'app/http-common'
-import { Questions } from 'app/screeners/types'
 
 export const useUpdateQuestionsMutation = ({ onSuccess }: { onSuccess: () => void }) => {
   const queryClient = useQueryClient()

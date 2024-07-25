@@ -1,5 +1,8 @@
 'use client'
 
+import { useAllEmployers } from '@/admin/hooks/useAllEmployerData'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import {
   Box,
   Button,
@@ -22,9 +25,6 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAllEmployers } from 'app/admin/hooks/useAllEmployerData'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
 import { useState } from 'react'
 import { useAllEmployerInviteData } from '../hooks/useAllEmployerInviteData'
 export default function EmployerInvites() {

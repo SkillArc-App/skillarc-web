@@ -1,8 +1,8 @@
+import { SearchJob, SearchValue } from '@/common/types/Search'
+import { camelToSnake } from '@/common/utils/functions'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { get } from '@/http-common'
 import { useQuery } from '@tanstack/react-query'
-import { SearchJob, SearchValue } from 'app/common/types/Search'
-import { camelToSnake } from 'app/common/utils/functions'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { get } from 'app/http-common'
 
 export const useJobSearch = ({ searchTerms, filters, otherUtmParams }: SearchValue) => {
   const token = useAuthToken()

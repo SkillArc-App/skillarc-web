@@ -1,6 +1,6 @@
 'use client'
 
-import { LoadingPage } from 'app/components/Loading'
+import { LoadingPage } from '@/components/Loading'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'

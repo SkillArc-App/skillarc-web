@@ -1,11 +1,11 @@
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { FrontendEducationExperiencesService } from '@/services/educationexperiences.service'
+import { FrontendOtherExperiencesService } from '@/services/otherExperiences.service'
+import { FrontendPersonalExperiencesService } from '@/services/personalExperience.service'
+import { FrontendProfileService } from '@/services/profile.service'
+import { FrontendProfileSkillsService } from '@/services/profileSkills.service'
+import { FrontendUserService } from '@/services/user.service'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { FrontendEducationExperiencesService } from 'app/services/educationexperiences.service'
-import { FrontendOtherExperiencesService } from 'app/services/otherExperiences.service'
-import { FrontendPersonalExperiencesService } from 'app/services/personalExperience.service'
-import { FrontendProfileService } from 'app/services/profile.service'
-import { FrontendProfileSkillsService } from 'app/services/profileSkills.service'
-import { FrontendUserService } from 'app/services/user.service'
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient()

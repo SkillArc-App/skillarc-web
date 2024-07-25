@@ -1,5 +1,5 @@
+import { Maybe } from '@/common/types/maybe'
 import { UseQueryOptions } from '@tanstack/react-query'
-import { Maybe } from 'app/common/types/maybe'
 import { get } from '../http-common'
 import { FullUser } from '../services/user.service'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'

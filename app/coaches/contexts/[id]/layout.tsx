@@ -1,5 +1,14 @@
 'use client'
 
+import { useCoachSeekerData } from '@/coaches/hooks/useCoachSeekerData'
+import { useCoachesData } from '@/coaches/hooks/useCoachesData'
+import { SubmittableCoachTask } from '@/coaches/types'
+import { IdParams } from '@/common/types/PageParams'
+import { Heading } from '@/components/Heading'
+import { LoadingPage } from '@/components/Loading'
+import { Text } from '@/components/Text.component'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { destroy, post } from '@/http-common'
 import {
   Box,
   Breadcrumb,
@@ -21,15 +30,6 @@ import {
   Tag,
   Tooltip,
 } from '@chakra-ui/react'
-import { useCoachSeekerData } from 'app/coaches/hooks/useCoachSeekerData'
-import { useCoachesData } from 'app/coaches/hooks/useCoachesData'
-import { SubmittableCoachTask } from 'app/coaches/types'
-import { IdParams } from 'app/common/types/PageParams'
-import { Heading } from 'app/components/Heading'
-import { LoadingPage } from 'app/components/Loading'
-import { Text } from 'app/components/Text.component'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { destroy, post } from 'app/http-common'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'

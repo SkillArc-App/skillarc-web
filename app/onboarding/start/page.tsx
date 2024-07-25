@@ -1,10 +1,10 @@
 'use client'
 
+import FormikInput from '@/components/FormikInput'
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { post } from '@/http-common'
 import { Button, Stack, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
-import FormikInput from 'app/components/FormikInput'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { post } from 'app/http-common'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Heading } from '../../components/Heading'

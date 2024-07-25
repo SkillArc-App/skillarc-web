@@ -1,3 +1,8 @@
+import { Job } from '@/common/types/Job'
+import FormikInput from '@/components/FormikInput'
+import FormikSelect from '@/components/FormikSelect'
+import FormikSwitch from '@/components/FormikSwitch'
+import FormikTextArea from '@/components/FormikTextArea'
 import {
   Button,
   Modal,
@@ -9,11 +14,6 @@ import {
   ModalOverlay,
   VStack,
 } from '@chakra-ui/react'
-import { Job } from 'app/common/types/Job'
-import FormikInput from 'app/components/FormikInput'
-import FormikSelect from 'app/components/FormikSelect'
-import FormikSwitch from 'app/components/FormikSwitch'
-import FormikTextArea from 'app/components/FormikTextArea'
 import { Form, Formik } from 'formik'
 import { useAllEmployers } from '../../hooks/useAllEmployerData'
 

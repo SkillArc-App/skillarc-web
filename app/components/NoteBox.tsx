@@ -1,6 +1,6 @@
+import { Note } from '@/common/types/Note'
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Box, HStack, IconButton, Text, Textarea, VStack } from '@chakra-ui/react'
-import { Note } from 'app/common/types/Note'
 import { useState } from 'react'
 
 interface NoteProps {

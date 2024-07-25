@@ -1,6 +1,6 @@
+import { GetOneProfileResponse } from '@/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex, Heading } from '@chakra-ui/react'
-import { GetOneProfileResponse } from 'app/services/profile.service'
 import Link from 'next/link'
 import { FaGraduationCap } from 'react-icons/fa6'
 import { Text } from '../../../components/Text.component'

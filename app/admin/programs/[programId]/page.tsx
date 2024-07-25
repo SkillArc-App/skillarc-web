@@ -1,5 +1,12 @@
 'use client'
 
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { useAllTrainingProviderData } from '@/hooks/useTrainingProviderData'
+import { put } from '@/http-common'
+import { delay } from '@/utils/delay'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -14,13 +21,6 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
-import FormikInput from 'app/components/FormikInput'
-import FormikTextArea from 'app/components/FormikTextArea'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { useAllTrainingProviderData } from 'app/hooks/useTrainingProviderData'
-import { put } from 'app/http-common'
-import { delay } from 'app/utils/delay'
 import { Form, Formik } from 'formik'
 import { Program, useProgramData } from '../../hooks/useProgramData'
 

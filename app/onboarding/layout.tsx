@@ -1,7 +1,7 @@
 'use client'
 
+import { useOnboardingQuery } from '@/onboarding/hooks/useOnboardingQuery'
 import { Flex, Progress } from '@chakra-ui/react'
-import { useOnboardingQuery } from 'app/onboarding/hooks/useOnboardingQuery'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 
 const Onboarding = ({ children }: { children: React.ReactNode }) => {

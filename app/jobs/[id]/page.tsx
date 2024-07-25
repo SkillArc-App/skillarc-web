@@ -1,5 +1,16 @@
 'use client'
 
+import { IdParams } from '@/common/types/PageParams'
+import { Heading } from '@/components/Heading'
+import { LoadingPage } from '@/components/Loading'
+import { Text } from '@/components/Text.component'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { useUser } from '@/hooks/useUser'
+import { Success } from '@/icons/Success'
+import { SingleJobPosting } from '@/jobs/[id]/components/SingleJobPosting'
+import useApply from '@/jobs/hooks/useApply'
+import useUserState, { UserState } from '@/jobs/hooks/useUserState'
+import { FrontendJobInteractionsService } from '@/services/jobInteractions.service'
 import {
   Button,
   Flex,
@@ -9,17 +20,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from '@chakra-ui/react'
-import { IdParams } from 'app/common/types/PageParams'
-import { Heading } from 'app/components/Heading'
-import { LoadingPage } from 'app/components/Loading'
-import { Text } from 'app/components/Text.component'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { useUser } from 'app/hooks/useUser'
-import { Success } from 'app/icons/Success'
-import { SingleJobPosting } from 'app/jobs/[id]/components/SingleJobPosting'
-import useApply from 'app/jobs/hooks/useApply'
-import useUserState, { UserState } from 'app/jobs/hooks/useUserState'
-import { FrontendJobInteractionsService } from 'app/services/jobInteractions.service'
 import Link from 'next/link'
 import { useJob } from '../hooks/useJobData'
 

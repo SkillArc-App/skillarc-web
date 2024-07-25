@@ -1,4 +1,4 @@
-import { get } from 'app/http-common'
+import { get } from '@/http-common'
 
 export type Applicant = {
   id: string

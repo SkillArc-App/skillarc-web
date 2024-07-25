@@ -1,3 +1,3 @@
-import { LoadingPage } from 'app/components/Loading'
+import { LoadingPage } from '@/components/Loading'
 
 export default LoadingPage

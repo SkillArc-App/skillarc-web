@@ -1,11 +1,11 @@
 'use client'
 
+import { IdParams } from '@/common/types/PageParams'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { put } from '@/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react'
-import { IdParams } from 'app/common/types/PageParams'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { put } from 'app/http-common'
 import { useEmployerData } from '../../hooks/useEmployerData'
 import { EmployerBasics, EmployerModal } from '../components/EmployerModal'
 

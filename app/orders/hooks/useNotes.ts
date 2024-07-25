@@ -1,6 +1,6 @@
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { destroy, post, put } from '@/http-common'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { destroy, post, put } from 'app/http-common'
 
 export const useNotes = () => {
   const queryClient = useQueryClient()

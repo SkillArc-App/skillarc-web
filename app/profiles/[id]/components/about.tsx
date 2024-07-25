@@ -1,3 +1,4 @@
+import { GetOneProfileResponse } from '@/services/profile.service'
 import {
   Accordion,
   AccordionButton,
@@ -8,7 +9,6 @@ import {
   Flex,
   Heading,
 } from '@chakra-ui/react'
-import { GetOneProfileResponse } from 'app/services/profile.service'
 import { FaUser } from 'react-icons/fa6'
 import { Text } from '../../../components/Text.component'
 import { ProfileBox } from './profileBox'

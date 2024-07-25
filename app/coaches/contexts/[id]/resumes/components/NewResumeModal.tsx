@@ -1,3 +1,5 @@
+import FormikCheckBox from '@/components/FormikCheckbox'
+import { DocumentKind } from '@/documents/types'
 import {
   Button,
   Modal,
@@ -9,8 +11,6 @@ import {
   ModalOverlay,
   VStack,
 } from '@chakra-ui/react'
-import FormikCheckBox from 'app/components/FormikCheckbox'
-import { DocumentKind } from 'app/documents/types'
 import { Form, Formik } from 'formik'
 
 interface NewLeadModalProps {

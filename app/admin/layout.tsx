@@ -1,9 +1,9 @@
 'use client'
 
+import { LoadingPage } from '@/components/Loading'
+import { Text } from '@/components/Text.component'
+import { useUser } from '@/hooks/useUser'
 import { Box, Grid, GridItem, Heading } from '@chakra-ui/react'
-import { LoadingPage } from 'app/components/Loading'
-import { Text } from 'app/components/Text.component'
-import { useUser } from 'app/hooks/useUser'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'

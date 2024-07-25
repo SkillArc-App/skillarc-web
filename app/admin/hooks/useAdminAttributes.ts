@@ -1,6 +1,6 @@
-import { Attribute } from 'app/common/types/Attribute'
-import { useAuthenticatedQuery } from 'app/hooks/useAuthenticatedQuery'
-import { get } from 'app/http-common'
+import { Attribute } from '@/common/types/Attribute'
+import { useAuthenticatedQuery } from '@/hooks/useAuthenticatedQuery'
+import { get } from '@/http-common'
 
 export const useAdminAttributes = () =>
   useAuthenticatedQuery(['attributes'], ({ token }) => {

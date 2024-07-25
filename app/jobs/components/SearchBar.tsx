@@ -1,3 +1,4 @@
+import { SearchFilter, SearchOption, SearchValue } from '@/common/types/Search'
 import { SearchIcon } from '@chakra-ui/icons'
 import {
   FormControl,
@@ -8,7 +9,6 @@ import {
   InputLeftElement,
   VStack,
 } from '@chakra-ui/react'
-import { SearchFilter, SearchOption, SearchValue } from 'app/common/types/Search'
 import Select, { MultiValue } from 'react-select'
 
 type SelectSearchProps<T> = {

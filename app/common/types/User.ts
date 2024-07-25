@@ -1,4 +1,4 @@
-import { OtherExperience } from 'app/services/otherExperiences.service'
+import { OtherExperience } from '@/services/otherExperiences.service'
 import { EducationExperience } from './EducationExperience'
 import { Profile } from './Profile'
 import { TrainingProviderProfile } from './TrainingProviderProfile'

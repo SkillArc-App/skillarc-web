@@ -1,9 +1,9 @@
 'use client'
 
-import { useSeekerChat } from 'app/chats/hooks/useSeekerChat'
-import { IdParams } from 'app/common/types/PageParams'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
+import { useSeekerChat } from '@/chats/hooks/useSeekerChat'
+import { IdParams } from '@/common/types/PageParams'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import ChatWindow from './components/ChatWindow'
 
 const Page = ({ params: { id } }: IdParams) => {

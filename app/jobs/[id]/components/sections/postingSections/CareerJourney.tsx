@@ -1,9 +1,9 @@
+import { Job } from '@/common/types/Job'
+import { Heading } from '@/components/Heading'
+import { Text } from '@/components/Text.component'
+import { formatCurrency } from '@/helpers/formatCurrency.helper'
+import { NeonCircleIcon } from '@/icons/NeonCircle'
 import { Flex } from '@chakra-ui/react'
-import { Job } from 'app/common/types/Job'
-import { Heading } from 'app/components/Heading'
-import { Text } from 'app/components/Text.component'
-import { formatCurrency } from 'app/helpers/formatCurrency.helper'
-import { NeonCircleIcon } from 'app/icons/NeonCircle'
 
 export const CareerJourney = ({ job }: { job: Job }) => {
   const header = job.careerPaths.length === 1 ? '🧗 Wages' : '🧗 Your career journey'

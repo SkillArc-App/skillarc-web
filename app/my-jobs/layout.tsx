@@ -1,5 +1,5 @@
+import { LoadingPage } from '@/components/Loading'
 import { Box, Flex, Heading, Stack, Tab, TabList, Tabs } from '@chakra-ui/react'
-import { LoadingPage } from 'app/components/Loading'
 import { Metadata } from 'next'
 import NextLink from 'next/link'
 import { Suspense } from 'react'

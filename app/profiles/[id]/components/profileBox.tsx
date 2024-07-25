@@ -1,6 +1,6 @@
+import { Maybe } from '@/common/types/maybe'
+import { Heading } from '@/components/Heading'
 import { Box, Button, Flex } from '@chakra-ui/react'
-import { Maybe } from 'app/common/types/maybe'
-import { Heading } from 'app/components/Heading'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 import { IconType } from 'react-icons'

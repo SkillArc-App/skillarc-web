@@ -1,4 +1,4 @@
-import { LoadingPage } from 'app/components/Loading'
+import { LoadingPage } from '@/components/Loading'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import HomeClient from './page-client'

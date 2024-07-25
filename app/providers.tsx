@@ -1,9 +1,9 @@
 'use client'
 
+import { Header } from '@/components/Header'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Header } from 'app/components/Header'
 import { useRouter } from 'next/navigation'
 import SessionWrapper from './components/SessionWrapper'
 import { theme } from './theme/theme'

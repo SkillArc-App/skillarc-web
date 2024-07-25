@@ -1,3 +1,6 @@
+import { PartialRequired } from '@/common/types/partial-required'
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
 import {
   Button,
   Modal,
@@ -9,9 +12,6 @@ import {
   ModalOverlay,
   VStack,
 } from '@chakra-ui/react'
-import { PartialRequired } from 'app/common/types/partial-required'
-import FormikInput from 'app/components/FormikInput'
-import FormikTextArea from 'app/components/FormikTextArea'
 import { Form, Formik } from 'formik'
 import { SubmittableCoachTask } from '../../types'
 

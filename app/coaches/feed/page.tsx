@@ -1,8 +1,8 @@
 'use client'
 
+import DataTable from '@/components/DataTable'
 import { Link } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import DataTable from 'app/components/DataTable'
 import NextLink from 'next/link'
 import { useCoachFeed } from '../hooks/useCoachFeed'
 import { FeedEvent } from '../types'

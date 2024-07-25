@@ -1,12 +1,12 @@
 'use client'
 
+import { useAdminJob } from '@/admin/hooks/useAdminJob'
+import { tags } from '@/common/static/tags'
+import { IdParams } from '@/common/types/PageParams'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { destroy, post } from '@/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
-import { useAdminJob } from 'app/admin/hooks/useAdminJob'
-import { tags } from 'app/common/static/tags'
-import { IdParams } from 'app/common/types/PageParams'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { destroy, post } from 'app/http-common'
 
 const TagsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)

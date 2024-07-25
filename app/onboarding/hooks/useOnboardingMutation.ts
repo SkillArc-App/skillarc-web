@@ -1,7 +1,7 @@
+import { AllResponses } from '@/common/types/OnboardingResponse'
+import { useAuthenticatedMutation } from '@/hooks/useAuthenticatedMutation'
+import { put } from '@/http-common'
 import { useQueryClient } from '@tanstack/react-query'
-import { AllResponses } from 'app/common/types/OnboardingResponse'
-import { useAuthenticatedMutation } from 'app/hooks/useAuthenticatedMutation'
-import { put } from 'app/http-common'
 import { useRouter } from 'next/navigation'
 import { OnboardingResponse } from './useOnboardingQuery'
 

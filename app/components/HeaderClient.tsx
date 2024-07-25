@@ -1,5 +1,7 @@
 'use client'
 
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
@@ -23,8 +25,6 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useSeekerChat } from '../chats/hooks/useSeekerChat'

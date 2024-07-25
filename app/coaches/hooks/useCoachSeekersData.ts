@@ -1,6 +1,6 @@
-import { CoachSeekerTable } from 'app/coaches/types'
-import { useAuthenticatedQuery } from 'app/hooks/useAuthenticatedQuery'
-import { get } from 'app/http-common'
+import { CoachSeekerTable } from '@/coaches/types'
+import { useAuthenticatedQuery } from '@/hooks/useAuthenticatedQuery'
+import { get } from '@/http-common'
 
 export const useCoachSeekersData = () =>
   useAuthenticatedQuery(['coachSeekers'], ({ token }) => {

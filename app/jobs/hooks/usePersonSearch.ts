@@ -1,9 +1,9 @@
+import { CoachSeekerTable } from '@/coaches/types'
+import { PersonSearchValue } from '@/common/types/PersonSearch'
+import { camelToSnake } from '@/common/utils/functions'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { get } from '@/http-common'
 import { useQuery } from '@tanstack/react-query'
-import { CoachSeekerTable } from 'app/coaches/types'
-import { PersonSearchValue } from 'app/common/types/PersonSearch'
-import { camelToSnake } from 'app/common/utils/functions'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { get } from 'app/http-common'
 
 export const usePersonSearch = ({ searchTerms, attributeFilters }: PersonSearchValue) => {
   const token = useAuthToken()

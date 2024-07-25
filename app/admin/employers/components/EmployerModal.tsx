@@ -1,3 +1,6 @@
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
+import { Employer } from '@/services/employer.service'
 import {
   Button,
   Modal,
@@ -9,9 +12,6 @@ import {
   ModalOverlay,
   VStack,
 } from '@chakra-ui/react'
-import FormikInput from 'app/components/FormikInput'
-import FormikTextArea from 'app/components/FormikTextArea'
-import { Employer } from 'app/services/employer.service'
 import { Form, Formik } from 'formik'
 import { useAllEmployers } from '../../hooks/useAllEmployerData'
 

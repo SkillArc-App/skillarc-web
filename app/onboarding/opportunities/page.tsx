@@ -1,8 +1,8 @@
 'use client'
 
+import { industries } from '@/common/static/industries'
+import { Heading } from '@/components/Heading'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
-import { industries } from 'app/common/static/industries'
-import { Heading } from 'app/components/Heading'
 import { useState } from 'react'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'

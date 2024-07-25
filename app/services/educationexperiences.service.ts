@@ -1,5 +1,5 @@
-import { EducationExperience } from 'app/common/types/EducationExperience'
-import { PartialRequired } from 'app/common/types/partial-required'
+import { EducationExperience } from '@/common/types/EducationExperience'
+import { PartialRequired } from '@/common/types/partial-required'
 import { destroy, post, put } from '../http-common'
 
 const create = async (

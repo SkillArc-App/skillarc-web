@@ -1,5 +1,12 @@
 'use client'
 
+import { ReasonResponse } from '@/common/types/ApplicantStatus'
+import { IdParams } from '@/common/types/PageParams'
+import DataTable from '@/components/DataTable'
+import { LoadingPage } from '@/components/Loading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { put } from '@/http-common'
+import { Applicant, EmployerJob } from '@/services/employerJobs.service'
 import {
   Box,
   Checkbox,
@@ -25,13 +32,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import { ReasonResponse } from 'app/common/types/ApplicantStatus'
-import { IdParams } from 'app/common/types/PageParams'
-import DataTable from 'app/components/DataTable'
-import { LoadingPage } from 'app/components/Loading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { put } from 'app/http-common'
-import { Applicant, EmployerJob } from 'app/services/employerJobs.service'
 import { withAuthenticationRequired } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'

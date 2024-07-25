@@ -1,8 +1,8 @@
+import { Job } from '@/common/types/Job'
+import { Heading } from '@/components/Heading'
+import { Text } from '@/components/Text.component'
+import { pluralizeJobTitle } from '@/helpers/pluralizeJobTitle'
 import { Flex, Image, Tag } from '@chakra-ui/react'
-import { Job } from 'app/common/types/Job'
-import { Heading } from 'app/components/Heading'
-import { Text } from 'app/components/Text.component'
-import { pluralizeJobTitle } from 'app/helpers/pluralizeJobTitle'
 
 interface DesiredSkillsProps {
   job: Job

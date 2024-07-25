@@ -1,5 +1,8 @@
 'use client'
 
+import DataTable from '@/components/DataTable'
+import FormikSelect from '@/components/FormikSelect'
+import { LoadingPage } from '@/components/Loading'
 import {
   Button,
   Checkbox,
@@ -18,9 +21,6 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
-import DataTable from 'app/components/DataTable'
-import FormikSelect from 'app/components/FormikSelect'
-import { LoadingPage } from 'app/components/Loading'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'

@@ -1,5 +1,5 @@
+import { CoachTask } from '@/coaches/types'
 import { Box, HStack, IconButton, Text, VStack } from '@chakra-ui/react'
-import { CoachTask } from 'app/coaches/types'
 import { FaCheck } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
 

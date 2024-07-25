@@ -1,5 +1,12 @@
 'use client'
 
+import DataTable from '@/components/DataTable'
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
+import { useAddQuestionsMutation } from '@/screeners/hooks/useAddQuestionsMutation'
+import { useQuestionsQuery } from '@/screeners/hooks/useQuestionsQuery'
+import { useUpdateQuestionsMutation } from '@/screeners/hooks/useUpdateQuestionsMutation'
+import { Questions } from '@/screeners/types'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -17,13 +24,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import DataTable from 'app/components/DataTable'
-import FormikInput from 'app/components/FormikInput'
-import FormikTextArea from 'app/components/FormikTextArea'
-import { useAddQuestionsMutation } from 'app/screeners/hooks/useAddQuestionsMutation'
-import { useQuestionsQuery } from 'app/screeners/hooks/useQuestionsQuery'
-import { useUpdateQuestionsMutation } from 'app/screeners/hooks/useUpdateQuestionsMutation'
-import { Questions } from 'app/screeners/types'
 import { FieldArray, Form, Formik } from 'formik'
 import { useState } from 'react'
 import LoadingPage from '../page'

@@ -1,5 +1,5 @@
+import { Chat } from '@/common/types/Chat'
 import { Box, HStack, Spacer, Text } from '@chakra-ui/react'
-import { Chat } from 'app/common/types/Chat'
 import Link from 'next/link'
 
 const ThreadItem = ({

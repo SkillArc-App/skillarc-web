@@ -1,10 +1,10 @@
 'use client'
 
-import ChatWindow from 'app/chats/[id]/components/ChatWindow'
-import { IdParams } from 'app/common/types/PageParams'
-import { useEmployerChats } from 'app/employers/chats/hooks/useEmployerChats'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { post } from 'app/http-common'
+import ChatWindow from '@/chats/[id]/components/ChatWindow'
+import { IdParams } from '@/common/types/PageParams'
+import { useEmployerChats } from '@/employers/chats/hooks/useEmployerChats'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { post } from '@/http-common'
 import { useEffect } from 'react'
 
 const ChatUI = ({ params: { id } }: IdParams) => {

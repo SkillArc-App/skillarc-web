@@ -1,7 +1,7 @@
+import { Job } from '@/common/types/Job'
+import { Logo } from '@/icons/Logo'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, Flex, Image } from '@chakra-ui/react'
-import { Job } from 'app/common/types/Job'
-import { Logo } from 'app/icons/Logo'
 import { useState } from 'react'
 
 export const JobPhotos = ({ job }: { job: Job }) => {

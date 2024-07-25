@@ -1,5 +1,5 @@
-import { Skill } from 'app/common/types/Profile'
-import { PartialRequired } from 'app/common/types/partial-required'
+import { Skill } from '@/common/types/Profile'
+import { PartialRequired } from '@/common/types/partial-required'
 import { destroy, post, put } from '../http-common'
 
 export type ProfileSkill = {

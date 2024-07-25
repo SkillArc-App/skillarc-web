@@ -1,3 +1,4 @@
+import { Chat, Message } from '@/common/types/Chat'
 import {
   Box,
   Flex,
@@ -8,7 +9,6 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Chat, Message } from 'app/common/types/Chat'
 import { useEffect, useRef, useState } from 'react'
 import { MdSend } from 'react-icons/md'
 

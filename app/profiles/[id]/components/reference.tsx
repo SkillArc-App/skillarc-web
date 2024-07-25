@@ -1,5 +1,5 @@
+import { GetOneProfileResponse } from '@/services/profile.service'
 import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
-import { GetOneProfileResponse } from 'app/services/profile.service'
 import { Text } from '../../../components/Text.component'
 
 export const ProfileReferences = ({ seeker }: { seeker: GetOneProfileResponse }) => {

@@ -1,3 +1,6 @@
+import { SearchJob } from '@/common/types/Search'
+import { Text } from '@/components/Text.component'
+import ToggleIcon from '@/components/ToggleIcon'
 import {
   Box,
   Button,
@@ -15,9 +18,6 @@ import {
   Tag,
   TagLabel,
 } from '@chakra-ui/react'
-import { SearchJob } from 'app/common/types/Search'
-import { Text } from 'app/components/Text.component'
-import ToggleIcon from 'app/components/ToggleIcon'
 
 export const SearchJobCard = ({
   job,

@@ -1,5 +1,11 @@
 'use client'
 
+import { useAdminJob } from '@/admin/hooks/useAdminJob'
+import { useMasterSkillData } from '@/admin/hooks/useMasterSkillData'
+import { IdParams } from '@/common/types/PageParams'
+import { Heading } from '@/components/Heading'
+import { useAuthToken } from '@/hooks/useAuthToken'
+import { destroy, post } from '@/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -13,12 +19,6 @@ import {
   Td,
   Tr,
 } from '@chakra-ui/react'
-import { useAdminJob } from 'app/admin/hooks/useAdminJob'
-import { useMasterSkillData } from 'app/admin/hooks/useMasterSkillData'
-import { IdParams } from 'app/common/types/PageParams'
-import { Heading } from 'app/components/Heading'
-import { useAuthToken } from 'app/hooks/useAuthToken'
-import { destroy, post } from 'app/http-common'
 
 const AttachedSkillsPage = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
