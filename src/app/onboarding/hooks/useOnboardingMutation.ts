@@ -1,6 +1,6 @@
 import { AllResponses } from '@/app/common/types/OnboardingResponse'
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
-import { put } from '@/frontend/http-common'
+import { put } from '@/app/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { OnboardingResponse } from './useOnboardingQuery'

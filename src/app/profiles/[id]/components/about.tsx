@@ -1,4 +1,4 @@
-import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { GetOneProfileResponse } from '@/app/services/profile.service'
 import {
   Accordion,
   AccordionButton,

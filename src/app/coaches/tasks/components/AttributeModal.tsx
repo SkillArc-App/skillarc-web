@@ -3,7 +3,7 @@ import FormObserver from '@/app/components/FormObserver'
 import FormikMultiSelect from '@/app/components/FormikMultiSelect'
 import FormikSelect from '@/app/components/FormikSelect'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import {
   Button,
   Modal,

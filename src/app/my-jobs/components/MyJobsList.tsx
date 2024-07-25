@@ -3,9 +3,9 @@ import { Maybe } from '@/app/common/types/maybe'
 import { SearchJobCard } from '@/app/components/SearchJobCard'
 import { Text } from '@/app/components/Text.component'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { post } from '@/app/http-common'
 import useApply from '@/app/jobs/hooks/useApply'
-import { post } from '@/frontend/http-common'
-import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
+import { FrontendJobInteractionsService } from '@/app/services/jobInteractions.service'
 import {
   Box,
   Button,

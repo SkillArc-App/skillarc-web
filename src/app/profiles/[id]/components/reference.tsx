@@ -1,4 +1,4 @@
-import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { GetOneProfileResponse } from '@/app/services/profile.service'
 import { Avatar, Flex, Heading, HStack, VStack } from '@chakra-ui/react'
 import { Text } from '../../../components/Text.component'
 

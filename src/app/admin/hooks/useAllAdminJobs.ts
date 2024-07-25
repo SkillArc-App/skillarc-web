@@ -1,6 +1,6 @@
 import { AdminJob } from '@/app/common/types/Job'
 import { useAuthenticatedQuery } from '@/app/hooks/useAuthenticatedQuery'
-import { get } from '@/frontend/http-common'
+import { get } from '@/app/http-common'
 
 export const useAllAdminJobs = () =>
   useAuthenticatedQuery(['jobs'], ({ token }) => {

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { get } from '../../../frontend/http-common'
+import { get } from '../../http-common'
 
 export const useAllUsers = () => {
   const allUsersQuery = useQuery(['allUsers'], () => {

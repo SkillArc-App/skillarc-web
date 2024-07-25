@@ -1,5 +1,5 @@
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
-import { put } from '@/frontend/http-common'
+import { put } from '@/app/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 
 type OrderParams = {
@@ -30,4 +30,3 @@ export const useOrderCountMutation = () => {
     },
   )
 }
-

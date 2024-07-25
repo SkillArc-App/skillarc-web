@@ -6,11 +6,11 @@ import { LoadingPage } from '@/app/components/Loading'
 import { Text } from '@/app/components/Text.component'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { useUser } from '@/app/hooks/useUser'
+import { Success } from '@/app/icons/Success'
 import { SingleJobPosting } from '@/app/jobs/[id]/components/SingleJobPosting'
 import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
-import { Success } from '@/frontend/icons/Success'
-import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
+import { FrontendJobInteractionsService } from '@/app/services/jobInteractions.service'
 import {
   Button,
   Flex,

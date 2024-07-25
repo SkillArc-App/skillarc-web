@@ -8,9 +8,9 @@ import { Text } from '@/app/components/Text.component'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { useDebounce } from '@/app/hooks/useDebounce'
 import { useUser } from '@/app/hooks/useUser'
+import { post } from '@/app/http-common'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
-import { post } from '@/frontend/http-common'
-import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
+import { FrontendJobInteractionsService } from '@/app/services/jobInteractions.service'
 import {
   Box,
   Button,

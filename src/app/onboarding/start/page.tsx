@@ -2,7 +2,7 @@
 
 import FormikInput from '@/app/components/FormikInput'
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import { Button, Stack, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Form, Formik } from 'formik'

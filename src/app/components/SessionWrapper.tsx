@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import { useEffect, useState } from 'react'
 
 export default function SessionWrapper({ children }: { children: React.ReactNode }) {

@@ -1,7 +1,7 @@
 import { Chat } from '@/app/common/types/Chat'
 import { Maybe } from '@/app/common/types/maybe'
 import { useAuthenticatedQuery } from '@/app/hooks/useAuthenticatedQuery'
-import { get } from '@/frontend/http-common'
+import { get } from '@/app/http-common'
 import { UseQueryOptions } from '@tanstack/react-query'
 
 export const useSeekerChat = (

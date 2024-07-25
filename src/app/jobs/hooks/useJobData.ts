@@ -1,8 +1,8 @@
 import { Job } from '@/app/common/types/Job'
 import { Maybe } from '@/app/common/types/maybe'
 import { useQuery } from '@tanstack/react-query'
-import { get } from '../../../frontend/http-common'
 import { useAuthToken } from '../../hooks/useAuthToken'
+import { get } from '../../http-common'
 
 export const useJob = (id: Maybe<string>) => {
   const token = useAuthToken()

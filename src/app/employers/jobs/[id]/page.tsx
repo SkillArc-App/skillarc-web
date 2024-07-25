@@ -5,8 +5,8 @@ import { IdParams } from '@/app/common/types/PageParams'
 import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { put } from '@/frontend/http-common'
-import { Applicant, EmployerJob } from '@/frontend/services/employerJobs.service'
+import { put } from '@/app/http-common'
+import { Applicant, EmployerJob } from '@/app/services/employerJobs.service'
 import {
   Box,
   Checkbox,

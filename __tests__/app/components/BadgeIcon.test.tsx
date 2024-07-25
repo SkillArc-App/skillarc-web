@@ -1,5 +1,5 @@
 import BadgeIcon from '@/app/components/BadgeIcon';
-import { renderWithTheme } from '@/test-utils/render-with-theme';
+import { renderWithTheme } from '@/app/test-utils/render-with-theme';
 import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
 import { FaAccusoft } from 'react-icons/fa';

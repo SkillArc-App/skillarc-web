@@ -1,7 +1,7 @@
 import { AdminJob } from '@/app/common/types/Job'
 import { Maybe } from '@/app/common/types/maybe'
-import { get } from '../../../frontend/http-common'
 import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
+import { get } from '../../http-common'
 
 export const useAdminJob = (id: Maybe<string>) =>
   useAuthenticatedQuery(

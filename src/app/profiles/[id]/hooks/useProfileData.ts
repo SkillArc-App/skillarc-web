@@ -1,8 +1,8 @@
 import { Maybe } from '@/app/common/types/maybe'
 import { useQuery } from '@tanstack/react-query'
-import { get } from '../../../../frontend/http-common'
-import { GetOneProfileResponse } from '../../../../frontend/services/profile.service'
 import { useAuthToken } from '../../../hooks/useAuthToken'
+import { get } from '../../../http-common'
+import { GetOneProfileResponse } from '../../../services/profile.service'
 
 export const useProfileData = (id: Maybe<string>) => {
   const token = useAuthToken()

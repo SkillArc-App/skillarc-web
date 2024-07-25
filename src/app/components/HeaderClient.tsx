@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import Cal from '@calcom/embed-react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {

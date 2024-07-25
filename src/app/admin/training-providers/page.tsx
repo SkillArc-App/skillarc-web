@@ -6,8 +6,8 @@ import FormikTextArea from '@/app/components/FormikTextArea'
 import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { TrainingProvider, useAllTrainingProviderData } from '@/app/hooks/useTrainingProviderData'
-import { post } from '@/frontend/http-common'
-import { delay } from '@/frontend/utils/delay'
+import { post } from '@/app/http-common'
+import { delay } from '@/app/utils/delay'
 import {
   Box,
   Button,

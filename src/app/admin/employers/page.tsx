@@ -3,7 +3,7 @@
 import { useAllEmployers } from '@/app/admin/hooks/useAllEmployerData'
 import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import {
   Box,
   Button,

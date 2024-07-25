@@ -1,4 +1,4 @@
-import { http } from '@/frontend/http-common'
+import { http } from '@/app/http-common'
 import fileDownload from 'js-file-download'
 
 export const downloadResume = (documentId: string, token: string) => {

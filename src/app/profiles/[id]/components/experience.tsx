@@ -1,6 +1,6 @@
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { GetOneProfileResponse } from '@/app/services/profile.service'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Divider, Flex } from '@chakra-ui/react'
 import Link from 'next/link'

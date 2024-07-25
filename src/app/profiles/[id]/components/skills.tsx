@@ -1,6 +1,6 @@
 import { Heading } from '@/app/components/Heading'
 import { Text } from '@/app/components/Text.component'
-import { GetOneProfileResponse } from '@/frontend/services/profile.service'
+import { GetOneProfileResponse } from '@/app/services/profile.service'
 import { Badge, Divider, Flex, VStack } from '@chakra-ui/react'
 import { FaScrewdriverWrench } from 'react-icons/fa6'
 import { ProfileBox } from './profileBox'

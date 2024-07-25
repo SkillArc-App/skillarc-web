@@ -3,7 +3,7 @@
 import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { put } from '@/frontend/http-common'
+import { put } from '@/app/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import { Button, Flex, Stack, useDisclosure } from '@chakra-ui/react'
 import { useEmployerData } from '../../hooks/useEmployerData'

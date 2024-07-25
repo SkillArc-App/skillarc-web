@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik'
 
 import FormikSelect from '@/app/components/FormikSelect'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import {
   Button,
   Modal,

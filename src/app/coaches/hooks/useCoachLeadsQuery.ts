@@ -1,6 +1,6 @@
 import { SeekerLead } from '@/app/coaches/types'
 import { useAuthenticatedQuery } from '@/app/hooks/useAuthenticatedQuery'
-import { get } from '@/frontend/http-common'
+import { get } from '@/app/http-common'
 
 export const useCoachLeadsQuery = () =>
   useAuthenticatedQuery(['coachLeads'], ({ token }) => {

@@ -1,5 +1,5 @@
 import { useAuthenticatedQuery } from '@/app/hooks/useAuthenticatedQuery'
-import { get } from '@/frontend/http-common'
+import { get } from '@/app/http-common'
 import { JobOrder } from '../types'
 
 export const useOrderQuery = (id: string) =>

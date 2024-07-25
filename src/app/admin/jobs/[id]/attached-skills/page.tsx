@@ -5,7 +5,7 @@ import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
 import { IdParams } from '@/app/common/types/PageParams'
 import { Heading } from '@/app/components/Heading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { destroy, post } from '@/frontend/http-common'
+import { destroy, post } from '@/app/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Box,

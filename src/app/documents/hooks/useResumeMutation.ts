@@ -1,5 +1,5 @@
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 import { ResumeRequest } from '../types'
 

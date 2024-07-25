@@ -1,6 +1,6 @@
 import FormikInput from '@/app/components/FormikInput'
 import FormikTextArea from '@/app/components/FormikTextArea'
-import { Employer } from '@/frontend/services/employer.service'
+import { Employer } from '@/app/services/employer.service'
 import {
   Button,
   Modal,

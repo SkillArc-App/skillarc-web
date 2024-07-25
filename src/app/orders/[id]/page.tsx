@@ -7,9 +7,9 @@ import FormikSelect from '@/app/components/FormikSelect'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { put } from '@/app/http-common'
 import { useQuestionsQuery } from '@/app/screeners/hooks/useQuestionsQuery'
 import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
-import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {
   Box,

@@ -1,6 +1,6 @@
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
+import { put } from '@/app/http-common'
 import { Questions } from '@/app/screeners/types'
-import { put } from '@/frontend/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 
 export const useUpdateQuestionsMutation = ({ onSuccess }: { onSuccess: () => void }) => {

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { FaCircle } from 'react-icons/fa6'
-import { Notification } from '../../frontend/services/user.service'
+import { Notification } from '../services/user.service'
 import NotificationIcon from './NotificationIcon'
 import './NotificationIcon.css'
 import { Text } from './Text.component'

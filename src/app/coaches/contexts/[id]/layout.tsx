@@ -8,7 +8,7 @@ import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
 import { Text } from '@/app/components/Text.component'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { destroy, post } from '@/frontend/http-common'
+import { destroy, post } from '@/app/http-common'
 import {
   Box,
   Breadcrumb,

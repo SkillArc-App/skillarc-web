@@ -3,7 +3,7 @@
 import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { post } from '@/frontend/http-common'
+import { post } from '@/app/http-common'
 import { Badge, Box, Button, Checkbox, Link, Stack, useDisclosure } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'

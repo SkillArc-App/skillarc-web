@@ -1,5 +1,5 @@
 import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
-import { destroy, post, put } from '@/frontend/http-common'
+import { destroy, post, put } from '@/app/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 
 export const useNotes = () => {

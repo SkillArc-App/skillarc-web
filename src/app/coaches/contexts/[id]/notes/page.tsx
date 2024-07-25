@@ -5,7 +5,7 @@ import { IdParams } from '@/app/common/types/PageParams'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { destroy, post, put } from '@/frontend/http-common'
+import { destroy, post, put } from '@/app/http-common'
 
 const Notes = ({ params: { id } }: IdParams) => {
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)

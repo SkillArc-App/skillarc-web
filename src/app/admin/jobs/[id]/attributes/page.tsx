@@ -9,7 +9,7 @@ import FormObserver from '@/app/components/FormObserver'
 import FormikMultiSelect from '@/app/components/FormikMultiSelect'
 import FormikSelect from '@/app/components/FormikSelect'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { destroy, post, put } from '@/frontend/http-common'
+import { destroy, post, put } from '@/app/http-common'
 import {
   Box,
   Button,

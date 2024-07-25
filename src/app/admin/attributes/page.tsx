@@ -5,7 +5,7 @@ import DataTable from '@/app/components/DataTable'
 import FormikInput from '@/app/components/FormikInput'
 import FormikTextArea from '@/app/components/FormikTextArea'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
-import { destroy, post, put } from '@/frontend/http-common'
+import { destroy, post, put } from '@/app/http-common'
 import {
   Box,
   Button,

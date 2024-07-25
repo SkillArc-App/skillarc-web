@@ -1,5 +1,5 @@
 import { Job } from '@/app/common/types/Job'
-import { Logo } from '@/frontend/icons/Logo'
+import { Logo } from '@/app/icons/Logo'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, Flex, Image } from '@chakra-ui/react'
 import { useState } from 'react'
