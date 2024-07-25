@@ -1,4 +1,4 @@
-import { get } from '@/frontend/http-common'
+import { get } from '@/http-common'
 
 function poll(predicate: () => Promise<boolean>, interval: number, timeout?: number) {
   return new Promise<void>((resolve, reject) => {
