@@ -7,6 +7,7 @@ import FormikSelect from '@/app/components/FormikSelect'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
 import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { useQuestionsQuery } from '@/app/screeners/hooks/useQuestionsQuery'
 import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
@@ -56,6 +57,8 @@ import {
 } from '../constants'
 import { useNotes } from '../hooks/useNotes'
 import { useOrderActivationMutation } from '../hooks/useOrderActivationMutation'
+import { useOrderAddScreenerMutation } from '../hooks/useOrderAddScreenerMutation'
+import { useOrderBypassScreenerMutation } from '../hooks/useOrderBypassScreenerMutation'
 import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation'
 import { useOrderMutation } from '../hooks/useOrderMutation'
 import { useOrderQuery } from '../hooks/useOrderQuery'
@@ -115,6 +118,12 @@ const JobOrderCta = ({ id, status }: JobOrder) => {
   ) : (
     <Button onClick={() => close.mutate(id)}>Close Without Filling</Button>
   )
+}
+
+const ScreenerBypassCta = ({ id }: { id: string }) => {
+  const bypass = useOrderBypassScreenerMutation()
+
+  return <Button onClick={() => bypass.mutate(id)}>Bypass Screener</Button>
 }
 
 const CandidateTable = ({
@@ -202,18 +211,33 @@ const Order = ({ params: { id } }: IdParams) => {
   const { data: order, refetch: refetchOrder } = useOrderQuery(id)
   const { data: teams } = useTeamsQuery()
   const { addNote, modifyNote, removeNote } = useNotes()
+  const { data: questions } = useQuestionsQuery()
+  const bro = useOrderAddScreenerMutation()
 
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isCandidateOpen,
+    onOpen: onCandidateOpen,
+    onClose: onCandidateClose,
+  } = useDisclosure()
+  const {
+    isOpen: isScreenerOpen,
+    onOpen: onScreenerOpen,
+    onClose: onScreenerClose,
+  } = useDisclosure()
 
   const token = useAuthToken()
 
   const onCandidateClick = (candidate: Candidate) => {
     setActiveCandidate(candidate)
-    onOpen()
+    onCandidateOpen()
   }
 
-  const onSubmit = async ({ activeCandidateStatus }: { activeCandidateStatus: string }) => {
+  const onCandidateSubmit = async ({
+    activeCandidateStatus,
+  }: {
+    activeCandidateStatus: string
+  }) => {
     if (!token) return
     if (!activeCandidate) return
 
@@ -226,19 +250,32 @@ const Order = ({ params: { id } }: IdParams) => {
     )
 
     await refetchOrder()
-    onClose()
+    onCandidateClose()
+  }
+
+  const onScreenerSubmit = async ({ screenerQuestionsId }: { screenerQuestionsId: string }) => {
+    if (!token) return
+
+    bro.mutate({ id, screenerQuestionsId })
+
+    await refetchOrder()
+    onScreenerClose()
   }
 
   if (!order) return <LoadingPage />
 
-  const initialValue = {
+  const initialCandidateValue = {
     activeCandidateStatus: activeCandidate?.status ?? '',
   }
+  const initialScreenerValue = {
+    screenerQuestionsId: order.screenerQuestionsId,
+  }
   const team = teams?.find((team) => team.id == order.teamId)
+  const screener = questions?.find((question) => question.id == order.screenerQuestionsId)
 
   return (
     <>
-      <Stack gap={'1rem'} pb={'2rem'}>
+      <Stack gap={'1rem'}>
         <Breadcrumb>
           <BreadcrumbItem>
             <BreadcrumbLink as={NextLink} href="/orders">
@@ -260,11 +297,16 @@ const Order = ({ params: { id } }: IdParams) => {
                     {orderDisplayMap[order.status]}
                   </Tag>
                   {team && <Tag>{team.name}</Tag>}
+                  {screener && <Tag>Screener: {screener.title}</Tag>}
                 </HStack>
+                <QuantityDisplay {...order} />
               </VStack>
               <Spacer />
-              <QuantityDisplay {...order} />
-              <JobOrderCta {...order} />
+              <HStack align={'flex-end'} wrap={'wrap'}>
+                <Button onClick={onScreenerOpen}>Assign Screener</Button>
+                {!order.screenerQuestionsId && <ScreenerBypassCta {...order} />}
+                <JobOrderCta {...order} />
+              </HStack>
             </HStack>
           </CardHeader>
           <CardBody>
@@ -295,14 +337,14 @@ const Order = ({ params: { id } }: IdParams) => {
           </GridItem>
         </SimpleGrid>
       </Stack>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isCandidateOpen} onClose={onCandidateClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             {activeCandidate?.firstName} {activeCandidate?.lastName}
           </ModalHeader>
           <ModalCloseButton />
-          <Formik initialValues={initialValue} onSubmit={onSubmit}>
+          <Formik initialValues={initialCandidateValue} onSubmit={onCandidateSubmit}>
             {(props) => (
               <Form>
                 <ModalBody>
@@ -318,6 +360,40 @@ const Order = ({ params: { id } }: IdParams) => {
                   </Stack>
                 </ModalBody>
                 <ModalFooter>
+                  <Button colorScheme="green" isLoading={props.isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isScreenerOpen} onClose={onScreenerClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Select Screener</ModalHeader>
+          <ModalCloseButton />
+          <Formik initialValues={initialScreenerValue} onSubmit={onScreenerSubmit}>
+            {(props) => (
+              <Form>
+                <ModalBody>
+                  <Stack spacing={2}>
+                    <FormikSelect
+                      name="screenerQuestionsId"
+                      label="Screener Questions"
+                      options={(questions ?? []).map((question) => ({
+                        key: question.id,
+                        value: question.title,
+                      }))}
+                    />
+                  </Stack>
+                </ModalBody>
+                <ModalFooter>
+                  <Button as={NextLink} href="/orders/questions">
+                    Create Screener
+                  </Button>
+                  <Spacer />
                   <Button colorScheme="green" isLoading={props.isSubmitting} type="submit">
                     Save
                   </Button>

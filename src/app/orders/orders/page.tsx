@@ -179,7 +179,7 @@ const Orders = () => {
   if (!orders) return <LoadingPage />
 
   return (
-    <Stack overflow={'scroll'} pt={'2rem'}>
+    <Stack overflow={'scroll'}>
       <HStack>
         <Checkbox
           isChecked={showClosed}
