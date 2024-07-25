@@ -37,6 +37,11 @@ const nextConfig = {
         permanent: false
       },
       {
+        source: '/onboarding/complete',
+        destination: '/',
+        permanent: false
+      },
+      {
         source: '/coaches',
         destination: '/coaches/seekers',
         permanent: false
