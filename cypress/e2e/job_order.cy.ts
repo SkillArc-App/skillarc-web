@@ -42,6 +42,25 @@ describe('Job Orders', () => {
         cy.get('@employer').then((employer: any) => {
           cy.visit('/orders')
 
+          const screenerName = crypto.randomUUID()
+
+          // Create a new set of screener questions
+          cy.findByRole('tab', { name: 'Screener Questions' }).click()
+          cy.findByRole('button', { name: 'New Screener Questions' }).click()
+
+          cy.findByLabelText('Screener Title*').type(screenerName)
+          cy.findByLabelText('Question 1*').type('What is your favorite Candy?')
+
+          cy.findByRole('button', { name: 'Add a Question' }).click()
+          cy.findByLabelText('Question 2*').type('How is your personal hero?')
+
+          cy.findByLabelText('Question 1*').parent().next().click()
+          cy.findByRole('button', { name: 'Save'}).click()
+
+          cy.findByText(screenerName)
+
+          cy.findByRole('tab', { name: 'Orders' }).click()
+
           // Find job order in table
           cy.findByRole('table').within(() => {
             cy.findByText('Opened At').click()
@@ -121,6 +140,14 @@ describe('Job Orders', () => {
             { retryCount: 8 },
           )
 
+          // Click and assign screener
+          cy.findByRole('button', { name: "Assign Screener"} ).click()
+          cy.findByLabelText('Screener Questions').select(screenerName)
+          cy.findByRole('button', { name: "Save" }).click()
+
+          // confirm screener assigned
+          cy.findByText(`Screener: ${screenerName}`)
+
           cy.findByRole('table').within(() => {
             cy.findByText(`${person['firstName']} ${person['lastName']}`).click()
           })
@@ -192,20 +219,6 @@ describe('Job Orders', () => {
 
             cy.findByText(job.employmentTitle).click()
           })
-
-          cy.findByRole('tab', { name: 'Screener Questions' }).click()
-          cy.findByRole('button', { name: 'New Screener Questions' }).click()
-
-          cy.findByLabelText('Screener Title*').type('New And Improved Screener')
-          cy.findByLabelText('Question 1*').type('What is your favorite Candy?')
-
-          cy.findByRole('button', { name: 'Add a Question' }).click()
-          cy.findByLabelText('Question 2*').type('How is your personal hero?')
-
-          cy.findByLabelText('Question 1*').parent().next().click()
-          cy.findByRole('button', { name: 'Save'}).click()
-
-          cy.findByText('New And Improved Screener')
         })
       })
     })
