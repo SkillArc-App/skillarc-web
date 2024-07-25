@@ -57,6 +57,9 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - run: npm ci
       - run: npm run build
+        env:
+          NEXT_PUBLIC_ENVIRONMENT_URL: https://www.ci.com
+
   lint:
     runs-on:
       group: organization/Default
