@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { useEffect, useState } from 'react'
 

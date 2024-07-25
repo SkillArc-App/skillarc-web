@@ -1,9 +1,9 @@
 'use client'
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
-import { industries } from '@/common/static/industries'
-import { IdParams } from '@/common/types/PageParams'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { industries } from '@/app/common/static/industries'
+import { IdParams } from '@/app/common/types/PageParams'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'

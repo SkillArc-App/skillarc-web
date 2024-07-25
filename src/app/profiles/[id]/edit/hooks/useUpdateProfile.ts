@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
+import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
 import { FrontendEducationExperiencesService } from '@/frontend/services/educationexperiences.service'
 import { FrontendOtherExperiencesService } from '@/frontend/services/otherExperiences.service'
 import { FrontendPersonalExperiencesService } from '@/frontend/services/personalExperience.service'

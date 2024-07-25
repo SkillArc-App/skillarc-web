@@ -1,10 +1,10 @@
 'use client'
 
-import { Attribute } from '@/common/types/Attribute'
-import DataTable from '@/frontend/components/DataTable.component'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { Attribute } from '@/app/common/types/Attribute'
+import DataTable from '@/app/components/DataTable'
+import FormikInput from '@/app/components/FormikInput'
+import FormikTextArea from '@/app/components/FormikTextArea'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post, put } from '@/frontend/http-common'
 import {
   Box,

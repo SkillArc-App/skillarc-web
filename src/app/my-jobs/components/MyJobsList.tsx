@@ -1,9 +1,9 @@
+import { SearchJob } from '@/app/common/types/Search'
+import { Maybe } from '@/app/common/types/maybe'
 import { SearchJobCard } from '@/app/components/SearchJobCard'
+import { Text } from '@/app/components/Text.component'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import useApply from '@/app/jobs/hooks/useApply'
-import { SearchJob } from '@/common/types/Search'
-import { Maybe } from '@/common/types/maybe'
-import { Text } from '@/frontend/components/Text.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {

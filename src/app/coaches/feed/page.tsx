@@ -1,6 +1,6 @@
 'use client'
 
-import DataTable from '@/frontend/components/DataTable.component'
+import DataTable from '@/app/components/DataTable'
 import { Link } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'

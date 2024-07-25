@@ -1,4 +1,4 @@
-import { PassReason, ReasonResponse } from '@/common/types/ApplicantStatus'
+import { PassReason, ReasonResponse } from '@/app/common/types/ApplicantStatus'
 import { Button, Checkbox, Stack, Textarea, useCheckboxGroup } from '@chakra-ui/react'
 import { useState } from 'react'
 

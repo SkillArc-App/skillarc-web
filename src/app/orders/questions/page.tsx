@@ -1,12 +1,12 @@
 'use client'
 
+import DataTable from '@/app/components/DataTable'
+import FormikInput from '@/app/components/FormikInput'
+import FormikTextArea from '@/app/components/FormikTextArea'
 import { useAddQuestionsMutation } from '@/app/screeners/hooks/useAddQuestionsMutation'
 import { useQuestionsQuery } from '@/app/screeners/hooks/useQuestionsQuery'
 import { useUpdateQuestionsMutation } from '@/app/screeners/hooks/useUpdateQuestionsMutation'
 import { Questions } from '@/app/screeners/types'
-import DataTable from '@/frontend/components/DataTable.component'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -25,8 +25,8 @@ import {
 } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { FieldArray, Form, Formik } from 'formik'
-import LoadingPage from '../page'
 import { useState } from 'react'
+import LoadingPage from '../page'
 
 const defaultModalValue: Questions = {
   id: '',

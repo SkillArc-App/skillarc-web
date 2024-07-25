@@ -16,47 +16,58 @@ import {
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { Suspense } from 'react'
-import { Text } from '../../frontend/components/Text.component'
-import { Logo } from '../../frontend/icons/Logo.icon'
-import { HeaderClient } from './Header-client'
+import { Logo } from '../../frontend/icons/Logo'
+import { HeaderClient } from './HeaderClient'
+import MessageCenter from './MessageCenter'
+import NotificationCenter from './NotificationCenter'
+import { Text } from './Text.component'
 
 function FallBackHeader() {
   return (
-    <Menu>
-      <MenuButton as={IconButton} aria-label="Options" icon={<HamburgerIcon />} variant={'ghost'} />
-      <MenuList maxWidth={'16rem'}>
-        <MenuItem as={NextLink} href={`/jobs`}>
-          View Jobs
-        </MenuItem>
-        <MenuItem as={NextLink} href={'/my-jobs/recently-viewed'}>
-          Manage My Jobs
-        </MenuItem>
-        <MenuDivider />
-        <MenuItem>
-          <Stack gap={'1rem'}>
-            <HStack alignItems={'start'}>
-              <Avatar
-                name="Hannah"
-                src="https://www.heartlandvc.com/wp-content/uploads/2020/07/Hannah-Wexner-HVC.jpg"
-              />
-              <Stack gap={'0rem'}>
-                <b>Need some help?</b>
-                <p>Talk to one of SkillArc&apos;s coaches for career tips!</p>
-              </Stack>
-            </HStack>
-            <Box
-              bg={'gray.800'}
-              textColor={'white'}
-              borderRadius={'4px'}
-              textAlign={'center'}
-              py={'0.5rem'}
-            >
-              <Text type={'b2Bold'}>Schedule a Free Call</Text>
-            </Box>
-          </Stack>
-        </MenuItem>
-      </MenuList>
-    </Menu>
+    <>
+      <NotificationCenter notifications={[]} onClose={() => {}} />
+      <MessageCenter unreadCount={0} />
+      <Menu>
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<HamburgerIcon />}
+          variant={'ghost'}
+        />
+        <MenuList maxWidth={'16rem'}>
+          <MenuItem as={NextLink} href={`/jobs`}>
+            View Jobs
+          </MenuItem>
+          <MenuItem as={NextLink} href={'/my-jobs/recently-viewed'}>
+            Manage My Jobs
+          </MenuItem>
+          <MenuDivider />
+          <MenuItem>
+            <Stack gap={'1rem'}>
+              <HStack alignItems={'start'}>
+                <Avatar
+                  name="Hannah"
+                  src="https://www.heartlandvc.com/wp-content/uploads/2020/07/Hannah-Wexner-HVC.jpg"
+                />
+                <Stack gap={'0rem'}>
+                  <b>Need some help?</b>
+                  <p>Talk to one of SkillArc&apos;s coaches for career tips!</p>
+                </Stack>
+              </HStack>
+              <Box
+                bg={'gray.800'}
+                textColor={'white'}
+                borderRadius={'4px'}
+                textAlign={'center'}
+                py={'0.5rem'}
+              >
+                <Text type={'b2Bold'}>Schedule a Free Call</Text>
+              </Box>
+            </Stack>
+          </MenuItem>
+        </MenuList>
+      </Menu>
+    </>
   )
 }
 

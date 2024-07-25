@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
+import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
 import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'

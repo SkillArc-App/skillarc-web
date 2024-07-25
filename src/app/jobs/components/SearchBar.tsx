@@ -1,4 +1,4 @@
-import { SearchFilter, SearchOption, SearchValue } from '@/common/types/Search'
+import { SearchFilter, SearchOption, SearchValue } from '@/app/common/types/Search'
 import { SearchIcon } from '@chakra-ui/icons'
 import {
   FormControl,

@@ -1,6 +1,6 @@
+import { SearchJob } from '@/app/common/types/Search'
+import { Text } from '@/app/components/Text.component'
 import ToggleIcon from '@/app/components/ToggleIcon'
-import { SearchJob } from '@/common/types/Search'
-import { Text } from '@/frontend/components/Text.component'
 import {
   Box,
   Button,

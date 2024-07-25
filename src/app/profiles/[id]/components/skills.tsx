@@ -1,5 +1,5 @@
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
 import { GetOneProfileResponse } from '@/frontend/services/profile.service'
 import { Badge, Divider, Flex, VStack } from '@chakra-ui/react'
 import { FaScrewdriverWrench } from 'react-icons/fa6'

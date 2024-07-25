@@ -1,10 +1,10 @@
 'use client'
 
-import { industries } from '@/common/static/industries'
-import { Heading } from '@/frontend/components/Heading.component'
+import { industries } from '@/app/common/static/industries'
+import { Heading } from '@/app/components/Heading'
 import { Button, Checkbox, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
-import { Text } from '../../../frontend/components/Text.component'
+import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 
 export default function Opportunities() {

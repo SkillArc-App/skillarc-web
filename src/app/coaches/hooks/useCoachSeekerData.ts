@@ -1,5 +1,5 @@
 import { CoachSeeker } from '@/app/coaches/types'
-import { useAuthenticatedQuery } from '@/frontend/hooks/useAuthenticatedQuery'
+import { useAuthenticatedQuery } from '@/app/hooks/useAuthenticatedQuery'
 import { get } from '@/frontend/http-common'
 
 export const useCoachSeekerData = (id?: string) =>

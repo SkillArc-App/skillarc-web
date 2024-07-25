@@ -1,5 +1,5 @@
-import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { FrontendEmployerService } from '../../../frontend/services/employer.service'
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 
 export const useEmployerData = (id: string) =>
   useAuthenticatedQuery(['employer', id], ({ token }) => {

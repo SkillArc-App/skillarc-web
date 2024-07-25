@@ -1,15 +1,15 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
+import { Heading } from '@/app/components/Heading'
 import { LoadingPage } from '@/app/components/Loading'
+import { Text } from '@/app/components/Text.component'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { useUser } from '@/app/hooks/useUser'
 import { SingleJobPosting } from '@/app/jobs/[id]/components/SingleJobPosting'
 import useApply from '@/app/jobs/hooks/useApply'
 import useUserState, { UserState } from '@/app/jobs/hooks/useUserState'
-import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useUser } from '@/frontend/hooks/useUser'
-import { Success } from '@/frontend/icons/Success.icon'
+import { Success } from '@/frontend/icons/Success'
 import { FrontendJobInteractionsService } from '@/frontend/services/jobInteractions.service'
 import {
   Button,

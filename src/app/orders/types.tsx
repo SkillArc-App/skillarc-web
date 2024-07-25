@@ -1,4 +1,4 @@
-import { Note } from '@/common/types/Note'
+import { Note } from '@/app/common/types/Note'
 
 export enum JobOrderStatuses {
   NEEDS_ORDER_COUNT = 'needs_order_count',

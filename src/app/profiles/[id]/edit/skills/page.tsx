@@ -1,9 +1,9 @@
 'use client'
 
 import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
-import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
+import { IdParams } from '@/app/common/types/PageParams'
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
 import { MasterSkill } from '@/frontend/services/skills.service'
 import { Badge, Button, Flex, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'

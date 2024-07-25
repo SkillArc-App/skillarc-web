@@ -1,8 +1,8 @@
-import { Job } from '@/common/types/Job'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikSelect from '@/frontend/components/FormikSelect'
-import FormikSwitch from '@/frontend/components/FormikSwitch'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
+import { Job } from '@/app/common/types/Job'
+import FormikInput from '@/app/components/FormikInput'
+import FormikSelect from '@/app/components/FormikSelect'
+import FormikSwitch from '@/app/components/FormikSwitch'
+import FormikTextArea from '@/app/components/FormikTextArea'
 import {
   Button,
   Modal,

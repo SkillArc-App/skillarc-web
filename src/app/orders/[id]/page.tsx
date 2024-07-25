@@ -1,13 +1,13 @@
 'use client'
 
+import { IdParams } from '@/app/common/types/PageParams'
+import DataTable from '@/app/components/DataTable'
+import FormikInput from '@/app/components/FormikInput'
+import FormikSelect from '@/app/components/FormikSelect'
 import { LoadingPage } from '@/app/components/Loading'
 import NotesList from '@/app/components/NoteList'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { useTeamsQuery } from '@/app/teams/hooks/useTeamsQuery'
-import { IdParams } from '@/common/types/PageParams'
-import DataTable from '@/frontend/components/DataTable.component'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikSelect from '@/frontend/components/FormikSelect'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { EditIcon } from '@chakra-ui/icons'
 import {

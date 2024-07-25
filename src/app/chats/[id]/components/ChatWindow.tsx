@@ -1,4 +1,4 @@
-import { Chat, Message } from '@/common/types/Chat'
+import { Chat, Message } from '@/app/common/types/Chat'
 import {
   Box,
   Flex,

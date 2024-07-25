@@ -1,10 +1,10 @@
 'use client'
 
 import { useCoachLeadsQuery } from '@/app/coaches/hooks/useCoachLeadsQuery'
+import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
-import DataTable from '@/frontend/components/DataTable.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
-import { useUser } from '@/frontend/hooks/useUser'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
+import { useUser } from '@/app/hooks/useUser'
 import { post } from '@/frontend/http-common'
 import { Box, Button, Checkbox, Link, VStack } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'

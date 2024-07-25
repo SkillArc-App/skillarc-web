@@ -1,7 +1,7 @@
 import { Form, Formik } from 'formik'
 
-import FormikSelect from '@/frontend/components/FormikSelect'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import FormikSelect from '@/app/components/FormikSelect'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import {
   Button,

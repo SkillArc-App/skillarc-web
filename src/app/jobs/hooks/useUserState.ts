@@ -1,5 +1,5 @@
 import { useAuth0 } from 'lib/auth-wrapper'
-import { useUser } from '../../../frontend/hooks/useUser'
+import { useUser } from '../../hooks/useUser'
 
 export const enum UserState {
   UnAuthenticated,

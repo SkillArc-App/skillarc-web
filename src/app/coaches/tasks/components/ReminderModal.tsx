@@ -1,6 +1,6 @@
-import { PartialRequired } from '@/common/types/partial-required'
-import FormikInput from '@/frontend/components/FormikInput'
-import FormikTextArea from '@/frontend/components/FormikTextArea'
+import { PartialRequired } from '@/app/common/types/partial-required'
+import FormikInput from '@/app/components/FormikInput'
+import FormikTextArea from '@/app/components/FormikTextArea'
 import {
   Button,
   Modal,

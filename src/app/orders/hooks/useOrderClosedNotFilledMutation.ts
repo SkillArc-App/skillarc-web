@@ -1,4 +1,4 @@
-import { useAuthenticatedMutation } from '@/frontend/hooks/useAuthenticatedMutation'
+import { useAuthenticatedMutation } from '@/app/hooks/useAuthenticatedMutation'
 import { post } from '@/frontend/http-common'
 import { useQueryClient } from '@tanstack/react-query'
 

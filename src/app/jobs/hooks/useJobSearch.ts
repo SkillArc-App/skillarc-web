@@ -1,6 +1,6 @@
-import { SearchJob, SearchValue } from '@/common/types/Search'
-import { camelToSnake } from '@/common/utils/functions'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { SearchJob, SearchValue } from '@/app/common/types/Search'
+import { camelToSnake } from '@/app/common/utils/functions'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { get } from '@/frontend/http-common'
 import { useQuery } from '@tanstack/react-query'
 

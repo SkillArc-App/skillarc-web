@@ -1,4 +1,4 @@
-import { TrainingProviderProfile } from '@/common/types/TrainingProviderProfile'
+import { TrainingProviderProfile } from '@/app/common/types/TrainingProviderProfile'
 import { put } from '../http-common'
 import { Profile } from './profile.service'
 
@@ -31,17 +31,19 @@ export type FullUser = {
   profile: Profile & {
     missingProfileItems: ('education' | 'work')[]
   }
-  notifications: {
-    id: string
-    notificationTitle: string
-    notificationBody: string
-    read: boolean
-    url: string
-  }[]
+  notifications: Notification[]
   trainingProviderProfile: TrainingProviderProfile
   recruiter: Recruiter
   onboardingSession: OnboardingSession
   userRoles: { role: Role }[]
+}
+
+export type Notification = {
+  id: string
+  notificationTitle: string
+  notificationBody: string
+  read: boolean
+  url: string
 }
 
 const update = async (user: Partial<User>, token: string) => {

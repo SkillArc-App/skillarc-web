@@ -1,6 +1,6 @@
-import { MasterCertification } from '../../frontend/services/certification.service'
-import { Employer } from '../../frontend/services/employer.service'
-import { MasterSkill } from '../../frontend/services/skills.service'
+import { MasterCertification } from '../../../frontend/services/certification.service'
+import { Employer } from '../../../frontend/services/employer.service'
+import { MasterSkill } from '../../../frontend/services/skills.service'
 
 export type CareerPath = {
   id: string

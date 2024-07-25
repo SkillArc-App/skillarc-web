@@ -1,9 +1,9 @@
 'use client'
 
-import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { Text } from '@/frontend/components/Text.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { IdParams } from '@/app/common/types/PageParams'
+import { Heading } from '@/app/components/Heading'
+import { Text } from '@/app/components/Text.component'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { put } from '@/frontend/http-common'
 import { Button, Flex, Input, Textarea } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'

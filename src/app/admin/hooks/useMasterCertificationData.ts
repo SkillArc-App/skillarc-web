@@ -1,5 +1,5 @@
-import { useAuthenticatedQuery } from '../../../frontend/hooks/useAuthenticatedQuery'
 import { FrontendMasterCertificationService } from '../../../frontend/services/certification.service'
+import { useAuthenticatedQuery } from '../../hooks/useAuthenticatedQuery'
 
 export const useMasterCertificationData = () => {
   const masterCertificationQuery = useAuthenticatedQuery(['masterCertification'], ({ token }) => {

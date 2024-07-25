@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { Maybe } from '@/common/types/maybe'
+import { Maybe } from '@/app/common/types/maybe'
 import { useAuth0 } from 'lib/auth-wrapper'
 import { useEffect, useState } from 'react'
 

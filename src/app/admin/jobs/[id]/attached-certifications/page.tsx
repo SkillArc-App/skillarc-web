@@ -2,8 +2,8 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { useMasterCertificationData } from '@/app/admin/hooks/useMasterCertificationData'
-import { IdParams } from '@/common/types/PageParams'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { IdParams } from '@/app/common/types/PageParams'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'

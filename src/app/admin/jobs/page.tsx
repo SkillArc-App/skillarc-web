@@ -1,8 +1,8 @@
 'use client'
 
+import DataTable from '@/app/components/DataTable'
 import { LoadingPage } from '@/app/components/Loading'
-import DataTable from '@/frontend/components/DataTable.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { post } from '@/frontend/http-common'
 import { Badge, Box, Button, Checkbox, Link, Stack, useDisclosure } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'

@@ -2,9 +2,9 @@
 
 import { useAdminJob } from '@/app/admin/hooks/useAdminJob'
 import { useMasterSkillData } from '@/app/admin/hooks/useMasterSkillData'
-import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/frontend/components/Heading.component'
-import { useAuthToken } from '@/frontend/hooks/useAuthToken'
+import { IdParams } from '@/app/common/types/PageParams'
+import { Heading } from '@/app/components/Heading'
+import { useAuthToken } from '@/app/hooks/useAuthToken'
 import { destroy, post } from '@/frontend/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {

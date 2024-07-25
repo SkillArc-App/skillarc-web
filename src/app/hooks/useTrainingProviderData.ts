@@ -1,4 +1,4 @@
-import { get } from '../http-common'
+import { get } from '../../frontend/http-common'
 import { useAuthenticatedQuery } from './useAuthenticatedQuery'
 
 export type TrainingProvider = {
