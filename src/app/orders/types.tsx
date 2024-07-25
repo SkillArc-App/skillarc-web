@@ -34,6 +34,7 @@ export type JobOrderSummary = {
   openedAt: string
   recommendedCount: number
   teamId: string
+  screenerQuestionsId: string
   hireCount: number
   orderCount: number
   status: JobOrderStatuses
