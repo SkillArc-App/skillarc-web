@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'SkillArc: Welcome',
+  keywords: ["job search", "SkillArc", "jobs", "Columbus", "job search engine", "job listings", "search jobs", "career", "employment", "staffing", "hiring"],
   description: 'SkillArc your career and hiring partner in Columbus Ohio.',
 }
 
