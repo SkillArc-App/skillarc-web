@@ -170,6 +170,7 @@ jobs:
       SLACK_GATEWAY_STRATEGY: fake
       NEXT_PUBLIC_MOCK_NEXT_AUTH: true
       NEXT_PUBLIC_API_URL: http://localhost:3001
+      NEXT_PUBLIC_ENVIRONMENT_URL: https://www.ci.com
     steps:
       - name: Collect Workflow Telemetry
         uses: catchpoint/workflow-telemetry-action@v2
@@ -200,11 +201,14 @@ jobs:
         with:
           node-version: 20.x
           cache: 'npm'
-      - run: npm ci
+      - name: Install node dependencies
+        run: npm ci
+      - name: Build next
+        run: npm run build
       - name: Run Cypress e2e tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run dev
+          start: npm run start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
           install: false

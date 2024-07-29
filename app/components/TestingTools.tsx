@@ -49,11 +49,6 @@ const DevTools = () => {
 }
 
 const NoopTools = () => <></>
-const TestingTools =
-  process.env.NODE_ENV === 'development'
-    ? process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true'
-      ? DevTools
-      : NoopTools
-    : NoopTools
+const TestingTools = process.env.NEXT_PUBLIC_MOCK_NEXT_AUTH === 'true' ? DevTools : NoopTools
 
 export default TestingTools
