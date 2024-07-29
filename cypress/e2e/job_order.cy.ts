@@ -1,33 +1,13 @@
 export {}
 
-const reloadUntilConditionMet = (
-  predicate: () => Cypress.Chainable<boolean>,
-  { retryCount = 5, delay = 1000 } = {},
-) => {
-  const retrier = (count = retryCount) => {
-    predicate().then((result) => {
-      if (count === 0) {
-        predicate().should('be.true')
-      }
-      if (result) {
-        return
-      } else {
-        cy.wait(delay)
-        cy.reload()
-        retrier(count - 1)
-      }
-    })
-  }
-
-  retrier()
-}
-
 describe('Job Orders', () => {
   beforeEach(() => {
-    cy.task('createActiveSeeker').then((r: any) => {
-      cy.wrap(r['person']).as('person')
+    cy.task('createJob').then((r: any) => {
       cy.wrap(r['job']).as('job')
       cy.wrap(r['employer']).as('employer')
+    })
+    cy.task('createSeeker').then((r: any) => {
+      cy.wrap(r['person']).as('person')
     })
     cy.task('assertNoFailedJobs')
   })
@@ -55,7 +35,7 @@ describe('Job Orders', () => {
           cy.findByLabelText('Question 2*').type('How is your personal hero?')
 
           cy.findByLabelText('Question 1*').parent().next().click()
-          cy.findByRole('button', { name: 'Save'}).click()
+          cy.findByRole('button', { name: 'Save' }).click()
 
           cy.findByText(screenerName)
 
@@ -118,6 +98,21 @@ describe('Job Orders', () => {
           cy.findByLabelText('Acceptable Values').type('Misdemeanor{Enter}')
           cy.findByRole('button', { name: 'Save' }).click()
 
+          // Apply to job as seeker
+          cy.visit('/')
+
+          cy.findByLabelText('Mock Auth Enabled').select(person.email, {
+            timeout: 10000,
+          })
+          cy.visit('/jobs')
+
+          const card = cy.findByRole('listitem', { name: job.employmentTitle })
+          card.within(() => {
+            cy.findByRole('button', { name: 'Apply' }).click()
+          })
+
+          cy.findByRole('button', { name: 'Apply With Your SkillArc Profile' }).click()
+
           // switch back to job order admin
           cy.visit('/')
 
@@ -133,17 +128,20 @@ describe('Job Orders', () => {
             cy.findByText(job.employmentTitle).click()
           })
 
-          reloadUntilConditionMet(
-            () => {
-              return cy.get('body').then((el) => el.text().includes('Open'))
-            },
-            { retryCount: 8 },
-          )
+          headingCard = cy
+            .findByRole('heading', { name: `${job.employmentTitle} - ${employer.name}` })
+            .parent()
+            .parent()
+            .parent()
+
+          headingCard.within(() => {
+            cy.findByText('Open')
+          })
 
           // Click and assign screener
-          cy.findByRole('button', { name: "Assign Screener"} ).click()
+          cy.findByRole('button', { name: 'Assign Screener' }).click()
           cy.findByLabelText('Screener Questions').select(screenerName)
-          cy.findByRole('button', { name: "Save" }).click()
+          cy.findByRole('button', { name: 'Save' }).click()
 
           // confirm screener assigned
           cy.findByText(`Screener: ${screenerName}`)
