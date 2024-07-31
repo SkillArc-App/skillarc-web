@@ -4,9 +4,9 @@ import DataTable from '@/components/DataTable'
 import FormikInput from '@/components/FormikInput'
 import FormikTextArea from '@/components/FormikTextArea'
 import { useAddQuestionsMutation } from '@/screeners/hooks/useAddQuestionsMutation'
-import { useQuestionsQuery } from '@/screeners/hooks/useQuestionsQuery'
+import { useAllQuestionsQuery } from '@/screeners/hooks/useAllQuestionsQuery'
 import { useUpdateQuestionsMutation } from '@/screeners/hooks/useUpdateQuestionsMutation'
-import { Questions } from '@/screeners/types'
+import { Questions, QuestionsRequest } from '@/screeners/types'
 import { DeleteIcon } from '@chakra-ui/icons'
 import {
   Button,
@@ -28,8 +28,7 @@ import { FieldArray, Form, Formik } from 'formik'
 import { useState } from 'react'
 import LoadingPage from '../page'
 
-const defaultModalValue: Questions = {
-  id: '',
+const defaultModalValue: QuestionsRequest = {
   title: '',
   questions: [''],
 }
@@ -38,7 +37,7 @@ interface QuestionInterface {
   isOpen: boolean
   onClose: () => void
   isNew: boolean
-  initialValue: Questions
+  initialValue: QuestionsRequest
 }
 
 const QuestionsModal = ({ isOpen, onClose, isNew, initialValue }: QuestionInterface) => {
@@ -101,9 +100,9 @@ const QuestionsModal = ({ isOpen, onClose, isNew, initialValue }: QuestionInterf
 }
 
 export default function Page() {
-  const { data: questions } = useQuestionsQuery()
+  const { data: questions } = useAllQuestionsQuery()
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [initialValue, setInitialValue] = useState<Questions>(defaultModalValue)
+  const [initialValue, setInitialValue] = useState<QuestionsRequest>(defaultModalValue)
   const [isNew, setIsNew] = useState<boolean>(true)
 
   const columnHelper = createColumnHelper<Questions>()
@@ -125,6 +124,10 @@ export default function Page() {
       header: 'Questions',
       filterFn: 'includesString',
       cell: (row) => row.getValue(),
+    }),
+    columnHelper.accessor('createdAt', {
+      header: "Created At",
+      cell: (row) => new Date(row.getValue()).toLocaleString()
     }),
     columnHelper.accessor('id', {
       header: 'Edit',

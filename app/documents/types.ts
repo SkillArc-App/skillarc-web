@@ -1,7 +1,7 @@
 export type Resume = {
   id: string
   anonymized: boolean
-  documentStatus: string
+  documentStatus: DocumentStatus
   generatedAt: string
   documentKind: DocumentKind
   personId: string

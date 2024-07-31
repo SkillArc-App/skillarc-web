@@ -1,12 +1,10 @@
 import { useFormikContext } from 'formik'
 import { useEffect } from 'react'
 
-const FormObserver = ({ onChange }: { onChange: (values: unknown) => void }) => {
-  const { values } = useFormikContext()
+export default function FormObserver<T = unknown>({ onChange }: { onChange: (values: T) => void }) {
+  const { values } = useFormikContext<T>()
 
   useEffect(() => onChange(values), [values, onChange])
 
   return <></>
 }
-
-export default FormObserver

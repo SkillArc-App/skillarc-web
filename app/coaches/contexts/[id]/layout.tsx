@@ -46,6 +46,7 @@ const tabs: Record<string, number> = {
   tasks: 1,
   jobs: 2,
   resumes: 3,
+  screeners: 4,
 }
 
 const Context = ({ children, params: { id } }: { children: React.ReactNode } & IdParams) => {
@@ -305,6 +306,9 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
               </Tab>
               <Tab as={NextLink} href={'resumes'}>
                 Resumes
+              </Tab>
+              <Tab as={NextLink} href={'screeners'}>
+                Screeners
               </Tab>
             </TabList>
           </Tabs>
