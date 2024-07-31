@@ -8,7 +8,6 @@ import { LoadingPage } from '@/components/Loading'
 import NotesList from '@/components/NoteList'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { put } from '@/http-common'
-import { useQuestionsQuery } from '@/screeners/hooks/useQuestionsQuery'
 import { useTeamsQuery } from '@/teams/hooks/useTeamsQuery'
 import { EditIcon } from '@chakra-ui/icons'
 import {
@@ -63,6 +62,7 @@ import { useOrderClosedMutation } from '../hooks/useOrderClosedNotFilledMutation
 import { useOrderMutation } from '../hooks/useOrderMutation'
 import { useOrderQuery } from '../hooks/useOrderQuery'
 import { Candidate, CandidateStatuses, JobOrder } from '../types'
+import { useAllQuestionsQuery } from '@/screeners/hooks/useAllQuestionsQuery'
 
 const QuantityDisplay = ({ id, orderCount }: JobOrder) => {
   const [editing, setEditing] = useState(!orderCount)
@@ -211,7 +211,7 @@ const Order = ({ params: { id } }: IdParams) => {
   const { data: order, refetch: refetchOrder } = useOrderQuery(id)
   const { data: teams } = useTeamsQuery()
   const { addNote, modifyNote, removeNote } = useNotes()
-  const { data: questions } = useQuestionsQuery()
+  const { data: questions } = useAllQuestionsQuery()
   const bro = useOrderAddScreenerMutation()
 
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>(null)
