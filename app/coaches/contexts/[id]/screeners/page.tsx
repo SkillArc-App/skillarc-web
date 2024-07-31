@@ -10,7 +10,7 @@ import { useAllAnswersQuery } from '@/screeners/hooks/useAllAnswersQuery'
 import { useGenerateAnswersFile } from '@/screeners/hooks/useGenerateAnswersFile'
 import { useUpdateAnswersMutation } from '@/screeners/hooks/useUpdateAnswersMutation'
 import { Answers, AnswersRequest } from '@/screeners/types'
-import { Button, HStack, IconButton, Stack, VStack, useDisclosure } from '@chakra-ui/react'
+import { Button, HStack, IconButton, Stack, Tooltip, useDisclosure, VStack } from '@chakra-ui/react'
 import { createColumnHelper, SortingState } from '@tanstack/react-table'
 import { Suspense, useState } from 'react'
 import { FaEdit, FaFileDownload } from 'react-icons/fa'
@@ -97,29 +97,36 @@ const ScreenerTable = ({ params: { id } }: IdParams) => {
 
         return (
           <HStack>
-            <IconButton
-              onClick={() => {
-                setScreenerAnswersRequest(row.row.original)
-                onAnswerOpen()
-              }}
-              aria-label="edit-answers"
-              variant={'ghost'}
-              icon={<FaEdit />}
-            />
-            <IconButton
-              onClick={() => generateFile.mutate(row.getValue())}
-              aria-label="create-pdf"
-              variant={'ghost'}
-              icon={<FaFilePdf />}
-            />
-            {!!documentsScreenersId && (
+            <Tooltip label={`Edit`}>
               <IconButton
-                onClick={() => onDownload(documentsScreenersId)}
-                aria-label="download"
+                onClick={() => {
+                  setScreenerAnswersRequest(row.row.original)
+                  onAnswerOpen()
+                }}
+                aria-label="edit-answers"
                 variant={'ghost'}
-                disabled={true}
-                icon={<FaFileDownload />}
+                icon={<FaEdit />}
               />
+            </Tooltip>
+            <Tooltip label={'Create pdf for screener'}>
+              <IconButton
+                onClick={() => generateFile.mutate(row.getValue())}
+                aria-label="create-pdf"
+                variant={'ghost'}
+                icon={<FaFilePdf />}
+              />
+            </Tooltip>
+
+            {!!documentsScreenersId && (
+              <Tooltip label={'Download the screener'}>
+                <IconButton
+                  onClick={() => onDownload(documentsScreenersId)}
+                  aria-label="download"
+                  variant={'ghost'}
+                  disabled={true}
+                  icon={<FaFileDownload />}
+                />
+              </Tooltip>
             )}
           </HStack>
         )
@@ -149,7 +156,7 @@ const ScreenerTable = ({ params: { id } }: IdParams) => {
       <Button variant={'solid'} colorScheme="green" onClick={onSelectOpen}>
         Answer New Screener
       </Button>
-      <DataTable columns={columns} data={screenerAnswers} initialSortState={initialSortState}/>
+      <DataTable columns={columns} data={screenerAnswers} initialSortState={initialSortState} />
     </VStack>
   )
 }
