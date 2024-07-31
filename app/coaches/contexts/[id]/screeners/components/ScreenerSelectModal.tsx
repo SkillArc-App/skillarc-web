@@ -66,7 +66,7 @@ const ScreenerSelectModal = ({ isOpen, onClose, onSubmit }: ScreenerSelectProps)
           <Form>
             <ModalBody>
               <VStack spacing={2} width={'100%'}>
-                <FormikSelect name="id" label="Job Order Screener" options={options} />
+                <FormikSelect isRequired name="id" label="Job Order Screener" options={options} />
               </VStack>
             </ModalBody>
             <ModalFooter>

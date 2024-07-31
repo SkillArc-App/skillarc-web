@@ -32,7 +32,7 @@ describe('Job Orders', () => {
           cy.findByLabelText('Question 1*').type('What is your favorite Candy?')
 
           cy.findByRole('button', { name: 'Add a Question' }).click()
-          cy.findByLabelText('Question 2*').type('How is your personal hero?')
+          cy.findByLabelText('Question 2*').type('Who is your personal hero?')
 
           cy.findByLabelText('Question 1*').parent().next().click()
           cy.findByRole('button', { name: 'Save' }).click()
@@ -217,6 +217,43 @@ describe('Job Orders', () => {
 
             cy.findByText(job.employmentTitle).click()
           })
+
+          // switch back to job order admin
+          cy.visit('/')
+
+          cy.findByLabelText('Mock Auth Enabled').select('coach@skillarc.com', {
+            timeout: 10000,
+          })
+          cy.visit('/coaches')
+
+          cy.get('label').contains('Owned by Me').parent().click()
+
+          cy.findByRole('table').within(() => {
+            const row = cy
+              .findByText(`${person['firstName']} ${person['lastName']}`)
+              .parent()
+              .parent()
+
+            row.within(() => {
+              cy.findByRole('link', { name: 'Dash' }).click()
+            })
+          })
+
+          // Start filling in new screener
+          cy.findByRole('tab', { name: 'Screeners' }).click()
+          cy.findByRole('button', { name: 'Answer New Screener' }).click()
+          cy.findByLabelText('Job Order Screener*').select(`${employer.name} ${job.employmentTitle}`)
+          cy.findByRole('button', { name: 'Next' }).click()
+
+          // Fill out screener
+          cy.findByLabelText('Who is your personal hero?*').type("Superman")
+          cy.findByRole('button', { name: 'Submit' }).click()
+
+          // generate pdf and download
+          cy.findByLabelText('create-pdf').click()
+          cy.findByText('succeeded')
+          cy.findByLabelText('download').click()
+          cy.readFile('cypress/downloads/screener.pdf')
         })
       })
     })
