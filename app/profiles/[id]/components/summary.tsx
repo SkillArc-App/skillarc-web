@@ -1,11 +1,12 @@
 import { Heading } from '@/components/Heading'
-import { Briefcase } from '@/icons/Briefcase'
 import { GetOneProfileResponse } from '@/services/profile.service'
 import { copyTextToClipboard } from '@/utils/clipboard.util'
-import { EditIcon, LinkIcon } from '@chakra-ui/icons'
-import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react'
+import { LinkIcon } from '@chakra-ui/icons'
+import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
+import { FaBriefcase } from 'react-icons/fa'
 import { Text } from '../../../components/Text.component'
+import EditIconButton from './EditIconButton'
 
 export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   const toast = useToast()
@@ -37,60 +38,24 @@ export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) =>
             <Heading type="h2" color="greyscale.900" w="100%" alignSelf={'center'}>
               {seeker.user.firstName} {seeker.user.lastName}
             </Heading>
-            {seeker.isProfileEditor && (
-              <Button
-                variant={'icon'}
-                as={Link}
-                href={`${seeker.id}/edit/summary`}
-                color="greyscale.600"
-                aria-label="Edit Profile"
-              >
-                <EditIcon />
-              </Button>
-            )}
+            {seeker.isProfileEditor && <EditIconButton href={`${seeker.id}/edit/summary`} />}
           </Flex>
-          <Stack gap={'1rem'}>
-            {seeker.about && <Text>{seeker.about}</Text>}
-            <Box>
-              {(seeker.user.zipCode || seeker.isProfileEditor) && (
-                <Text type="b3" color="greyscale.600" w="100%">
-                  ZIP Code: {seeker.user.zipCode}
-                </Text>
-              )}
-              {(seeker.user.phoneNumber || seeker.isProfileEditor) && (
-                <Text type="b3" color="greyscale.600" w="100%">
-                  Phone Number: {seeker.user.phoneNumber}
-                </Text>
-              )}
-            </Box>
+          <Stack>
+            <Text>About: {seeker.about}</Text>
+            <Text type="b3">Email: {seeker.user.email}</Text>
+            <Text type="b3">ZIP Code: {seeker.user.zipCode}</Text>
+            <Text type="b3">Phone Number: {seeker.user.phoneNumber}</Text>
           </Stack>
         </Flex>
       </Flex>
       <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1rem">
         {seeker.isProfileEditor && (
           <Flex w="100%" gap=".75rem">
-            <Button
-              variant="primary"
-              w="100%"
-              h="3.25rem"
-              leftIcon={<LinkIcon fill="greyscale.100" />}
-              onClick={handleCopy}
-            >
-              <Text type="b2Bold" color="greyscale.100">
-                Copy Profile Link
-              </Text>
+            <Button variant="primary" w="100%" leftIcon={<LinkIcon />} onClick={handleCopy}>
+              Copy Profile Link
             </Button>
-            <Button
-              variant="primary"
-              w="100%"
-              h="3.25rem"
-              as={Link}
-              href="/jobs"
-              leftIcon={<Briefcase h="18px" />}
-            >
-              <Text type="b2Bold" color="greyscale.100">
-                View Jobs
-              </Text>
+            <Button variant="primary" w="100%" as={Link} href="/jobs" leftIcon={<FaBriefcase />}>
+              View Jobs
             </Button>
           </Flex>
         )}
