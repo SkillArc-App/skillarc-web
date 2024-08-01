@@ -2,8 +2,8 @@ import { GetOneProfileResponse } from '@/services/profile.service'
 import { Divider, Flex, Heading } from '@chakra-ui/react'
 import { FaGraduationCap } from 'react-icons/fa6'
 import { Text } from '../../../components/Text.component'
-import { ProfileBox } from './profileBox'
 import EditIconButton from './EditIconButton'
+import { ProfileBox } from './profileBox'
 
 export const ProfileEducation = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   if (seeker.educationExperiences.length === 0 && !seeker.isProfileEditor) return <></>
@@ -37,7 +37,10 @@ export const ProfileEducation = ({ seeker }: { seeker: GetOneProfileResponse }) 
                 <Divider borderColor="greyscale.300" />
               </Flex>
               {seeker.isProfileEditor && (
-                <EditIconButton href={`${seeker.id}/edit/education/${educationExperiences.id}`} />
+                <EditIconButton
+                  href={`${seeker.id}/edit/education/${educationExperiences.id}`}
+                  label="Edit Education"
+                />
               )}
             </Flex>
           )

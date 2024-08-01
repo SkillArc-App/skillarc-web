@@ -3,8 +3,8 @@ import { Text } from '@/components/Text.component'
 import { GetOneProfileResponse } from '@/services/profile.service'
 import { Divider, Flex } from '@chakra-ui/react'
 import { FaSuitcase } from 'react-icons/fa6'
-import { ProfileBox } from './profileBox'
 import EditIconButton from './EditIconButton'
+import { ProfileBox } from './profileBox'
 
 const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   if (seeker.otherExperiences.length === 0 && !seeker.isProfileEditor) return <></>
@@ -47,7 +47,10 @@ const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
                 <Divider borderColor="greyscale.300" />
               </Flex>
               {seeker.isProfileEditor && (
-                <EditIconButton href={`${seeker.id}/edit/experience/${otherExperiences.id}`} />
+                <EditIconButton
+                  href={`${seeker.id}/edit/experience/${otherExperiences.id}`}
+                  label="Edit Experience"
+                />
               )}
             </Flex>
           )

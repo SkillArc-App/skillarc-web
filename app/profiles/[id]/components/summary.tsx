@@ -66,10 +66,12 @@ export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) =>
             <Heading type="h2" color="greyscale.900" w="100%" alignSelf={'center'}>
               {seeker.user.firstName} {seeker.user.lastName}
             </Heading>
-            {seeker.isProfileEditor && <EditIconButton href={`${seeker.id}/edit/summary`} />}
+            {seeker.isProfileEditor && (
+              <EditIconButton href={`${seeker.id}/edit/summary`} label="Edit Profile" />
+            )}
           </Flex>
           <Stack>
-            <Text>About: {seeker.about}</Text>
+            <Text>Summary: {seeker.about}</Text>
             <Text type="b3">Email: {seeker.user.email}</Text>
             <Text type="b3">ZIP Code: {seeker.user.zipCode}</Text>
             <Text type="b3">Phone Number: {seeker.user.phoneNumber}</Text>
