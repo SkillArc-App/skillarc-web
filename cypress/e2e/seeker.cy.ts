@@ -25,6 +25,11 @@ describe('Seeker', () => {
         cy.get('body').should('contain', user['firstName'])
         cy.get('body').should('contain', user['lastName'])
 
+        // Produce a resume and download
+        cy.findByRole('button', { name: 'Generate Resume'}).click()
+        cy.findByRole('button', { name: 'Download Resume'}).click()
+        cy.readFile('cypress/downloads/resume.pdf')
+
         cy.findByRole('link', { name: 'View Jobs' }).click()
 
         cy.get('body').should('contain', 'Find your perfect job 💼')
@@ -88,6 +93,7 @@ describe('Seeker', () => {
         // on the profile page again
         cy.findByRole('link', { name: 'View Jobs' }).click()
 
+        // Test search
         cy.get('body').should('contain', 'Find your perfect job 💼')
 
         cy.findByRole('search').type('Not a real job posting!')
