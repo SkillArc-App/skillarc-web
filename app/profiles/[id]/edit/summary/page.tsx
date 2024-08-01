@@ -81,10 +81,6 @@ const EditSummary = ({ params: { id } }: IdParams) => {
           <Text type="b2">Last name</Text>
           <Input value={lastName} onChange={(e) => setLastName(e.target.value)}></Input>
         </Flex>
-        {/* <Flex flexDir="column" gap="0.5rem">
-          <Text type="b2">Age</Text>
-          <Input></Input>
-        </Flex> */}
         <Flex flexDir="column" gap="0.5rem">
           <Text type="b2">ZIP Code</Text>
           <Input
@@ -94,10 +90,6 @@ const EditSummary = ({ params: { id } }: IdParams) => {
             onChange={(e) => setZipCode(e.target.value)}
           ></Input>
         </Flex>
-        {/* <Flex flexDir="column" gap="0.5rem">
-          <Text type="b2">Status</Text>
-          <Select />
-        </Flex> */}
       </Flex>
       <Flex
         p="1rem"
