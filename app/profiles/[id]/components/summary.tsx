@@ -1,14 +1,29 @@
 import { Heading } from '@/components/Heading'
-import { Briefcase } from '@/icons/Briefcase'
+import { downloadResume } from '@/documents/downloadResume'
+import { useResumeMutation } from '@/documents/hooks/useResumeMutation'
+import { useResumesQuery } from '@/documents/hooks/useResumesQuery'
+import { DocumentKind } from '@/documents/types'
+import { useAuthToken } from '@/hooks/useAuthToken'
 import { GetOneProfileResponse } from '@/services/profile.service'
 import { copyTextToClipboard } from '@/utils/clipboard.util'
-import { EditIcon, LinkIcon } from '@chakra-ui/icons'
-import { Box, Button, Flex, Stack, useToast } from '@chakra-ui/react'
+import { delay } from '@/utils/delay'
+import { LinkIcon } from '@chakra-ui/icons'
+import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { FaBriefcase, FaFileDownload, FaFilePdf } from 'react-icons/fa'
 import { Text } from '../../../components/Text.component'
+import EditIconButton from './EditIconButton'
 
 export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) => {
   const toast = useToast()
+  const token = useAuthToken()
+  const { data: resumes = [], refetch } = useResumesQuery(seeker.id, { refetchInterval: 5000 })
+  const resumeGeneration = useResumeMutation()
+  const downloadAbleResume = resumes
+    .filter((r) => !!r.generatedAt)
+    .sort((a, b) => Date.parse(b.generatedAt as string) - Date.parse(a.generatedAt as string))[0]
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleCopy = () => {
     copyTextToClipboard(window.location.href).then(() => {
@@ -20,6 +35,20 @@ export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) =>
         isClosable: true,
       })
     })
+  }
+
+  const onGenerateResume = async () => {
+    setIsLoading(true)
+    await resumeGeneration.mutateAsync({
+      personId: seeker.id,
+      anonymized: false,
+      documentKind: DocumentKind.PDF,
+      checks: [],
+    })
+
+    await delay(2000)
+    refetch()
+    setIsLoading(false)
   }
 
   return (
@@ -38,63 +67,46 @@ export const ProfileSummary = ({ seeker }: { seeker: GetOneProfileResponse }) =>
               {seeker.user.firstName} {seeker.user.lastName}
             </Heading>
             {seeker.isProfileEditor && (
-              <Button
-                variant={'icon'}
-                as={Link}
-                href={`${seeker.id}/edit/summary`}
-                color="greyscale.600"
-                aria-label="Edit Profile"
-              >
-                <EditIcon />
-              </Button>
+              <EditIconButton href={`${seeker.id}/edit/summary`} label="Edit Profile" />
             )}
           </Flex>
-          <Stack gap={'1rem'}>
-            {seeker.about && <Text>{seeker.about}</Text>}
-            <Box>
-              {(seeker.user.zipCode || seeker.isProfileEditor) && (
-                <Text type="b3" color="greyscale.600" w="100%">
-                  ZIP Code: {seeker.user.zipCode}
-                </Text>
-              )}
-              {(seeker.user.phoneNumber || seeker.isProfileEditor) && (
-                <Text type="b3" color="greyscale.600" w="100%">
-                  Phone Number: {seeker.user.phoneNumber}
-                </Text>
-              )}
-            </Box>
+          <Stack>
+            <Text>Summary: {seeker.about}</Text>
+            <Text type="b3">Email: {seeker.user.email}</Text>
+            <Text type="b3">ZIP Code: {seeker.user.zipCode}</Text>
+            <Text type="b3">Phone Number: {seeker.user.phoneNumber}</Text>
           </Stack>
         </Flex>
       </Flex>
-      <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1rem">
-        {seeker.isProfileEditor && (
-          <Flex w="100%" gap=".75rem">
+      {seeker.isProfileEditor && (
+        <Flex w="100%" flexWrap="wrap" gap=".75rem" marginTop="1rem">
+          <Button flexGrow={1} variant="primary" leftIcon={<LinkIcon />} onClick={handleCopy}>
+            Copy Profile Link
+          </Button>
+          <Button flexGrow={1} variant="primary" as={Link} href="/jobs" leftIcon={<FaBriefcase />}>
+            View Jobs
+          </Button>
+          <Button
+            flexGrow={1}
+            variant="primary"
+            leftIcon={<FaFilePdf />}
+            onClick={onGenerateResume}
+          >
+            Generate Resume
+          </Button>
+          {downloadAbleResume && token && (
             <Button
+              flexGrow={1}
               variant="primary"
-              w="100%"
-              h="3.25rem"
-              leftIcon={<LinkIcon fill="greyscale.100" />}
-              onClick={handleCopy}
+              isLoading={isLoading}
+              leftIcon={<FaFileDownload />}
+              onClick={() => downloadResume(downloadAbleResume.id, token)}
             >
-              <Text type="b2Bold" color="greyscale.100">
-                Copy Profile Link
-              </Text>
+              Download Resume
             </Button>
-            <Button
-              variant="primary"
-              w="100%"
-              h="3.25rem"
-              as={Link}
-              href="/jobs"
-              leftIcon={<Briefcase h="18px" />}
-            >
-              <Text type="b2Bold" color="greyscale.100">
-                View Jobs
-              </Text>
-            </Button>
-          </Flex>
-        )}
-      </Flex>
+          )}
+        </Flex>
+      )}
     </Flex>
   )
 }

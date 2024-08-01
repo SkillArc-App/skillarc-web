@@ -1,10 +1,9 @@
 import { Heading } from '@/components/Heading'
 import { Text } from '@/components/Text.component'
 import { GetOneProfileResponse } from '@/services/profile.service'
-import { EditIcon } from '@chakra-ui/icons'
-import { Button, Divider, Flex } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Divider, Flex } from '@chakra-ui/react'
 import { FaSuitcase } from 'react-icons/fa6'
+import EditIconButton from './EditIconButton'
 import { ProfileBox } from './profileBox'
 
 const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
@@ -48,14 +47,10 @@ const ProfileExperience = ({ seeker }: { seeker: GetOneProfileResponse }) => {
                 <Divider borderColor="greyscale.300" />
               </Flex>
               {seeker.isProfileEditor && (
-                <Button
-                  variant={'icon'}
-                  as={Link}
-                  color="greyscale.600"
+                <EditIconButton
                   href={`${seeker.id}/edit/experience/${otherExperiences.id}`}
-                >
-                  <EditIcon />
-                </Button>
+                  label="Edit Experience"
+                />
               )}
             </Flex>
           )

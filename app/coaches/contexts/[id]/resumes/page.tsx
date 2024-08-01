@@ -24,7 +24,7 @@ const Resumes = (params: IdParams) => {
 }
 
 const ResumesTable = ({ params: { id } }: IdParams) => {
-  const { data: resumes } = useResumesQuery(id)
+  const { data: resumes } = useResumesQuery(id, { refetchInterval: 2000 })
   const resume = useResumeMutation()
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const token = useAuthToken()
@@ -71,7 +71,10 @@ const ResumesTable = ({ params: { id } }: IdParams) => {
     }),
     columnHelper.accessor('generatedAt', {
       header: 'Resume Generated At',
-      cell: (row) => new Date(row.getValue()).toLocaleString(),
+      cell: (row) => {
+        const value = row.getValue()
+        return value && new Date(value).toLocaleString()
+      },
       id: 'generatedAt',
       sortingFn: (row1, row2, columnId) => {
         const date1 = new Date(row1.getValue(columnId))

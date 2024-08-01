@@ -13,6 +13,11 @@ export interface QueryAuthenticatedFunctionContext<
   token: string
 }
 
+export type useAuthenticatedQueryOptions<TData, TError = unknown> = Omit<
+  UseQueryOptions<TData, TError, TData, readonly Maybe<string>[]>,
+  'queryKey' | 'queryFn'
+>
+
 export const useAuthenticatedQuery = <
   TQueryFnData = unknown,
   TError = unknown,
