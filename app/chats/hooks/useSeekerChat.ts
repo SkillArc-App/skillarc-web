@@ -1,15 +1,8 @@
 import { Chat } from '@/common/types/Chat'
-import { Maybe } from '@/common/types/maybe'
-import { useAuthenticatedQuery } from '@/hooks/useAuthenticatedQuery'
+import { useAuthenticatedQuery, useAuthenticatedQueryOptions } from '@/hooks/useAuthenticatedQuery'
 import { get } from '@/http-common'
-import { UseQueryOptions } from '@tanstack/react-query'
 
-export const useSeekerChat = (
-  options: Omit<
-    UseQueryOptions<Chat[], unknown, Chat[], readonly Maybe<string>[]>,
-    'queryKey' | 'queryFn'
-  > = {},
-) =>
+export const useSeekerChat = (options: useAuthenticatedQueryOptions<Chat[]> = {}) =>
   useAuthenticatedQuery(
     ['chats'],
     ({ token }) => {

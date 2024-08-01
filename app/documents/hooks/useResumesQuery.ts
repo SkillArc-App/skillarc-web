@@ -1,8 +1,8 @@
-import { useAuthenticatedQuery } from '@/hooks/useAuthenticatedQuery'
+import { useAuthenticatedQuery, useAuthenticatedQueryOptions } from '@/hooks/useAuthenticatedQuery'
 import { get } from '@/http-common'
 import { Resume } from '../types'
 
-export const useResumesQuery = (personId?: string) =>
+export const useResumesQuery = (personId?: string, options: useAuthenticatedQueryOptions<Resume[]> = {}) =>
   useAuthenticatedQuery(
     ['resumes', personId],
     ({ token }) => {
@@ -14,5 +14,5 @@ export const useResumesQuery = (personId?: string) =>
 
       return getResumes()
     },
-    { enabled: !!personId, refetchInterval: 2000 },
+    { enabled: !!personId, ...options },
   )
