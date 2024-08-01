@@ -11,7 +11,7 @@ const getBaseUrl = () => {
 }
 
 const getJobs = async (): Promise<SearchJob[]> => {
-  if (process.env.NODE_ENV != 'production') {
+  if (process.env.NEXT_DYNAMIC_SITEMAP != 'true') {
     return []
   }
 
