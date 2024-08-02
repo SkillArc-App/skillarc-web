@@ -235,6 +235,12 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
                 </Text>
               </Box>
               <Box>
+                <Text variant={'b3'}>Lead Captured By</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {`${seeker.leadCapturedBy}: ${new Date(seeker.leadCapturedAt).toLocaleDateString()}`}
+                </Text>
+              </Box>
+              <Box>
                 <Text variant={'b3'}>Last On</Text>
                 <Text variant={'b2'} color={'black'}>
                   {seeker.lastActiveOn}
