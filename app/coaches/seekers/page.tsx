@@ -1,11 +1,13 @@
 'use client'
 
-import { CoachSeekerTable } from '@/coaches/types'
+import { CoachSeekerTable, SubmittableSeekerLead } from '@/coaches/types'
 import { Attribute } from '@/common/types/Attribute'
 import { PersonSearchValue } from '@/common/types/PersonSearch'
 import DataTable from '@/components/DataTable'
+import { useAuthToken } from '@/hooks/useAuthToken'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useUser } from '@/hooks/useUser'
+import { post } from '@/http-common'
 import { usePersonSearch } from '@/jobs/hooks/usePersonSearch'
 import { SearchIcon } from '@chakra-ui/icons'
 import {
@@ -23,7 +25,9 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverTrigger,
+  Spacer,
   Stack,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
@@ -31,6 +35,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 import { FaChevronDown } from 'react-icons/fa6'
 import { useCoachAttributes } from '../hooks/useCoachAttributes'
+import NewLeadModal from './components/NewLeadModal'
 
 const Coaches = () => {
   return (
@@ -45,6 +50,8 @@ const Coaches = () => {
 const Seekers = () => {
   const { data: user } = useUser()
   const { data: attributes } = useCoachAttributes()
+  const { isOpen, onOpen, onClose } = useDisclosure({})
+  const token = useAuthToken()
 
   const router = useRouter()
 
@@ -59,10 +66,20 @@ const Seekers = () => {
 
   const debouncedSearchValue = useDebounce(searchValue, 500)
 
-  const { data } = usePersonSearch(debouncedSearchValue)
+  const { data, refetch } = usePersonSearch(debouncedSearchValue)
 
   const filteredData =
     filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
+
+  const handleSubmit = (lead: SubmittableSeekerLead) => {
+    if (!token) return
+
+    post(`/coaches/leads/`, { lead }, token).then(() => {
+      refetch()
+
+      onClose()
+    })
+  }
 
   const onAttributeChange = (attributeName: string, values: string[]) => {
     const newSelectedAttributes = { ...searchValue.attributeFilters, [attributeName]: values }
@@ -86,15 +103,23 @@ const Seekers = () => {
 
   return (
     <Stack width={'100%'}>
-      <Checkbox
-        isChecked={filter !== 'no'}
-        onChange={() => {
-          const filterString = filter !== 'no' ? 'filter=no' : 'filter=yes'
-          router.replace(`/coaches/seekers?utm_term=${searchValue.searchTerms}&${filterString}`)
-        }}
-      >
-        Owned by Me
-      </Checkbox>
+      <NewLeadModal isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} />
+      <HStack>
+        <Checkbox
+          isChecked={filter !== 'no'}
+          onChange={() => {
+            const filterString = filter !== 'no' ? 'filter=no' : 'filter=yes'
+            router.replace(`/coaches/seekers?utm_term=${searchValue.searchTerms}&${filterString}`)
+          }}
+        >
+          Owned by Me
+        </Checkbox>
+        <Spacer />
+        <Button onClick={onOpen} colorScheme="green">
+          New Lead
+        </Button>
+      </HStack>
+
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <SearchIcon color="gray.300" />
@@ -209,8 +234,8 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
       filterFn: 'includesString',
       cell: (row) => row.getValue(),
     }),
-    columnHelper.accessor('certifiedBy', {
-      header: 'Certified By',
+    columnHelper.accessor('kind', {
+      header: 'Kind',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('lastActiveOn', {

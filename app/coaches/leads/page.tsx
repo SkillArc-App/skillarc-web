@@ -12,7 +12,7 @@ import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
 import { SeekerLead, SubmittableSeekerLead } from '../types'
-import NewLeadModal from './components/NewLeadModal'
+import NewLeadModal from '../seekers/components/NewLeadModal'
 
 const Skeleton = () => {
   return (

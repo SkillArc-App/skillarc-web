@@ -58,6 +58,9 @@ export type CoachSeekerTable = Pick<
   CoachSeeker,
   | 'id'
   | 'assignedCoach'
+  | 'kind'
+  | 'leadCapturedAt'
+  | 'leadCapturedBy'
   | 'barriers'
   | 'certifiedBy'
   | 'email'
@@ -74,6 +77,8 @@ export type CoachSeeker = {
   kind: ContextKind
   applications: SeekerApplication[]
   assignedCoach: string
+  leadCapturedAt: string
+  leadCapturedBy: string
   attributes: {
     id: string
     name: string
@@ -90,7 +95,6 @@ export type CoachSeeker = {
   lastName: string
   notes: Note[]
   phoneNumber: string
-  leadId?: string
   seekerId: string
   skillLevel: string
 }
