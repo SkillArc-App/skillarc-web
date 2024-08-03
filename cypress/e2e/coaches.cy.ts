@@ -191,7 +191,7 @@ describe('Coaches', () => {
         const row = cy.findByText(`${person['firstName']} ${person['lastName']}`).parent().parent()
 
         row.within(() => {
-          cy.findAllByText(coachEmail).should((elements) => expect(elements).to.have.length(2))
+          cy.findAllByText(coachEmail).should((elements) => expect(elements).to.have.length(1))
           cy.findByRole('link', { name: 'Dash' }).click()
         })
       })
@@ -239,10 +239,10 @@ describe('Coaches', () => {
 
     cy.get('@lead').then((lead: any) => {
       cy.visit('/coaches')
-      cy.findByRole('tab', { name: 'Leads' }).click()
-      cy.url().should('contain', '/coaches/leads')
+      cy.findByRole('tab', { name: 'Seekers' }).click()
+      cy.url().should('contain', '/coaches/seekers')
 
-      cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
+      cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
 
       cy.get('table').should('not.contain', lead['firstName'])
 
@@ -250,7 +250,6 @@ describe('Coaches', () => {
 
       cy.get('table').should('contain', lead['firstName'])
       cy.get('table').should('contain', lead['lastName'])
-      cy.get('table').should('contain', lead['phoneNumber'])
 
       cy.findByRole('button', { name: 'New Lead' }).click()
 
@@ -267,14 +266,13 @@ describe('Coaches', () => {
 
       reloadUntilConditionMet(
         () => {
-          return cy.get('table').then((el) => el.text().includes(newLead.phoneNumber))
+          return cy.get('table').then((el) => el.text().includes(`${newLead.firstName} ${newLead.lastName}`))
         },
         { retryCount: 8 },
       )
 
       cy.get('table').should('contain', newLead.firstName)
       cy.get('table').should('contain', newLead.lastName)
-      cy.get('table').should('contain', newLead.phoneNumber)
 
       cy.findByRole('table').within(() => {
         const row = cy.findByText(`${newLead.firstName} ${newLead.lastName}`).parent().parent()
@@ -284,15 +282,15 @@ describe('Coaches', () => {
         })
       })
 
-      cy.findByText('< Back to Leads')
+      cy.findByText('< Back to Seekers')
 
       cy.findByRole('button', { name: 'certify' }).should('be.enabled')
 
       cy.findByPlaceholderText('Add a note').type('This is a note').type('{enter}')
       cy.findByPlaceholderText('Add a note').should('have.value', '')
 
-      cy.findByText('< Back to Leads').click()
-      cy.findByRole('tab', { name: 'Leads' }).should('have.attr', 'aria-selected', 'true')
+      cy.findByText('< Back to Seekers').click()
+      cy.findByRole('tab', { name: 'Seekers' }).should('have.attr', 'aria-selected', 'true')
     })
   })
 })
