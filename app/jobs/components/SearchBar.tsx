@@ -9,7 +9,7 @@ import {
   InputLeftElement,
   VStack,
 } from '@chakra-ui/react'
-import Select, { MultiValue } from 'react-select'
+import Select, { MultiValue, StylesConfig } from 'react-select'
 
 type SelectSearchProps<T> = {
   label: string
@@ -20,9 +20,38 @@ type SelectSearchProps<T> = {
 }
 
 function SearchSelect<T>({ label, id, options, value, onChange }: SelectSearchProps<T>) {
+  const styles: StylesConfig<SearchOption<T>> = {
+    control: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size
+    }),
+    input: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size of the input text
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size of the placeholder text
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size of the selected value
+    }),
+    menu: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size of the dropdown options
+    }),
+    option: (provided) => ({
+      ...provided,
+      fontSize: '12px', // Adjust the font size of the options
+    }),
+  }
+
   return (
     <FormControl width={'15rem'}>
-      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <FormLabel fontSize={'small'} htmlFor={id}>
+        {label}
+      </FormLabel>
       <Select
         closeMenuOnSelect={false}
         inputId={id}
@@ -32,6 +61,7 @@ function SearchSelect<T>({ label, id, options, value, onChange }: SelectSearchPr
         placeholder={`${label}...`}
         value={value}
         onChange={onChange}
+        styles={styles}
       />
     </FormControl>
   )

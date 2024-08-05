@@ -145,15 +145,9 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
             <Stack p={'1rem'} bg={'white'} spacing="1rem">
               <Breadcrumb>
                 <BreadcrumbItem>
-                  {seeker.kind === 'seeker' ? (
-                    <BreadcrumbLink as={NextLink} href="/coaches/seekers">
-                      {'< Back to Seekers'}
-                    </BreadcrumbLink>
-                  ) : (
-                    <BreadcrumbLink as={NextLink} href="/coaches/leads">
-                      {'< Back to Leads'}
-                    </BreadcrumbLink>
-                  )}
+                  <BreadcrumbLink as={NextLink} href="/coaches/seekers">
+                    {'< Back to Seekers'}
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
               </Breadcrumb>
               <HStack gap={0}>
@@ -232,6 +226,18 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
                 <Text variant={'b3'}>Phone Number</Text>
                 <Text variant={'b2'} color={'black'}>
                   {seeker.phoneNumber}
+                </Text>
+              </Box>
+              <Box>
+                <Text variant={'b3'}>Kind</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {seeker.kind}
+                </Text>
+              </Box>
+              <Box>
+                <Text variant={'b3'}>Lead Captured By</Text>
+                <Text variant={'b2'} color={'black'}>
+                  {`${seeker.leadCapturedBy}: ${new Date(seeker.leadCapturedAt).toLocaleDateString()}`}
                 </Text>
               </Box>
               <Box>

@@ -12,8 +12,7 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
     '/coaches/seekers': 0,
     '/coaches/tasks': 1,
     '/coaches/feed': 2,
-    '/coaches/leads': 3,
-    '/coaches/jobs': 4,
+    '/coaches/jobs': 3,
   }
 
   const index = tabs[pathName] || 0
@@ -30,9 +29,6 @@ const Coaches = ({ children }: { children: React.ReactNode }) => {
           </Tab>
           <Tab as={Link} href={'/coaches/feed'}>
             Feed
-          </Tab>
-          <Tab as={Link} href={'/coaches/leads'}>
-            Leads
           </Tab>
           <Tab as={Link} href={'/coaches/jobs'}>
             Jobs
