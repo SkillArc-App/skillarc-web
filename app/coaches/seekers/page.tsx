@@ -158,11 +158,9 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
       header: 'Last Active On',
       id: lastActiveColumnId,
       cell: (row) => {
-        try {
-          return new Date(row.getValue()).toDateString()
-        } catch (e) {
-          return row.getValue()
-        }
+        const value = row.getValue()
+
+        return !!value ? new Date(value).toDateString() : 'Never'
       },
       sortUndefined: 1,
       sortDescFirst: false,
@@ -176,9 +174,18 @@ const Table = ({ data }: { data: CoachSeekerTable[] }) => {
     columnHelper.accessor('lastContacted', {
       header: 'Last Contacted',
       cell: (row) => {
-        return row.getValue() === 'Never' ? row.getValue() : new Date(row.getValue()).toDateString()
+        const value = row.getValue()
+
+        return !!value ? new Date(value).toDateString() : 'Never'
       },
-      sortingFn: 'datetime',
+      sortUndefined: 1,
+      sortDescFirst: false,
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId))
+        const date2 = new Date(row2.getValue(columnId))
+
+        return date1.getTime() - date2.getTime()
+      },
     }),
   ]
 

@@ -237,7 +237,7 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
               <Box>
                 <Text variant={'b3'}>Lead Captured By</Text>
                 <Text variant={'b2'} color={'black'}>
-                  {`${seeker.leadCapturedBy}: ${new Date(seeker.leadCapturedAt).toLocaleDateString()}`}
+                  {`${seeker.leadCapturedBy}: ${!!seeker.leadCapturedAt && new Date(seeker.leadCapturedAt).toLocaleDateString()}`}
                 </Text>
               </Box>
               <Box>
