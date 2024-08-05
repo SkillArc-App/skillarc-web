@@ -3,6 +3,7 @@
 import { CoachSeekerTable, SubmittableSeekerLead } from '@/coaches/types'
 import { SearchValue } from '@/common/types/Search'
 import DataTable from '@/components/DataTable'
+import { LoadingPage } from '@/components/Loading'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useUser } from '@/hooks/useUser'
@@ -46,9 +47,8 @@ const Seekers = () => {
   })
 
   const debouncedSearchValue = useDebounce(searchValue, 500)
-  console.log(debouncedSearchValue)
 
-  const { data, refetch } = usePersonSearch(debouncedSearchValue)
+  const { data, isLoading, refetch } = usePersonSearch(debouncedSearchValue)
   const filters = (attributes ?? []).map((attribute) => ({
     key: attribute.id,
     label: attribute.name,
@@ -104,7 +104,7 @@ const Seekers = () => {
       </HStack>
 
       <SearchBar value={searchValue} filters={filters} onChange={onSearchChange} />
-      {filteredData && <Table data={filteredData} />}
+      {isLoading ? <LoadingPage /> : <Table data={filteredData ?? []} />}
     </Stack>
   )
 }
