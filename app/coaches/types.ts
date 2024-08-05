@@ -77,8 +77,8 @@ export type CoachSeeker = {
   kind: ContextKind
   applications: SeekerApplication[]
   assignedCoach: string
-  leadCapturedAt: string
-  leadCapturedBy: string
+  leadCapturedAt?: string
+  leadCapturedBy?: string
   attributes: {
     id: string
     name: string
@@ -90,8 +90,8 @@ export type CoachSeeker = {
   email: string
   jobRecommendations: string[]
   firstName: string
-  lastActiveOn: string
-  lastContacted: string
+  lastActiveOn?: string
+  lastContacted?: string
   lastName: string
   notes: Note[]
   phoneNumber: string
