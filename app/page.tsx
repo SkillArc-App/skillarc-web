@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     'SkillArc',
     'jobs',
     'Columbus',
+    'non profit',
     'job search engine',
     'job listings',
     'search jobs',
