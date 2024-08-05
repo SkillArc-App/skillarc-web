@@ -1,39 +1,19 @@
 'use client'
 
 import { CoachSeekerTable, SubmittableSeekerLead } from '@/coaches/types'
-import { Attribute } from '@/common/types/Attribute'
-import { PersonSearchValue } from '@/common/types/PersonSearch'
+import { SearchValue } from '@/common/types/Search'
 import DataTable from '@/components/DataTable'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useUser } from '@/hooks/useUser'
 import { post } from '@/http-common'
+import SearchBar from '@/jobs/components/SearchBar'
 import { usePersonSearch } from '@/jobs/hooks/usePersonSearch'
-import { SearchIcon } from '@chakra-ui/icons'
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Link,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverTrigger,
-  Spacer,
-  Stack,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Button, Checkbox, HStack, Link, Spacer, Stack, useDisclosure } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
-import { FaChevronDown } from 'react-icons/fa6'
 import { useCoachAttributes } from '../hooks/useCoachAttributes'
 import NewLeadModal from './components/NewLeadModal'
 
@@ -59,14 +39,24 @@ const Seekers = () => {
   const searchTerms = searchParams?.get('utm_term') ?? searchParams?.get('searchTerm') ?? ''
   const filter = searchParams.get('filter')
 
-  const [searchValue, setSearchValue] = useState<PersonSearchValue>({
+  const [searchValue, setSearchValue] = useState<SearchValue>({
     searchTerms,
-    attributeFilters: {},
+    filters: {},
+    otherUtmParams: {},
   })
 
   const debouncedSearchValue = useDebounce(searchValue, 500)
+  console.log(debouncedSearchValue)
 
   const { data, refetch } = usePersonSearch(debouncedSearchValue)
+  const filters = (attributes ?? []).map((attribute) => ({
+    key: attribute.id,
+    label: attribute.name,
+    options: attribute.set.map((i) => ({
+      value: i,
+      label: i[0].toLocaleUpperCase() + i.slice(1),
+    })),
+  }))
 
   const filteredData =
     filter !== 'no' ? data?.filter((seeker) => seeker.assignedCoach == user?.email) : data
@@ -81,18 +71,11 @@ const Seekers = () => {
     })
   }
 
-  const onAttributeChange = (attributeName: string, values: string[]) => {
-    const newSelectedAttributes = { ...searchValue.attributeFilters, [attributeName]: values }
-    onSearchChange({ ...searchValue, attributeFilters: newSelectedAttributes })
-  }
-
-  const onSearchChange = (value: PersonSearchValue) => {
+  const onSearchChange = (value: SearchValue) => {
     const filterString = filter !== 'no' ? 'filter=yes' : 'filter=no'
-    const attrString = Object.entries(value.attributeFilters)
+    const attrString = Object.entries(value.filters)
       .map(([name, values]) => {
-        const attrName = `attr_${name}`
-
-        return values.map((value) => `${attrName}=${value}`)
+        return values.map(({ value }) => `${name}=${value}`)
       })
       .flat()
       .join('&')
@@ -120,76 +103,9 @@ const Seekers = () => {
         </Button>
       </HStack>
 
-      <InputGroup>
-        <InputLeftElement pointerEvents="none">
-          <SearchIcon color="gray.300" />
-        </InputLeftElement>
-        <Input
-          type="search"
-          role="search"
-          value={searchValue.searchTerms}
-          onChange={(sv) => onSearchChange({ ...searchValue, searchTerms: sv.target.value })}
-        />
-      </InputGroup>
-      <HStack>
-        {attributes?.map((attribute) => (
-          <AttributePopover
-            key={attribute.id}
-            isDifferent={searchValue.attributeFilters[attribute.name]?.length > 0}
-            selectedValue={searchValue.attributeFilters[attribute.name] ?? []}
-            baseAttribute={attribute}
-            onChange={(e) => onAttributeChange(attribute.name, e)}
-            reset={() => onAttributeChange(attribute.name, [])}
-          />
-        ))}
-      </HStack>
+      <SearchBar value={searchValue} filters={filters} onChange={onSearchChange} />
       {filteredData && <Table data={filteredData} />}
     </Stack>
-  )
-}
-
-const AttributePopover = ({
-  baseAttribute,
-  isDifferent,
-  selectedValue,
-  onChange,
-  reset,
-}: {
-  baseAttribute: Attribute
-  isDifferent: boolean
-  selectedValue: string[]
-  onChange: (value: string[]) => void
-  reset: () => void
-}) => {
-  const colorScheme = isDifferent ? 'blue' : 'gray'
-
-  return (
-    <Popover>
-      <PopoverTrigger>
-        <Button colorScheme={colorScheme} size={'xs'} rightIcon={<FaChevronDown />}>
-          {baseAttribute.name}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody>
-          <CheckboxGroup onChange={onChange} value={selectedValue}>
-            <Stack>
-              {baseAttribute.set.map((value) => (
-                <Checkbox value={value} key={value}>
-                  {value}
-                </Checkbox>
-              ))}
-
-              <Button size={'xs'} onClick={reset}>
-                Reset
-              </Button>
-            </Stack>
-          </CheckboxGroup>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
   )
 }
 
