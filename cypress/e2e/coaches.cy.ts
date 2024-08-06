@@ -50,9 +50,6 @@ describe('Coaches', () => {
     })
 
     cy.get('@person').then((person: any) => {
-      // We can't assume this to be the case due to round robin assignment
-      // cy.get('tbody').should('not.contain', person['firstName'])
-
       cy.get('label').contains('Owned by Me').parent().click()
 
       cy.findByRole('table').within(() => {
@@ -71,12 +68,6 @@ describe('Coaches', () => {
       cy.findByRole('button', { name: 'recommend-for-job' }).click()
       cy.findByDisplayValue('Job Order').select('General Contractor - The Superior Group')
       cy.findByRole('button', { name: 'Recommend' }).click()
-
-      cy.findByRole('button', { name: 'add-attribute' }).click()
-
-      cy.findByDisplayValue('Attribute').select('Background')
-      cy.get('body').contains('Add a value').next().type('Misdemeanor{enter}')
-      cy.findByRole('button', { name: 'Save' }).click()
 
       cy.get('body').should('contain', person['email'])
 

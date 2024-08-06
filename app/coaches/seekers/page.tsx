@@ -1,7 +1,7 @@
 'use client'
 
 import { CoachSeekerTable, SubmittableSeekerLead } from '@/coaches/types'
-import { SearchValue } from '@/common/types/Search'
+import { SearchFilter, SearchValue } from '@/common/types/Search'
 import DataTable from '@/components/DataTable'
 import { LoadingPage } from '@/components/Loading'
 import { useAuthToken } from '@/hooks/useAuthToken'
@@ -40,7 +40,7 @@ const Seekers = () => {
   const searchTerms = searchParams?.get('utm_term') ?? searchParams?.get('searchTerm') ?? ''
   const filter = searchParams.get('filter')
 
-  const [searchValue, setSearchValue] = useState<SearchValue>({
+  const [searchValue, setSearchValue] = useState<SearchValue<string>>({
     searchTerms,
     filters: {},
     otherUtmParams: {},
@@ -49,7 +49,7 @@ const Seekers = () => {
   const debouncedSearchValue = useDebounce(searchValue, 500)
 
   const { data, isLoading, refetch } = usePersonSearch(debouncedSearchValue)
-  const filters = (attributes ?? []).map((attribute) => ({
+  const filters: SearchFilter<string>[] = (attributes ?? []).map((attribute) => ({
     key: attribute.id,
     label: attribute.name,
     options: attribute.set.map((i) => ({
@@ -71,7 +71,7 @@ const Seekers = () => {
     })
   }
 
-  const onSearchChange = (value: SearchValue) => {
+  const onSearchChange = (value: SearchValue<string>) => {
     const filterString = filter !== 'no' ? 'filter=yes' : 'filter=no'
     const attrString = Object.entries(value.filters)
       .map(([name, values]) => {
@@ -103,7 +103,7 @@ const Seekers = () => {
         </Button>
       </HStack>
 
-      <SearchBar value={searchValue} filters={filters} onChange={onSearchChange} />
+      <SearchBar<string> value={searchValue} filters={filters} onChange={onSearchChange} />
       {isLoading ? <LoadingPage /> : <Table data={filteredData ?? []} />}
     </Stack>
   )

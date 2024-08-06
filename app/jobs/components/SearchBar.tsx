@@ -67,13 +67,13 @@ function SearchSelect<T>({ label, id, options, value, onChange }: SelectSearchPr
   )
 }
 
-type SearchBarProps = {
-  value: SearchValue
-  filters?: SearchFilter[]
-  onChange: (value: SearchValue) => void
+type SearchBarProps<T> = {
+  value: SearchValue<T>
+  filters?: SearchFilter<T>[]
+  onChange: (value: SearchValue<T>) => void
 }
 
-const SearchBar = ({ value, filters = [], onChange }: SearchBarProps) => {
+export default function SearchBar<T>({ value, filters = [], onChange }: SearchBarProps<T>) {
   return (
     <VStack width={'100%'} align={'start'}>
       <InputGroup>
@@ -118,5 +118,3 @@ const SearchBar = ({ value, filters = [], onChange }: SearchBarProps) => {
     </VStack>
   )
 }
-
-export default SearchBar

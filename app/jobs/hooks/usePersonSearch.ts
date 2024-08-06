@@ -1,24 +1,29 @@
 import { CoachSeekerTable } from '@/coaches/types'
-import { PersonSearchValue } from '@/common/types/PersonSearch'
-import { SearchValue } from '@/common/types/Search'
-import { camelToSnake } from '@/common/utils/functions'
+import { FilterValue, SearchValue } from '@/common/types/Search'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { get } from '@/http-common'
 import { useQuery } from '@tanstack/react-query'
 
-export const usePersonSearch = ({ searchTerms, filters }: SearchValue) => {
+export const usePersonSearch = ({ searchTerms, filters }: SearchValue<string>) => {
   const token = useAuthToken()
 
   const stringifiedFilters = JSON.stringify(filters)
 
   return useQuery(['personSearch', token, searchTerms, stringifiedFilters], async () => {
-    const params: any = {}
+    const attributes = Object.entries(filters).reduce((obj, [id, filter]) => {
+      const values = filter.map((v) => v.value)
 
-    Object.entries(filters).forEach(([key, values]) => {
-      params[camelToSnake(key)] = values.map((v) => v.value)
-    })
+      if (values.length > 0) {
+        obj[id] = values
+      }
 
-    params[camelToSnake('utm_term')] = searchTerms
+      return obj
+    }, {} as FilterValue<string>)
+
+    const params = {
+      utmTerm: searchTerms,
+      attributes: JSON.stringify(attributes),
+    }
 
     return (await get<CoachSeekerTable[]>(`/coaches/contexts`, token, params)).data
   })
