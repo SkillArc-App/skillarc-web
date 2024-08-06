@@ -17,11 +17,17 @@ export type SearchEmployer = {
   logoUrl: string
 }
 
-export type SearchValue = {
+type FilterOption<T> = {
+  [key: string]: SearchOption<T>[]
+}
+
+export type FilterValue<T> = {
+  [key: string]: T[]
+}
+
+export type SearchValue<T = any> = {
   searchTerms: string
-  filters: {
-    [key: string]: SearchOption<any>[]
-  }
+  filters: FilterOption<T>
   otherUtmParams: Partial<UtmParams>
 }
 
