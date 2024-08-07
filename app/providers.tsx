@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/Header'
 import { Auth0Provider } from '@auth0/auth0-react'
+import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
@@ -35,29 +36,31 @@ export function Providers({ children }: { children: React.ReactNode }) {
           audience: 'https://hello-world.example.com',
         }}
       >
-        <ChakraProvider theme={theme}>
-          <SessionWrapper>
-            <Flex
-              flexWrap={'wrap'}
-              bg={'greyscale.100'}
-              flexDir={'column'}
-              height={'100vh'}
-              overscroll={'none'}
-            >
-              <Header />
+        <CacheProvider>
+          <ChakraProvider theme={theme}>
+            <SessionWrapper>
               <Flex
                 flexWrap={'wrap'}
-                flexGrow={1}
-                marginTop="64px"
-                height={'calc(100% - 64px)'}
-                overflow={'scroll'}
+                bg={'greyscale.100'}
+                flexDir={'column'}
+                height={'100vh'}
                 overscroll={'none'}
               >
-                {children}
+                <Header />
+                <Flex
+                  flexWrap={'wrap'}
+                  flexGrow={1}
+                  marginTop="64px"
+                  height={'calc(100% - 64px)'}
+                  overflow={'scroll'}
+                  overscroll={'none'}
+                >
+                  {children}
+                </Flex>
               </Flex>
-            </Flex>
-          </SessionWrapper>
-        </ChakraProvider>
+            </SessionWrapper>
+          </ChakraProvider>
+        </CacheProvider>
       </Auth0Provider>
     </QueryClientProvider>
   )
