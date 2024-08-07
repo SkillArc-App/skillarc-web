@@ -1,157 +1,48 @@
-'use client'
-
+import { Job } from '@/common/types/Job'
 import { IdParams } from '@/common/types/PageParams'
-import { Heading } from '@/components/Heading'
+import { SearchJob } from '@/common/types/Search'
 import { LoadingPage } from '@/components/Loading'
-import { Text } from '@/components/Text.component'
-import { useAuthToken } from '@/hooks/useAuthToken'
-import { useUser } from '@/hooks/useUser'
-import { Success } from '@/icons/Success'
-import { SingleJobPosting } from '@/jobs/[id]/components/SingleJobPosting'
-import useApply from '@/jobs/hooks/useApply'
-import useUserState, { UserState } from '@/jobs/hooks/useUserState'
-import { FrontendJobInteractionsService } from '@/services/jobInteractions.service'
-import {
-  Button,
-  Flex,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-} from '@chakra-ui/react'
-import Link from 'next/link'
-import { useJob } from '../hooks/useJobData'
+import { get } from '@/http-common'
+import { Metadata } from 'next'
+import { Suspense } from 'react'
+import PageClient from './page-client'
 
-export default function JobPosting({ params: { id } }: IdParams) {
-  const { data: job, refetch } = useJob(id)
+export const revalidate = 3600 // revalidate at most every hour
 
-  const { data: user } = useUser()
-  const token = useAuthToken()
-  const userState = useUserState()
+// Generate segments for [category]
+export async function generateStaticParams() {
+  const searchJobs = (await get<SearchJob[]>('seekers/jobs')).data
 
-  const loadedJob = !!job?.id
+  return searchJobs.map((job) => ({
+    id: job.id,
+  }))
+}
 
-  const {
-    isOpen: isSuccessModalOpen,
-    onOpen: onSuccessModalOpen,
-    onClose: onSuccessModalClose,
-  } = useDisclosure()
-  const {
-    isOpen: isApplyModalOpen,
-    onOpen: onApplyModalOpen,
-    onClose: onApplyModalClose,
-  } = useDisclosure()
+export async function generateMetadata({ params }: IdParams): Promise<Metadata> {
+  // read route params
+  const id = params.id
 
-  const handleApplyClick = async () => {
-    if (!loadedJob || !token || userState !== UserState.Ready) {
-      return
-    }
+  // fetch data
+  const job = (await get<Job>(`/jobs/${id}`)).data
 
-    onApplyModalClose()
-    await FrontendJobInteractionsService.apply(job.id, token)
-
-    await onSuccessModalOpen()
-    await refetch()
+  // optionally access and extend (rather than replace) parent metadata
+  return {
+    title: `${job.employer.name} - ${job.employmentTitle}`,
+    description: job.responsibilitiesDescription,
+    keywords: [
+      'Job',
+      'Employment',
+      'Columbus',
+      ...job.desiredSkills.map((s) => s.masterSkill.skill),
+    ],
+    publisher: 'SkillArc',
   }
+}
 
-  const { applyCopy, onApply } = useApply({ job, onReadyToApply: onApplyModalOpen })
-
-  if (!job) {
-    return <LoadingPage></LoadingPage>
-  }
-
+export default function JobPosting({ params }: IdParams) {
   return (
-    <>
-      <Flex flexWrap="wrap" mb="156px">
-        <SingleJobPosting job={job} />
-        <Flex w="100%" p="1rem" gap="1rem" flexWrap="wrap" zIndex={2} position="fixed" bottom="0px">
-          {!job.applicationStatus && (
-            <Button w="100%" variant="primary" onClick={onApply}>
-              {applyCopy}
-            </Button>
-          )}
-        </Flex>
-      </Flex>
-      <Modal isOpen={isSuccessModalOpen} onClose={onSuccessModalClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>
-            <Flex w="100%" h="100%" flexWrap="wrap" justifyContent="center">
-              <Success boxSize="50%" />
-              <Flex w="100%" flexWrap="wrap" gap=".5rem" marginTop="1.5rem">
-                <Heading type="h3" color="#212529" w="100%">
-                  Great work, {user?.firstName} 🎉
-                </Heading>
-                <Flex w="100%"></Flex>
-                <Text type="b2" color="#6C757D">
-                  We&apos;re sharing your SkillArc profile with <strong>{job.employer.name}</strong>{' '}
-                  to start the application process.
-                </Text>
-                <Text type="b2" color="#6C757D">
-                  Keep an eye on your email for next steps!
-                </Text>
-                <Text type="b2" color="#6C757D">
-                  - The SkillArc team 😄
-                </Text>
-              </Flex>
-              <Flex w="100%" gap="1rem" flexWrap="wrap" my="1.5rem">
-                <Button
-                  variant="primary"
-                  w="100%"
-                  as={Link}
-                  href={`/profiles/${user?.profile?.id}`}
-                >
-                  Update your profile
-                </Button>
-                <Button
-                  variant="secondary"
-                  w="100%"
-                  as={Link}
-                  href={'https://meetings.hubspot.com/hannah-wexner'}
-                >
-                  Meet a free career coach
-                </Button>
-              </Flex>
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-      <Modal isOpen={isApplyModalOpen} onClose={onApplyModalClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody py="1rem">
-            <Flex w="100%" h="100%" flexWrap="wrap" gap="24px">
-              <Heading type="h3" color="greyscale.900"></Heading>
-              <Flex flexWrap="wrap" w="100%">
-                <Text type="b1" color="greyscale.600" marginRight="4px">
-                  Would you like to apply to
-                </Text>
-                <Text type="b1Bold" color="primary.500" marginRight="4px">
-                  {job.employmentTitle}
-                </Text>
-                <Text type="b1" color="greyscale.600" marginRight="4px">
-                  at
-                </Text>
-                <Text type="b1Bold" color="greyscale.600">
-                  {job.employer.name}
-                </Text>
-                <Text type="b1" color="greyscale.600" marginRight="4px">
-                  ?
-                </Text>
-              </Flex>
-              <Flex w="100%" gap="1rem" flexWrap="wrap">
-                <Button variant="primary" w="100%" onClick={handleApplyClick}>
-                  {applyCopy}
-                </Button>
-                <Button variant="secondary" w="100%" onClick={onApplyModalClose}>
-                  Go Back
-                </Button>
-              </Flex>
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+    <Suspense fallback={<LoadingPage />}>
+      <PageClient params={params} />
+    </Suspense>
   )
 }
