@@ -4,7 +4,7 @@ import { Providers } from './providers'
 export const metadata: Metadata = {
   title: 'SkillArc: Tap Into Talent',
   description: 'SkillArc your career and hiring partner in Columbus Ohio.',
-  other: { "google-site-verification": "4CR5olDyg3hhoOqnO1iacmAxcEPlIoqPD1LRrjKTUeo" },
+  other: { 'google-site-verification': '4CR5olDyg3hhoOqnO1iacmAxcEPlIoqPD1LRrjKTUeo' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
