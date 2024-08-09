@@ -6,6 +6,7 @@ import { get } from '@/http-common'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 import PageClient from './page-client'
+import { notFound } from 'next/navigation'
 
 export const revalidate = 3600 // revalidate at most every hour
 
@@ -22,20 +23,24 @@ export async function generateMetadata({ params }: IdParams): Promise<Metadata> 
   // read route params
   const id = params.id
 
-  // fetch data
-  const job = (await get<Job>(`/jobs/${id}`)).data
+  try {
+    // fetch data
+    const job = (await get<Job>(`/jobs/${id}`)).data
 
-  // optionally access and extend (rather than replace) parent metadata
-  return {
-    title: `${job.employer.name} - ${job.employmentTitle}`,
-    description: job.responsibilitiesDescription,
-    keywords: [
-      'Job',
-      'Employment',
-      'Columbus',
-      ...job.desiredSkills.map((s) => s.masterSkill.skill),
-    ],
-    publisher: 'SkillArc',
+    // optionally access and extend (rather than replace) parent metadata
+    return {
+      title: `${job.employer.name} - ${job.employmentTitle}`,
+      description: job.responsibilitiesDescription,
+      keywords: [
+        'Job',
+        'Employment',
+        'Columbus',
+        ...job.desiredSkills.map((s) => s.masterSkill.skill),
+      ],
+      publisher: 'SkillArc',
+    }
+  } catch (e) {
+    notFound()
   }
 }
 
