@@ -76,8 +76,8 @@ const Table = ({ data, teams }: { data: JobOrderSummary[]; teams: Team[] }) => {
       header: 'Order',
       cell: (row) => row.getValue(),
     }),
-    columnHelper.accessor('hireCount', {
-      header: 'Hires',
+    columnHelper.accessor('candidateCount', {
+      header: 'Candidates',
       cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('status', {
