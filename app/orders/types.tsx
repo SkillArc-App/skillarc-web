@@ -32,6 +32,7 @@ export type JobOrderSummary = {
   employmentTitle: string
   employerName: string
   openedAt: string
+  candidateCount: number
   recommendedCount: number
   teamId: string
   screenerQuestionsId: string
