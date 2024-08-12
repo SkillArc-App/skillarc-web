@@ -25,7 +25,7 @@ import {
 import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
-import { FaRegTrashCan } from 'react-icons/fa6'
+import { FaRegTrashCan, FaX } from 'react-icons/fa6'
 import { useAdminAttributes } from '../hooks/useAdminAttributes'
 
 type FormInputType = {
@@ -64,6 +64,10 @@ const Attributes = () => {
     onOpen()
   }
 
+  const handleDeleteServer = () => {
+    alert('You cannot delete server managed attributes. Talk to eng.')
+  }
+
   const handleDelete = async (id: string) => {
     if (!token) return
 
@@ -86,6 +90,10 @@ const Attributes = () => {
       header: 'Description',
       cell: (row) => row.getValue(),
     }),
+    columnHelper.accessor('machineDerived', {
+      header: 'Server Managed',
+      cell: (row) => (row.getValue() ? 'Yes' : 'No'),
+    }),
     columnHelper.accessor('set', {
       header: 'Set',
       cell: (row) => row.getValue().join(', '),
@@ -98,10 +106,12 @@ const Attributes = () => {
       header: 'Actions',
       cell: (row) => (
         <IconButton
-          onClick={() => handleDelete(row.row.original.id)}
+          onClick={
+            row.row.original.machineDerived ? handleDeleteServer : () => handleDelete(row.row.original.id)
+          }
           aria-label="delete-attribute"
           variant={'ghost'}
-          icon={<FaRegTrashCan />}
+          icon={row.row.original.machineDerived ? <FaX /> : <FaRegTrashCan />}
         />
       ),
     }),
