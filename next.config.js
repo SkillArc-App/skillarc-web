@@ -34,7 +34,7 @@ const nextConfig = {
       {
         source: '/onboarding',
         destination: '/onboarding/loading',
-        permanent: false
+        permanent: true
       },
       {
         source: '/onboarding/complete',
