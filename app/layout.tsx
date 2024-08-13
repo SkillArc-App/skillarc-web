@@ -1,3 +1,4 @@
+import { GoogleTagManager } from '@next/third-parties/google'
 import { Metadata } from 'next'
 import { Providers } from './providers'
 
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="GTM-PZGBRSCM" />
       <body>
         <Providers>{children}</Providers>
       </body>
