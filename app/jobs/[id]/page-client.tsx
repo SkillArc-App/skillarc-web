@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useJob } from '../hooks/useJobData'
+import { sendGTMEvent } from '@next/third-parties/google'
 
 export default function PageClient({ params: { id } }: IdParams) {
   const { data: job, refetch } = useJob(id)
@@ -50,6 +51,12 @@ export default function PageClient({ params: { id } }: IdParams) {
 
     onApplyModalClose()
     await FrontendJobInteractionsService.apply(job.id, token)
+
+    sendGTMEvent({
+      event: 'job_application_submitted',
+      jobId: job.id,
+      location: "job_page"
+    })
 
     await onSuccessModalOpen()
     await refetch()
