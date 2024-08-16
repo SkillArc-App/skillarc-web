@@ -1,6 +1,7 @@
 'use client'
 
 import { LoadingPage } from '@/components/Loading'
+import { sendGTMEvent } from '@next/third-parties/google'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'
@@ -37,6 +38,7 @@ export default function CompleteLoading() {
     if (jobInterest) {
       localStorage.removeItem('preOnboardingJobInterest')
       router.push(`/jobs/${jobInterest}`)
+      sendGTMEvent({ event: 'onboarding_complete' })
     } else {
       router.push('/jobs')
     }

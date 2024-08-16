@@ -30,6 +30,7 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react'
+import { sendGTMEvent } from '@next/third-parties/google'
 import { useAuth0 } from 'lib/auth-wrapper'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -107,6 +108,11 @@ export default function JobsClient() {
     onReadyToApply: async (job, token) => {
       await FrontendJobInteractionsService.apply(job.id, token)
 
+      sendGTMEvent({
+        event: 'job_application_submitted',
+        jobId: job.id,
+        location: "job_search"
+      })
       setActiveJobIdAndRoute(job.id, 'share')
 
       refetch()

@@ -4,6 +4,7 @@ import { Header } from '@/components/Header'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, Flex } from '@chakra-ui/react'
+import { sendGTMEvent } from '@next/third-parties/google'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import SessionWrapper from './components/SessionWrapper'
@@ -29,6 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         domain={'blocktrain.us.auth0.com'}
         clientId={'8wkkXv49JNwzrTvJaF5Rjk3hZU6lZk44'}
         onRedirectCallback={(appState) => {
+          sendGTMEvent({ event: 'login' })
           router.replace(appState && appState.returnTo ? appState.returnTo : window.location.href)
         }}
         authorizationParams={{
