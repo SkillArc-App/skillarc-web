@@ -14,7 +14,7 @@ Sentry.init({
   debug: false,
   replaysOnErrorSampleRate: 1.0,
 
-  environment: process.env.NEXT_SENTRY_ENVIRONMENT || "unknown",
+  environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT || "unknown",
 
   // This sets the sample rate to be 10%. You may want this to be 100% while
   // in development and sample at a lower rate in production

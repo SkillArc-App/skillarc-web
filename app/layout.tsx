@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <GoogleTagManager gtmId="GTM-PZGBRSCM" />
+      {process.env.NEXT_PUBLIC_ENABLE_GTM == 'true' && <GoogleTagManager gtmId="GTM-PZGBRSCM" />}
       <body>
         <Providers>{children}</Providers>
       </body>
