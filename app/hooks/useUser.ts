@@ -1,4 +1,5 @@
 import { Maybe } from '@/common/types/maybe'
+import * as Sentry from '@sentry/browser'
 import { UseQueryOptions } from '@tanstack/react-query'
 import { get } from '../http-common'
 import { FullUser } from '../services/user.service'
@@ -15,7 +16,10 @@ export const useUser = (
     ({ token }) => {
       const getOne = async () => {
         const res = await get<FullUser>(`/one_user/`, token)
-        return res.data
+        const user = res.data
+        Sentry.setUser({ email: user.email, id: user.id })
+
+        return user
       }
       return getOne()
     },
