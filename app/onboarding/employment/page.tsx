@@ -1,10 +1,13 @@
 'use client'
 
 import { Heading } from '@/components/Heading'
-import { Button, Checkbox, Flex, Input, Textarea } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { Button, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import FormikInput from '@/components/FormikInput'
+import FormikCheckBox from '@/components/FormikCheckbox'
+import FormikTextArea from '@/components/FormikTextArea'
 
 export type ExperienceResponseProps = {
   company?: string
@@ -16,211 +19,89 @@ export type ExperienceResponseProps = {
 }
 
 export default function Employment() {
-  const [experienceList, setExperienceList] = useState<ExperienceResponseProps[]>([
-    {
-      company: '',
-      position: '',
-      startDate: '',
-      current: false,
-      endDate: '',
-      description: '',
-    },
-  ])
+  const initialExperience: ExperienceResponseProps = {
+    company: '',
+    position: '',
+    startDate: '',
+    current: false,
+    endDate: '',
+    description: '',
+  }
+
   const onboarding = useOnboardingMutation()
 
-  const handleAdd = () => {
-    setExperienceList([
-      ...experienceList,
-      { company: '', position: '', startDate: '', current: false, endDate: '', description: '' },
-    ])
+  const handleSubmit = (form: ExperienceResponseProps) => {
+    const filteredForm = form.current ? { ...form, endDate: '' } : form
+    onboarding.mutate({ experience: { response: [filteredForm] } })
   }
 
-  const handleSubmit = () => {
-    onboarding.mutate({ experience: { response: experienceList } })
-  }
+  function validation(values: ExperienceResponseProps): object {
+    const errors: any = {}
 
-  const handleCompanyChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].company = e.target.value
-    setExperienceList(temp)
-  }
+    if (values.startDate && values.endDate && !values.current) {
+      if (new Date(values.endDate).getTime() - new Date(values.startDate).getTime() < 0) {
+        errors.endDate = 'Your end date is currently before your start date'
+      }
+    }
 
-  const handlePositionChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].position = e.target.value
-    setExperienceList(temp)
-  }
-  const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].startDate = e.target.value
-    setExperienceList(temp)
-  }
+    if (values.startDate && !values.endDate && !values.current) {
+      errors.endDate = 'You need an end date or indicate you currently work here'
+    }
 
-  const handleCurrentChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].current = e.target.checked
-    setExperienceList(temp)
-  }
-
-  const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].endDate = e.target.value
-    setExperienceList(temp)
-  }
-
-  const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>, index: number) => {
-    const temp = [...experienceList]
-    temp[index].description = e.target.value
-    setExperienceList(temp)
+    return errors
   }
 
   return (
     <>
       <Heading color={'greyscale.900'} variant={'h2'}>
-        Tell us about your experience working or volunteering
+        Experience
       </Heading>
-      {experienceList.map((object, index) => {
-        return (
-          <Flex
-            flexDir={'column'}
-            p={'1rem'}
-            bg={'white'}
-            width={'100%'}
-            borderRadius={'0.25rem'}
-            boxShadow={'sm'}
-            gap={'0.5rem'}
-            mt={'0.5rem'}
-            key={index}
-          >
-            <Text type={'b2'} color={'greyscale.600'}>
-              Company/Organization
-            </Text>
-            <Input
+      <Text>
+        Tell us about your most important working or volunteering experience. You can add additional
+        experiences later on.
+      </Text>
+      <Formik onSubmit={handleSubmit} validate={validation} initialValues={initialExperience}>
+        {(props) => (
+          <Form>
+            <Stack
+              p={'1rem'}
               bg={'white'}
               width={'100%'}
-              height={'3.375rem'}
-              placeholder={'i.e. Dunder Mifflin'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
+              borderRadius={'0.25rem'}
               boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => handleCompanyChange(e, index)}
-              value={object.company}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.600'}>
-              Position
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'i.e. Assistant'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => handlePositionChange(e, index)}
-              value={object.position}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.600'}>
-              Start Date
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'MM/YYYY'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => handleStartDateChange(e, index)}
-              value={object.startDate}
-            />
-            <Checkbox
+              gap={'0.5rem'}
               mt={'0.5rem'}
-              size={'lg'}
-              colorScheme="green"
-              onChange={(e) => handleCurrentChange(e, index)}
-              isChecked={object.current}
             >
-              I currently work here
-            </Checkbox>
-            {!object.current && (
-              <>
-                <Text mt={'0.5rem'} type={'b2'} color={'greyscale.600'}>
-                  End Date
-                </Text>
-                <Input
-                  bg={'white'}
-                  width={'100%'}
-                  height={'3.375rem'}
-                  placeholder={'MM/YYYY'}
-                  color={'greyscale.900'}
-                  borderColor={'greyscale.300'}
-                  _placeholder={{
-                    color: 'greyscale.500',
-                  }}
-                  boxShadow={'sm'}
-                  _focus={{
-                    borderColor: 'greyscale.500',
-                    borderWidth: '0.05rem',
-                  }}
-                  onChange={(e) => {
-                    handleEndDateChange(e, index)
-                  }}
-                  value={object.endDate}
-                />
-              </>
-            )}
-
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.600'}>
-              Description
-            </Text>
-            <Textarea
-              size={'md'}
-              height={'8rem'}
-              borderColor={'greyscale.300'}
-              color={'greyscale.900'}
-              placeholder={'Responsibilities, skills, etc.'}
-              _placeholder={{ color: 'greyscale.500' }}
-              focusBorderColor={'greyscale.500'}
-              _focus={{ borderWidth: '0.05rem' }}
-              onChange={(e) => handleDescriptionChange(e, index)}
-              value={object.description}
-            />
-            {experienceList.length > 1 && (
-              <Button
-                border=" 1px solid #D25D5D"
-                bg="white"
-                textColor="#D25D5D"
-                minH="54px"
-                borderRadius="4px"
-                marginTop="0.5rem"
-                onClick={() => {}}
-              >
-                Remove
+              <FormikInput<string>
+                isRequired
+                type="text"
+                label="Company/Organization"
+                placeholder="i.e. Dunder Mifflin"
+                name="company"
+              />
+              <FormikInput<string>
+                isRequired
+                type="text"
+                label="Position"
+                placeholder="i.e. Assistant"
+                name="position"
+              />
+              <FormikInput<string> isRequired type="month" label="Start Date" name="startDate" />
+              <FormikCheckBox name="current" label="I currently work here" />
+              <FormikInput<string> type="month" label="End Date" name="endDate" />
+              <FormikTextArea
+                isRequired
+                label="Description"
+                placeholder="Responsibilities, skills, etc."
+                name="description"
+              />
+              <Button variant={'primary'} isLoading={props.isSubmitting} type="submit">
+                Next
               </Button>
-            )}
-          </Flex>
-        )
-      })}
-
-      <Button mt={'0.5rem'} variant={'secondary'} onClick={handleAdd}>
-        Add another
-      </Button>
-      <Button onClick={handleSubmit} variant={'primary'} mt={'0.5rem'}>
-        Next
-      </Button>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </>
   )
 }
