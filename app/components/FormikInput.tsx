@@ -1,6 +1,7 @@
 import { FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
 import { FieldHookConfig, useField } from 'formik'
 import { HTMLInputTypeAttribute } from 'react'
+import { useRequiredField } from '../hooks/useRequiredField'
 
 type InputProps = {
   label: string
@@ -24,7 +25,7 @@ export default function FormikInput<T extends InputTypes>({
   isRequired,
   ...props
 }: InputField<T>) {
-  const [field, meta] = useField(props)
+  const [field, meta] = useRequiredField({ ...props, isRequired })
 
   return (
     <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>

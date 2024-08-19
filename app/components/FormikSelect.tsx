@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormLabel, Select } from '@chakra-ui/react'
 import { FieldHookConfig, useField } from 'formik'
+import { useRequiredField } from '../hooks/useRequiredField'
 
 type SelectProps = {
   label: string
@@ -15,7 +16,7 @@ const FormikSelect = ({
   options,
   ...props
 }: SelectField) => {
-  const [field, meta] = useField(props)
+  const [field, meta] = useRequiredField({ ...props, isRequired })
 
   return (
     <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>

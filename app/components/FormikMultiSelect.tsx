@@ -1,7 +1,8 @@
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
-import { FieldHookConfig, FieldProps, useField } from 'formik'
+import { FieldHookConfig } from 'formik'
 import Select from 'react-select'
 import { MultiValue, Options } from 'react-select/dist/declarations/src/types'
+import { useRequiredField } from '../hooks/useRequiredField'
 
 interface Option {
   label: string
@@ -18,16 +19,11 @@ interface MultiSelectProps {
 
 type MultiSelectField = MultiSelectProps & FieldHookConfig<string[]>
 
-const FormikMultiSelect = ({
-  options,
-  isRequired,
-  label,
-  ...props
-}: MultiSelectField) => {
-  const [field, meta, helpers] = useField<string[]>(props)
+const FormikMultiSelect = ({ options, isRequired, label, ...props }: MultiSelectField) => {
+  const [field, meta, helpers] = useRequiredField<string[]>({ ...props, isRequired })
 
   const onChange = (option: MultiValue<Option>) => {
-    helpers.setValue((option).map((item) => item.value))
+    helpers.setValue(option.map((item) => item.value))
   }
 
   const values = options.filter(({ value }) => field.value.includes(value))
