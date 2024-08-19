@@ -40,9 +40,13 @@ export default function NotesList({ notes, onCreate, onDelete, onModify }: Notes
         value={noteDraft}
         onKeyDown={async (e) => {
           if (e.key === 'Enter') {
-            await onCreate(noteDraft)
-            setNoteDraft('')
-            e.preventDefault()
+            if (e.altKey) {
+              setNoteDraft((value) => value + "\n")
+            } else {
+              await onCreate(noteDraft)
+              setNoteDraft('')
+              e.preventDefault()
+            }
           }
         }}
       />

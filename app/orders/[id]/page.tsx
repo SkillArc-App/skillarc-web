@@ -312,9 +312,9 @@ const Order = ({ params: { id } }: IdParams) => {
           <CardBody>
             <VStack align={'start'}>
               <Heading size={'sm'}>Candidate Requirements</Heading>
-              <Text>{order.requirementsDescription}</Text>
+              <Text whiteSpace={'pre-line'}>{order.requirementsDescription}</Text>
               <Heading size={'sm'}>Candidate Responsibilities</Heading>
-              <Text>{order.responsibilitiesDescription}</Text>
+              <Text whiteSpace={'pre-line'}>{order.responsibilitiesDescription}</Text>
             </VStack>
           </CardBody>
         </Card>
