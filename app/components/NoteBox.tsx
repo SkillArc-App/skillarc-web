@@ -38,15 +38,21 @@ export const NoteBox = ({
       value={noteDraft}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
-          e.preventDefault()
-          onNoteModified(noteId, noteDraft)
-          setIsEditing(false)
+          if (e.altKey) {
+            setNoteDraft((value) => value + '\n')
+          } else {
+            e.preventDefault()
+            onNoteModified(noteId, noteDraft)
+            setIsEditing(false)
+          }
         }
       }}
     />
   ) : (
     <VStack align={'flex-start'}>
-      <Text variant={'b2'}>{note}</Text>
+      <Text whiteSpace={'pre-line'} variant={'b2'}>
+        {note}
+      </Text>
       <Text variant={'b3'}>
         {noteTakenBy} - {`${dateObj.toLocaleTimeString()} ${dateObj.toLocaleDateString()} `}
       </Text>
