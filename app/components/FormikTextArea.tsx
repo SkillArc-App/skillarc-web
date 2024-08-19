@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react'
-import { FieldHookConfig, useField } from 'formik'
+import { FieldHookConfig } from 'formik'
+import { useRequiredField } from '../hooks/useRequiredField'
 
 type TextAreaProps = {
   label: string
@@ -15,7 +16,7 @@ export default function FormikTextArea({
   isRequired,
   ...props
 }: TextAreaField) {
-  const [field, meta] = useField(props)
+  const [field, meta] = useRequiredField({ ...props, isRequired })
 
   return (
     <FormControl isRequired={isRequired} isInvalid={meta.touched && !!meta.error}>

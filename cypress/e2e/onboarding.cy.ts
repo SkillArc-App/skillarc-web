@@ -10,7 +10,7 @@ describe('Onboarding', () => {
   })
 
   function getNumbers(length: number) {
-    let str = ""
+    let str = ''
 
     for (let i = 0; i < length; i++) {
       str += getRandomNumber()
@@ -40,47 +40,44 @@ describe('Onboarding', () => {
 
     cy.findByLabelText('Phone Number*').type(phoneNumber)
     cy.findByLabelText('Date of Birth*').type('1970-01-20')
-    cy.get('button').contains('Next').click()
+    cy.findByRole('button', { name: 'Next' }).click()
 
     // experience
     cy.get('div').contains("I've had or currently have a job").click()
     cy.get('div').contains("I've attended a Training Program").click()
     cy.get('div').contains('I have a High School Diploma / GED').click()
-    cy.get('button').contains('Next').click()
+    cy.findByRole('button', { name: 'Next' }).click()
 
     // job experience
-    cy.get('input').filter('[placeholder="i.e. Dunder Mifflin"]').type('Dunder Mifflin')
-    cy.get('input')
-      .filter('[placeholder="i.e. Assistant"]')
-      .type('Assistant to the Regional Manager')
-    cy.get('input').filter('[placeholder="MM/YYYY"]').first().type('03/2021')
-    cy.get('input').filter('[placeholder="MM/YYYY"]').last().type('03/2023')
-    cy.get('textarea').filter('[placeholder="Responsibilities, skills, etc."]').type('Paper')
-    cy.get('button').contains('Next').click()
+    cy.findByLabelText('Company/Organization*').type('Dunder Mifflin')
+    cy.findByLabelText('Position*').type('Assistant to the Regional Manager')
+    cy.findByLabelText('Start Date*').type('2021-03')
+    cy.findByLabelText('End Date').type('2023-03')
+    cy.findByLabelText('Description*').type('Paper')
+    cy.findByRole('button', { name: 'Next' }).click()
 
     // training
     cy.get('div').contains("Megan's Recruits").click()
-    cy.get('button').contains('Next').click()
+    cy.findByRole('button', { name: 'Next' }).click()
 
     // education
-    cy.get('input')
-      .filter('[placeholder="i.e. Washington High School"]')
-      .type('Scranton High School')
-    cy.get('input').filter('[placeholder="i.e. High School Student"]').type('Student')
-    cy.get('input').filter('[placeholder="YYYY"]').type('2014')
-    cy.get('input').filter('[placeholder="3.6/4.0"]').type('2.9')
-    cy.get('input').filter('[placeholder="Teams, clubs, etc."]').type('Paper Club')
-    cy.get('button').contains('Next').click()
+    cy.findByLabelText('School/Organization*').type('Scranton High School')
+    cy.findByLabelText('Title').type('High School Student')
+    cy.findByLabelText('Graduation Year / Expected Graduation Year*').type('2014')
+    cy.findByLabelText('GPA').type('2.9')
+    cy.findByLabelText('Activities').type('Paper Club')
+    cy.findByRole('button', { name: 'Next' }).click()
 
     // opportunity interests
     cy.get('div').contains('Construction').click()
     cy.get('div').contains('Manufacturing').click()
     cy.get('div').contains('Healthcare').click()
-    cy.get('button').contains('Next').click()
+    cy.findByRole('button', { name: 'Next' }).click()
     // cy.get('body').should('contain', 'Your future is bright! 🎉')
 
     // confirm we're on the jobs page
-    cy.get('body').should('contain', 'Find your perfect job 💼')
+    cy.findByRole('link', { name: 'View Jobs' }).click()
+    cy.findByText('Find your perfect job 💼')
 
     // find button by aria label 'Options' and click my profile
     cy.get('button').filter('[aria-label="Options"]').click()
@@ -90,7 +87,7 @@ describe('Onboarding', () => {
     const experience = cy.get('div').contains('Experience').parent().parent()
     experience.should('contain', 'Dunder Mifflin')
     experience.should('contain', 'Assistant to the Regional Manager')
-    experience.should('contain', '03/2021 - 03/2023')
+    experience.should('contain', '2021-03 - 2023-03')
     experience.should('contain', 'Paper')
 
     const education = cy.get('div').contains('Education').parent().parent()

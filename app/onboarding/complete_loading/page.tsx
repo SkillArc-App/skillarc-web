@@ -40,9 +40,9 @@ export default function CompleteLoading() {
       router.push(`/jobs/${jobInterest}`)
       sendGTMEvent({ event: 'onboarding_complete' })
     } else {
-      router.push('/jobs')
+      router.push(`/profiles/${data?.seekerId}`)
     }
-  }, [readyToRoute, router])
+  }, [data?.seekerId, readyToRoute, router])
 
   return <LoadingPage />
 }

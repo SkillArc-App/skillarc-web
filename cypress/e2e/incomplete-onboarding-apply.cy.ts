@@ -38,11 +38,11 @@ describe('Incomplete Onboarding applying to jobs', () => {
     cy.get('div').contains("I've had or currently have a job").click()
     cy.findByRole('button', { name: 'Next' }).click()
 
-    cy.findByPlaceholderText('i.e. Dunder Mifflin').type('Dunder Mifflin')
-    cy.findByPlaceholderText('i.e. Assistant').type('Assistant to the Regional Manager')
-    cy.get('input').filter('[placeholder="MM/YYYY"]').first().type('03/2021')
-    cy.get('input').filter('[placeholder="MM/YYYY"]').last().type('03/2023')
-    cy.findByPlaceholderText('Responsibilities, skills, etc.').type('Paper')
+    cy.findByLabelText('Company/Organization*').type('Dunder Mifflin')
+    cy.findByLabelText('Position*').type('Assistant to the Regional Manager')
+    cy.findByLabelText('Start Date*').type('2021-03')
+    cy.findByLabelText('End Date').type('2023-03')
+    cy.findByLabelText('Description*').type('Paper')
     cy.findByRole('button', { name: 'Next' }).click()
 
     cy.get('div').contains('Construction').click()

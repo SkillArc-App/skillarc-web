@@ -1,9 +1,11 @@
 'use client'
 
-import { Button, Flex, Heading, Input } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { Button, Heading, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
 
 export type EducationResponseProps = {
   org?: string
@@ -14,61 +16,22 @@ export type EducationResponseProps = {
 }
 
 export default function Education() {
-  const [educationList, setEducationList] = useState<EducationResponseProps[]>([
-    {
-      org: '',
-      title: '',
-      gradYear: '',
-      gpa: '',
-      activities: '',
-    },
-  ])
+  const initialExperience: EducationResponseProps = {
+    org: '',
+    title: '',
+    gradYear: undefined,
+    gpa: undefined,
+    activities: '',
+  }
+
   const onboarding = useOnboardingMutation()
 
-  const handleAdd = () => {
-    setEducationList([
-      ...educationList,
-      { org: '', title: '', gradYear: '', gpa: '', activities: '' },
-    ])
-  }
-
-  const handleSubmit = () => {
-    onboarding.mutate({ education: { response: educationList } })
-  }
-
-  const handleRemove = (index: number) => {
-    const temp = [...educationList].filter((_, i) => i !== index)
-    setEducationList(temp)
-  }
-
-  const handleOrgChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...educationList]
-    temp[index].org = e.target.value
-    setEducationList(temp)
-  }
-
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...educationList]
-    temp[index].title = e.target.value
-    setEducationList(temp)
-  }
-
-  const handleGradYearChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...educationList]
-    temp[index].gradYear = e.target.value
-    setEducationList(temp)
-  }
-
-  const handleGpaChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...educationList]
-    temp[index].gpa = e.target.value
-    setEducationList(temp)
-  }
-
-  const handleActivitiesChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
-    const temp = [...educationList]
-    temp[index].activities = e.target.value
-    setEducationList(temp)
+  const handleSubmit = (form: EducationResponseProps) => {
+    onboarding.mutate({
+      education: {
+        response: [{ ...form, gpa: form.gpa?.toString(), gradYear: form.gradYear?.toString() }],
+      },
+    })
   }
 
   return (
@@ -77,158 +40,55 @@ export default function Education() {
         Education
       </Heading>
       <Text color={'greyscale.600'} type={'b2'}>
-        Tell us about your education experience
+        Tell us about your education experience highest education experience. You can add more later
+        on.
       </Text>
-      {/* Input fields */}
-      {educationList.map((object, index) => {
-        return (
-          <Flex
-            flexDir={'column'}
-            p={'1rem'}
-            borderRadius={'0.25rem'}
-            bg={'white'}
-            width={'100%'}
-            boxShadow={'sm'}
-            gap={'0.5rem'}
-            mt={'0.5rem'}
-            key={index}
-          >
-            <Text type={'b2'} color={'greyscale.700'}>
-              School/Organization
-            </Text>
-            <Input
+
+      <Formik onSubmit={handleSubmit} initialValues={initialExperience}>
+        {(props) => (
+          <Form>
+            <Stack
+              p={'1rem'}
               bg={'white'}
               width={'100%'}
-              height={'3.375rem'}
-              placeholder={'i.e. Washington High School'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
+              borderRadius={'0.25rem'}
               boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => {
-                handleOrgChange(e, index)
-              }}
-              value={object.org}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.700'}>
-              Title
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'i.e. High School Student'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => {
-                handleTitleChange(e, index)
-              }}
-              value={object.title}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.700'}>
-              Expected Graduation Year
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'YYYY'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => {
-                handleGradYearChange(e, index)
-              }}
-              value={object.gradYear}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.700'}>
-              GPA
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'3.6/4.0'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => {
-                handleGpaChange(e, index)
-              }}
-              value={object.gpa}
-            />
-            <Text mt={'0.5rem'} type={'b2'} color={'greyscale.700'}>
-              Activities
-            </Text>
-            <Input
-              bg={'white'}
-              width={'100%'}
-              height={'3.375rem'}
-              placeholder={'Teams, clubs, etc.'}
-              color={'greyscale.900'}
-              borderColor={'greyscale.300'}
-              _placeholder={{
-                color: 'greyscale.500',
-              }}
-              boxShadow={'sm'}
-              _focus={{ borderColor: 'greyscale.500', borderWidth: '0.05rem' }}
-              onChange={(e) => {
-                handleActivitiesChange(e, index)
-              }}
-              value={object.activities}
-            />
-            {educationList.length > 1 && (
-              <Button
-                border=" 1px solid #D25D5D"
-                bg="white"
-                textColor="#D25D5D"
-                minH="54px"
-                borderRadius="4px"
-                marginTop="0.5rem"
-                onClick={() => {
-                  handleRemove(index)
-                }}
-              >
-                Remove
+              gap={'0.5rem'}
+              mt={'0.5rem'}
+            >
+              <FormikInput<string>
+                isRequired
+                type="text"
+                label="School/Organization"
+                placeholder="i.e. Washington High School"
+                name="org"
+              />
+              <FormikInput<string>
+                type="text"
+                label="Title"
+                placeholder="i.e. High School Student"
+                name="title"
+              />
+              <FormikInput<string>
+                isRequired
+                type="number"
+                placeholder="2009"
+                label="Graduation Year / Expected Graduation Year"
+                name="gradYear"
+              />
+              <FormikInput<string> type="number" label="GPA" name="gpa" placeholder="2.8" />
+              <FormikTextArea
+                label="Activities"
+                placeholder="Teams, clubs, other groups, etc."
+                name="activities"
+              />
+              <Button variant={'primary'} isLoading={props.isSubmitting} type="submit">
+                Next
               </Button>
-            )}
-          </Flex>
-        )
-      })}
-      <Button
-        onClick={handleAdd}
-        mt={'0.5rem'}
-        variant={'secondary'}
-        minH="54px"
-        borderRadius="4px"
-      >
-        Add another
-      </Button>
-      <Button
-        onClick={handleSubmit}
-        mt={'0.5rem'}
-        variant={'primary'}
-        minH="54px"
-        borderRadius="4px"
-      >
-        Next
-      </Button>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </>
   )
 }

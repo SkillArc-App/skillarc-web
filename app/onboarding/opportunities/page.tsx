@@ -2,19 +2,22 @@
 
 import { industries } from '@/common/static/industries'
 import { Heading } from '@/components/Heading'
-import { Button, Checkbox, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import { Button, Stack } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import FormikCheckBox from '@/components/FormikCheckbox'
+
+type OpportunitiesForm = {
+  [key: string]: boolean
+}
 
 export default function Opportunities() {
-  const [opportunityInterests, setOpportunityInterests] = useState<string[]>([])
   const onboarding = useOnboardingMutation()
+  const initialValue: OpportunitiesForm = {}
 
-  const checkboxOptions: string[] = industries.map((i) => i[0].toLocaleUpperCase() + i.slice(1))
-
-  const handleSubmit = () => {
-    onboarding.mutate({ opportunityInterests: { response: opportunityInterests } })
+  const handleSubmit = (form: OpportunitiesForm) => {
+    onboarding.mutate({ opportunityInterests: { response: Object.keys(form) } })
   }
 
   return (
@@ -25,33 +28,32 @@ export default function Opportunities() {
       <Text color={'greyscale.600'} type={'b2'}>
         We&apos;ll send you new opportunities as we find them for you!
       </Text>
-      <Flex mt={'0.5rem'} flexDir={'column'} gap={'0.5rem'}>
-        {checkboxOptions.map((option, index) => {
-          return (
-            <Checkbox
-              variant={'box'}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setOpportunityInterests([...opportunityInterests, e.target.value])
-                } else {
-                  setOpportunityInterests(
-                    opportunityInterests.filter((interest) => interest !== e.target.value),
-                  )
-                }
-              }}
-              value={option}
-              isChecked={opportunityInterests.includes(option)}
-              key={index}
+      <Formik onSubmit={handleSubmit} initialValues={initialValue}>
+        {(props) => (
+          <Form>
+            <Stack
+              p={'1rem'}
               bg={'white'}
+              width={'100%'}
+              borderRadius={'0.25rem'}
+              boxShadow={'sm'}
+              gap={'0.5rem'}
+              mt={'0.5rem'}
             >
-              {option}
-            </Checkbox>
-          )
-        })}
-      </Flex>
-      <Button onClick={handleSubmit} mt={'0.5rem'} variant={'primary'}>
-        Next
-      </Button>
+              {industries.map((i, index) => (
+                <FormikCheckBox
+                  key={index}
+                  name={i}
+                  label={i[0].toLocaleUpperCase() + i.slice(1)}
+                />
+              ))}
+              <Button variant={'primary'} isLoading={props.isSubmitting} type="submit">
+                Next
+              </Button>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </>
   )
 }

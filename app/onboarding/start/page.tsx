@@ -8,7 +8,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { Heading } from '../../components/Heading'
-import { Text } from '../../components/Text.component'
 import { useOnboardingQuery } from '../hooks/useOnboardingQuery'
 
 type NewNameProps = {
@@ -88,28 +87,32 @@ export default function Start() {
       <Heading color={'greyscale.900'} variant={'h2'}>
         You have a bright future ahead! Let&apos;s get started!
       </Heading>
-      <Text color={'greyscale.600'} type={'b2'} pt={'0.5rem'}></Text>
       <Formik initialValues={initialValue} onSubmit={handleSubmit}>
-        {(props) => (
-          <Form>
-            <Stack>
-              <FormikInput<string> isRequired type="text" label="First Name" name="firstName" />
-              <FormikInput<string> isRequired type="text" label="Last Name" name="lastName" />
-              <FormikInput<string> label="Phone Number" name="phoneNumber" type="tel" isRequired />
-              {/* format as month/day/year */}
-              <FormikInput<string>
-                label="Date of Birth"
-                name="dateOfBirth"
-                min={'1900-01-01'}
-                type="date"
-                isRequired
-              />
-              <Button variant={'primary'} mt={'1rem'} isLoading={isLoading} type="submit">
-                Next
-              </Button>
-            </Stack>
-          </Form>
-        )}
+        <Form>
+          <Stack
+            p={'1rem'}
+            bg={'white'}
+            width={'100%'}
+            borderRadius={'0.25rem'}
+            boxShadow={'sm'}
+            gap={'0.5rem'}
+            mt={'0.5rem'}
+          >
+            <FormikInput<string> isRequired type="text" label="First Name" name="firstName" />
+            <FormikInput<string> isRequired type="text" label="Last Name" name="lastName" />
+            <FormikInput<string> label="Phone Number" name="phoneNumber" type="tel" isRequired />
+            <FormikInput<string>
+              label="Date of Birth"
+              name="dateOfBirth"
+              min={'1900-01-01'}
+              type="date"
+              isRequired
+            />
+            <Button variant={'primary'} mt={'1rem'} isLoading={isLoading} type="submit">
+              Next
+            </Button>
+          </Stack>
+        </Form>
       </Formik>
     </>
   )
