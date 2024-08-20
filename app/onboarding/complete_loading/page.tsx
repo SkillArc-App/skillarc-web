@@ -33,12 +33,12 @@ export default function CompleteLoading() {
       return
     }
     isRouting.current = true
+    sendGTMEvent({ event: 'onboarding_complete' })
 
     const jobInterest = localStorage.getItem('preOnboardingJobInterest')
     if (jobInterest) {
       localStorage.removeItem('preOnboardingJobInterest')
       router.push(`/jobs/${jobInterest}`)
-      sendGTMEvent({ event: 'onboarding_complete' })
     } else {
       router.push(`/profiles/${data?.seekerId}`)
     }
