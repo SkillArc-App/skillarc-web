@@ -140,8 +140,18 @@ export default function JobsClient() {
     if (!token) return
 
     if (!job.saved) {
+      sendGTMEvent({
+        event: 'job_saved',
+        jobId: job.id,
+        location: "job_search"
+      })
       await post(`seekers/jobs/${job.id}/save`, {}, token)
     } else {
+      sendGTMEvent({
+        event: 'job_unsaved',
+        jobId: job.id,
+        location: "job_search"
+      })
       await post(`seekers/jobs/${job.id}/unsave`, {}, token)
     }
 
