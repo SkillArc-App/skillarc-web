@@ -1,9 +1,10 @@
-export { }
+export {}
 
 describe('Admin', () => {
   it('should navigate through admin tasks', () => {
     cy.visit('/')
 
+    // Nothing comment
     cy.findByLabelText('Mock Auth Enabled').select('admin@skillarc.com', { timeout: 10000 })
     cy.visit('/admin')
 
@@ -129,7 +130,7 @@ describe('Admin', () => {
     cy.findByText('New Training Provider')
     cy.findByLabelText('Name*').type(tpName)
     cy.findByLabelText('Description*').type('We do great work')
-    cy.findByRole('button', { name: 'Save'}).click()
+    cy.findByRole('button', { name: 'Save' }).click()
 
     cy.findByRole('table').within(() => {
       cy.findByText(tpName).click()
@@ -137,21 +138,21 @@ describe('Admin', () => {
 
     // Add a program
     cy.findByRole('button', { name: '+ New Program' }).click()
-    cy.findByLabelText('Name*').type("Best Program")
+    cy.findByLabelText('Name*').type('Best Program')
     cy.findByLabelText('Description*').type('We do great work')
-    cy.findByRole('button', { name: 'Save'}).click()
+    cy.findByRole('button', { name: 'Save' }).click()
 
     cy.findByRole('table').within(() => {
-      cy.findByText("Best Program").click()
+      cy.findByText('Best Program').click()
     })
 
     cy.findByText('Name: Best Program')
     cy.findByText('Description: We do great work')
     cy.findByText(`Training Provider: ${tpName}`)
 
-    cy.findByRole('button', { name: "Edit"}).click()
+    cy.findByRole('button', { name: 'Edit' }).click()
     cy.findByLabelText('Description*').type('{selectall}{backspace}').type('We do ok work')
-    cy.findByRole('button', { name: 'Save'}).click()
+    cy.findByRole('button', { name: 'Save' }).click()
 
     cy.findByText('Name: Best Program')
     cy.findByText('Description: We do ok work')
