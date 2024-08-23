@@ -102,8 +102,8 @@ const Notes = ({ params: { id } }: IdParams) => {
       <HStack>
         <RadioGroup onChange={(value) => setDirection(value as ContactDirection)} value={direction}>
           <Stack direction="row">
-            <Radio value={ContactDirection.SENT}>Sent</Radio>
-            <Radio value={ContactDirection.RECEIVED}>Received</Radio>
+            <Radio aria-label='Communication sent' value={ContactDirection.SENT}>Sent</Radio>
+            <Radio aria-label='Communication received' value={ContactDirection.RECEIVED}>Received</Radio>
           </Stack>
         </RadioGroup>
         <Tooltip label={`Seeker Email Communication Occurred`}>
