@@ -1,10 +1,5 @@
 import { Note } from '@/common/types/Note'
 
-type Barrier = {
-  id: string
-  name: string
-}
-
 export type SeekerLead = {
   id: string
   kind: ContextKind
@@ -24,6 +19,17 @@ export enum ContextKind {
   SEEKER = 'seeker',
 }
 
+export enum ContactType {
+  EMAIL = 'email',
+  PHONE = 'phone',
+  SMS = 'sms',
+}
+
+export enum ContactDirection {
+  SENT = 'sent',
+  RECEIVED = 'received',
+}
+
 export type SubmittableSeekerLead = Pick<
   SeekerLead,
   'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'leadId'
@@ -34,6 +40,20 @@ export type SeekerApplication = {
   employerName: string
   jobId: string
   employmentTitle: string
+}
+
+export type PersonAttribute = {
+  id: string
+  name: string
+  attributeId: string
+  value: string[]
+}
+
+export type PersonContact = {
+  contactType: ContactType
+  note: string
+  contactDirection: ContactDirection
+  contactedAt: string
 }
 
 export type FeedEvent = {
@@ -61,7 +81,6 @@ export type CoachSeekerTable = Pick<
   | 'kind'
   | 'leadCapturedAt'
   | 'leadCapturedBy'
-  | 'barriers'
   | 'certifiedBy'
   | 'email'
   | 'firstName'
@@ -79,13 +98,8 @@ export type CoachSeeker = {
   assignedCoach: string
   leadCapturedAt?: string
   leadCapturedBy?: string
-  attributes: {
-    id: string
-    name: string
-    attributeId: string
-    value: string[]
-  }[]
-  barriers: Barrier[]
+  attributes: PersonAttribute[]
+  contacts: PersonContact[]
   certifiedBy?: string
   email: string
   jobRecommendations: string[]
