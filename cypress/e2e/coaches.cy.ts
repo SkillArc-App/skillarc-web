@@ -100,6 +100,10 @@ describe('Coaches', () => {
       cy.findByText('This is a new note')
       cy.get('body').should('not.contain', 'This is a note')
 
+      cy.findByLabelText("Communication received").click()
+      cy.findByLabelText("Email Communication").click()
+      cy.findByText("Email received")
+
       const coachSelect = cy.contains('p', 'Assigned Coach').parent().find('select')
       coachSelect.select(coachEmail)
       coachSelect.find('option:selected').should('have.text', coachEmail)
