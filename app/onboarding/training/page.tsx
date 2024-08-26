@@ -7,6 +7,7 @@ import { Button, Checkbox, Heading } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Text } from '../../components/Text.component'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import BypassLink from '../components/BypassLink'
 
 export default function Training() {
   const { data: allTrainingProviders } = useAllTrainingProviderData()
@@ -58,6 +59,7 @@ export default function Training() {
       <Button onClick={handleSubmit} variant={'primary'} mt={'0.5rem'}>
         Next
       </Button>
+      <BypassLink />
     </>
   )
 }
