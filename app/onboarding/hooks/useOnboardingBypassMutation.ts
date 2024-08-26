@@ -21,7 +21,7 @@ export const useOnboardingBypassMutation = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['onboarding_data'])
         queryClient.invalidateQueries(['me'])
-        router.push('/onboarding/loading')
+        router.push('/onboarding/complete_loading')
       },
     },
   )
