@@ -1,11 +1,12 @@
 'use client'
 
+import FormikInput from '@/components/FormikInput'
+import FormikTextArea from '@/components/FormikTextArea'
 import { Button, Heading, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
+import BypassLink from '../components/BypassLink'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
-import FormikInput from '@/components/FormikInput'
-import FormikTextArea from '@/components/FormikTextArea'
 
 export type EducationResponseProps = {
   org?: string
@@ -89,6 +90,7 @@ export default function Education() {
           </Form>
         )}
       </Formik>
+      <BypassLink />
     </>
   )
 }

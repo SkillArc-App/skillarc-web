@@ -8,6 +8,7 @@ import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
 import FormikInput from '@/components/FormikInput'
 import FormikCheckBox from '@/components/FormikCheckbox'
 import FormikTextArea from '@/components/FormikTextArea'
+import BypassLink from '../components/BypassLink'
 
 export type ExperienceResponseProps = {
   company?: string
@@ -102,6 +103,7 @@ export default function Employment() {
           </Form>
         )}
       </Formik>
+      <BypassLink />
     </>
   )
 }

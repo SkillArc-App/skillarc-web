@@ -4,6 +4,7 @@ import FormikCheckBox from '@/components/FormikCheckbox'
 import { Button, Heading, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
+import BypassLink from '../components/BypassLink'
 
 const JOB = "I've had or currently have a job"
 const TRAINING_PROGRAM = "I've attended a Training Program"
@@ -54,6 +55,7 @@ export default function Reliability() {
           </Form>
         )}
       </Formik>
+      <BypassLink />
     </>
   )
 }

@@ -1,12 +1,13 @@
 'use client'
 
 import { industries } from '@/common/static/industries'
+import FormikCheckBox from '@/components/FormikCheckbox'
 import { Heading } from '@/components/Heading'
 import { Button, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
+import BypassLink from '../components/BypassLink'
 import { useOnboardingMutation } from '../hooks/useOnboardingMutation'
-import FormikCheckBox from '@/components/FormikCheckbox'
 
 type OpportunitiesForm = {
   [key: string]: boolean
@@ -54,6 +55,7 @@ export default function Opportunities() {
           </Form>
         )}
       </Formik>
+      <BypassLink />
     </>
   )
 }
