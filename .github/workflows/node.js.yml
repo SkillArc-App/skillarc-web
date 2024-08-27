@@ -207,6 +207,8 @@ jobs:
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-cypress-
+      - name: Install Cypress binary
+        run: pnpm exec cypress install
       - name: Build next
         run: npm run build
       - name: Run Cypress e2e tests
