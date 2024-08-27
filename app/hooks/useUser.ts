@@ -1,5 +1,5 @@
 import { Maybe } from '@/common/types/maybe'
-import * as Sentry from '@sentry/browser'
+import * as Sentry from '@sentry/nextjs'
 import { UseQueryOptions } from '@tanstack/react-query'
 import { get } from '../http-common'
 import { FullUser } from '../services/user.service'
