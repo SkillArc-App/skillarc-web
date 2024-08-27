@@ -1,7 +1,7 @@
 'use client'
 
 import DataTable from '@/components/DataTable'
-import { Link } from '@chakra-ui/react'
+import { Link, Text } from '@chakra-ui/react'
 import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useCoachFeed } from '../hooks/useCoachFeed'
@@ -14,13 +14,20 @@ const Feed = () => {
   const occurredAtColumnId = 'occurred-at'
 
   const columns = [
-    columnHelper.accessor('seekerEmail', {
+    columnHelper.accessor('contextId', {
       header: 'Email',
-      cell: (row) => (
-        <Link as={NextLink} href={`/coaches/contexts/${row.row.original.contextId}`}>
-          {row.getValue()}
-        </Link>
-      ),
+      cell: (row) =>
+        !!row.getValue() ? (
+          <Link as={NextLink} href={`/coaches/contexts/${row.row.original.contextId}`}>
+            {row.row.original.seekerEmail ?? 'Unknown'}
+          </Link>
+        ) : (
+          <Text>{row.row.original.seekerEmail ?? 'Unknown'}</Text>
+        ),
+    }),
+    columnHelper.accessor('seekerPhoneNumber', {
+      header: 'Phone',
+      cell: (row) => row.getValue(),
     }),
     columnHelper.accessor('description', {
       cell: (row) => (
