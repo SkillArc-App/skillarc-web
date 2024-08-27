@@ -43,7 +43,7 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+import { createColumnHelper, SortingState } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import NextLink from 'next/link'
 import { useState } from 'react'
@@ -134,6 +134,7 @@ const CandidateTable = ({
   onCandidateClick: (candidate: Candidate) => void
 }) => {
   const columnHelper = createColumnHelper<Candidate>()
+  const appliedAtId = 'applied-at'
 
   const columns = [
     columnHelper.accessor(() => {}, {
@@ -166,7 +167,16 @@ const CandidateTable = ({
     }),
     columnHelper.accessor('appliedAt', {
       header: 'Applied At',
+      id: appliedAtId,
       cell: (row) => (row.getValue() ? new Date(row.getValue() ?? '').toDateString() : ''),
+      sortUndefined: 1,
+      sortDescFirst: false,
+      sortingFn: (row1, row2, columnId) => {
+        const date1 = new Date(row1.getValue(columnId))
+        const date2 = new Date(row2.getValue(columnId))
+
+        return date1.getTime() - date2.getTime()
+      },
     }),
     columnHelper.accessor('status', {
       header: 'Status',
@@ -204,7 +214,14 @@ const CandidateTable = ({
     }),
   ]
 
-  return <DataTable columns={columns} data={candidates} />
+  const initialSortState: SortingState = [
+    {
+      desc: true,
+      id: appliedAtId,
+    },
+  ]
+
+  return <DataTable columns={columns} data={candidates} initialSortState={initialSortState} />
 }
 
 const Order = ({ params: { id } }: IdParams) => {
