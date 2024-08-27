@@ -58,9 +58,10 @@ export type PersonContact = {
 
 export type FeedEvent = {
   id: string
-  seekerEmail: string
+  seekerEmail?: string
+  seekerPhoneNumber?: string
   description: string
-  contextId: string
+  contextId?: string
   occurredAt: string
 }
 
