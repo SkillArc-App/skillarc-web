@@ -29,6 +29,8 @@ describe('Coaches', () => {
     })
     cy.task('createActiveSeeker').then((r: any) => {
       cy.wrap(r['person']).as('person')
+      cy.wrap(r['job']).as('job')
+      cy.wrap(r['employer']).as('employer')
     })
     cy.task('createSeekerLead').then((r: any) => {
       cy.wrap(r).as('lead')
@@ -50,6 +52,40 @@ describe('Coaches', () => {
     })
 
     cy.get('@person').then((person: any) => {
+      cy.findByRole('tab', { name: 'Feed' }).click()
+
+      cy.get('@job').then((job: any) => {
+        cy.get('@employer').then((employer: any) => {
+          cy.findByRole('table').within(() => {
+            cy.findAllByText(`${person['email']}`)
+              .parent()
+              .next()
+              .next()
+              .then((rows) => {
+                expect(rows).to.have.length(2)
+
+                const expectedCopy: string[] = [
+                  `${person['firstName']} ${person['lastName']} signed up.`,
+                  `${person['firstName']} ${person['lastName']} applied for ${job['employmentTitle']} at ${employer['name']}.`,
+                ]
+
+                // Extract the text content of all buttons
+                const rowCopy: string[] = []
+                rows.each((_, row) => {
+                  cy.log(row.innerText)
+                  rowCopy.push(row.innerText)
+                })
+
+                // Assert that each expected text is found in the buttonTexts array
+                expectedCopy.forEach((text) => {
+                  expect(rowCopy).to.include(text)
+                })
+              })
+          })
+        })
+      })
+
+      cy.findByRole('tab', { name: 'Seekers' }).click()
       cy.get('label').contains('Owned by Me').parent().click()
 
       cy.findByRole('table').within(() => {
@@ -100,9 +136,9 @@ describe('Coaches', () => {
       cy.findByText('This is a new note')
       cy.get('body').should('not.contain', 'This is a note')
 
-      cy.findByLabelText("Communication received").click()
-      cy.findByLabelText("Email Communication").click()
-      cy.findByText("Email received")
+      cy.findByLabelText('Communication received').click()
+      cy.findByLabelText('Email Communication').click()
+      cy.findByText('Email received')
 
       const coachSelect = cy.contains('p', 'Assigned Coach').parent().find('select')
       coachSelect.select(coachEmail)
@@ -261,7 +297,9 @@ describe('Coaches', () => {
 
       reloadUntilConditionMet(
         () => {
-          return cy.get('table').then((el) => el.text().includes(`${newLead.firstName} ${newLead.lastName}`))
+          return cy
+            .get('table')
+            .then((el) => el.text().includes(`${newLead.firstName} ${newLead.lastName}`))
         },
         { retryCount: 8 },
       )
