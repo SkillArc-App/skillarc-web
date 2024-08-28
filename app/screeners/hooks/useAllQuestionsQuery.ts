@@ -1,8 +1,15 @@
 import { useAuthenticatedQuery } from '@/hooks/useAuthenticatedQuery'
 import { get } from '@/http-common'
 import { Questions } from '../types'
+import { UseQueryOptions } from '@tanstack/react-query'
+import { Maybe } from '@/common/types/maybe'
 
-export const useAllQuestionsQuery = () =>
+export const useAllQuestionsQuery = (
+  options: Omit<
+    UseQueryOptions<Questions[], unknown, Questions[], readonly Maybe<string>[]>,
+    'queryKey' | 'queryFn'
+  > = {},
+) =>
   useAuthenticatedQuery(
     ['questions'],
     ({ token }) => {
@@ -14,5 +21,5 @@ export const useAllQuestionsQuery = () =>
 
       return getQuestions()
     },
-    { refetchInterval: 2000 },
+    options,
   )
