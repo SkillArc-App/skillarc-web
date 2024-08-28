@@ -100,7 +100,7 @@ const QuestionsModal = ({ isOpen, onClose, isNew, initialValue }: QuestionInterf
 }
 
 export default function Page() {
-  const { data: questions } = useAllQuestionsQuery()
+  const { data: questions } = useAllQuestionsQuery({ refetchInterval: 2000 })
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [initialValue, setInitialValue] = useState<QuestionsRequest>(defaultModalValue)
   const [isNew, setIsNew] = useState<boolean>(true)

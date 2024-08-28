@@ -135,13 +135,18 @@ describe('Job Orders', () => {
             .parent()
 
           headingCard.within(() => {
-            cy.findByText('Open')
+            cy.findByText('Needs an Assigned Screener or be Bypassed')
           })
 
           // Click and assign screener
           cy.findByRole('button', { name: 'Assign Screener' }).click()
           cy.findByLabelText('Screener Questions').select(screenerName)
           cy.findByRole('button', { name: 'Save' }).click()
+
+          headingCard.within(() => {
+            cy.findByText('Open')
+          })
+
 
           // confirm screener assigned
           cy.findByText(`Screener: ${screenerName}`)
