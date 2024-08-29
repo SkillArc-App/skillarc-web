@@ -8,20 +8,16 @@ export const useIndustries = (
     UseQueryOptions<string[], unknown, string[], readonly Maybe<string>[]>,
     'queryKey' | 'queryFn'
   > = {},
-) => {
-  const userQuery = useAuthenticatedQuery(
-    ['me'],
-    ({ token }) => {
-      const getOne = async () => {
-        const res = await get<string[]>(`/industries`, token)
-        const user = res.data
+) => useAuthenticatedQuery(
+  ['industries'],
+  ({ token }) => {
+    const getOne = async () => {
+      const res = await get<string[]>(`/industries`, token)
+      const user = res.data
 
-        return user
-      }
-      return getOne()
-    },
-    options,
-  )
-
-  return userQuery
-}
+      return user
+    }
+    return getOne()
+  },
+  options,
+)
