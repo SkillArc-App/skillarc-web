@@ -68,6 +68,7 @@ const filters: SearchFilter[] = [
 export default function JobsClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [previousGtmSearch, setPreviousGtmSearch] = useState('')
   const { loginWithRedirect } = useAuth0()
 
   const searchTerms = searchParams?.get('utm_term') ?? searchParams?.get('searchTerm') ?? ''
@@ -97,7 +98,11 @@ export default function JobsClient() {
 
   const debouncedSearchTerm = useDebounce(searchValue, 500)
   useDebounce(searchValue, 5000, ({ searchTerms }) => {
-    sendGTMEvent({ event: 'search', search_term: searchTerms })
+    if (searchTerms && searchTerms != previousGtmSearch) {
+      sendGTMEvent({ event: 'search', search_term: searchTerms })
+    }
+
+    setPreviousGtmSearch(searchTerms)
   })
 
   const { data: user } = useUser()
