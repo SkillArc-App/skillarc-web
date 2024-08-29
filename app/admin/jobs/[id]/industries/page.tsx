@@ -1,15 +1,16 @@
 'use client'
 
 import { useAdminJob } from '@/admin/hooks/useAdminJob'
-import { industries } from '@/common/static/industries'
 import { IdParams } from '@/common/types/PageParams'
 import { useAuthToken } from '@/hooks/useAuthToken'
+import { useIndustries } from '@/hooks/useIndustries'
 import { put } from '@/http-common'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Box, Button, Select, Table, TableContainer, Tbody, Td, Tr } from '@chakra-ui/react'
 
 const Industries = ({ params: { id } }: IdParams) => {
   const { data: job, refetch: refetchJob } = useAdminJob(id)
+  const { data: industries = [] } = useIndustries()
 
   const token = useAuthToken()
 

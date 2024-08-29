@@ -1,12 +1,12 @@
 'use client'
 
-import { industries } from '@/common/static/industries'
 import { tags } from '@/common/static/tags'
 import { SearchFilter, SearchJob, SearchValue, UtmParams } from '@/common/types/Search'
 import { Maybe } from '@/common/types/maybe'
 import { Text } from '@/components/Text.component'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { useDebounce } from '@/hooks/useDebounce'
+import { useIndustries } from '@/hooks/useIndustries'
 import { useUser } from '@/hooks/useUser'
 import { post } from '@/http-common'
 import useUserState, { UserState } from '@/jobs/hooks/useUserState'
@@ -43,31 +43,10 @@ import { useJobSearch } from './hooks/useJobSearch'
 
 type Action = 'apply' | 'pitch' | 'share' | ''
 
-// This is simply a shim until
-// We setup an endpoint for the server to
-// Tell the client what it can filter on
-const filters: SearchFilter[] = [
-  {
-    key: 'industries',
-    label: 'Industries',
-    options: industries.map((i) => ({
-      value: i,
-      label: i[0].toLocaleUpperCase() + i.slice(1),
-    })),
-  },
-  {
-    key: 'tags',
-    label: 'Tags',
-    options: tags.map((t) => ({
-      value: t,
-      label: t,
-    })),
-  },
-]
-
 export default function JobsClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { data: industries = [] } = useIndustries()
   const [previousGtmSearch, setPreviousGtmSearch] = useState('')
   const { loginWithRedirect } = useAuth0()
 
@@ -78,6 +57,28 @@ export default function JobsClient() {
   if (!!utm_source) {
     otherUtmParams['utmSource'] = utm_source
   }
+
+  // This is simply a shim until
+  // We setup an endpoint for the server to
+  // Tell the client what it can filter on
+  const filters: SearchFilter[] = [
+    {
+      key: 'industries',
+      label: 'Industries',
+      options: industries.map((i) => ({
+        value: i,
+        label: i[0].toLocaleUpperCase() + i.slice(1),
+      })),
+    },
+    {
+      key: 'tags',
+      label: 'Tags',
+      options: tags.map((t) => ({
+        value: t,
+        label: t,
+      })),
+    },
+  ]
 
   const activeJobId = searchParams?.get('activeJobId')
   const action = searchParams?.get('action') as Action
@@ -119,7 +120,7 @@ export default function JobsClient() {
       sendGTMEvent({
         event: 'job_application_submitted',
         jobId: job.id,
-        location: "job_search"
+        location: 'job_search',
       })
       setActiveJobIdAndRoute(job.id, 'share')
 
@@ -151,14 +152,14 @@ export default function JobsClient() {
       sendGTMEvent({
         event: 'job_saved',
         jobId: job.id,
-        location: "job_search"
+        location: 'job_search',
       })
       await post(`seekers/jobs/${job.id}/save`, {}, token)
     } else {
       sendGTMEvent({
         event: 'job_unsaved',
         jobId: job.id,
-        location: "job_search"
+        location: 'job_search',
       })
       await post(`seekers/jobs/${job.id}/unsave`, {}, token)
     }

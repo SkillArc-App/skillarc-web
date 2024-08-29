@@ -1,8 +1,8 @@
 'use client'
 
-import { industries } from '@/common/static/industries'
 import FormikCheckBox from '@/components/FormikCheckbox'
 import { Heading } from '@/components/Heading'
+import { useIndustries } from '@/hooks/useIndustries'
 import { Button, Stack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { Text } from '../../components/Text.component'
@@ -15,6 +15,7 @@ type OpportunitiesForm = {
 
 export default function Opportunities() {
   const onboarding = useOnboardingMutation()
+  const { data: industries = [] } = useIndustries()
   const initialValue: OpportunitiesForm = {}
 
   const handleSubmit = (form: OpportunitiesForm) => {
