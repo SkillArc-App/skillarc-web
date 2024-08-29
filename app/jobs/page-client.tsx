@@ -96,6 +96,9 @@ export default function JobsClient() {
   }
 
   const debouncedSearchTerm = useDebounce(searchValue, 500)
+  useDebounce(searchValue, 5000, ({ searchTerms }) => {
+    sendGTMEvent({ event: 'search', search_term: searchTerms })
+  })
 
   const { data: user } = useUser()
   const userState = useUserState()
