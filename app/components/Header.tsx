@@ -87,6 +87,9 @@ export const Header = () => {
     >
       <Flex as={NextLink} alignItems="center" gap="0.75rem" href={'/'} cursor="pointer">
         <Logo w="1.75rem" h="2rem" />
+        <Heading display={'none'} variant={'h1'} color={'gray.600'}>
+          SkillArc
+        </Heading>
         <Heading variant={'h3'} color={'gray.600'}>
           SkillArc
         </Heading>

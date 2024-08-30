@@ -39,7 +39,7 @@ const nextConfig = {
       {
         source: '/onboarding/complete',
         destination: '/',
-        permanent: false
+        permanent: true
       },
       {
         source: '/coaches',
@@ -49,7 +49,7 @@ const nextConfig = {
       {
         source: '/my-jobs',
         destination: '/my-jobs/recently-viewed',
-        permanent: false
+        permanent: true
       },
       {
         source: '/employers/jobs',
