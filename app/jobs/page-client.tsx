@@ -185,7 +185,7 @@ export default function JobsClient() {
 
   return (
     <>
-      <SearchBar value={searchValue} filters={filters} onChange={setSearchValueAndRoute} />
+      <SearchBar placeholder='Job Title, Role ...' value={searchValue} filters={filters} onChange={setSearchValueAndRoute} />
       <Divider />
       <VStack spacing={'1rem'} role="list" width={'100%'}>
         {jobs?.map((job, index) => {

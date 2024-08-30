@@ -69,11 +69,17 @@ function SearchSelect<T>({ label, id, options, value, onChange }: SelectSearchPr
 
 type SearchBarProps<T> = {
   value: SearchValue<T>
+  placeholder?: string
   filters?: SearchFilter<T>[]
   onChange: (value: SearchValue<T>) => void
 }
 
-export default function SearchBar<T>({ value, filters = [], onChange }: SearchBarProps<T>) {
+export default function SearchBar<T>({
+  value,
+  placeholder = 'Search...',
+  filters = [],
+  onChange,
+}: SearchBarProps<T>) {
   return (
     <VStack width={'100%'} align={'start'}>
       <InputGroup>
@@ -82,7 +88,7 @@ export default function SearchBar<T>({ value, filters = [], onChange }: SearchBa
         <Input
           type="search"
           backgroundColor={'white'}
-          placeholder="Search..."
+          placeholder={placeholder}
           role="search"
           value={value.searchTerms}
           onChange={(e) => {
