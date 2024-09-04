@@ -4,6 +4,7 @@ import { CoachSeekerTable, SubmittableSeekerLead } from '@/coaches/types'
 import { SearchFilter, SearchValue } from '@/common/types/Search'
 import DataTable from '@/components/DataTable'
 import { LoadingPage } from '@/components/Loading'
+import { useAttributes } from '@/hooks/useAttributes'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { useDebounce } from '@/hooks/useDebounce'
 import { useUser } from '@/hooks/useUser'
@@ -15,7 +16,6 @@ import { SortingState, createColumnHelper } from '@tanstack/react-table'
 import NextLink from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useState } from 'react'
-import { useCoachAttributes } from '../hooks/useCoachAttributes'
 import NewLeadModal from './components/NewLeadModal'
 
 const Coaches = () => {
@@ -30,7 +30,7 @@ const Coaches = () => {
 
 const Seekers = () => {
   const { data: user } = useUser()
-  const { data: attributes } = useCoachAttributes()
+  const { data: attributes } = useAttributes()
   const { isOpen, onOpen, onClose } = useDisclosure({})
   const token = useAuthToken()
 
@@ -52,9 +52,9 @@ const Seekers = () => {
   const filters: SearchFilter<string>[] = (attributes ?? []).map((attribute) => ({
     key: attribute.id,
     label: attribute.name,
-    options: attribute.set.map((i) => ({
-      value: i,
-      label: i[0].toLocaleUpperCase() + i.slice(1),
+    options: Object.entries(attribute.set).map(([id, label]) => ({
+      value: id,
+      label: label,
     })),
   }))
 

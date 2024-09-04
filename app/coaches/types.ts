@@ -44,9 +44,8 @@ export type SeekerApplication = {
 
 export type PersonAttribute = {
   id: string
-  name: string
   attributeId: string
-  value: string[]
+  attributeValueIds: string[]
 }
 
 export type PersonContact = {

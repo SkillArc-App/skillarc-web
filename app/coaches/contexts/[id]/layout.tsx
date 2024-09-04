@@ -35,11 +35,11 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fa'
 import { FaBullhorn, FaPlus, FaRegBell, FaTrash } from 'react-icons/fa6'
-import { useCoachAttributes } from '../../hooks/useCoachAttributes'
 import { useCoachSeekerTasks } from '../../hooks/useCoachTasks'
 import AttributeModal, { AttributeForm } from '../../tasks/components/AttributeModal'
 import RecommendForJobModal from '../../tasks/components/RecommendForJobModal'
 import ReminderModal from '../../tasks/components/ReminderModal'
+import { useAttributes } from '@/hooks/useAttributes'
 
 const tabs: Record<string, number> = {
   notes: 0,
@@ -53,7 +53,7 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
   const { data: seeker, refetch: refetchSeeker } = useCoachSeekerData(id)
   const { data: coaches } = useCoachesData()
   const { refetch: refetchTasks } = useCoachSeekerTasks(id)
-  const { data: attributes } = useCoachAttributes()
+  const { data: attributes } = useAttributes()
   const pathName = usePathname()
 
   const [isReminderModalOpen, setIsReminderModalOpen] = useState(false)
@@ -269,25 +269,32 @@ const Context = ({ children, params: { id } }: { children: React.ReactNode } & I
                   icon={<FaPlus />}
                 />
               </HStack>
-              {seeker.attributes.map((a, i) => {
+              {seeker.attributes.map((personAttribute, index) => {
+                const attribute = attributes.find((attribute) => personAttribute.attributeId === attribute.id)
+                console.log(attribute)
+                console.log(personAttribute.attributeValueIds)
+                const values = Object.entries(attribute?.set ?? {}).filter(([id]) => personAttribute.attributeValueIds.includes(id))
+
+                console.log(values)
+
                 return (
-                  <Box key={i} bg={'white'} p={'1rem'}>
+                  <Box key={index} bg={'white'} p={'1rem'}>
                     <HStack>
                       <Stack>
                         <Link
                           onClick={() => addAttribute()} // TODO: add in working value here
                         >
-                          <Text variant={'b3'}>{a.name}</Text>
+                          <Text variant={'b3'}>{attribute?.name ?? 'Loading'}</Text>
                         </Link>
                         <HStack>
-                          {a.value.map((v) => {
-                            return <Tag key={v}>{v}</Tag>
+                          {values.map(([id, label]) => {
+                            return <Tag key={id}>{label}</Tag>
                           })}
                         </HStack>
                       </Stack>
                       <Spacer />
                       <IconButton
-                        onClick={() => removeAttribute(a.id)}
+                        onClick={() => removeAttribute(personAttribute.id)}
                         size={'sm'}
                         aria-label="delete-attribute"
                         variant={'ghost'}
