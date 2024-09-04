@@ -3,6 +3,6 @@ export type Attribute = {
   name: string
   description: string
   machineDerived: boolean
-  set: string[]
-  default: string[]
+  set: Dictionary<string>
+  default: Dictionary<string>
 }

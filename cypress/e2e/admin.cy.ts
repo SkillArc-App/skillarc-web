@@ -21,11 +21,13 @@ describe('Admin', () => {
     cy.findByRole('button', { name: 'Save' }).click()
 
     // Confirm status in table
-    cy.findByText('Test1, Test2')
     cy.findByRole('table').within(() => {
       const row = cy.findByText(name).parent().parent()
 
       row.within(() => {
+        cy.findAllByText('Test1')
+        cy.findByText('Test2')
+
         cy.findByLabelText('delete-attribute').click()
       })
     })

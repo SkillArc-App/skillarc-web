@@ -27,8 +27,7 @@ export type Testimonial = {
 export type AdminJobAttribute = {
   id: string
   attributeId: string
-  attributeName: string
-  acceptibleSet: string[]
+  attributeValueIds: string[]
 }
 
 export type AdminJob = {

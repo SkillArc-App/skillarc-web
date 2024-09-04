@@ -1,4 +1,5 @@
 import { Attribute } from '@/common/types/Attribute'
+import { Maybe } from '@/common/types/maybe'
 import FormObserver from '@/components/FormObserver'
 import FormikMultiSelect from '@/components/FormikMultiSelect'
 import FormikSelect from '@/components/FormikSelect'
@@ -20,7 +21,7 @@ import { useState } from 'react'
 
 export type AttributeForm = {
   attributeId: string
-  values: { value: string; label: string }[]
+  values: string[]
 }
 
 const AttributeModal = ({
@@ -44,24 +45,20 @@ const AttributeModal = ({
   }
   const token = useAuthToken()
 
-  const [activeAttribute, setActiveAttribute] = useState(0)
+  const [activeAttributeId, setActiveAttributeId] = useState<Maybe<string>>(undefined)
 
+  const activeAttribute = attributes.find(({ id }) => id === activeAttributeId)?.set ?? {}
   const options =
-    attributes?.at(activeAttribute)?.set.map((a) => {
-      return { value: a, label: a }
-    }) ?? []
+    Object.entries(activeAttribute).map(([id, label]) => ({ value: id, label: label })) ?? []
 
-  const handleSubmit = async (value: {
-    attributeId: string
-    values: { value: string; label: string }[]
-  }) => {
+  const handleSubmit = async ({ attributeId, values }: AttributeForm) => {
     if (!token) return
 
     await post(
       `/coaches/seekers/${seekerId}/attributes`,
       {
-        attributeId: attributes?.at(parseInt(value.attributeId))?.id,
-        values: value.values,
+        attributeId,
+        attributeValueIds: values,
       },
       token,
     )
@@ -82,18 +79,14 @@ const AttributeModal = ({
         <Formik initialValues={initialValue} onSubmit={handleSubmit}>
           <Form>
             <FormObserver
-              onChange={(values) =>
-                setActiveAttribute(parseInt((values as AttributeForm).attributeId))
-              }
+              onChange={(values: AttributeForm) => setActiveAttributeId(values.attributeId)}
             />
             <ModalBody>
               <Stack>
                 <FormikSelect
                   name="attributeId"
                   label="Attribute"
-                  options={attributes?.map((a, index) => {
-                    return { key: index.toString(), value: a.name }
-                  })}
+                  options={attributes.map(({ id: key, name: value }) => ({ key, value }))}
                 />
                 <FormikMultiSelect
                   label="add a value"

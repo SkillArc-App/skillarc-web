@@ -1,6 +1,5 @@
 'use client'
 
-import { useAdminAttributes } from '@/admin/hooks/useAdminAttributes'
 import { useAdminJob } from '@/admin/hooks/useAdminJob'
 import { AdminJobAttribute } from '@/common/types/Job'
 import { IdParams } from '@/common/types/PageParams'
@@ -8,6 +7,7 @@ import DataTable from '@/components/DataTable'
 import FormObserver from '@/components/FormObserver'
 import FormikMultiSelect from '@/components/FormikMultiSelect'
 import FormikSelect from '@/components/FormikSelect'
+import { useAttributes } from '@/hooks/useAttributes'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { destroy, post, put } from '@/http-common'
 import {
@@ -42,7 +42,7 @@ const AttributesPage = ({ params: { id } }: IdParams) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
-  const { data: attributes } = useAdminAttributes()
+  const { data: attributes } = useAttributes()
 
   const [activeAttribute, setActiveAttribute] = useState(attributes?.at(0))
 
@@ -52,8 +52,8 @@ const AttributesPage = ({ params: { id } }: IdParams) => {
     }
   }, [attributes])
 
-  const options = activeAttribute?.set.map((a) => {
-    return { value: a, label: a }
+  const options = Object.entries(activeAttribute?.set ?? {}).map(([id, label]) => {
+    return { value: id, label: label }
   })
 
   const [initialValue, setInitialValue] = useState<FormInputType>({
@@ -62,6 +62,7 @@ const AttributesPage = ({ params: { id } }: IdParams) => {
   })
 
   const handleSave = async (values: FormInputType) => {
+    console.log(values)
     if (!token) return
     if (!job) return
 
@@ -90,11 +91,24 @@ const AttributesPage = ({ params: { id } }: IdParams) => {
     onClose()
   }
 
+  const attributeValues = (ids: string[], options: Dictionary<string> = {}) => {
+    return Object.entries(options).reduce((options, [id, label]) => {
+      if (ids.includes(id)) {
+        options.push(label)
+      }
+
+      return options
+    }, [] as string[])
+  }
+
   const handleEdit = (jobAttribute: AdminJobAttribute) => {
+    const attribute = attributes?.find((attribute) => attribute.id === jobAttribute.attributeId)
+    const acceptableSet = attributeValues(jobAttribute.attributeValueIds, attribute?.set).join(', ')
+
     setInitialValue({
       id: jobAttribute.id,
       attributeId: jobAttribute.attributeId,
-      acceptibleSet: jobAttribute.acceptibleSet.join('\n'),
+      acceptibleSet: acceptableSet,
     })
 
     onOpen()
@@ -111,14 +125,26 @@ const AttributesPage = ({ params: { id } }: IdParams) => {
 
   const columnHelper = createColumnHelper<AdminJobAttribute>()
   const columns = [
-    columnHelper.accessor('attributeName', {
+    columnHelper.accessor('attributeId', {
       header: 'Name',
       filterFn: 'includesString',
-      cell: (row) => <Link onClick={() => handleEdit(row.row.original)}>{row.getValue()}</Link>,
+      cell: (row) => {
+        const attributeName =
+          attributes?.find((attribute) => attribute.id === row.getValue())?.name ?? 'Loading'
+
+        return <Link onClick={() => handleEdit(row.row.original)}>{attributeName}</Link>
+      },
     }),
-    columnHelper.accessor('acceptibleSet', {
-      header: 'Acceptible Set',
-      cell: (row) => row.getValue().join(', '),
+    columnHelper.accessor('attributeValueIds', {
+      header: 'Acceptable Set',
+      cell: (row) => {
+        const attributeValueIds = row.getValue()
+        const attribute = attributes?.find(
+          (attribute) => attribute.id === row.row.original.attributeId,
+        )
+
+        return attributeValues(attributeValueIds, attribute?.set).join(', ')
+      },
     }),
     columnHelper.accessor(() => {}, {
       header: 'Actions',

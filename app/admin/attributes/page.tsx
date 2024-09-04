@@ -4,11 +4,13 @@ import { Attribute } from '@/common/types/Attribute'
 import DataTable from '@/components/DataTable'
 import FormikInput from '@/components/FormikInput'
 import FormikTextArea from '@/components/FormikTextArea'
+import { useAttributes } from '@/hooks/useAttributes'
 import { useAuthToken } from '@/hooks/useAuthToken'
 import { destroy, post, put } from '@/http-common'
 import {
   Box,
   Button,
+  HStack,
   IconButton,
   Link,
   Modal,
@@ -19,6 +21,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  Tag,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -26,7 +29,6 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { Form, Formik } from 'formik'
 import { useState } from 'react'
 import { FaRegTrashCan, FaX } from 'react-icons/fa6'
-import { useAdminAttributes } from '../hooks/useAdminAttributes'
 
 type FormInputType = {
   id?: string
@@ -37,7 +39,7 @@ type FormInputType = {
 }
 
 const Attributes = () => {
-  const { data: attributes, refetch } = useAdminAttributes()
+  const { data: attributes, refetch } = useAttributes()
 
   const { isOpen, onOpen, onClose } = useDisclosure({})
 
@@ -57,8 +59,8 @@ const Attributes = () => {
       id: editVal.id,
       name: editVal.name,
       description: editVal.description,
-      set: editVal.set.join('\n'),
-      default: editVal.default.join('\n'),
+      set: Object.values(editVal.set).join('\n'),
+      default: Object.values(editVal.default).join('\n'),
     })
 
     onOpen()
@@ -96,18 +98,36 @@ const Attributes = () => {
     }),
     columnHelper.accessor('set', {
       header: 'Set',
-      cell: (row) => row.getValue().join(', '),
+      cell: (row) => {
+        return (
+          <HStack>
+            {Object.entries(row.getValue()).map(([id, label]) => {
+              return <Tag key={id}>{label}</Tag>
+            })}
+          </HStack>
+        )
+      },
     }),
     columnHelper.accessor('default', {
       header: 'Default',
-      cell: (row) => row.getValue().join(', '),
+      cell: (row) => {
+        return (
+          <HStack>
+            {Object.entries(row.getValue()).map(([id, label]) => {
+              return <Tag key={id}>{label}</Tag>
+            })}
+          </HStack>
+        )
+      },
     }),
     columnHelper.accessor(() => {}, {
       header: 'Actions',
       cell: (row) => (
         <IconButton
           onClick={
-            row.row.original.machineDerived ? handleDeleteServer : () => handleDelete(row.row.original.id)
+            row.row.original.machineDerived
+              ? handleDeleteServer
+              : () => handleDelete(row.row.original.id)
           }
           aria-label="delete-attribute"
           variant={'ghost'}
